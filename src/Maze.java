@@ -234,13 +234,14 @@ public class Maze {
 	public static char[][] generateMaze(int rows, int cols){
 		// this algorithm only works well if the 
 		// width and height are odd
+		
 		if (cols % 2 == 0){
 			cols += 1;
 		}
 		if (rows % 2 == 0){
 			rows +=1;
 		}
-		
+	
 		// fill the maze with walls
 		char[][] maze = new char [rows][cols];
 		for (int i = 0; i < rows; i++) {
@@ -270,14 +271,14 @@ public class Maze {
 		int visitedCells = 1;
 		
 		maze[currentCell.i][currentCell.j] = empty;
+		Vector<Cell> nearbyCells = new Vector<Cell>();
 		
 		while( visitedCells < totalCells){
 			//System.out.print(visitedCells + " < " + totalCells + "\n");
 			//System.out.print("stack size: " + cellStack.size() + "\n");
-			//print(maze);
 			
 			// find all 4 neighbors of CurrentCell with all walls intact 
-			Vector<Cell> nearbyCells = new Vector<Cell>();
+			nearbyCells.clear();
 			if(currentCell.i-2 > 0 && currentCell.i-2 < rows && maze[currentCell.i-2][currentCell.j] == wall ){
 				nearbyCells.add(new Cell(currentCell.i-2, currentCell.j));
 			}
@@ -327,7 +328,7 @@ public class Maze {
 		}
 		
 		// generate an exit
-
+		
 		// generate hero, dragon and sword
 
 		return maze;
@@ -335,7 +336,7 @@ public class Maze {
 
 	public static void main(String[] args){
 		Maze m1 = new Maze();
-		m1.positions = generateMaze(11,11);
+		m1.positions = generateMaze(30,30);
 		print(m1.positions);
 		/*
 		Maze m1 = new Maze();
