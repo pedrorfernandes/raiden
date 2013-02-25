@@ -251,8 +251,8 @@ public class Maze {
 		
 		// create a CellStack (LIFO) to hold a list of cell locations
 		Stack<Cell> cellStack = new Stack<Cell>();
-		//set TotalCells = number of cells in grid 
-		int totalCells = (cols-2)*(rows-2);
+		//set TotalCells = number of maximum visited cells
+		int totalCells = (cols-2) + (rows-3)*((int)((rows-2)/2)+1);
 		
 		//choose random starting odd cell, call it currentCell
 		Cell currentCell = new Cell();
@@ -271,9 +271,11 @@ public class Maze {
 		
 		maze[currentCell.i][currentCell.j] = empty;
 		
-		while( visitedCells < totalCells){ // always true in this case, need better condition
+		while( visitedCells < totalCells){
 			//System.out.print(visitedCells + " < " + totalCells + "\n");
 			//System.out.print("stack size: " + cellStack.size() + "\n");
+			//print(maze);
+			
 			// find all 4 neighbors of CurrentCell with all walls intact 
 			Vector<Cell> nearbyCells = new Vector<Cell>();
 			if(currentCell.i-2 > 0 && currentCell.i-2 < rows && maze[currentCell.i-2][currentCell.j] == wall ){
@@ -325,7 +327,7 @@ public class Maze {
 		}
 		
 		// generate an exit
-		
+
 		// generate hero, dragon and sword
 
 		return maze;
@@ -333,7 +335,7 @@ public class Maze {
 
 	public static void main(String[] args){
 		Maze m1 = new Maze();
-		m1.positions = generateMaze(15,15);
+		m1.positions = generateMaze(11,11);
 		print(m1.positions);
 		/*
 		Maze m1 = new Maze();
