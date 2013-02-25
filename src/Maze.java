@@ -244,9 +244,7 @@ public class Maze {
 		return numberWalls;
 	}
 	
-	public static char[][] generateMaze(int rows, int cols){
-		// this algorithm only works well if the 
-	
+	public static char[][] generateMaze(int rows, int cols){	
 		// fill the maze with walls
 		char[][] maze = new char [rows][cols];
 		for (int i = 0; i < rows; i++) {
@@ -257,27 +255,17 @@ public class Maze {
 		
 		// create a CellStack (LIFO) to hold a list of cell locations
 		Stack<Cell> cellStack = new Stack<Cell>();
-		//set TotalCells = number of maximum visited cells
-		int totalCells = (cols-2)*(rows-2);
 		
 		//choose random starting odd cell, call it currentCell
 		Cell currentCell = new Cell();
 		Random r = new Random();
-		currentCell.i = r.nextInt(cols-1)+1; // 1..cols-1, can't be a wall
-		currentCell.j = r.nextInt(cols-1)+1;
-
-		
-		//set VisitedCells = 1 
-		int visitedCells = 1;
+		currentCell.i = r.nextInt(cols-2)+1; // 1..cols-2, can't be a wall
+		currentCell.j = r.nextInt(rows-2)+1;
 		
 		maze[currentCell.i][currentCell.j] = empty;
 		Vector<Cell> nearbyCells = new Vector<Cell>();
 		
-		while( visitedCells < totalCells){
-			//System.out.print(visitedCells + " < " + totalCells + "\n");
-			//System.out.print("stack size: " + cellStack.size() + "\n");
-			//print(maze);
-			
+		while(true){
 			// find all 4 neighbors of CurrentCell with all walls intact 
 			nearbyCells.clear();
 			if(currentCell.i-1 > 0 && currentCell.i-1 < rows && maze[currentCell.i-1][currentCell.j] == wall ){
@@ -307,23 +295,62 @@ public class Maze {
 				int selected = r.nextInt(nearbyCells.size());
 				Cell next = nearbyCells.elementAt(selected);
 				maze[next.i][next.j] = empty;
-				//push CurrentCell location on the CellStack
+				// push CurrentCell location on the CellStack
 				cellStack.push(next);
 				// make the new cell CurrentCell 
 				currentCell = next;
-				visitedCells += 1;
 			} else {
 				if (cellStack.empty()){
 					break;
 				}
 				currentCell = cellStack.pop();
 			}
-			
+
 		}
-		
+
 		// generate an exit
+		boolean done = false;
+		Cell exitCell = new Cell();
+		while (!done){
+			int side = r.nextInt(4);
+			switch (side) {
+			case 0: // left side exit
+				exitCell.j = 0;
+				exitCell.i = r.nextInt(rows-2)+1;
+				if(maze[exitCell.i][exitCell.j+1] != wall){
+					done = true;
+				}
+				break;
+			case 1: // right side exit
+				exitCell.j = cols-1;
+				exitCell.i = r.nextInt(rows-2)+1;
+				if(maze[exitCell.i][exitCell.j-1] != wall){
+					done = true;
+				}
+				break;
+			case 2: // top side exit
+				exitCell.i = 0;
+				exitCell.j = r.nextInt(cols-2)+1;
+				if(maze[exitCell.i+1][exitCell.j] != wall){
+					done = true;
+				}
+				break;
+			case 3: // down side exit
+				exitCell.i = rows-1;
+				exitCell.j = r.nextInt(rows-2)+1;
+				if(maze[exitCell.i-1][exitCell.j] != wall){
+					done = true;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		maze[exitCell.i][exitCell.j] = exit;
 		
 		// generate hero, dragon and sword
+		
 
 		return maze;
 	}
