@@ -2,18 +2,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
-
+import java.util.Stack;
+import java.util.Vector;
 
 public class Maze {
 	private static final int SIZE_H = 10;
 	private static final int SIZE_V = 10;
 	Dragon dragon = new Dragon(); 
 	Hero hero = new Hero();
-	char wall = 'X';
-	char empty = ' ';
-	char space = ' ';
-	char exit = 'S';
-	char weapon = 'E';
+	static char wall = 'X';
+	static char empty = ' ';
+	static char space = ' ';
+	static char exit = 'S';
+	static char weapon = 'E';
 	static boolean gameOver = false;
 	static String gameOverMessage = "Game Over";
 	private static final int DRAGONCHOICES = 5;
@@ -62,10 +63,10 @@ public class Maze {
 
 	}
 
-	public void printMaze(){
-		for (int x = 0; x < SIZE_H; x++) {
-			for (int y = 0; y < SIZE_V; y++) {
-				System.out.print(positions[x][y]);
+	static public void print(char[][] maze){
+		for (int x = 0; x < maze.length; x++) {
+			for (int y = 0; y < maze[0].length; y++) {
+				System.out.print(maze[x][y]);
 				System.out.print(space);
 			}
 			System.out.print('\n');
@@ -230,44 +231,121 @@ public class Maze {
 
 	}
 	
-	public char[][] generateMaze(int width, int height){
-		char[][] maze = new char [width][height];
-		/*
-create a CellStack (LIFO) to hold a list of cell locations  
-set TotalCells = number of cells in grid  
-choose a cell at random and call it CurrentCell  
-set VisitedCells = 1  
+	public static char[][] generateMaze(int rows, int cols){
+		// this algorithm only works well if the 
+		// width and height are odd
+		if (cols % 2 == 0){
+			cols += 1;
+		}
+		if (rows % 2 == 0){
+			rows +=1;
+		}
+		
+		// fill the maze with walls
+		char[][] maze = new char [rows][cols];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				maze[i][j] = wall;
+			}
+		}
+		
+		// create a CellStack (LIFO) to hold a list of cell locations
+		Stack<Cell> cellStack = new Stack<Cell>();
+		//set TotalCells = number of cells in grid 
+		int totalCells = (cols-2)*(rows-2);
+		
+		//choose random starting odd cell, call it currentCell
+		Cell currentCell = new Cell();
+		Random r = new Random();
+		currentCell.i = r.nextInt(cols-1)+1; // 1..cols-1, can't be a wall
+		currentCell.j = r.nextInt(cols-1)+1;
+		if (currentCell.i % 2 == 0){
+			currentCell.i -= 1;
+		}
+		if (currentCell.j % 2 == 0){
+			currentCell.j -=1;
+		}
+		
+		//set VisitedCells = 1 
+		int visitedCells = 1;
+		
+		maze[currentCell.i][currentCell.j] = empty;
+		
+		while( visitedCells < totalCells){ // always true in this case, need better condition
+			//System.out.print(visitedCells + " < " + totalCells + "\n");
+			//System.out.print("stack size: " + cellStack.size() + "\n");
+			// find all 4 neighbors of CurrentCell with all walls intact 
+			Vector<Cell> nearbyCells = new Vector<Cell>();
+			if(currentCell.i-2 > 0 && currentCell.i-2 < rows && maze[currentCell.i-2][currentCell.j] == wall ){
+				nearbyCells.add(new Cell(currentCell.i-2, currentCell.j));
+			}
+			if(currentCell.j-2 > 0 && currentCell.j-2 < cols && maze[currentCell.i][currentCell.j-2] == wall ){
+				nearbyCells.add(new Cell(currentCell.i, currentCell.j-2));
+			}
+			if(currentCell.i+2 > 0 && currentCell.i+2 < rows && maze[currentCell.i+2][currentCell.j] == wall ){
+				nearbyCells.add(new Cell(currentCell.i+2, currentCell.j));
+			}
+			if(currentCell.j+2 > 0 && currentCell.j+2 < cols && maze[currentCell.i][currentCell.j+2] == wall ){
+				nearbyCells.add(new Cell(currentCell.i, currentCell.j+2));
+			}
+			
+			//if one or more found 
+			if (nearbyCells.size() > 0){
+				// choose one at random  
+				int selected = r.nextInt(nearbyCells.size());
+				Cell next = nearbyCells.elementAt(selected);
+				maze[next.i][next.j] = empty;
+				// knock down the wall between currentCell and next cell
+				if (currentCell.i == next.i){
+					if(currentCell.j > next.j){ // left
+						maze[currentCell.i][currentCell.j-1] = empty;
+					} else { // right
+						maze[currentCell.i][currentCell.j+1] = empty;
+					}
+				} else {
+					if (currentCell.i > next.i){ // top
+						maze[currentCell.i-1][currentCell.j] = empty;
+					} else {
+						maze[currentCell.i+1][currentCell.j] = empty;
+					}
+				}
+				
+				//push CurrentCell location on the CellStack
+				cellStack.push(next);
+				// make the new cell CurrentCell 
+				currentCell = next;
+				visitedCells += 2;
+			} else {
+				if (cellStack.empty()){
+					break;
+				}
+				currentCell = cellStack.pop();
+			}
+			
+		}
+		
+		// generate an exit
+		
+		// generate hero, dragon and sword
 
-while VisitedCells < TotalCells 
-	find all neighbors of CurrentCell with all walls intact   
-	if one or more found 
-		choose one at random  
-		knock down the wall between it and CurrentCell  
-		push CurrentCell location on the CellStack  
-		make the new cell CurrentCell  
-		add 1 to VisitedCells
-	else 
-		pop the most recent cell entry off the CellStack  
-		make it CurrentCell
-	endIf
-endWhile  
-		*/
-		
-		
-		
 		return maze;
 	}
 
 	public static void main(String[] args){
 		Maze m1 = new Maze();
+		m1.positions = generateMaze(15,15);
+		print(m1.positions);
+		/*
+		Maze m1 = new Maze();
 		m1.startPredefinedMaze();
-		m1.printMaze();
+		print(m1.positions);
 		while (!gameOver) {
 			m1.moveHero();
 			m1.moveDragon();
-			m1.printMaze();
+			print(m1.positions);
 		}
 		System.out.println(gameOverMessage);
+		*/
 	}
 }
 
@@ -302,5 +380,20 @@ class Dragon {
 	
 	public void die(){
 		isAlive = false;
+	}
+}
+
+class Cell {
+	public int i;
+	public int j;
+	
+	public Cell(){
+		i = 0;
+		j = 0;
+	}
+	
+	public Cell(int row, int col){
+		i = row;
+		j = col;
 	}
 }
