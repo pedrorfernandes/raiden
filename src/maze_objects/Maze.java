@@ -5,8 +5,6 @@ import java.util.Vector;
 
 import general_utilities.MazeInput;
 
-// teste
-
 public class Maze {
 
 	/**
@@ -117,7 +115,9 @@ public class Maze {
 		return(((dragon.getRow() == hero.getRow() + 1 && dragon.getColumn() == hero.getColumn()) ||
 				(dragon.getRow() == hero.getRow() - 1  && dragon.getColumn() == hero.getColumn()) ||
 				(dragon.getColumn() == hero.getColumn() + 1 && dragon.getRow() == hero.getRow()) ||
-				(dragon.getColumn() == hero.getColumn() - 1 && dragon.getRow() == hero.getRow())) && (dragon.getState() == Dragon.ALIVE));
+				(dragon.getColumn() == hero.getColumn() - 1 && dragon.getRow() == hero.getRow()) ||
+				(dragon.getColumn() == hero.getColumn() && dragon.getRow() == hero.getRow()))
+				&& (dragon.getState() == Dragon.ALIVE));
 	}
 
 	public boolean nextToHero(int row, int column) {
@@ -321,8 +321,10 @@ public class Maze {
 				if (nextToDragon()) {
 					if(fightDragon())
 						System.out.println("WOW! You slayed the dragon! Exit is now opened!\n");
-					else 
+					else {
 						goOn = false;
+						break;
+					}
 				}
 			}
 			else
