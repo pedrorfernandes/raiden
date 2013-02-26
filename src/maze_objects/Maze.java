@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import general_utilities.MazeInput;
 
-
+// teste
 
 public class Maze {
 
