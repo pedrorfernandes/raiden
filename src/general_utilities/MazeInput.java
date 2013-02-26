@@ -12,6 +12,7 @@ public class MazeInput {
 		String s = in.nextLine();
 		char c = s.charAt(0);
 
+		//in.close();
 		return c;
 	}
 
