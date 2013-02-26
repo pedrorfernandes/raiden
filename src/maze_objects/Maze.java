@@ -320,40 +320,36 @@ public class Maze {
 		char input;
 
 		while(goOn) {
-			boolean doInput = true;
 
-			if(doInput) {
-				try {
-					System.out.print("Move your hero (WASD, only first input will be considered): ");
-					input = MazeInput.getChar();
-					if(input == 's')
-						goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
-					else if(input == 'w')
-						goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
-					else if(input == 'a')
-						goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
-					else if(input == 'd')
-						goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
-					else if(input == 'z')
-						goOn = false;
+			try {
+				System.out.print("Move your hero (WASD, only first input will be considered): ");
+				input = MazeInput.getChar();
+				if(input == 's')
+					goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
+				else if(input == 'w')
+					goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
+				else if(input == 'a')
+					goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
+				else if(input == 'd')
+					goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
+				else if(input == 'z')
+					goOn = false;
+			}
+
+			catch(Exception e) {
+				System.err.println("Problem reading user input!");
+			}
+
+			if (nextToDragon()) {
+				if(fightDragon()) {
+					FightEvent wonFight = new FightEvent("wonFight");
+					events.add(wonFight);
 				}
-
-				catch(Exception e) {
-					System.err.println("Problem reading user input!");
+				else {
+					goOn = false;
+					FightEvent lostFight = new FightEvent("lostFight");
+					events.add(lostFight);
 				}
-
-				if (nextToDragon()) {
-					if(fightDragon()) {
-						FightEvent wonFight = new FightEvent("wonFight");
-						events.add(wonFight);
-					}
-					else {
-						goOn = false;
-						FightEvent lostFight = new FightEvent("lostFight");
-						events.add(lostFight);
-					}
-				}
-
 			}
 
 			if(game_state == 1 && (dragon.getState() == Dragon.ALIVE)) {
@@ -361,13 +357,11 @@ public class Maze {
 
 				if (nextToDragon()) {
 					if(fightDragon()) {
-						doInput = false;
 						FightEvent wonFight = new FightEvent("wonFight");
 						events.add(wonFight);
 					}
 					else {
 						goOn = false;
-						doInput = false;
 						FightEvent lostFight = new FightEvent("lostFight");
 						events.add(lostFight);
 					}
@@ -375,7 +369,7 @@ public class Maze {
 			}
 			else
 				game_state = 1;
-			
+
 			GameOutputs.printMaze(this);
 
 			switch(hero.getState()) {
