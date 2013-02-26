@@ -1,8 +1,13 @@
 package maze_objects;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
 import java.util.Vector;
 
+import game.ui.FightEvent;
+import game.ui.GameEvent;
+import game.ui.GameOutputs;
+import game.ui.ResultEvent;
 import general_utilities.MazeInput;
 
 public class Maze {
@@ -26,6 +31,8 @@ public class Maze {
 	private Hero hero;
 	private Dragon dragon;
 
+	LinkedList<GameEvent> events = new LinkedList<GameEvent>();
+
 	char[][] positions = new char[DEFAULT_ROW_SIZE][DEFAULT_COLUMN_SIZE];
 
 	//Constructors
@@ -42,16 +49,28 @@ public class Maze {
 
 	public static void main(String[] args) {
 		Maze m1 = new Maze();
-		m1.printMaze();
+		GameOutputs.printMaze(m1);
 		m1.play();
 	}
 
 	//General Methods
-	int getDragonState() {
+	public char[][] getPositions() {
+		return positions;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
+	public int getDragonState() {
 		return dragon.getState();
 	}
 
-	int getExitState() {
+	public int getExitState() {
 		return exit_state;
 	}
 
@@ -171,7 +190,7 @@ public class Maze {
 		positions[8][7] = MazeSymbol.empty;
 		positions[5][9] = MazeSymbol.exit;
 	}
-	
+
 	static public int checkWalls(int i, int j, char[][] map){
 		int numberWalls = 0;
 		if( (i-1) >= 0 && map[i-1][j] == MazeSymbol.wall)
@@ -184,7 +203,7 @@ public class Maze {
 			numberWalls++;
 		return numberWalls;
 	}
-	
+
 	public char[][] generateMaze(int rows, int cols){	
 		// fill the maze with walls
 		char[][] maze = new char [rows][cols];
@@ -193,19 +212,19 @@ public class Maze {
 				maze[i][j] = MazeSymbol.wall;
 			}
 		}
-		
+
 		// create a CellStack (LIFO) to hold a list of cell locations
 		Stack<Cell> cellStack = new Stack<Cell>();
-		
+
 		//choose random starting odd cell, call it currentCell
 		Cell currentCell = new Cell();
 		Random r = new Random();
 		currentCell.i = r.nextInt(cols-2)+1; // 1..cols-2, can't be a wall
 		currentCell.j = r.nextInt(rows-2)+1;
-		
+
 		maze[currentCell.i][currentCell.j] = MazeSymbol.empty;
 		Vector<Cell> nearbyCells = new Vector<Cell>();
-		
+
 		while(true){
 			// find all 4 neighbors of CurrentCell with all walls intact 
 			nearbyCells.clear();
@@ -229,7 +248,7 @@ public class Maze {
 					nearbyCells.add(new Cell(currentCell.i, currentCell.j+1));
 				}
 			}
-			
+
 			//if one or more found 
 			if (nearbyCells.size() > 0){
 				// choose one at random  
@@ -294,17 +313,6 @@ public class Maze {
 	}
 
 	//Game methods
-	public void printMaze() {
-		for(int i = 0; i < 100; i++)
-			System.out.println();
-		for (int x = 0; x < rows; x++) {
-			for (int y = 0; y < columns; y++) {
-				System.out.print(positions[x][y]);
-				System.out.print(MazeSymbol.space);
-			}
-			System.out.print('\n');
-		}
-	}
 
 	public boolean play() {
 		boolean goOn = true;
@@ -312,59 +320,77 @@ public class Maze {
 		char input;
 
 		while(goOn) {
+			boolean doInput = true;
+
+			if(doInput) {
+				try {
+					System.out.print("Move your hero (WASD, only first input will be considered): ");
+					input = MazeInput.getChar();
+					if(input == 's')
+						goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
+					else if(input == 'w')
+						goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
+					else if(input == 'a')
+						goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
+					else if(input == 'd')
+						goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
+					else if(input == 'z')
+						goOn = false;
+				}
+
+				catch(Exception e) {
+					System.err.println("Problem reading user input!");
+				}
+
+				if (nextToDragon()) {
+					if(fightDragon()) {
+						FightEvent wonFight = new FightEvent("wonFight");
+						events.add(wonFight);
+					}
+					else {
+						goOn = false;
+						FightEvent lostFight = new FightEvent("lostFight");
+						events.add(lostFight);
+					}
+				}
+
+			}
 
 			if(game_state == 1 && (dragon.getState() == Dragon.ALIVE)) {
 				dragon.moveDragon(this);
 
-				printMaze();
-
 				if (nextToDragon()) {
-					if(fightDragon())
-						System.out.println("WOW! You slayed the dragon! Exit is now opened!\n");
+					if(fightDragon()) {
+						doInput = false;
+						FightEvent wonFight = new FightEvent("wonFight");
+						events.add(wonFight);
+					}
 					else {
 						goOn = false;
-						break;
+						doInput = false;
+						FightEvent lostFight = new FightEvent("lostFight");
+						events.add(lostFight);
 					}
 				}
 			}
 			else
 				game_state = 1;
+			
+			GameOutputs.printMaze(this);
 
-			try {
-				System.out.print("Move your hero (WASD, only first input will be considered): ");
-				input = MazeInput.getChar();
-				if(input == 's')
-					goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
-				else if(input == 'w')
-					goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
-				else if(input == 'a')
-					goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
-				else if(input == 'd')
-					goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
-				else if(input == 'z')
-					goOn = false;
-			}
-			catch(Exception e) {
-				System.err.println("Problem reading user input!");
+			switch(hero.getState()) {
+			case Hero.EXITED_MAZE:
+				ResultEvent won = new ResultEvent(1);
+				events.add(won);
+				break;
+			case Hero.DEAD:
+				ResultEvent lost = new ResultEvent(0);
+				events.add(lost); 
+				break;
 			}
 
-			printMaze();
+			GameOutputs.printEventQueue(events);
 
-			if (nextToDragon()) {
-				if(fightDragon())
-					System.out.println("WOW! You slayed the dragon! Exit is now opened!\n");
-				else 
-					goOn = false;
-			}
-		}
-
-		switch(hero.getState()) {
-		case Hero.EXITED_MAZE:
-			System.out.println("Congratulations, you exited the maze!");
-			break;
-		case Hero.DEAD:
-			System.out.println("Oh no, the dragon killed you!");
-			break;
 		}
 
 		return true;
@@ -376,12 +402,12 @@ public class Maze {
 class Cell {
 	public int i;
 	public int j;
-	
+
 	public Cell(){
 		i = 0;
 		j = 0;
 	}
-	
+
 	public Cell(int row, int col){
 		i = row;
 		j = col;
