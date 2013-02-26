@@ -10,8 +10,8 @@ public class Maze {
 	/**
 	 * @param args
 	 */
-	private final int DEFAULT_ROW_SIZE = 10;
-	private final int DEFAULT_COLUMN_SIZE = 10;
+	private final int DEFAULT_ROW_SIZE = 50;
+	private final int DEFAULT_COLUMN_SIZE = 50;
 
 	public static final int OPEN = 1;
 	public static final int CLOSED = 0;
@@ -209,24 +209,36 @@ public class Maze {
 		while(true){
 			// find all 4 neighbors of CurrentCell with all walls intact 
 			nearbyCells.clear();
+			// top
 			if(currentCell.i-1 > 0 && currentCell.i-1 < rows && maze[currentCell.i-1][currentCell.j] == MazeSymbol.wall ){
 				if (checkWalls(currentCell.i-1, currentCell.j, maze) == 3 ){
+					if(maze[currentCell.i-2][currentCell.j-1] != MazeSymbol.empty && maze[currentCell.i-2][currentCell.j+1] != MazeSymbol.empty) {
 					nearbyCells.add(new Cell(currentCell.i-1, currentCell.j));
+					}
 				}
 			}
+			// left
 			if(currentCell.j-1 > 0 && currentCell.j-1 < cols && maze[currentCell.i][currentCell.j-1] == MazeSymbol.wall ){
 				if (checkWalls(currentCell.i, currentCell.j-1, maze) == 3 ){
+					if(maze[currentCell.i-1][currentCell.j-2] != MazeSymbol.empty && maze[currentCell.i+1][currentCell.j-2] != MazeSymbol.empty) {
 					nearbyCells.add(new Cell(currentCell.i, currentCell.j-1));
+					}
 				}
 			}
+			// down
 			if(currentCell.i+1 > 0 && currentCell.i+1 < rows && maze[currentCell.i+1][currentCell.j] == MazeSymbol.wall ){
 				if (checkWalls(currentCell.i+1, currentCell.j, maze) == 3 ){
+					if(maze[currentCell.i+2][currentCell.j-1] != MazeSymbol.empty && maze[currentCell.i+2][currentCell.j+1] != MazeSymbol.empty) {
 					nearbyCells.add(new Cell(currentCell.i+1, currentCell.j));
+					}
 				}
 			}
+			// right
 			if(currentCell.j+1 > 0 && currentCell.j+1 < cols && maze[currentCell.i][currentCell.j+1] == MazeSymbol.wall ){
 				if (checkWalls(currentCell.i, currentCell.j+1, maze) == 3 ){
+					if(maze[currentCell.i-1][currentCell.j+2] != MazeSymbol.empty && maze[currentCell.i+1][currentCell.j+2] != MazeSymbol.empty) {
 					nearbyCells.add(new Cell(currentCell.i, currentCell.j+1));
+					}
 				}
 			}
 			
