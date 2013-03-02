@@ -121,7 +121,7 @@ public class Game {
 		MazeDirector director = new MazeDirector();
 		
 		if(giveSize) {
-			if(rows <= 5 || columns <= 5) {
+			if(rows < 5 || columns < 5 || rows > columns) { //Currently, the maze only accepts square mazes or with with more columns than rows
 				GameOutput.printMazeSizeError();
 				MazeBuilder predefined = new PredefinedMaze();
 				director.setMazeBuilder(predefined);
