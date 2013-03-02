@@ -65,6 +65,10 @@ public class GameOutput {
 		}
 
 	}
+	
+	public static void printAskForMove() {
+		System.out.print("Move your hero (WASD, only first input will be considered): ");
+	}
 
 	public static void printEventQueue(LinkedList<GameEvent> events) { //Prints the events on the event queue given
 		while(!events.isEmpty())

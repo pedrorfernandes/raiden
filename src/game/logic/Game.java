@@ -195,17 +195,17 @@ public class Game {
 		while(goOn) {
 
 			try {
-				System.out.print("Move your hero (WASD, only first input will be considered): ");
+				GameOutput.printAskForMove();
 				input = MazeInput.getChar();
 				if(input == 's')
-					goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
+					goOn = hero.moveHero(1, 0, this); //tries to move hero the number or rows or columns given
 				else if(input == 'w')
-					goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
+					goOn = hero.moveHero(-1, 0, this);
 				else if(input == 'a')
-					goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
+					goOn = hero.moveHero(0, -1, this);
 				else if(input == 'd')
-					goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
-				else if(input == 'z')
+					goOn = hero.moveHero(0, 1, this);
+				else if(input == 'z') //z shuts down game
 					goOn = false;
 			}
 

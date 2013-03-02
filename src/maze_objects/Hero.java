@@ -57,16 +57,19 @@ public class Hero extends Movable {
 
 	//Game methods
 
-	public boolean moveHero(int possibleRow, int possibleColumn, Game g) { //Possibly moves the hero to a new position, analyzing if it's able to and possible outcoming events
+	public boolean moveHero(int rowMovement, int columnMovement, Game g) { //Possibly moves the hero to a new position, analyzing if it's able to and possible outcoming events
 		Maze m = g.getMaze();
+		
+		int newRow = row + rowMovement;
+		int newColumn = column + columnMovement;
 
-		if(m.checkIfEmpty(possibleRow, possibleColumn) && !g.checkIfSword(possibleRow, possibleColumn) && !g.checkIfDragon(possibleRow, possibleColumn)) {
-			makeMove(possibleRow, possibleColumn, m);
+		if(m.checkIfEmpty(newRow, newColumn) && !g.checkIfSword(newRow, newColumn) && !g.checkIfDragon(newRow, newColumn)) {
+			makeMove(newRow, newColumn, m);
 		}
-		else if(m.checkIfExit(possibleRow, possibleColumn)) {
+		else if(m.checkIfExit(newRow, newColumn)) {
 			if(state == ARMED) {
 				if(g.getExitState() == Game.OPEN) {
-					exitMaze(possibleRow, possibleColumn, m);
+					exitMaze(newRow, newColumn, m);
 					return false;
 				}
 				else {
@@ -79,11 +82,11 @@ public class Hero extends Movable {
 				g.addEvent(ee);
 			}
 		}
-		else if(g.checkIfSword(possibleRow, possibleColumn) && !g.getSword().getTaken()) {
-			armHero(possibleRow, possibleColumn, m);
+		else if(g.checkIfSword(newRow, newColumn) && !g.getSword().getTaken()) {
+			armHero(newRow, newColumn, m);
 			g.getSword().takeSword();
 		}
-		else if(g.checkIfDragon(possibleRow, possibleColumn) && g.getDragon().getState() == Dragon.ALIVE) {
+		else if(g.checkIfDragon(newRow, newColumn) && g.getDragon().getState() == Dragon.ALIVE) {
 			if(g.fightDragon()) {
 				FightEvent fe = new FightEvent("wonFight");
 				g.addEvent(fe);
