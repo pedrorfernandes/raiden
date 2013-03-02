@@ -1,68 +1,62 @@
 package maze_objects;
 
+import game.logic.Game;
+
 import java.util.Random;
 
 
-public class Dragon {
-	/*** Private Variable Area ***/
+public class Dragon extends Movable {
+	
+	/*** Private Attributes ***/
+	
+	private boolean hasSword;
 
-	//Dragon State Variables
-	int row;
-	int column;
-	int state;
-
-	/*** Public Variable Area ***/
+	/*** Public Attributes ***/
 
 	//Dragon States
-	public static final int ALIVE = 1;
 	public static final int DEAD = 0;
+	public static final int ALIVE = 1;
 
 	/*** Private Method Area ***/
 
-	private void makeMove(Maze m, int new_row, int new_column) {
-		if(m.positions[row][column] == MazeSymbol.guardedSword)
+	private void makeMove(Game g, int new_row, int new_column) {
+		
+		/*if(m.positions[row][column] == MazeSymbol.guardedSword)
 			m.positions[row][column] = MazeSymbol.sword;
 		else
-			m.positions[row][column] = MazeSymbol.empty;
+			m.positions[row][column] = MazeSymbol.empty;*/
 
 		row = new_row;
 		column = new_column;
+		
+		if(!g.checkIfSword(row, column))
+			hasSword = false;
+		else
+			hasSword = true;
 
-		if(m.positions[row][column] == MazeSymbol.sword)
+		/*if(m.positions[row][column] == MazeSymbol.sword)
 			m.positions[row][column] = MazeSymbol.guardedSword;
 		else
-			m.positions[row][column] = MazeSymbol.dragon;
+			m.positions[row][column] = MazeSymbol.dragon;*/
 	}
 
 	/*** Public Method Area ***/
 
 	//Constructors
-	Dragon(int dragon_row, int dragon_column) {
+	public Dragon(int dragon_row, int dragon_column) {
 		row = dragon_row;
 		column = dragon_column;
 		state = ALIVE;
-	}
-
-	//General Methods
-	int getRow() {
-		return row;
-	}
-
-	int getColumn() {
-		return column;
-	}
-
-	int getState() {
-		return state;
+		hasSword = false;
 	}
 	
-	void setState(int st) {
-		state = st;
+	//General methods
+	public boolean getHasSword() {
+		return hasSword;
 	}
 
-
 	//Game methods
-	void moveDragon(Maze m) {
+	public void moveDragon(Game g) {
 		
 		if(state == DEAD)
 			return;
@@ -95,9 +89,9 @@ public class Dragon {
 				break;
 			}
 
-		} while(m.checkIfWall(new_row, new_column) || m.checkIfExit(new_row, new_column) || new_row == 0 || new_column == 0);
+		} while(g.getMaze().checkIfWall(new_row, new_column) || g.getMaze().checkIfExit(new_row, new_column) || new_row == 0 || new_column == 0);
 
-		makeMove(m, new_row, new_column);
+		makeMove(g, new_row, new_column);
 	}
 
 
