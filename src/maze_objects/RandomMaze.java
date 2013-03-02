@@ -119,7 +119,7 @@ public class RandomMaze extends MazeBuilder {
 		// down
 		surroundingWalls = checkWalls(currentCell.i+1, currentCell.j);
 		if(currentCell.i+1 < rows-1
-				&& maze.positions[currentCell.i+1][currentCell.j].getType().equals("empty")
+				&& maze.positions[currentCell.i+1][currentCell.j].getType().equals("wall")
 				&& (surroundingWalls == maxSurroundingWalls || surroundingWalls == maxSurroundingWalls-1)
 				&& !maze.positions[currentCell.i+2][currentCell.j-1].getType().equals("empty") 
 				&& !maze.positions[currentCell.i+2][currentCell.j+1].getType().equals("empty")
@@ -136,7 +136,7 @@ public class RandomMaze extends MazeBuilder {
 		// right
 		surroundingWalls = checkWalls(currentCell.i, currentCell.j+1);
 		if(currentCell.j+1 < cols-1 
-				&& maze.positions[currentCell.i][currentCell.j+1].getType().equals("empty")
+				&& maze.positions[currentCell.i][currentCell.j+1].getType().equals("wall")
 				&& (surroundingWalls == maxSurroundingWalls || surroundingWalls == maxSurroundingWalls-1)
 				&& !maze.positions[currentCell.i-1][currentCell.j+2].getType().equals("empty") 
 				&& !maze.positions[currentCell.i+1][currentCell.j+2].getType().equals("empty")
