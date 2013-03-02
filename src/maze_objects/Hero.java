@@ -16,28 +16,19 @@ public class Hero extends Movable {
 
 	private void armHero(int r, int c, Maze m) { //Changes hero symbol to the armed hero symbol as he takes the sword
 		state = ARMED;
-		//m.positions[row][column] = MazeSymbol.empty;
-		//m.positions[r][c] = MazeSymbol.armedHero;
 		row = r;
 		column = c;
 	}
 
 	private void exitMaze(int r, int c, Maze m) { //Moves the hero to the exit position and toggles his state to exited_maze
-		//m.positions[row][column] = MazeSymbol.empty;
-		//m.positions[r][c] = MazeSymbol.armedHero;
 		row = r;
 		column = c;
 		state = EXITED_MAZE;
 	}
 
 	private void makeMove(int r, int c, Maze m) { //Puts the hero symbol in the correct position after taking the move
-		//m.positions[row][column] = MazeSymbol.empty;
 		row = r;
 		column = c;
-		/*if(state == IN_GAME)
-			m.positions[r][c] = MazeSymbol.hero;
-		else if(state == ARMED)
-			m.positions[r][c] = MazeSymbol.armedHero;*/
 	}
 
 	/*** Public methods ***/

@@ -20,12 +20,6 @@ public class Dragon extends Movable {
 	/*** Private Method Area ***/
 
 	private void makeMove(Game g, int new_row, int new_column) {
-		
-		/*if(m.positions[row][column] == MazeSymbol.guardedSword)
-			m.positions[row][column] = MazeSymbol.sword;
-		else
-			m.positions[row][column] = MazeSymbol.empty;*/
-
 		row = new_row;
 		column = new_column;
 		
@@ -33,11 +27,6 @@ public class Dragon extends Movable {
 			hasSword = false;
 		else
 			hasSword = true;
-
-		/*if(m.positions[row][column] == MazeSymbol.sword)
-			m.positions[row][column] = MazeSymbol.guardedSword;
-		else
-			m.positions[row][column] = MazeSymbol.dragon;*/
 	}
 
 	/*** Public Method Area ***/
@@ -93,6 +82,5 @@ public class Dragon extends Movable {
 
 		makeMove(g, new_row, new_column);
 	}
-
 
 }

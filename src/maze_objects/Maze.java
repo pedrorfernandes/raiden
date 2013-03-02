@@ -20,8 +20,9 @@ public class Maze {
 
 	/*** Private Methods ***/
 
+	//Maze Generators
 	private void startPredefinedMaze(){ //Starts the predefined maze
-		
+
 		for (int row = 0; row < DEFAULT_ROW_SIZE; row++) {
 			for (int column = 0; column < DEFAULT_COLUMN_SIZE; column++) {
 				if ( row == 0 || row == DEFAULT_ROW_SIZE-1 || column == 0 || column == DEFAULT_COLUMN_SIZE-1){
@@ -48,162 +49,10 @@ public class Maze {
 		positions[8][5] = MazeSymbol.empty;
 		positions[8][7] = MazeSymbol.empty;
 		positions[5][9] = MazeSymbol.exit;
-		
+
 	}
 
-	//	public static final int OPEN = 1;
-	//	public static final int CLOSED = 0;
-	//
-	//	private int game_state = 0;
-
-	//	private int exit_state;
-
-	//	private Hero hero;
-	//	private Dragon dragon;
-
-	//	LinkedList<GameEvent> events = new LinkedList<GameEvent>();
-	
-	/*** Public Methods ***/
-
-	//Constructors
-	public Maze() {
-		rows = DEFAULT_ROW_SIZE;
-		columns = DEFAULT_COLUMN_SIZE;
-		//exit_state = CLOSED;
-		startPredefinedMaze();
-		//positions = generateMaze(rows, columns);
-		/*spawnHero();
-		spawnSword();
-		spawnDragon();*/
-	}
-	
-	public Maze(int numberOfRows, int numberOfColumns) {
-		rows = numberOfRows;
-		columns = numberOfColumns;
-		positions = generateMaze(rows, columns);
-	}
-
-	//General Methods
-	public char[][] getPositions() {
-		return positions;
-	}
-
-	public int getRows() {
-		return rows;
-	}
-
-	public int getColumns() {
-		return columns;
-	}
-
-	//Game initializers
-	//	private void spawnHero() {
-	//		Random random = new Random();
-	//		int hero_row = 0;
-	//		int hero_column = 0;
-	//
-	//		do {
-	//			hero_row = random.nextInt(rows);
-	//			hero_column = random.nextInt(columns);
-	//		} while (positions[hero_row][hero_column] != MazeSymbol.empty);
-	//
-	//		hero = new Hero(hero_row, hero_column);
-	//		positions[hero.getRow()][hero.getColumn()] = MazeSymbol.hero;
-	//	}
-	//
-	//	private void spawnSword() {
-	//		Random random = new Random();
-	//		int sword_row = 0;
-	//		int sword_column = 0;
-	//
-	//		do {
-	//			sword_row = random.nextInt(rows);
-	//			sword_column = random.nextInt(columns);
-	//		} while (positions[sword_row][sword_column] != MazeSymbol.empty);
-	//
-	//		positions[sword_row][sword_column] = MazeSymbol.sword;
-	//	}
-	//
-	//	private void spawnDragon() {
-	//		Random random = new Random();
-	//		int dragon_row = 0;
-	//		int dragon_column = 0;
-	//
-	//		do {
-	//			dragon_row = random.nextInt(rows);
-	//			dragon_column = random.nextInt(columns);
-	//		} while (positions[dragon_row][dragon_column] != MazeSymbol.empty || nextToHero(dragon_row, dragon_column));
-	//
-	//		dragon = new Dragon(dragon_row, dragon_column);
-	//		positions[dragon_row][dragon_column] = MazeSymbol.dragon;
-	//	}
-
-	public boolean checkIfWall(int row, int column) {
-		if(positions[row][column] == MazeSymbol.wall)
-			return true;
-		else
-			return false;
-	}
-
-	public boolean checkIfExit(int row, int column) {
-		if(positions[row][column] == MazeSymbol.exit)
-			return true;
-		else
-			return false;
-	}
-	
-	public boolean checkIfEmpty(int row, int column) {
-		if(positions[row][column] == MazeSymbol.empty)
-			return true;
-		else
-			return false;
-	}
-
-//	public boolean nextToDragon() { //True if the hero is adjacent to the dragon (horizontally or vertically), false if not
-//		return(((dragon.getRow() == hero.getRow() + 1 && dragon.getColumn() == hero.getColumn()) ||
-//				(dragon.getRow() == hero.getRow() - 1  && dragon.getColumn() == hero.getColumn()) ||
-//				(dragon.getColumn() == hero.getColumn() + 1 && dragon.getRow() == hero.getRow()) ||
-//				(dragon.getColumn() == hero.getColumn() - 1 && dragon.getRow() == hero.getRow()) ||
-//				(dragon.getColumn() == hero.getColumn() && dragon.getRow() == hero.getRow()))
-//				&& (dragon.getState() == Dragon.ALIVE));
-//	}
-//
-//	public boolean nextToHero(int row, int column) {
-//		return((row == hero.getRow() + 1 && column == hero.getColumn()) ||
-//				(row == hero.getRow() - 1  && column == hero.getColumn()) ||
-//				(column == hero.getColumn() + 1 && row == hero.getRow()) ||
-//				(column == hero.getColumn() - 1 && row == hero.getRow()));
-//	}
-
-//	public boolean fightDragon() { //True if the hero killed the dragon (was carrying sword), false if the hero died
-//		if(hero.getState() == Hero.ARMED) {
-//			dragon.setState(Dragon.DEAD);
-//			positions[dragon.getRow()][dragon.getColumn()] = MazeSymbol.empty;
-//			exit_state = OPEN;
-//			return true;
-//		}
-//		else if(hero.getState() == Hero.IN_GAME) {
-//			hero.setState(Hero.DEAD);
-//			return false;
-//		}
-//
-//		return false;
-//	}
-
-	static public int checkWalls(int i, int j, char[][] map){
-		int numberWalls = 0;
-		if( (i-1) >= 0 && map[i-1][j] == MazeSymbol.wall)
-			numberWalls++;
-		if( (i+1) < map.length && map[i+1][j] == MazeSymbol.wall)
-			numberWalls++;
-		if( (j+1) < map[0].length && map[i][j+1] == MazeSymbol.wall)
-			numberWalls++;
-		if( (j-1) >= 0 && map[i][j-1] == MazeSymbol.wall)
-			numberWalls++;
-		return numberWalls;
-	}
-
-	public char[][] generateMaze(int rows, int cols){	
+	private char[][] generateMaze(int rows, int cols){	
 		// fill the maze with walls
 		char[][] maze = new char [rows][cols];
 		for (int i = 0; i < rows; i++) {
@@ -331,85 +180,69 @@ public class Maze {
 		return maze;
 	}
 
-	//Game methods
+	/*** Public Methods ***/
 
-//	public boolean play() {
-//		boolean goOn = true;
-//
-//		char input;
-//
-//		while(goOn) {
-//
-//			try {
-//				System.out.print("Move your hero (WASD, only first input will be considered): ");
-//				input = MazeInput.getChar();
-//				if(input == 's')
-//					goOn = hero.moveHero(hero.getRow() + 1, hero.getColumn(), this);
-//				else if(input == 'w')
-//					goOn = hero.moveHero(hero.getRow() - 1, hero.getColumn(), this);
-//				else if(input == 'a')
-//					goOn = hero.moveHero(hero.getRow(), hero.getColumn() - 1, this);
-//				else if(input == 'd')
-//					goOn = hero.moveHero(hero.getRow(), hero.getColumn() + 1, this);
-//				else if(input == 'z')
-//					goOn = false;
-//			}
-//
-//			catch(Exception e) {
-//				System.err.println("Problem reading user input!");
-//			}
-//
-//			if (nextToDragon()) {
-//				if(fightDragon()) {
-//					FightEvent wonFight = new FightEvent("wonFight");
-//					events.add(wonFight);
-//				}
-//				else {
-//					goOn = false;
-//					FightEvent lostFight = new FightEvent("lostFight");
-//					events.add(lostFight);
-//				}
-//			}
-//
-//			if(game_state == 1 && (dragon.getState() == Dragon.ALIVE)) {
-//				dragon.moveDragon(this);
-//
-//				if (nextToDragon()) {
-//					if(fightDragon()) {
-//						FightEvent wonFight = new FightEvent("wonFight");
-//						events.add(wonFight);
-//					}
-//					else {
-//						goOn = false;
-//						FightEvent lostFight = new FightEvent("lostFight");
-//						events.add(lostFight);
-//					}
-//				}
-//			}
-//			else
-//				game_state = 1;
-//
-//			GameOutputs.printMaze(this);
-//
-//			switch(hero.getState()) {
-//			case Hero.EXITED_MAZE:
-//				ResultEvent won = new ResultEvent(1);
-//				events.add(won);
-//				break;
-//			case Hero.DEAD:
-//				ResultEvent lost = new ResultEvent(0);
-//				events.add(lost); 
-//				break;
-//			}
-//
-//			GameOutputs.printEventQueue(events);
-//
-//		}
-//
-//		return true;
-//	}
+	//Constructors
+	public Maze() {
+		rows = DEFAULT_ROW_SIZE;
+		columns = DEFAULT_COLUMN_SIZE;
 
+		startPredefinedMaze();
+	}
 
+	public Maze(int numberOfRows, int numberOfColumns) {
+		rows = numberOfRows;
+		columns = numberOfColumns;
+		positions = generateMaze(rows, columns);
+	}
+
+	//General Methods
+	public char[][] getPositions() {
+		return positions;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
+	//Maze checking functions
+	public boolean checkIfWall(int row, int column) {
+		if(positions[row][column] == MazeSymbol.wall)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean checkIfExit(int row, int column) {
+		if(positions[row][column] == MazeSymbol.exit)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean checkIfEmpty(int row, int column) {
+		if(positions[row][column] == MazeSymbol.empty)
+			return true;
+		else
+			return false;
+	}
+
+	static public int checkWalls(int i, int j, char[][] map){
+		int numberWalls = 0;
+		if( (i-1) >= 0 && map[i-1][j] == MazeSymbol.wall)
+			numberWalls++;
+		if( (i+1) < map.length && map[i+1][j] == MazeSymbol.wall)
+			numberWalls++;
+		if( (j+1) < map[0].length && map[i][j+1] == MazeSymbol.wall)
+			numberWalls++;
+		if( (j-1) >= 0 && map[i][j-1] == MazeSymbol.wall)
+			numberWalls++;
+		return numberWalls;
+	}
 }
 
 class Cell {

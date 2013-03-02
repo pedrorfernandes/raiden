@@ -36,37 +36,33 @@ public class Game {
 	/*** Private Methods ***/
 
 	//Game Initializers
-	private void spawnHero() {
+	private void spawnHero() { //Creates a hero object on a random valid position in the maze
 		Random random = new Random();
 		int hero_row = 0;
 		int hero_column = 0;
-		//char positions[][] = maze.getPositions();
 
 		do {
 			hero_row = random.nextInt(maze.getRows());
 			hero_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(hero_row, hero_column) /*positions[hero_row][hero_column] != MazeSymbol.empty*/);
+		} while (!maze.checkIfEmpty(hero_row, hero_column));
 
 		hero = new Hero(hero_row, hero_column);
-		//positions[hero.getRow()][hero.getColumn()] = MazeSymbol.hero;
 	}
 
-	private void spawnSword() {
+	private void spawnSword() { //Creates a sword object on a random valid position in the maze
 		Random random = new Random();
 		int sword_row = 0;
 		int sword_column = 0;
-		//char positions[][] = maze.getPositions();
 
 		do {
 			sword_row = random.nextInt(maze.getRows());
 			sword_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column) /*positions[sword_row][sword_column] != MazeSymbol.empty*/);
+		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column));
 
 		sword = new Sword(sword_row, sword_column);
-		//positions[sword_row][sword_column] = MazeSymbol.sword;
 	}
 
-	private void spawnDragon() {
+	private void spawnDragon() { //Creates a dragon object on a random valid position in the maze
 		Random random = new Random();
 		int dragon_row = 0;
 		int dragon_column = 0;
@@ -77,7 +73,6 @@ public class Game {
 		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column));
 
 		dragon = new Dragon(dragon_row, dragon_column);
-		//positions[dragon_row][dragon_column] = MazeSymbol.dragon;
 	}
 
 	private boolean nextToDragon() { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
@@ -175,7 +170,6 @@ public class Game {
 	public boolean fightDragon() { //True if the hero killed the dragon (was carrying sword), false if the hero died
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
-			//positions[dragon.getRow()][dragon.getColumn()] = MazeSymbol.empty;
 			exit_state = OPEN;
 			return true;
 		}
@@ -243,7 +237,6 @@ public class Game {
 			else
 				game_state = 1;
 
-			//GameOutput.printMaze(maze);
 			GameOutput.printGame(this);
 
 			switch(hero.getState()) {
