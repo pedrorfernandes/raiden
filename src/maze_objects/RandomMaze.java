@@ -50,13 +50,13 @@ public class RandomMaze extends MazeBuilder {
 					break;
 				}
 				currentCell = cellStack.peek();
-				
+
 				if ( (checkPossibilities(cellStack.peek(), rows, cols)).size() == 0){
 					cellStack.pop();
 				}
 			}
 		}
-		
+
 		generateExit(rows, cols);
 	}
 
@@ -78,10 +78,10 @@ public class RandomMaze extends MazeBuilder {
 
 		int maxSurroundingWalls = 3;
 		int surroundingWalls;
-		
+
 		// top									
 		surroundingWalls = checkWalls(currentCell.i-1, currentCell.j);	
-																			// A neighbour is valid if
+		// A neighbour is valid if
 		if(	currentCell.i-1 > 0 												  // Not out of bounds
 				&& maze.positions[currentCell.i-1][currentCell.j] == MazeSymbol.wall // Is a wall
 				&& ( surroundingWalls == maxSurroundingWalls || surroundingWalls == maxSurroundingWalls-1 )  // Is surrounded by walls

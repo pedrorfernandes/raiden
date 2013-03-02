@@ -41,7 +41,7 @@ public class GameOutput {
 			for(int c = 0; c < m.getColumns(); c++)
 				mazePositions[r][c] = m.getPositions()[r][c];
 
-		if(h.getState() == Hero.ARMED)
+		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.armedHero;
 		else
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
