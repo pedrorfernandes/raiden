@@ -27,7 +27,7 @@ public class Game {
 	/*** Private Attributes ***/
 
 	//State Attributes
-	private int game_state = 0;
+	private int game_state;
 	private int exit_state;
 
 	//Game elements
@@ -107,6 +107,7 @@ public class Game {
 
 	//Constructors
 	public Game() {
+		game_state = 0;
 		int rows = 0, columns = 0;
 		int size[] = {rows, columns};
 		boolean giveSize = false; //Will indicate if user wants to give a specific size for the maze
