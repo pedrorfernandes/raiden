@@ -87,7 +87,7 @@ public class GameOutput {
 
 		switch(n) {
 		case 0:
-			System.out.println("Give a specific maze size? (Y/N): ");
+			System.out.print("Give a specific maze size? (Y/N): ");
 			break;
 		case 1:
 			System.out.println("Please specify the desired maze size.");

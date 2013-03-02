@@ -14,7 +14,6 @@ public class Maze {
 	/*** Public Methods ***/
 
 	//Constructors
-
 	public Maze(int numberOfRows, int numberOfColumns) {
 		rows = numberOfRows;
 		columns = numberOfColumns;
