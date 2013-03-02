@@ -9,13 +9,14 @@ public class GameInput {
 	public static boolean receiveMazeOptions(int size[]) { //Receives user input for maze size. If user wants predefined maze, return false, true otherwise
 
 		Scanner in = new Scanner(System.in);
-		char c;
+		char c = 'a';
 
 
 		do {
 			GameOutput.printOptions(0);
 			String s = in.nextLine();
-			c = s.charAt(0);
+			if(!s.isEmpty())
+				c = s.charAt(0);
 		}
 		while(c != 'Y' && c != 'y' && c != 'N' && c != 'n');
 
@@ -28,7 +29,7 @@ public class GameInput {
 
 			return true;
 		}
-		
+
 		return false;
 
 	}

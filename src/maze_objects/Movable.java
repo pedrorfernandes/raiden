@@ -1,6 +1,6 @@
 package maze_objects;
 
-public class Movable { //Dynamic objects that move along the maze
+abstract class Movable { //Dynamic objects that move along the maze
 
 	/*** Private/Protected Attributes ***/
 
