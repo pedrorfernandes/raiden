@@ -24,16 +24,11 @@ public class Game {
 	//Exit states
 	public static final int OPEN = 1;
 	public static final int CLOSED = 0;
-	
-	/*//Dragon types
-	public static final int STATIC_DRAGONS = 0;
-	public static final int NORMAL_DRAGONS = 1;
-	public static final int SLEEPING_DRAGONS = 2;*/
 
 	/*** Private Attributes ***/
 
 	//State Attributes
-	//private int dragon_type;
+	private int dragon_type;
 	private int game_state;
 	private int exit_state;
 
@@ -83,23 +78,39 @@ public class Game {
 			dragon_column = random.nextInt(maze.getColumns());
 		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column));
 
-		dragon = new Dragon(dragon_row, dragon_column);
+		dragon = new Dragon(dragon_row, dragon_column, dragon_type);
 	}
 
-	private boolean nextToDragon() { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
-		return(((dragon.getRow() == hero.getRow() + 1 && dragon.getColumn() == hero.getColumn()) ||
-				(dragon.getRow() == hero.getRow() - 1  && dragon.getColumn() == hero.getColumn()) ||
-				(dragon.getColumn() == hero.getColumn() + 1 && dragon.getRow() == hero.getRow()) ||
-				(dragon.getColumn() == hero.getColumn() - 1 && dragon.getRow() == hero.getRow()) ||
-				(dragon.getColumn() == hero.getColumn() && dragon.getRow() == hero.getRow()))
-				&& (dragon.getState() == Dragon.ALIVE));
+	private boolean nextToDragon(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
+				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
+				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||
+				(dragon.getColumn() == column - 1 && dragon.getRow() == row) ||
+				(dragon.getColumn() == column && dragon.getRow() == row))
+				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
 	}
 
 	private boolean nextToHero(int row, int column) { //True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
 		return((row == hero.getRow() + 1 && column == hero.getColumn()) ||
 				(row == hero.getRow() - 1  && column == hero.getColumn()) ||
 				(column == hero.getColumn() + 1 && row == hero.getRow()) ||
-				(column == hero.getColumn() - 1 && row == hero.getRow()));
+				(column == hero.getColumn() - 1 && row == hero.getRow()) ||
+				(column == hero.getColumn() && row == hero.getRow()));
+	}
+	
+	private boolean checkDragonEncounter(boolean goOn) { //Processes an encounter between the hero and a dragon
+		if (nextToDragon(hero.getRow(), hero.getColumn()) && !(hero.getState() != Hero.ARMED && dragon.getState() == Dragon.ASLEEP)) {
+			if(fightDragon()) {
+				FightEvent wonFight = new FightEvent("wonFight");
+				events.add(wonFight);
+			}
+			else {
+				goOn = false;
+				FightEvent lostFight = new FightEvent("lostFight");
+				events.add(lostFight);
+			}
+		}
+		return goOn;
 	}
 
 	/*** Public Methods ***/
@@ -124,8 +135,7 @@ public class Game {
 		giveSize = GameInput.receiveMazeOptions(size);
 		
 		//Get Dragon options from user
-        int dragonType = GameInput.receiveDragonOptions();
-		
+        dragon_type = GameInput.receiveDragonOptions();
 		
 		rows = size[0];
 		columns = size[1];
@@ -193,7 +203,7 @@ public class Game {
 	}
 	
 	public boolean checkIfDragon(int row, int column) {
-		return(row == dragon.getRow() && column == dragon.getColumn() && dragon.getState() == Dragon.ALIVE);
+		return(row == dragon.getRow() && column == dragon.getColumn() && (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
 	}
 	
 	public boolean fightDragon() { //True if the hero killed the dragon (was carrying sword), false if the hero died
@@ -202,7 +212,7 @@ public class Game {
 			exit_state = OPEN;
 			return true;
 		}
-		else if(hero.getState() == Hero.IN_GAME) {
+		else if(hero.getState() == Hero.IN_GAME && dragon.getState() == Dragon.ALIVE) {
 			hero.setState(Hero.DEAD);
 			return false;
 		}
@@ -236,32 +246,12 @@ public class Game {
 				System.err.println("Problem reading user input!");
 			}
 
-			if (nextToDragon()) {
-				if(fightDragon()) {
-					FightEvent wonFight = new FightEvent("wonFight");
-					events.add(wonFight);
-				}
-				else {
-					goOn = false;
-					FightEvent lostFight = new FightEvent("lostFight");
-					events.add(lostFight);
-				}
-			}
+			goOn = checkDragonEncounter(goOn);
 
-			if(game_state == 1 && (dragon.getState() == Dragon.ALIVE)) {
+			if(game_state == 1 && dragon.getType() != Dragon.STATIC && (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP)) {
 				dragon.moveDragon(this);
 
-				if (nextToDragon()) {
-					if(fightDragon()) {
-						FightEvent wonFight = new FightEvent("wonFight");
-						events.add(wonFight);
-					}
-					else {
-						goOn = false;
-						FightEvent lostFight = new FightEvent("lostFight");
-						events.add(lostFight);
-					}
-				}
+				goOn = checkDragonEncounter(goOn);
 			}
 			else
 				game_state = 1;
@@ -285,7 +275,4 @@ public class Game {
 
 		return true;
 	}
-
-
-
 }
