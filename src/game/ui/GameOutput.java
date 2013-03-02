@@ -121,16 +121,4 @@ public class GameOutput {
 	public static void printMazeSizeError() {
 		System.out.println("Invalid maze size given. Starting predefined maze!");
 	}
-
-	public static void print(Maze m){
-		char[][] mazePositions = getMazeSymbols(m);
-
-		for (int x = 0; x < m.getRows(); x++) {
-			for (int y = 0; y < m.getColumns(); y++) {
-				System.out.print(mazePositions[x][y]);
-				System.out.print(MazeSymbol.space);
-			}
-			System.out.print('\n');
-		}
-	}
 }
