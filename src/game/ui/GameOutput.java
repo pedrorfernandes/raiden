@@ -10,12 +10,34 @@ import maze_objects.Hero;
 import maze_objects.MazeSymbol;
 import maze_objects.Maze;
 import maze_objects.Sword;
+import maze_objects.Tile;
 
 public class GameOutput {
 
+	private static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
+		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
+
+		for(int r = 0; r < m.getRows(); r++)
+			for(int c = 0; c < m.getColumns(); c++) {
+				String currentType = m.getPositions()[r][c].getType();
+				switch(currentType) {
+				case "wall":
+					mazePositions[r][c] = MazeSymbol.wall;
+					break;
+				case "empty":
+					mazePositions[r][c] = MazeSymbol.empty;
+					break;
+				case "exit":
+					mazePositions[r][c] = MazeSymbol.exit;
+					break;
+				}
+			}
+		return mazePositions;
+	}
+
 	public static void printMaze(Maze m) {
 
-		char[][] mazePositions = m.getPositions();
+		char[][] mazePositions = getMazeSymbols(m);
 
 		for(int i = 0; i < 100; i++)
 			System.out.println();
@@ -35,22 +57,18 @@ public class GameOutput {
 		Dragon d = g.getDragon();
 		Sword s = g.getSword();
 
-		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
-		
-		for(int r = 0; r < m.getRows(); r++)
-			for(int c = 0; c < m.getColumns(); c++)
-				mazePositions[r][c] = m.getPositions()[r][c];
+		char[][] mazePositions = getMazeSymbols(m);
 
 		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.armedHero;
 		else
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
-		
+
 		if(d.getState() == Dragon.ALIVE && d.getHasSword())
 			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.guardedSword;
 		else if(d.getState() == Dragon.ALIVE && !d.getHasSword())
 			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.dragon;
-		
+
 		if(!s.getTaken() && (s.getRow() != d.getRow() || s.getColumn() != d.getColumn()))
 			mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 
@@ -65,7 +83,7 @@ public class GameOutput {
 		}
 
 	}
-	
+
 	public static void printAskForMove() {
 		System.out.print("Move your hero (WASD, only first input will be considered): ");
 	}
@@ -105,12 +123,8 @@ public class GameOutput {
 	}
 
 	public static void print(Maze m){
-		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
-		
-		for(int r = 0; r < m.getRows(); r++)
-			for(int c = 0; c < m.getColumns(); c++)
-				mazePositions[r][c] = m.getPositions()[r][c];
-		
+		char[][] mazePositions = getMazeSymbols(m);
+
 		for (int x = 0; x < m.getRows(); x++) {
 			for (int y = 0; y < m.getColumns(); y++) {
 				System.out.print(mazePositions[x][y]);

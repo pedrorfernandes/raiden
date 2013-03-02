@@ -9,7 +9,7 @@ public class Maze {
 	private int columns;
 
 	//Maze positions
-	char[][] positions;
+	Tile[][] positions;
 
 	/*** Public Methods ***/
 
@@ -17,12 +17,12 @@ public class Maze {
 	public Maze(int numberOfRows, int numberOfColumns) {
 		rows = numberOfRows;
 		columns = numberOfColumns;
-		positions = new char[numberOfRows][numberOfColumns];
+		positions = new Tile[numberOfRows][numberOfColumns];
 	}
 	
 
 	//General Methods
-	public char[][] getPositions() {
+	public Tile[][] getPositions() {
 		return positions;
 	}
 
@@ -36,21 +36,21 @@ public class Maze {
 
 	//Maze checking functions
 	public boolean checkIfWall(int row, int column) {
-		if(positions[row][column] == MazeSymbol.wall)
+		if(positions[row][column].getType() == "wall")
 			return true;
 		else
 			return false;
 	}
 
 	public boolean checkIfExit(int row, int column) {
-		if(positions[row][column] == MazeSymbol.exit)
+		if(positions[row][column].getType() == "exit")
 			return true;
 		else
 			return false;
 	}
 
 	public boolean checkIfEmpty(int row, int column) {
-		if(positions[row][column] == MazeSymbol.empty)
+		if(positions[row][column].getType() == "empty")
 			return true;
 		else
 			return false;

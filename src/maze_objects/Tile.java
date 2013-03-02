@@ -1,6 +1,6 @@
 package maze_objects;
 
-abstract class Tile {
+public abstract class Tile {
 	
 	/*** Private/Protected Attributes ***/
 	
