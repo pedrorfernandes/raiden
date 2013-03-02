@@ -122,7 +122,8 @@ public class Game {
 		if(giveSize) {
 			if(rows <= 5 || columns <= 5) {
 				GameOutput.printMazeSizeError();
-				//maze = new Maze();
+				MazeBuilder predefined = new PredefinedMaze();
+				director.setMazeBuilder(predefined);
 			} else {
 				MazeBuilder randomMaze = new RandomMaze();
 				director.setMazeBuilder(randomMaze);
