@@ -13,6 +13,10 @@ import java.util.Random;
 import maze_objects.Dragon;
 import maze_objects.Hero;
 import maze_objects.Maze;
+import maze_objects.MazeBuilder;
+import maze_objects.MazeDirector;
+import maze_objects.PredefinedMaze;
+import maze_objects.RandomMaze;
 import maze_objects.Sword;
 
 public class Game {
@@ -106,21 +110,30 @@ public class Game {
 		int rows = 0, columns = 0;
 		int size[] = {rows, columns};
 		boolean giveSize = false; //Will indicate if user wants to give a specific size for the maze
-
 		GameOutput.printStartMessage();
 		giveSize = GameInput.receiveMazeOptions(size);
 		rows = size[0];
 		columns = size[1];
+		
+		// A maze director is in charge of selecting a
+		// building pattern and to order its construction
+		MazeDirector director = new MazeDirector();
+		
 		if(giveSize) {
 			if(rows <= 5 || columns <= 5) {
 				GameOutput.printMazeSizeError();
-				maze = new Maze();
+				//maze = new Maze();
+			} else {
+				MazeBuilder randomMaze = new RandomMaze();
+				director.setMazeBuilder(randomMaze);
 			}
-			else
-				maze = new Maze(rows, columns);
+		} else {
+			MazeBuilder predefined = new PredefinedMaze();
+			director.setMazeBuilder(predefined);
 		}
-		else
-			maze = new Maze();
+		
+		director.constructMaze(rows, columns);
+		maze = director.getMaze();
 
 		spawnHero();
 		spawnSword();
