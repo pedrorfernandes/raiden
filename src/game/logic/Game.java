@@ -21,12 +21,19 @@ import maze_objects.Sword;
 
 public class Game {
 
+	//Exit states
 	public static final int OPEN = 1;
 	public static final int CLOSED = 0;
+	
+	/*//Dragon types
+	public static final int STATIC_DRAGONS = 0;
+	public static final int NORMAL_DRAGONS = 1;
+	public static final int SLEEPING_DRAGONS = 2;*/
 
 	/*** Private Attributes ***/
 
 	//State Attributes
+	//private int dragon_type;
 	private int game_state;
 	private int exit_state;
 
@@ -111,8 +118,15 @@ public class Game {
 		int rows = 0, columns = 0;
 		int size[] = {rows, columns};
 		boolean giveSize = false; //Will indicate if user wants to give a specific size for the maze
+		
+		//Get Maze options from user
 		GameOutput.printStartMessage();
 		giveSize = GameInput.receiveMazeOptions(size);
+		
+		//Get Dragon options from user
+        int dragonType = GameInput.receiveDragonOptions();
+		
+		
 		rows = size[0];
 		columns = size[1];
 		

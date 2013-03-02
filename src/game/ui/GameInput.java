@@ -33,5 +33,19 @@ public class GameInput {
 		return false;
 
 	}
+	
+	public static int receiveDragonOptions() {
+		
+		Scanner in = new Scanner(System.in);
+		int dragonType;
+		
+		do {
+			GameOutput.printDragonOptions();
+			dragonType = in.nextInt();
+		}
+		while(dragonType != 0 && dragonType != 1 && dragonType != 2);
+		
+		return dragonType;
+	}
 
 }
