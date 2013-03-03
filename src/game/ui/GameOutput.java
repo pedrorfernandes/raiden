@@ -3,15 +3,14 @@ package game.ui;
 
 import game.logic.Game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Vector;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
 import maze_objects.MazeSymbol;
 import maze_objects.Maze;
 import maze_objects.Sword;
-import maze_objects.Tile;
 
 public class GameOutput {
 
@@ -55,7 +54,7 @@ public class GameOutput {
 
 		Maze m = g.getMaze();
 		Hero h = g.getHero();
-		Vector<Dragon> d = g.getDragons();
+		ArrayList<Dragon> d = g.getDragons();
 		Sword s = g.getSword();
 
 		char[][] mazePositions = getMazeSymbols(m);
