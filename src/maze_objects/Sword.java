@@ -19,7 +19,7 @@ public class Sword extends Movable {
 	}
 	
 	//General methods
-	public boolean getTaken() {
+	public boolean isTaken() {
 		return taken;
 	}
 	
@@ -30,6 +30,12 @@ public class Sword extends Movable {
 	
 	public void dropSword() {
 		taken = false;
+	}
+	
+	public void dropSword(int r, int c) {
+		taken = false;
+		row = r;
+		column = c;
 	}
 
 }

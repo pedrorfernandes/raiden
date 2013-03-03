@@ -38,7 +38,7 @@ public class Dragon extends Movable {
 		column = new_column;
 
 		if(!g.checkIfSword(row, column)) {
-			if(g.getSword().getTaken() && hasSword)
+			if(g.getSword().isTaken() && hasSword)
 				g.getSword().dropSword();
 			
 			hasSword = false;

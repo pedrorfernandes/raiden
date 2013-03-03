@@ -77,12 +77,12 @@ public class GameOutput {
 			else if(d.get(i).getState() == Dragon.ASLEEP && !d.get(i).getHasSword())
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.sleepingDragon;
 
-			if(!s.getTaken())
+			if(!s.isTaken())
 				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 		}
 
 		// eagle printing goes here
-		if (e != null){
+		if ( !e.isWithHero() ){
 			switch (mazePositions[ e.getRow() ][e.getColumn() ] ) {
 			case MazeSymbol.hero:
 				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnHero;

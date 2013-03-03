@@ -240,6 +240,11 @@ public class Game {
 		hero = spawnHero();
 		dragons = spawnDragons();
 		sword = spawnSword();
+		
+		// THIS MUST BE CHANGED!
+		// eagle must be created and its constructor needs to be changed
+		// it's spawner function must be altered
+		eagle = new Eagle(hero, sword);
 
 	}
 
@@ -287,7 +292,11 @@ public class Game {
 	//Game Methods
 
 	public boolean checkIfSword(int row, int column) { //Checks if an untaken sword is in that place
-		return(row == sword.getRow() && column == sword.getColumn() && !sword.getTaken());
+		return(row == sword.getRow() && column == sword.getColumn() && !sword.isTaken());
+	}
+	
+	public boolean checkIfEagle(int row, int column) {
+		return(row == eagle.getRow() && column == eagle.getColumn() && !eagle.isWithHero() );
 	}
 
 	public boolean checkIfDragon(int row, int column) {
