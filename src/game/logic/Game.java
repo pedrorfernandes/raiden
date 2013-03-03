@@ -419,6 +419,7 @@ public class Game {
 					break;
 				case ' ':
 					goOn = hero.moveHero(0,  0,  this);
+					break;
 				case 'e':
 					tryToSendEagle();
 					break;
