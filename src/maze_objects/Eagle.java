@@ -153,6 +153,14 @@ public class Eagle extends Movable {
 	public void removeOnRouteToSword() {
 		onRouteToSword = false;
 	}
+	
+	public boolean isWaitingForHero() {
+		return waitingForHero;
+	}
+	
+	public boolean isOnGroundWithSword() {
+		return onGroundWithSword;
+	}
 
 	public boolean isOnRouteToHero() {
 		return onRouteToHero;

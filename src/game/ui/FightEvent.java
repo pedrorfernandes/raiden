@@ -2,7 +2,7 @@ package game.ui;
 
 public class FightEvent extends GameEvent {
 	
-	public FightEvent(String id) { //ID 0 means the Hero lost the fight, ID 1 means the Hero won the fight
+	public FightEvent(String id) { //ID lostFight means the Hero lost the fight, ID wonFight means the Hero won the fight
 		name = id;
 		
 		if(id.equals("lostFight"))
