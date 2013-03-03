@@ -67,7 +67,7 @@ public class Game {
 		do {
 			sword_row = random.nextInt(maze.getRows());
 			sword_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column));
+		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column) || isOnDragon(sword_row, sword_column));
 
 		Sword sd = new Sword(sword_row, sword_column);
 		return sd;
@@ -99,7 +99,7 @@ public class Game {
 
 		if(dragons == null || dragons.isEmpty())
 			return false;
-		
+
 		for(int i = 0; i < dragons.size(); i++) {
 			if(((dragons.get(i).getRow() == row + 1 && dragons.get(i).getColumn() == column) ||
 					(dragons.get(i).getRow() == row - 1  && dragons.get(i).getColumn() == column) ||
@@ -107,6 +107,20 @@ public class Game {
 					(dragons.get(i).getColumn() == column - 1 && dragons.get(i).getRow() == row) ||
 					(dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row))
 					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))	
+				return true;
+		}
+
+		return false;
+	}
+
+	public boolean isOnDragon(int row, int column) {
+
+		if(dragons == null || dragons.isEmpty())
+			return false;
+
+		for(int i = 0; i < dragons.size(); i++) {
+			if((dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row)
+					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
 				return true;
 		}
 
@@ -139,7 +153,7 @@ public class Game {
 
 		return goOn;
 	}
-	
+
 	private boolean moveDragons(boolean goOn) { //Executes the dragons' turn
 		for(int i = 0; i < dragons.size(); i++)
 			if(dragons.get(i).getType() != Dragon.STATIC && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP)) {
@@ -155,7 +169,6 @@ public class Game {
 	//Main
 	public static void main(String[] args) {
 		Game game = new Game();
-		//GameOutput.printMaze(game.getMaze());
 		GameOutput.printGame(game);
 		game.play();
 	}
@@ -176,12 +189,6 @@ public class Game {
 
 		//Get Dragon options from user
 		dragon_type = GameInput.receiveDragonOptions();
-
-		//Multiple dragon options
-		if(GameInput.receiveMultipleDragonOptions())
-			number_of_dragons = (rows + columns) / 2;
-		else
-			number_of_dragons = 1;
 
 		// A maze director is in charge of selecting a
 		// building pattern and to order its construction
@@ -204,9 +211,15 @@ public class Game {
 		director.constructMaze(rows, columns);
 		maze = director.getMaze();
 
+		//Multiple dragon options
+		if(GameInput.receiveMultipleDragonOptions())
+			number_of_dragons = (rows + columns) / 10;
+		else
+			number_of_dragons = 1;
+
 		hero = spawnHero();
-		sword = spawnSword();
 		dragons = spawnDragons();
+		sword = spawnSword();
 
 	}
 
@@ -234,7 +247,7 @@ public class Game {
 	public Vector<Dragon> getDragons() {
 		return dragons;
 	}
-	
+
 	public int getNumberOfDragons() {
 		return number_of_dragons;
 	}
@@ -249,7 +262,7 @@ public class Game {
 
 	//Game Methods
 
-	public boolean checkIfSword(int row, int column) { //Checks if a sword is in that place
+	public boolean checkIfSword(int row, int column) { //Checks if an untaken sword is in that place
 		return(row == sword.getRow() && column == sword.getColumn() && !sword.getTaken());
 	}
 

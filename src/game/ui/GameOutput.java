@@ -75,7 +75,7 @@ public class GameOutput {
 			else if(d.get(i).getState() == Dragon.ASLEEP && !d.get(i).getHasSword())
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.sleepingDragon;
 
-			if(!s.getTaken() && (s.getRow() != d.get(i).getRow() || s.getColumn() != d.get(i).getColumn()))
+			if(!s.getTaken())
 				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 		}
 

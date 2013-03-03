@@ -37,10 +37,16 @@ public class Dragon extends Movable {
 		row = new_row;
 		column = new_column;
 
-		if(!g.checkIfSword(row, column))
+		if(!g.checkIfSword(row, column)) {
+			if(g.getSword().getTaken() && hasSword)
+				g.getSword().dropSword();
+			
 			hasSword = false;
-		else
+		}
+		else {
 			hasSword = true;
+			g.getSword().takeSword();
+		}
 	}
 
 	/*** Public Method Area ***/
@@ -123,7 +129,7 @@ public class Dragon extends Movable {
 				break;
 			}
 
-		} while(g.getMaze().checkIfWall(new_row, new_column) || g.nextToDragon(new_row, new_column) || g.getMaze().checkIfExit(new_row, new_column) || new_row == 0 || new_column == 0);
+		} while(g.getMaze().checkIfWall(new_row, new_column) || g.isOnDragon(new_row, new_column) || g.getMaze().checkIfExit(new_row, new_column) || new_row == 0 || new_column == 0);
 
 		makeMove(g, new_row, new_column);
 	}
