@@ -32,7 +32,7 @@ public class PredefinedMaze extends MazeBuilder {
 		maze.positions[5][7] = Tile.wall;
 		maze.positions[8][5] = Tile.empty;
 		maze.positions[8][7] = Tile.empty;
-		maze.positions[5][9] = Tile.wall;
+		maze.positions[5][9] = Tile.exit;
 
 	}
 }
