@@ -105,47 +105,6 @@ public class Game {
 		return ds;
 	}
 
-	public boolean nextToDragons(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
-
-		if(dragons == null || dragons.isEmpty())
-			return false;
-
-		for(int i = 0; i < dragons.size(); i++) {
-			if(((dragons.get(i).getRow() == row + 1 && dragons.get(i).getColumn() == column) ||
-					(dragons.get(i).getRow() == row - 1  && dragons.get(i).getColumn() == column) ||
-					(dragons.get(i).getColumn() == column + 1 && dragons.get(i).getRow() == row) ||
-					(dragons.get(i).getColumn() == column - 1 && dragons.get(i).getRow() == row) ||
-					(dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row))
-					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))	
-				return true;
-		}
-
-		return false;
-	}
-
-	public boolean nextToOneDragon(int row, int column, Dragon dragon) {
-		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
-				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
-				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column - 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column && dragon.getRow() == row))
-				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
-	}
-
-	public boolean isOnDragon(int row, int column) {
-
-		if(dragons == null || dragons.isEmpty())
-			return false;
-
-		for(int i = 0; i < dragons.size(); i++) {
-			if((dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row)
-					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
-				return true;
-		}
-
-		return false;
-	}
-	
 	private boolean isOnEagle(int row, int column) { //Returns true if the position given is the same as the eagle's and the eagle is alive
 		return(row == eagle.getRow() && column == eagle.getColumn() && eagle.getState() != Eagle.DEAD);
 	}
@@ -194,6 +153,68 @@ public class Game {
 				goOn = checkDragonEncounters(goOn);
 			}
 		return goOn;
+	}
+	
+	private void tryToSendEagle() {
+		if(eagle.getState() == Eagle.DEAD) {
+			EagleEvent ed = new EagleEvent("cantSendDead");
+			events.add(ed);
+		}
+		else if(!eagle.isWithHero()) {
+			EagleEvent or = new EagleEvent("cantSendOnRoute");
+			events.add(or);
+		}
+		else if(sword.isTaken()) {
+			EagleEvent ns = new EagleEvent("noSword");
+			events.add(ns);
+		}
+		else
+			eagle.takeOff(hero.getRow(), hero.getColumn(), sword); // launches eagle
+	}
+	
+	private void updateEagle() {
+		if (eagle.getState() != Eagle.DEAD && eagle.isWithHero()){
+			eagle.moveWithHero(hero.getRow(), hero.getColumn());
+		}
+		else if(eagle.getState() != Eagle.DEAD) {
+			eagle.moveEagle();
+			if(eagle.isOnGroundWithSword()) {
+				EagleEvent gs = new EagleEvent("gotSword");
+				events.add(gs);
+			}
+			if(eagle.isWaitingForHero()) {
+				EagleEvent wh = new EagleEvent("isWaiting");
+				events.add(wh);
+			}
+
+			if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn()))
+				eagle.returnToHero();
+
+			if((eagle.isOnGroundWithSword() || eagle.isWaitingForHero()))
+				checkEagleEncounters();
+
+		}
+	}
+	
+	private void checkHeroState() { //Checks if hero died or exited the maze, creating the necessary events
+		switch(hero.getState()) {
+		case Hero.EXITED_MAZE:
+			ResultEvent won = new ResultEvent(2);
+			events.add(won);
+			break;
+		case Hero.DEAD:
+			ResultEvent lost = new ResultEvent(1);
+			events.add(lost); 
+			break;
+		}
+	}
+
+	private void checkEnemyState() { //Checks if there are any enemies left
+		if(remaining_dragons == 0) {
+			exit_state = OPEN;
+			ResultEvent exitOpen = new ResultEvent(0);
+			events.add(exitOpen);
+		}
 	}
 
 	/*** Public Methods ***/
@@ -331,6 +352,47 @@ public class Game {
 
 		return false;
 	}
+	
+	public boolean nextToDragons(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+
+		if(dragons == null || dragons.isEmpty())
+			return false;
+
+		for(int i = 0; i < dragons.size(); i++) {
+			if(((dragons.get(i).getRow() == row + 1 && dragons.get(i).getColumn() == column) ||
+					(dragons.get(i).getRow() == row - 1  && dragons.get(i).getColumn() == column) ||
+					(dragons.get(i).getColumn() == column + 1 && dragons.get(i).getRow() == row) ||
+					(dragons.get(i).getColumn() == column - 1 && dragons.get(i).getRow() == row) ||
+					(dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row))
+					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))	
+				return true;
+		}
+
+		return false;
+	}
+
+	public boolean nextToOneDragon(int row, int column, Dragon dragon) {
+		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
+				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
+				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||
+				(dragon.getColumn() == column - 1 && dragon.getRow() == row) ||
+				(dragon.getColumn() == column && dragon.getRow() == row))
+				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
+	}
+
+	public boolean isOnDragon(int row, int column) {
+
+		if(dragons == null || dragons.isEmpty())
+			return false;
+
+		for(int i = 0; i < dragons.size(); i++) {
+			if((dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row)
+					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
+				return true;
+		}
+
+		return false;
+	}
 
 	public boolean play() { //Main game loop
 		boolean goOn = true;
@@ -359,7 +421,7 @@ public class Game {
 					goOn = false;
 					break;
 				case 'e':
-					eagle.takeOff(hero.getRow(), hero.getColumn(), sword); // launches eagle
+					tryToSendEagle();
 					break;
 				default:
 					break;
@@ -370,50 +432,17 @@ public class Game {
 				System.err.println("Problem reading user input!");
 			}
 
-			if (eagle.getState() != Eagle.DEAD && eagle.isWithHero()){
-				eagle.moveWithHero(hero.getRow(), hero.getColumn());
-			}
-			else if(eagle.getState() != Eagle.DEAD) {
-				eagle.moveEagle();
-				if(eagle.isOnGroundWithSword()) {
-					EagleEvent gs = new EagleEvent("gotSword");
-					events.add(gs);
-				}
-				if(eagle.isWaitingForHero()) {
-					EagleEvent wh = new EagleEvent("isWaiting");
-					events.add(wh);
-				}
-				
-				if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn()))
-					eagle.returnToHero();
-
-				if((eagle.isOnGroundWithSword() || eagle.isWaitingForHero()))
-					checkEagleEncounters();
-				
-			}
-
 			goOn = checkDragonEncounters(goOn);
 
 			goOn = moveDragons(goOn);
 
+			updateEagle();
+			
 			GameOutput.printGame(this);
 
-			if(remaining_dragons == 0) {
-				exit_state = OPEN;
-				ResultEvent exitOpen = new ResultEvent(0);
-				events.add(exitOpen);
-			}
+			checkEnemyState();
 
-			switch(hero.getState()) {
-			case Hero.EXITED_MAZE:
-				ResultEvent won = new ResultEvent(2);
-				events.add(won);
-				break;
-			case Hero.DEAD:
-				ResultEvent lost = new ResultEvent(1);
-				events.add(lost); 
-				break;
-			}
+			checkHeroState();
 
 			GameOutput.printEventQueue(events);
 
@@ -421,5 +450,4 @@ public class Game {
 
 		return true;
 	}
-
 }

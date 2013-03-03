@@ -82,7 +82,7 @@ public class GameOutput {
 		}
 
 		// eagle printing goes here
-		if ( !e.isWithHero() ){
+		if ( !e.isWithHero() && e.getState() != Eagle.DEAD){
 			switch (mazePositions[ e.getRow() ][e.getColumn() ] ) {
 			case MazeSymbol.hero:
 				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnHero;

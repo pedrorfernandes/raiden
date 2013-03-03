@@ -7,7 +7,7 @@ public class ExitEvent extends GameEvent {
 		if(id == 0)
 			message = "You are not armed, it's dangerous to go alone like that!\n";
 		else if(id == 1)
-			message = "The exit is closed! You have to kill the dragon first!\n";
+			message = "The exit is closed! You have to kill the dragons first!\n";
 		
 	}
 	
