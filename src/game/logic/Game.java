@@ -431,14 +431,20 @@ public class Game {
 			catch(Exception e) {
 				System.err.println("Problem reading user input!");
 			}
-
-			goOn = checkDragonEncounters(goOn);
-
-			goOn = moveDragons(goOn);
-
+			
 			updateEagle();
 			
 			GameOutput.printGame(this);
+			
+			GameOutput.waitFor(1);
+			
+			goOn = checkDragonEncounters(goOn);
+
+			goOn = moveDragons(goOn);
+			
+			GameOutput.printGame(this);
+			
+			GameOutput.waitFor(1);
 
 			checkEnemyState();
 
