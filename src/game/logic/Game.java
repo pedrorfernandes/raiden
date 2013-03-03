@@ -92,7 +92,7 @@ public class Game {
 	}
 	
 	private Eagle spawnEagle(int row, int column) { 
-		Eagle eagle = new Eagle(hero, sword);
+		Eagle eagle = new Eagle(row, column, true);
 		return eagle;
 	}
 
@@ -240,11 +240,7 @@ public class Game {
 		hero = spawnHero();
 		dragons = spawnDragons();
 		sword = spawnSword();
-		
-		// THIS MUST BE CHANGED!
-		// eagle must be created and its constructor needs to be changed
-		// it's spawner function must be altered
-		eagle = new Eagle(hero, sword);
+		eagle = spawnEagle(hero.getRow(), hero.getColumn());
 
 	}
 
@@ -349,7 +345,7 @@ public class Game {
 					goOn = false;
 					break;
 				case 'e':
-					eagle = spawnEagle(hero.getRow(), hero.getColumn()); // launches eagle
+					eagle.takeOff(hero.getRow(), hero.getColumn(), sword); // launches eagle
 					break;
 				default:
 					break;
@@ -360,9 +356,11 @@ public class Game {
 				System.err.println("Problem reading user input!");
 			}
 			
-			if (eagle != null){
-				eagle.moveEagle(this);
+			if (eagle.getState() != Eagle.DEAD && eagle.isWithHero()){
+				eagle.moveWithHero(hero.getRow(), hero.getColumn());
 			}
+			else if(eagle.getState() != Eagle.DEAD)
+				eagle.moveEagle();
 
 			goOn = checkDragonEncounters(goOn);
 

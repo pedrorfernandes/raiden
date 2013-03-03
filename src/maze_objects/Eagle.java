@@ -99,19 +99,26 @@ public class Eagle extends Movable {
 	/*** Public Methods ***/
 
 	//Constructors
-	public Eagle(Hero hero, Sword s) {
-		row = hero.getRow();
-		column = hero.getColumn();
-		startRow = row;
-		startColumn = column;
-		swordRow = s.getRow();
-		swordColumn = s.getColumn();
-		sword = s;
+	public Eagle(int r, int c, boolean isWithHero) { //Creates an eagle on the given spot, with or without hero
+		row = r;
+		column = c;
+		
+		//startRow = row;
+		//startColumn = column;
+		//swordRow = s.getRow();
+		//swordColumn = s.getColumn();
+		//sword = s;
+		
+		withHero = isWithHero;
 
-		path = getPath();
+		//path = getPath();
 		state = ALIVE;
+		
 		hasSword = false;
-		onRouteToSword = true;
+		onRouteToSword = false;
+		onRouteToHero = false;
+		onGroundWithSword = false;
+		waitingForHero = false;
 	}
 
 	//General Methods
@@ -176,7 +183,26 @@ public class Eagle extends Movable {
 	}
 
 	//Game Methods
-	public void moveEagle(Game game) {		
+	public void takeOff(int r, int c, Sword s) {
+		startRow = r;
+		startColumn = c;
+		
+		sword = s;
+		swordRow = s.getRow();
+		swordColumn = s.getColumn();
+		
+		withHero = false;
+		onRouteToSword = true;
+		
+		path = getPath();
+	}
+	
+	public void moveWithHero(int r, int c) {
+		row = r;
+		column = c;
+	}
+	
+	public void moveEagle() {		
 		if(onGroundCounter < ON_GROUND_TURNS && onGroundWithSword)
 			onGroundCounter++;
 		else if(onGroundWithSword) {
