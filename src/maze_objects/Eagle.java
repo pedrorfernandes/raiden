@@ -1,6 +1,6 @@
 package maze_objects;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import game.logic.Game;
 
@@ -39,14 +39,14 @@ public class Eagle extends Movable {
 	public static final int DEAD = 0;
 	public static final int ALIVE = 1;
 
-	Vector<Cell> path;
+	ArrayList<Cell> path;
 	private int position;
 
 
 	/*** Private Methods ***/
 
-	private Vector<Cell> getPath(){
-		Vector<Cell> wayToSword = new Vector<Cell>();
+	private ArrayList<Cell> getPath(){
+		ArrayList<Cell> wayToSword = new ArrayList<Cell>();
 		
 		int dx = Math.abs(swordColumn - startColumn);
 		int dy = Math.abs(swordRow - startRow);
