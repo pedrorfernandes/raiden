@@ -62,11 +62,13 @@ public class GameOutput {
 
 		char[][] mazePositions = getMazeSymbols(m);
 
+		// hero printing
 		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.armedHero;
 		else
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
 
+		// dragon printing
 		for(int i = 0; i < g.getNumberOfDragons(); i++) {
 			if(d.get(i).getState() == Dragon.ALIVE && d.get(i).getHasSword())
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.guardedSword;
@@ -81,7 +83,7 @@ public class GameOutput {
 				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 		}
 
-		// eagle printing goes here
+		// eagle printing
 		if ( !e.isWithHero() && e.getState() != Eagle.DEAD){
 			switch (mazePositions[ e.getRow() ][e.getColumn() ] ) {
 			case MazeSymbol.hero:
@@ -107,15 +109,14 @@ public class GameOutput {
 			}
 		}
 
-		for(int i = 0; i < 100; i++)
-			System.out.println();
 		for (int x = 0; x < m.getRows(); x++) {
 			for (int y = 0; y < m.getColumns(); y++) {
 				System.out.print(mazePositions[x][y]);
 				System.out.print(MazeSymbol.space);
 			}
-			System.out.print('\n');
+			System.out.println();
 		}
+		System.out.println();
 
 	}
 
@@ -166,5 +167,10 @@ public class GameOutput {
 	public static void printMultipleDragonOptions() {
 		System.out.println("\nWould you like to generate a number of dragons proportional to the size of the maze?");
 		System.out.print("Otherwise, only one will be generated. (Y/N): ");
+	}
+	
+	public static void clearScreen(){
+		for(int i = 0; i < 100; i++)
+			System.out.println();
 	}
 }

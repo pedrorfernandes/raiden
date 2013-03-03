@@ -226,6 +226,7 @@ public class Game {
 	//Main
 	public static void main(String[] args) {
 		Game game = new Game();
+		GameOutput.clearScreen();
 		GameOutput.printGame(game);
 		game.play();
 	}
@@ -441,23 +442,23 @@ public class Game {
 			
 			updateEagle();
 			
+			GameOutput.clearScreen();
 			GameOutput.printGame(this);
 			
 			WaitTime.wait(1);
 			
 			goOn = checkDragonEncounters(goOn);
-
 			goOn = moveDragons(goOn);
 			
+			GameOutput.clearScreen();
+			GameOutput.printEventQueue(events);
 			GameOutput.printGame(this);
 			
 			WaitTime.wait(1);
 
 			checkEnemyState();
-
 			checkHeroState();
 
-			GameOutput.printEventQueue(events);
 
 		}
 
