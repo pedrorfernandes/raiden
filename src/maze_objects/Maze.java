@@ -36,21 +36,21 @@ public class Maze {
 
 	//Maze checking functions
 	public boolean checkIfWall(int row, int column) {
-		if(positions[row][column].getType() == "wall")
+		if(positions[row][column] == Tile.wall)
 			return true;
 		else
 			return false;
 	}
 
 	public boolean checkIfExit(int row, int column) {
-		if(positions[row][column].getType() == "exit")
+		if(positions[row][column] == Tile.exit)
 			return true;
 		else
 			return false;
 	}
 
 	public boolean checkIfEmpty(int row, int column) {
-		if(positions[row][column].getType() == "empty")
+		if(positions[row][column] == Tile.empty)
 			return true;
 		else
 			return false;

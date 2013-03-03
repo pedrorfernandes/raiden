@@ -23,6 +23,7 @@ public class MazeSymbol { //Symbols used in the printing functions to identify t
 	
 	//Eagle related symbols
 	public static char eagle = '>';
+	public static char eagleOnHero = 'E';
 	public static char eagleWithSword = 'Y';
 	public static char eagleOnWall = 'u';
 	public static char eagleOnDragon = 'G';

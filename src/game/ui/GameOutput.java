@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import maze_objects.Dragon;
+import maze_objects.Eagle;
 import maze_objects.Hero;
 import maze_objects.MazeSymbol;
 import maze_objects.Maze;
 import maze_objects.Sword;
+import maze_objects.Tile;
 
 public class GameOutput {
 
@@ -19,15 +21,15 @@ public class GameOutput {
 
 		for(int r = 0; r < m.getRows(); r++)
 			for(int c = 0; c < m.getColumns(); c++) {
-				String currentType = m.getPositions()[r][c].getType();
-				switch(currentType) {
-				case "wall":
+				Tile currentTile = m.getPositions()[r][c];
+				switch(currentTile) {
+				case wall:
 					mazePositions[r][c] = MazeSymbol.wall;
 					break;
-				case "empty":
+				case empty:
 					mazePositions[r][c] = MazeSymbol.empty;
 					break;
-				case "exit":
+				case exit:
 					mazePositions[r][c] = MazeSymbol.exit;
 					break;
 				}
@@ -56,6 +58,7 @@ public class GameOutput {
 		Hero h = g.getHero();
 		ArrayList<Dragon> d = g.getDragons();
 		Sword s = g.getSword();
+		Eagle e = g.getEagle();
 
 		char[][] mazePositions = getMazeSymbols(m);
 
@@ -77,6 +80,8 @@ public class GameOutput {
 			if(!s.getTaken())
 				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 		}
+		
+		// eagle printing goes here
 
 		for(int i = 0; i < 100; i++)
 			System.out.println();

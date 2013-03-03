@@ -19,6 +19,8 @@ import maze_objects.MazeDirector;
 import maze_objects.PredefinedMaze;
 import maze_objects.RandomMaze;
 import maze_objects.Sword;
+import maze_objects.Eagle;
+
 
 public class Game {
 
@@ -39,6 +41,7 @@ public class Game {
 	private Maze maze;
 	private Sword sword;
 	private Hero hero;
+	private Eagle eagle;
 	//private Dragon dragon;
 	private ArrayList<Dragon> dragons;
 	private LinkedList<GameEvent> events = new LinkedList<GameEvent>();
@@ -86,6 +89,11 @@ public class Game {
 
 		Dragon dragon = new Dragon(dragon_row, dragon_column, dragon_type);
 		return dragon;
+	}
+	
+	private Eagle spawnEagle(int row, int column) { 
+		Eagle eagle = new Eagle(hero, sword);
+		return eagle;
 	}
 
 	private ArrayList<Dragon> spawnDragons() {
@@ -271,6 +279,10 @@ public class Game {
 	public void addEvent(GameEvent ev) {
 		events.add(ev);
 	}
+	
+	public Eagle getEagle(){
+		return eagle;
+	}
 
 	//Game Methods
 
@@ -311,16 +323,28 @@ public class Game {
 			try {
 				GameOutput.printAskForMove();
 				input = MazeInput.getChar();
-				if(input == 's')
+				switch (input) {
+				case 's':
 					goOn = hero.moveHero(1, 0, this); //tries to move hero the number or rows or columns given
-				else if(input == 'w')
+					break;
+				case 'w':
 					goOn = hero.moveHero(-1, 0, this);
-				else if(input == 'a')
+					break;
+				case 'a':
 					goOn = hero.moveHero(0, -1, this);
-				else if(input == 'd')
+					break;
+				case 'd':
 					goOn = hero.moveHero(0, 1, this);
-				else if(input == 'z') //z shuts down game
+					break;
+				case 'z': //z shuts down game
 					goOn = false;
+					break;
+				case 'e':
+					eagle = spawnEagle(hero.getRow(), hero.getColumn());// launches eagle
+					break;
+				default:
+					break;
+				}
 			}
 
 			catch(Exception e) {

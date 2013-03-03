@@ -1,5 +1,8 @@
 package maze_objects;
 
+import game.logic.Game;
+import game.ui.GameOutput;
+
 public class Eagle extends Movable {
 
 	/*** Private Attributes ***/
@@ -40,7 +43,7 @@ public class Eagle extends Movable {
 	public static final int ON_WALL = 2;
 	public static final int ON_DRAGON = 3;
 	public static final int ON_SLEEPING_DRAGON = 4;
-
+	
 	/*** Private Methods ***/
 	private void makeMoveAtSword() {
 		int dx = Math.abs(swordColumn - startColumn);
@@ -91,9 +94,13 @@ public class Eagle extends Movable {
 	/*** Public Methods ***/
 
 	//Constructors
-	public Eagle(int r, int c) {
-		row = r;
-		column = c;
+	public Eagle(Hero hero, Sword sword) {
+		row = hero.getRow();
+		column = hero.getColumn();
+		startRow = row;
+		startColumn = column;
+		swordRow = sword.getRow();
+		swordColumn = sword.getColumn();
 
 		state = ALIVE;
 		place = ON_HERO;
@@ -154,8 +161,9 @@ public class Eagle extends Movable {
 	}
 
 	//Game Methods
-	public void moveEagle() {
-
+	public void moveEagle(Game game) {
+		Maze maze = game.getMaze();
+		
 		if(onGroundCounter < ON_GROUND_TURNS && onGroundWithSword)
 			onGroundCounter++;
 		else if(onGroundWithSword) {
@@ -178,9 +186,28 @@ public class Eagle extends Movable {
 			if(row == startRow && column == startColumn)
 				waitingForHero = true;
 		}
-		
+		/*
+		switch (maze.positions[row][column].getType()) {
+		case "wall":
+			image = MazeSymbol.eagleOnHero;
+			break;
+		case "empty":
+			image = MazeSymbol.eagle;
+			break;
+		case ON_WALL:
+			image = MazeSymbol.eagleOnWall;
+			break;
+		case ON_DRAGON:
+			image = MazeSymbol.eagleOnDragon;
+			break;
+		case ON_SLEEPING_DRAGON:
+			image = MazeSymbol.eagleOnSleepingDragon;
+			break;
 
+		default:
+			break;
+		}
+		*/
 	}
-
-
+	
 }
