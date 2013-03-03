@@ -188,8 +188,11 @@ public class Game {
 				events.add(wh);
 			}
 
-			if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn()))
+			if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn())) {
 				eagle.returnToHero();
+				EagleEvent er = new EagleEvent("eagleReturned");
+				events.add(er);
+			}
 
 			if((eagle.isOnGroundWithSword() || eagle.isWaitingForHero()))
 				checkEagleEncounters();

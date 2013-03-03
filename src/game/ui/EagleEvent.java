@@ -20,6 +20,8 @@ public class EagleEvent extends GameEvent {
 			message = "Your eagle is not with you!";
 		else if(id.equals("noSword"))
 			message = "There is no sword for the eagle to catch!";
+		else if(id.equals("eagleReturned"))
+			message = "The eagle returned safely to you!";
 		else
 			message = "Something happened to your eagle..."; //In case an inexistent id is given
 	}
