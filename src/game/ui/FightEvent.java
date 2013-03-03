@@ -9,7 +9,7 @@ public class FightEvent extends GameEvent {
 			message = "You lost the fight!\n";
 		
 		else if(id.equals("wonFight"))
-			message = "WOW! You slayed the dragon! Exit is now opened!\n";
+			message = "WOW! You slayed the dragon!\n";
 	}
 	
 }

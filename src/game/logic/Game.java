@@ -290,7 +290,7 @@ public class Game {
 	public boolean fightDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
-			exit_state = OPEN;
+			remaining_dragons--;
 			return true;
 		}
 		else if(hero.getState() == Hero.IN_GAME && dragon.getState() == Dragon.ALIVE) {
@@ -332,14 +332,20 @@ public class Game {
 			goOn = moveDragons(goOn);
 
 			GameOutput.printGame(this);
+			
+			if(remaining_dragons == 0) {
+				exit_state = OPEN;
+				ResultEvent exitOpen = new ResultEvent(0);
+				events.add(exitOpen);
+			}
 
 			switch(hero.getState()) {
 			case Hero.EXITED_MAZE:
-				ResultEvent won = new ResultEvent(1);
+				ResultEvent won = new ResultEvent(2);
 				events.add(won);
 				break;
 			case Hero.DEAD:
-				ResultEvent lost = new ResultEvent(0);
+				ResultEvent lost = new ResultEvent(1);
 				events.add(lost); 
 				break;
 			}
