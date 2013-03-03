@@ -443,7 +443,7 @@ public class Game {
 			
 			GameOutput.printGame(this);
 			
-			WaitTime.waitFor(1);
+			WaitTime.wait(1);
 			
 			goOn = checkDragonEncounters(goOn);
 
@@ -451,7 +451,7 @@ public class Game {
 			
 			GameOutput.printGame(this);
 			
-			WaitTime.waitFor(1);
+			WaitTime.wait(1);
 
 			checkEnemyState();
 
