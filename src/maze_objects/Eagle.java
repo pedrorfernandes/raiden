@@ -253,7 +253,7 @@ public class Eagle extends Movable {
 				onGroundCounter = 0;
 			}
 
-			if(row == startRow && column == startColumn) { // arrived back at hero's location
+			if(row == startRow && column == startColumn && hasSword) { // arrived back at hero's location
 				sword.dropSword(row, column);
 				waitingForHero = true;
 			}

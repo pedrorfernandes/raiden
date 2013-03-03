@@ -76,7 +76,8 @@ public class Hero extends Movable {
 			armHero(newRow, newColumn, m);
 			g.getSword().takeSword();
 		}
-		else if(g.checkIfEagle(newRow, newColumn) ){
+		
+		if(g.checkIfEagle(newRow, newColumn) ){
 			g.getEagle().setWithHero(true);
 		}
 
