@@ -3,29 +3,29 @@ package maze_objects;
 public class MazeSymbol { //Symbols used in the printing functions to identify the different objects. This makes reading easier.
 	
 	//Maze tiles related symbols
-	public static char sword = 'E';
-	public static char wall = 'X';
-	public static char exit = 'S';
-	public static char empty = ' ';
-	public static char space = ' ';
+	public static final char sword = 'E';
+	public static final char wall = 'X';
+	public static final char exit = 'S';
+	public static final char empty = ' ';
+	public static final char space = ' ';
 	
 	//Hero related symbols
-	public static char hero = 'H';
-	public static char armedHero = 'A';
+	public static final char hero = 'H';
+	public static final char armedHero = 'A';
 	
 	//Dragon related symbols
-	public static char dragon = 'D';
-	public static char sleepingDragon = 'd';
+	public static final char dragon = 'D';
+	public static final char sleepingDragon = 'd';
 	
 	//Sword related symbols
-	public static char guardedSword = 'F';
-	public static char sleepingGuardedSword = 'f';
+	public static final char guardedSword = 'F';
+	public static final char sleepingGuardedSword = 'f';
 	
 	//Eagle related symbols
-	public static char eagle = '>';
-	public static char eagleOnHero = 'E';
-	public static char eagleWithSword = 'Y';
-	public static char eagleOnWall = 'u';
-	public static char eagleOnDragon = 'G';
-	public static char eagleOnSleepingDragon = 'g';
+	public static final char eagle = '>';
+	public static final char eagleOnHero = 'L';
+	public static final char eagleWithSword = 'Y';
+	public static final char eagleOnWall = 'u';
+	public static final char eagleOnDragon = 'G';
+	public static final char eagleOnSleepingDragon = 'g';
 }

@@ -80,8 +80,32 @@ public class GameOutput {
 			if(!s.getTaken())
 				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
 		}
-		
+
 		// eagle printing goes here
+		if (e != null){
+			switch (mazePositions[ e.getRow() ][e.getColumn() ] ) {
+			case MazeSymbol.hero:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnHero;
+				break;
+			case MazeSymbol.dragon:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnDragon;
+				break;
+			case MazeSymbol.wall:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnWall;
+				break;
+			case MazeSymbol.empty:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagle;
+				break;
+			case MazeSymbol.sleepingDragon:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleOnSleepingDragon;
+				break;
+			case MazeSymbol.sword:
+				mazePositions[ e.getRow() ][e.getColumn() ] = MazeSymbol.eagleWithSword;
+				break;
+			default:
+				break;
+			}
+		}
 
 		for(int i = 0; i < 100; i++)
 			System.out.println();

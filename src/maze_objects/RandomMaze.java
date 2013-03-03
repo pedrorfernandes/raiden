@@ -184,7 +184,7 @@ public class RandomMaze extends MazeBuilder {
 				break;
 			case 3: // down side exit
 				exitCell.i = rows-1;
-				exitCell.j = r.nextInt(rows-2)+1;
+				exitCell.j = r.nextInt(cols-2)+1;
 				if(maze.positions[exitCell.i-1][exitCell.j] != Tile.wall){
 					done = true;
 				}

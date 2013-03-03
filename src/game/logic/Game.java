@@ -340,7 +340,7 @@ public class Game {
 					goOn = false;
 					break;
 				case 'e':
-					eagle = spawnEagle(hero.getRow(), hero.getColumn());// launches eagle
+					eagle = spawnEagle(hero.getRow(), hero.getColumn()); // launches eagle
 					break;
 				default:
 					break;
@@ -349,6 +349,10 @@ public class Game {
 
 			catch(Exception e) {
 				System.err.println("Problem reading user input!");
+			}
+			
+			if (eagle != null){
+				eagle.moveEagle(this);
 			}
 
 			goOn = checkDragonEncounters(goOn);
