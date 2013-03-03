@@ -190,6 +190,8 @@ public class Game {
 
 			if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn())) {
 				eagle.returnToHero();
+				sword.takeSword();
+				hero.armHero(hero.getRow(), hero.getColumn() );
 				EagleEvent er = new EagleEvent("eagleReturned");
 				events.add(er);
 			}
@@ -441,7 +443,7 @@ public class Game {
 			}
 			
 			updateEagle();
-			
+						
 			GameOutput.clearScreen();
 			GameOutput.printGame(this);
 			

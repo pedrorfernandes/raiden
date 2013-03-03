@@ -100,18 +100,8 @@ public class Eagle extends Movable {
 	public Eagle(int r, int c, boolean isWithHero) { //Creates an eagle on the given spot, with or without hero
 		row = r;
 		column = c;
-
-		//startRow = row;
-		//startColumn = column;
-		//swordRow = s.getRow();
-		//swordColumn = s.getColumn();
-		//sword = s;
-
 		withHero = isWithHero;
-
-		//path = getPath();
 		state = ALIVE;
-
 		hasSword = false;
 		onRouteToSword = false;
 		onRouteToHero = false;

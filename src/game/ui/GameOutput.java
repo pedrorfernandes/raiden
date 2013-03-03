@@ -15,6 +15,7 @@ import maze_objects.Sword;
 import maze_objects.Tile;
 
 public class GameOutput {
+	private static String PROMPT = "> ";
 
 	private static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
 		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
@@ -122,6 +123,7 @@ public class GameOutput {
 
 	public static void printAskForMove() {
 		System.out.print("Move your hero (WASD, only first input will be considered): ");
+		//System.out.print(PROMPT);
 	}
 
 	public static void printEventQueue(LinkedList<GameEvent> events) { //Prints the events on the event queue given
@@ -141,14 +143,17 @@ public class GameOutput {
 
 		switch(n) {
 		case 0:
-			System.out.print("Give a specific maze size? (Y/N): ");
+			System.out.println("Give a specific maze size? (Y/N): ");
+			System.out.print(PROMPT);
 			break;
 		case 1:
 			System.out.println("Please specify the desired maze size.");
-			System.out.print("Number of rows? ");
+			System.out.println("Number of rows? ");
+			System.out.print(PROMPT);
 			break;
 		case 2:
-			System.out.print("Number of columns? ");
+			System.out.println("Number of columns? ");
+			System.out.print(PROMPT);
 			break;
 		}
 
@@ -161,12 +166,14 @@ public class GameOutput {
 	public static void printDragonOptions() { //Prints dragon type related options
 		System.out.println("\nPlease specify the type of dragons you want on the maze.");
 		System.out.println("0 for static dragons, 1 for an always awake dragons, 2 for randomly sleeping dragons.");
-		System.out.print("Option: ");
+		System.out.println("Choose your option ");
+		System.out.print(PROMPT);
 	}
 
 	public static void printMultipleDragonOptions() {
 		System.out.println("\nWould you like to generate a number of dragons proportional to the size of the maze?");
-		System.out.print("Otherwise, only one will be generated. (Y/N): ");
+		System.out.println("Otherwise, only one will be generated. (Y/N): ");
+		System.out.print(PROMPT);
 	}
 	
 	public static void clearScreen(){

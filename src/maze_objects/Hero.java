@@ -13,25 +13,25 @@ public class Hero extends Movable {
 
 	/*** Private Variable Area ***/
 
-	private void armHero(int r, int c, Maze m) { //Changes hero symbol to the armed hero symbol as he takes the sword
-		state = ARMED;
-		row = r;
-		column = c;
-	}
-
-	private void exitMaze(int r, int c, Maze m) { //Moves the hero to the exit position and toggles his state to exited_maze
+	private void exitMaze(int r, int c) { //Moves the hero to the exit position and toggles his state to exited_maze
 		row = r;
 		column = c;
 		state = EXITED_MAZE;
 	}
 
-	private void makeMove(int r, int c, Maze m) { //Puts the hero symbol in the correct position after taking the move
+	private void makeMove(int r, int c) { //Puts the hero symbol in the correct position after taking the move
 		row = r;
 		column = c;
 	}
 
 	/*** Public methods ***/
 
+	public void armHero(int r, int c) { //Changes hero symbol to the armed hero symbol as he takes the sword
+		state = ARMED;
+		row = r;
+		column = c;
+	}
+	
 	//Constructors
 	public Hero() {
 		row = 1;
@@ -54,12 +54,12 @@ public class Hero extends Movable {
 		int newColumn = column + columnMovement;
 
 		if(m.checkIfEmpty(newRow, newColumn) && !g.checkIfSword(newRow, newColumn) && !g.checkIfDragon(newRow, newColumn)) {
-			makeMove(newRow, newColumn, m);
+			makeMove(newRow, newColumn);
 		}
 		else if(m.checkIfExit(newRow, newColumn)) {
 			if(state == ARMED) {
 				if(g.getExitState() == Game.OPEN) {
-					exitMaze(newRow, newColumn, m);
+					exitMaze(newRow, newColumn);
 					return false;
 				}
 				else {
@@ -73,7 +73,7 @@ public class Hero extends Movable {
 			}
 		}
 		else if(g.checkIfSword(newRow, newColumn) && !g.getSword().isTaken()) {
-			armHero(newRow, newColumn, m);
+			armHero(newRow, newColumn);
 			g.getSword().takeSword();
 		}
 		
