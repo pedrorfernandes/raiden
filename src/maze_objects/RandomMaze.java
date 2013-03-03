@@ -22,8 +22,8 @@ public class RandomMaze extends MazeBuilder {
 		//choose random starting odd cell, call it currentCell
 		Cell currentCell = new Cell();		
 		Random r = new Random();
-		currentCell.i = r.nextInt(cols-2)+1; // 1..cols-2, can't be a wall
-		currentCell.j = r.nextInt(rows-2)+1;
+		currentCell.i = r.nextInt(rows-2)+1; // 1..cols-2, can't be a wall
+		currentCell.j = r.nextInt(cols-2)+1;
 
 		cellStack.push(currentCell);
 
