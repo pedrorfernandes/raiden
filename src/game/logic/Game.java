@@ -33,6 +33,7 @@ public class Game {
 	//private int game_state; //Variable to prevent dragons from moving at the first turn
 	private int exit_state;
 	private int number_of_dragons;
+	private int remaining_dragons;
 
 	//Game elements
 	private Maze maze;
@@ -222,9 +223,11 @@ public class Game {
 
 		//Multiple dragon options
 		if(GameInput.receiveMultipleDragonOptions())
-			number_of_dragons = (rows + columns) / 10;
+			number_of_dragons = (maze.getRows() + maze.getColumns()) / 10;
 		else
 			number_of_dragons = 1;
+		
+		remaining_dragons = number_of_dragons;
 
 		hero = spawnHero();
 		dragons = spawnDragons();
