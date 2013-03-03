@@ -447,19 +447,19 @@ public class Game {
 			GameOutput.clearScreen();
 			GameOutput.printGame(this);
 			
-			WaitTime.wait(1);
+			WaitTime.wait(500);
 			
 			goOn = checkDragonEncounters(goOn);
 			goOn = moveDragons(goOn);
+			
+			checkEnemyState();
+			checkHeroState();
 			
 			GameOutput.clearScreen();
 			GameOutput.printEventQueue(events);
 			GameOutput.printGame(this);
 			
-			WaitTime.wait(1);
-
-			checkEnemyState();
-			checkHeroState();
+			WaitTime.wait(500);
 
 
 		}
