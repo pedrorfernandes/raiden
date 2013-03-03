@@ -1,6 +1,6 @@
 package maze_objects;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
 
@@ -28,7 +28,7 @@ public class RandomMaze extends MazeBuilder {
 		cellStack.push(currentCell);
 
 		maze.positions[currentCell.i][currentCell.j] = Tile.empty;
-		Vector<Cell> nearbyCells = new Vector<Cell>();
+		ArrayList<Cell> nearbyCells = new ArrayList<Cell>();
 
 		while(true){
 			// find all 4 neighbors of CurrentCell with all walls intact 
@@ -39,7 +39,7 @@ public class RandomMaze extends MazeBuilder {
 			if (nearbyCells.size() > 0){
 				// choose one at random  
 				int selected = r.nextInt(nearbyCells.size());
-				Cell next = nearbyCells.elementAt(selected);
+				Cell next = nearbyCells.get(selected);
 				maze.positions[next.i][next.j] = Tile.empty;
 				// push CurrentCell location on the CellStack
 				cellStack.push(next);
@@ -73,8 +73,8 @@ public class RandomMaze extends MazeBuilder {
 		return numberWalls;
 	}
 
-	private Vector<Cell> checkPossibilities(Cell currentCell, int rows, int cols){
-		Vector<Cell> nearbyCells = new Vector<Cell>();
+	private ArrayList<Cell> checkPossibilities(Cell currentCell, int rows, int cols){
+		ArrayList<Cell> nearbyCells = new ArrayList<Cell>();
 
 		int maxSurroundingWalls = 3;
 		int surroundingWalls;
