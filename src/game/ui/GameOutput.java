@@ -159,7 +159,7 @@ public class GameOutput {
 
 	public static void printDragonOptions() { //Prints dragon type related options
 		System.out.println("\nPlease specify the type of dragons you want on the maze.");
-		System.out.println("0 for static dragons, 1 for an always awake dragons, 2 for a randomly sleeping dragons.");
+		System.out.println("0 for static dragons, 1 for an always awake dragons, 2 for randomly sleeping dragons.");
 		System.out.print("Option: ");
 	}
 
