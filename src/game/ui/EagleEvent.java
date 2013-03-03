@@ -13,6 +13,8 @@ public class EagleEvent extends GameEvent {
 		
 		else if(id.equals("isWaiting"))
 			message = "Your eagle has arrived and is waiting for you!\n";
+		else
+			message = "Something happened to your eagle..."; //In case an inexistent id is given
 	}
 
 }

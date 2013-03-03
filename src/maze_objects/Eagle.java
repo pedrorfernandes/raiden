@@ -2,8 +2,6 @@ package maze_objects;
 
 import java.util.ArrayList;
 
-import game.logic.Game;
-
 public class Eagle extends Movable {
 
 	/*** Private Attributes ***/
@@ -47,7 +45,7 @@ public class Eagle extends Movable {
 
 	private ArrayList<Cell> getPath(){
 		ArrayList<Cell> wayToSword = new ArrayList<Cell>();
-		
+
 		int dx = Math.abs(swordColumn - startColumn);
 		int dy = Math.abs(swordRow - startRow);
 
@@ -61,7 +59,7 @@ public class Eagle extends Movable {
 			wayToSword.add(currentCell);
 			if (row == swordRow && column == swordColumn)
 				break;
-			
+
 			int e2 = 2 * err;
 
 			if (e2 > -dy) {
@@ -74,7 +72,7 @@ public class Eagle extends Movable {
 				row += sy;
 			}
 		}
-		
+
 		return wayToSword;
 	}
 
@@ -102,18 +100,18 @@ public class Eagle extends Movable {
 	public Eagle(int r, int c, boolean isWithHero) { //Creates an eagle on the given spot, with or without hero
 		row = r;
 		column = c;
-		
+
 		//startRow = row;
 		//startColumn = column;
 		//swordRow = s.getRow();
 		//swordColumn = s.getColumn();
 		//sword = s;
-		
+
 		withHero = isWithHero;
 
 		//path = getPath();
 		state = ALIVE;
-		
+
 		hasSword = false;
 		onRouteToSword = false;
 		onRouteToHero = false;
@@ -153,11 +151,11 @@ public class Eagle extends Movable {
 	public void removeOnRouteToSword() {
 		onRouteToSword = false;
 	}
-	
+
 	public boolean isWaitingForHero() {
 		return waitingForHero;
 	}
-	
+
 	public boolean isOnGroundWithSword() {
 		return onGroundWithSword;
 	}
@@ -181,11 +179,11 @@ public class Eagle extends Movable {
 	public void setSwordColumn(int c) {
 		swordColumn = c;
 	}
-	
+
 	public boolean isWithHero(){
 		return withHero;
 	}
-	
+
 	public void setWithHero(boolean isWithHero){
 		withHero = isWithHero;
 	}
@@ -194,22 +192,45 @@ public class Eagle extends Movable {
 	public void takeOff(int r, int c, Sword s) {
 		startRow = r;
 		startColumn = c;
-		
+
 		sword = s;
 		swordRow = s.getRow();
 		swordColumn = s.getColumn();
-		
+
 		withHero = false;
 		onRouteToSword = true;
-		
+
 		path = getPath();
 	}
-	
+
+	public void returnToHero() {
+		withHero = true;
+
+		onRouteToHero = false;
+		waitingForHero = false;
+		onGroundWithSword = false;
+		onRouteToSword = false;
+		hasSword = false;
+	}
+
+	public void killEagle() {
+		state = DEAD;
+		
+		withHero = false;
+		onRouteToHero = false;
+		waitingForHero = false;
+		onGroundWithSword = false;
+		onRouteToSword = false;
+		hasSword = false;
+
+		sword.dropSword(row, column);
+	}
+
 	public void moveWithHero(int r, int c) {
 		row = r;
 		column = c;
 	}
-	
+
 	public void moveEagle() {		
 		if(onGroundCounter < ON_GROUND_TURNS && onGroundWithSword)
 			onGroundCounter++;
@@ -232,9 +253,10 @@ public class Eagle extends Movable {
 				onGroundCounter = 0;
 			}
 
-			if(row == startRow && column == startColumn) // arrived back at hero's location
+			if(row == startRow && column == startColumn) { // arrived back at hero's location
 				sword.dropSword(row, column);
 				waitingForHero = true;
+			}
 		}
 	}
 

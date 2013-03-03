@@ -145,6 +145,10 @@ public class Game {
 
 		return false;
 	}
+	
+	private boolean isOnEagle(int row, int column) { //Returns true if the position given is the same as the eagle's and the eagle is alive
+		return(row == eagle.getRow() && column == eagle.getColumn() && eagle.getState() != Eagle.DEAD);
+	}
 
 	private boolean nextToHero(int row, int column) { //True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
 		return((row == hero.getRow() + 1 && column == hero.getColumn()) ||
@@ -176,7 +180,7 @@ public class Game {
 	private void checkEagleEncounters() {
 		for(int i = 0; i < dragons.size(); i++)
 			if(eagle.getState() != Eagle.DEAD && nextToOneDragon(eagle.getRow(), eagle.getColumn(), dragons.get(i))) {
-				eagle.setState(Eagle.DEAD);
+				eagle.killEagle();
 				EagleEvent eagleKilled = new EagleEvent("killed");
 				events.add(eagleKilled);
 			}
@@ -376,12 +380,16 @@ public class Game {
 					events.add(gs);
 				}
 				if(eagle.isWaitingForHero()) {
-					EagleEvent wh = new EagleEvent("waiting");
+					EagleEvent wh = new EagleEvent("isWaiting");
 					events.add(wh);
 				}
+				
+				if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn()))
+					eagle.returnToHero();
 
 				if((eagle.isOnGroundWithSword() || eagle.isWaitingForHero()))
 					checkEagleEncounters();
+				
 			}
 
 			goOn = checkDragonEncounters(goOn);
