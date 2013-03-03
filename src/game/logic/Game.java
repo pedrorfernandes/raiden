@@ -7,6 +7,7 @@ import game.ui.GameInput;
 import game.ui.GameOutput;
 import game.ui.ResultEvent;
 import general_utilities.MazeInput;
+import general_utilities.WaitTime;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -439,7 +440,7 @@ public class Game {
 			
 			GameOutput.printGame(this);
 			
-			GameOutput.waitFor(1);
+			WaitTime.waitFor(1);
 			
 			goOn = checkDragonEncounters(goOn);
 
@@ -447,7 +448,7 @@ public class Game {
 			
 			GameOutput.printGame(this);
 			
-			GameOutput.waitFor(1);
+			WaitTime.waitFor(1);
 
 			checkEnemyState();
 

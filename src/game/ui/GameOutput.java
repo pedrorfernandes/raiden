@@ -16,18 +16,6 @@ import maze_objects.Tile;
 
 public class GameOutput {
 
-	public static void waitFor (int n){
-
-		long t0, t1;
-
-		t0 =  System.currentTimeMillis();
-
-		do{
-			t1 = System.currentTimeMillis();
-		}
-		while ((t1 - t0) < (n * 1000));
-	}
-
 	private static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
 		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
 
