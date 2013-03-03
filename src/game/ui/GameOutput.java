@@ -4,6 +4,7 @@ package game.ui;
 import game.logic.Game;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
@@ -54,7 +55,7 @@ public class GameOutput {
 
 		Maze m = g.getMaze();
 		Hero h = g.getHero();
-		Dragon d = g.getDragon();
+		Vector<Dragon> d = g.getDragons();
 		Sword s = g.getSword();
 
 		char[][] mazePositions = getMazeSymbols(m);
@@ -64,17 +65,19 @@ public class GameOutput {
 		else
 			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
 
-		if(d.getState() == Dragon.ALIVE && d.getHasSword())
-			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.guardedSword;
-		else if(d.getState() == Dragon.ALIVE && !d.getHasSword())
-			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.dragon;
-		else if(d.getState () == Dragon.ASLEEP && d.getHasSword())
-			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.sleepingGuardedSword;
-		else if(d.getState() == Dragon.ASLEEP && !d.getHasSword())
-			mazePositions[d.getRow()][d.getColumn()] = MazeSymbol.sleepingDragon;
+		for(int i = 0; i < g.getNumberOfDragons(); i++) {
+			if(d.get(i).getState() == Dragon.ALIVE && d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.guardedSword;
+			else if(d.get(i).getState() == Dragon.ALIVE && !d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.dragon;
+			else if(d.get(i).getState () == Dragon.ASLEEP && d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.sleepingGuardedSword;
+			else if(d.get(i).getState() == Dragon.ASLEEP && !d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = MazeSymbol.sleepingDragon;
 
-		if(!s.getTaken() && (s.getRow() != d.getRow() || s.getColumn() != d.getColumn()))
-			mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
+			if(!s.getTaken() && (s.getRow() != d.get(i).getRow() || s.getColumn() != d.get(i).getColumn()))
+				mazePositions[s.getRow()][s.getColumn()] = MazeSymbol.sword;
+		}
 
 		for(int i = 0; i < 100; i++)
 			System.out.println();
@@ -125,10 +128,15 @@ public class GameOutput {
 	public static void printMazeSizeError() {
 		System.out.println("Invalid maze size given. Starting predefined maze!");
 	}
-	
+
 	public static void printDragonOptions() { //Prints dragon type related options
 		System.out.println("\nPlease specify the type of dragons you want on the maze.");
-		System.out.println("0 for static dragons, 1 for an always awake dragon, 2 for a randomly sleeping dragon.");
+		System.out.println("0 for static dragons, 1 for an always awake dragons, 2 for a randomly sleeping dragons.");
 		System.out.print("Option: ");
+	}
+
+	public static void printMultipleDragonOptions() {
+		System.out.println("\nWould you like to generate a number of dragons proportional to the size of the maze?");
+		System.out.print("Otherwise, only one will be generated. (Y/N): ");
 	}
 }

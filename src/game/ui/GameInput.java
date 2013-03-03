@@ -47,5 +47,29 @@ public class GameInput {
 		
 		return dragonType;
 	}
+	
+	public static boolean receiveMultipleDragonOptions() {
+		
+		boolean spawnMultiple;
+		
+		Scanner in = new Scanner(System.in);
+		char c = 'a';
+
+
+		do {
+			GameOutput.printMultipleDragonOptions();
+			String s = in.nextLine();
+			if(!s.isEmpty())
+				c = s.charAt(0);
+		}
+		while(c != 'Y' && c != 'y' && c != 'N' && c != 'n');
+		
+		if(c == 'Y' || c == 'y')
+			spawnMultiple = true;
+		else
+			spawnMultiple = false;
+		
+		return spawnMultiple;
+	}
 
 }

@@ -2,7 +2,6 @@ package maze_objects;
 
 import game.logic.Game;
 import game.ui.ExitEvent;
-import game.ui.FightEvent;
 
 public class Hero extends Movable {
 
@@ -50,7 +49,7 @@ public class Hero extends Movable {
 
 	public boolean moveHero(int rowMovement, int columnMovement, Game g) { //Possibly moves the hero to a new position, analyzing if it's able to and possible outcoming events
 		Maze m = g.getMaze();
-		
+
 		int newRow = row + rowMovement;
 		int newColumn = column + columnMovement;
 
@@ -77,15 +76,7 @@ public class Hero extends Movable {
 			armHero(newRow, newColumn, m);
 			g.getSword().takeSword();
 		}
-		else if(g.checkIfDragon(newRow, newColumn) && g.getDragon().getState() == Dragon.ALIVE) {
-			if(g.fightDragon()) {
-				FightEvent fe = new FightEvent("wonFight");
-				g.addEvent(fe);
-			}
-			else
-				return false;
-		}
-		
+
 		return true;
 	}
 

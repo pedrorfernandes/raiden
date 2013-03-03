@@ -9,6 +9,7 @@ import general_utilities.MazeInput;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Vector;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
@@ -29,20 +30,22 @@ public class Game {
 
 	//State Attributes
 	private int dragon_type;
-	private int game_state;
+	//private int game_state; //Variable to prevent dragons from moving at the first turn
 	private int exit_state;
+	private int number_of_dragons;
 
 	//Game elements
 	private Maze maze;
 	private Sword sword;
 	private Hero hero;
-	private Dragon dragon;
+	//private Dragon dragon;
+	private Vector<Dragon> dragons;
 	private LinkedList<GameEvent> events = new LinkedList<GameEvent>();
 
 	/*** Private Methods ***/
 
 	//Game Initializers
-	private void spawnHero() { //Creates a hero object on a random valid position in the maze
+	private Hero spawnHero() { //Creates a hero object on a random valid position in the maze
 		Random random = new Random();
 		int hero_row = 0;
 		int hero_column = 0;
@@ -52,10 +55,11 @@ public class Game {
 			hero_column = random.nextInt(maze.getColumns());
 		} while (!maze.checkIfEmpty(hero_row, hero_column));
 
-		hero = new Hero(hero_row, hero_column);
+		Hero h = new Hero(hero_row, hero_column);
+		return h;
 	}
 
-	private void spawnSword() { //Creates a sword object on a random valid position in the maze
+	private Sword spawnSword() { //Creates a sword object on a random valid position in the maze
 		Random random = new Random();
 		int sword_row = 0;
 		int sword_column = 0;
@@ -65,10 +69,11 @@ public class Game {
 			sword_column = random.nextInt(maze.getColumns());
 		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column));
 
-		sword = new Sword(sword_row, sword_column);
+		Sword sd = new Sword(sword_row, sword_column);
+		return sd;
 	}
 
-	private void spawnDragon() { //Creates a dragon object on a random valid position in the maze
+	private Dragon spawnDragon() { //Creates a dragon object on a random valid position in the maze
 		Random random = new Random();
 		int dragon_row = 0;
 		int dragon_column = 0;
@@ -76,18 +81,36 @@ public class Game {
 		do {
 			dragon_row = random.nextInt(maze.getRows());
 			dragon_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column));
+		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column) || nextToDragon(dragon_row, dragon_column));
 
-		dragon = new Dragon(dragon_row, dragon_column, dragon_type);
+		Dragon dragon = new Dragon(dragon_row, dragon_column, dragon_type);
+		return dragon;
 	}
 
-	private boolean nextToDragon(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
-		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
-				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
-				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column - 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column && dragon.getRow() == row))
-				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
+	private Vector<Dragon> spawnDragons() {
+		Vector<Dragon> ds = new Vector<Dragon>();
+		for(int i = 0; i < number_of_dragons; i++)
+			ds.addElement(spawnDragon());
+
+		return ds;
+	}
+
+	public boolean nextToDragon(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+
+		if(dragons == null || dragons.isEmpty())
+			return false;
+		
+		for(int i = 0; i < dragons.size(); i++) {
+			if(((dragons.get(i).getRow() == row + 1 && dragons.get(i).getColumn() == column) ||
+					(dragons.get(i).getRow() == row - 1  && dragons.get(i).getColumn() == column) ||
+					(dragons.get(i).getColumn() == column + 1 && dragons.get(i).getRow() == row) ||
+					(dragons.get(i).getColumn() == column - 1 && dragons.get(i).getRow() == row) ||
+					(dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row))
+					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))	
+				return true;
+		}
+
+		return false;
 	}
 
 	private boolean nextToHero(int row, int column) { //True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
@@ -97,19 +120,33 @@ public class Game {
 				(column == hero.getColumn() - 1 && row == hero.getRow()) ||
 				(column == hero.getColumn() && row == hero.getRow()));
 	}
+
+	private boolean checkDragonEncounters(boolean goOn) { //Processes an encounter between the hero and a dragon
+
+		for(int i = 0; i < dragons.size(); i++)
+			if (nextToDragon(hero.getRow(), hero.getColumn()) && !(hero.getState() != Hero.ARMED && dragons.get(i).getState() == Dragon.ASLEEP)) {
+				if(fightDragon(dragons.get(i))) {
+					FightEvent wonFight = new FightEvent("wonFight");
+					events.add(wonFight);
+				}
+				else {
+					goOn = false;
+					FightEvent lostFight = new FightEvent("lostFight");
+					events.add(lostFight);
+					return goOn;
+				}
+			}
+
+		return goOn;
+	}
 	
-	private boolean checkDragonEncounter(boolean goOn) { //Processes an encounter between the hero and a dragon
-		if (nextToDragon(hero.getRow(), hero.getColumn()) && !(hero.getState() != Hero.ARMED && dragon.getState() == Dragon.ASLEEP)) {
-			if(fightDragon()) {
-				FightEvent wonFight = new FightEvent("wonFight");
-				events.add(wonFight);
+	private boolean moveDragons(boolean goOn) { //Executes the dragons' turn
+		for(int i = 0; i < dragons.size(); i++)
+			if(dragons.get(i).getType() != Dragon.STATIC && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP)) {
+				dragons.get(i).moveDragon(this);
+
+				goOn = checkDragonEncounters(goOn);
 			}
-			else {
-				goOn = false;
-				FightEvent lostFight = new FightEvent("lostFight");
-				events.add(lostFight);
-			}
-		}
 		return goOn;
 	}
 
@@ -125,25 +162,31 @@ public class Game {
 
 	//Constructors
 	public Game() {
-		game_state = 0;
+		//game_state = 0;
 		int rows = 0, columns = 0;
 		int size[] = {rows, columns};
 		boolean giveSize = false; //Will indicate if user wants to give a specific size for the maze
-		
+
 		//Get Maze options from user
 		GameOutput.printStartMessage();
 		giveSize = GameInput.receiveMazeOptions(size);
-		
-		//Get Dragon options from user
-        dragon_type = GameInput.receiveDragonOptions();
-		
+
 		rows = size[0];
 		columns = size[1];
-		
+
+		//Get Dragon options from user
+		dragon_type = GameInput.receiveDragonOptions();
+
+		//Multiple dragon options
+		if(GameInput.receiveMultipleDragonOptions())
+			number_of_dragons = (rows + columns) / 2;
+		else
+			number_of_dragons = 1;
+
 		// A maze director is in charge of selecting a
 		// building pattern and to order its construction
 		MazeDirector director = new MazeDirector();
-		
+
 		if(giveSize) {
 			if(rows < 5 || columns < 5 || rows > columns) { //Currently, the maze only accepts square mazes or with with more columns than rows
 				GameOutput.printMazeSizeError();
@@ -157,19 +200,19 @@ public class Game {
 			MazeBuilder predefined = new PredefinedMaze();
 			director.setMazeBuilder(predefined);
 		}
-		
+
 		director.constructMaze(rows, columns);
 		maze = director.getMaze();
 
-		spawnHero();
-		spawnSword();
-		spawnDragon();
+		hero = spawnHero();
+		sword = spawnSword();
+		dragons = spawnDragons();
 
 	}
 
 	//General Methods
-	public int getDragonState() {
-		return dragon.getState();
+	public int getDragonState(int i) {
+		return dragons.get(i).getState();
 	}
 
 	public int getExitState() {
@@ -184,8 +227,16 @@ public class Game {
 		return hero;
 	}
 
-	public Dragon getDragon() {
-		return dragon;
+	public Dragon getDragon(int i) {
+		return dragons.get(i);
+	}
+
+	public Vector<Dragon> getDragons() {
+		return dragons;
+	}
+	
+	public int getNumberOfDragons() {
+		return number_of_dragons;
 	}
 
 	public Sword getSword() {
@@ -197,16 +248,21 @@ public class Game {
 	}
 
 	//Game Methods
-	
+
 	public boolean checkIfSword(int row, int column) { //Checks if a sword is in that place
 		return(row == sword.getRow() && column == sword.getColumn() && !sword.getTaken());
 	}
-	
+
 	public boolean checkIfDragon(int row, int column) {
-		return(row == dragon.getRow() && column == dragon.getColumn() && (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
+
+		for(int i = 0; i < dragons.size(); i++)
+			if(row == dragons.get(i).getRow() && column == dragons.get(i).getColumn() && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
+				return true;
+
+		return false;
 	}
-	
-	public boolean fightDragon() { //True if the hero killed the dragon (was carrying sword), false if the hero died
+
+	public boolean fightDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
 			exit_state = OPEN;
@@ -246,15 +302,9 @@ public class Game {
 				System.err.println("Problem reading user input!");
 			}
 
-			goOn = checkDragonEncounter(goOn);
+			goOn = checkDragonEncounters(goOn);
 
-			if(game_state == 1 && dragon.getType() != Dragon.STATIC && (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP)) {
-				dragon.moveDragon(this);
-
-				goOn = checkDragonEncounter(goOn);
-			}
-			else
-				game_state = 1;
+			goOn = moveDragons(goOn);
 
 			GameOutput.printGame(this);
 
@@ -275,4 +325,5 @@ public class Game {
 
 		return true;
 	}
+
 }
