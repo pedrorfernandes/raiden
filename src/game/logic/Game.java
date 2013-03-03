@@ -417,11 +417,13 @@ public class Game {
 				case 'd':
 					goOn = hero.moveHero(0, 1, this);
 					break;
-				case 'z': //z shuts down game
-					goOn = false;
-					break;
+				case ' ':
+					goOn = hero.moveHero(0,  0,  this);
 				case 'e':
 					tryToSendEagle();
+					break;
+				case 'z': //z shuts down game
+					goOn = false;
 					break;
 				default:
 					break;
