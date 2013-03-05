@@ -1,5 +1,6 @@
 package game.logic;
 
+import game.ui.CLInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
 import game.ui.GameEvent;
@@ -227,11 +228,8 @@ public class Game {
 
 	//Main
 	public static void main(String[] args) {
-		GameOptions options = new GameOptions();
-		Game game = new Game(options);
-		GameOutput.clearScreen();
-		GameOutput.printGame(game);
-		game.play();
+		CLInterface cli = new CLInterface();
+		cli.startGame();
 	}
 
 	//Constructors
@@ -324,6 +322,10 @@ public class Game {
 		events.add(ev);
 	}
 
+	public LinkedList<GameEvent> getEvents() {
+		return events;
+	}
+
 	public Eagle getEagle(){
 		return eagle;
 	}
@@ -402,69 +404,54 @@ public class Game {
 		return false;
 	}
 
-	public boolean play() { //Main game loop
+	public boolean heroTurn(char input) { //Main game loop
 		boolean goOn = true;
 
-		char input;
-
-		while(goOn) {
-
-			try {
-				GameOutput.printAskForMove();
-				input = MazeInput.getChar();
-				switch (input) {
-				case 's':
-					goOn = hero.moveHero(1, 0, this); //tries to move hero the number or rows or columns given
-					break;
-				case 'w':
-					goOn = hero.moveHero(-1, 0, this);
-					break;
-				case 'a':
-					goOn = hero.moveHero(0, -1, this);
-					break;
-				case 'd':
-					goOn = hero.moveHero(0, 1, this);
-					break;
-				case ' ':
-					goOn = hero.moveHero(0,  0,  this);
-					break;
-				case 'e':
-					tryToSendEagle();
-					break;
-				case 'z': //z shuts down game
-					goOn = false;
-					break;
-				default:
-					break;
-				}
-			}
-
-			catch(Exception e) {
-				System.err.println("Problem reading user input!");
-			}
-
-			updateEagle();
-
-			GameOutput.clearScreen();
-			GameOutput.printGame(this);
-
-			WaitTime.wait(250);
-
-			goOn = checkDragonEncounters(goOn);
-			goOn = moveDragons(goOn);
-
-			checkEnemyState();
-			checkHeroState();
-
-			GameOutput.clearScreen();
-			GameOutput.printEventQueue(events);
-			GameOutput.printGame(this);
-
-			WaitTime.wait(250);
-
-
+		switch (input) {
+		case 's':
+			goOn = hero.moveHero(1, 0, this); //tries to move hero the number or rows or columns given
+			break;
+		case 'w':
+			goOn = hero.moveHero(-1, 0, this);
+			break;
+		case 'a':
+			goOn = hero.moveHero(0, -1, this);
+			break;
+		case 'd':
+			goOn = hero.moveHero(0, 1, this);
+			break;
+		case ' ':
+			goOn = hero.moveHero(0,  0,  this);
+			break;
+		case 'e':
+			tryToSendEagle();
+			break;
+		case 'z': //z shuts down game
+			goOn = false;
+			break;
+		default:
+			break;
 		}
 
-		return true;
+		updateEagle();
+
+		checkEnemyState();
+		checkHeroState();
+
+		return goOn;
 	}
+
+	public boolean dragonTurn(boolean goOn) {
+
+		goOn = checkDragonEncounters(goOn);
+		goOn = moveDragons(goOn);
+
+		checkEnemyState();
+		checkHeroState();
+
+		return goOn;
+
+	}
+
+
 }

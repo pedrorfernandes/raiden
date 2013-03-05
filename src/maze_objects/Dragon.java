@@ -110,6 +110,8 @@ public class Dragon extends Movable {
 
 			switch(move) {
 			case 0:
+				new_row = row;
+				new_column = column;
 				break;
 			case 1:
 				new_row = row + 1;

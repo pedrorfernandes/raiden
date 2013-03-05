@@ -27,7 +27,7 @@ public class GameTest {
 		
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		Game g = new Game(customOptions);
-		g.play();
+		//g.play();
 	}
 
 }
