@@ -4,6 +4,7 @@ import game.ui.EagleEvent;
 import game.ui.FightEvent;
 import game.ui.GameEvent;
 import game.ui.GameInput;
+import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.ResultEvent;
 import general_utilities.MazeInput;
@@ -33,7 +34,7 @@ public class Game {
 	/*** Private Attributes ***/
 
 	//State Attributes
-	private int dragon_type;
+	private int dragonType;
 	private int exit_state;
 	private int number_of_dragons;
 	private int remaining_dragons;
@@ -88,7 +89,7 @@ public class Game {
 			dragon_column = random.nextInt(maze.getColumns());
 		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column) || nextToDragons(dragon_row, dragon_column));
 
-		Dragon dragon = new Dragon(dragon_row, dragon_column, dragon_type);
+		Dragon dragon = new Dragon(dragon_row, dragon_column, dragonType);
 		return dragon;
 	}
 
@@ -154,7 +155,7 @@ public class Game {
 			}
 		return goOn;
 	}
-	
+
 	private void tryToSendEagle() {
 		if(eagle.getState() == Eagle.DEAD) {
 			EagleEvent ed = new EagleEvent("cantSendDead");
@@ -171,7 +172,7 @@ public class Game {
 		else
 			eagle.takeOff(hero.getRow(), hero.getColumn(), sword); // launches eagle
 	}
-	
+
 	private void updateEagle() {
 		if (eagle.getState() != Eagle.DEAD && eagle.isWithHero()){
 			eagle.moveWithHero(hero.getRow(), hero.getColumn());
@@ -200,7 +201,7 @@ public class Game {
 
 		}
 	}
-	
+
 	private void checkHeroState() { //Checks if hero died or exited the maze, creating the necessary events
 		switch(hero.getState()) {
 		case Hero.EXITED_MAZE:
@@ -226,34 +227,34 @@ public class Game {
 
 	//Main
 	public static void main(String[] args) {
-		Game game = new Game();
+		GameOptions options = new GameOptions();
+		Game game = new Game(options);
 		GameOutput.clearScreen();
 		GameOutput.printGame(game);
 		game.play();
 	}
 
 	//Constructors
-	public Game() {
-		//game_state = 0;
-		int rows = 0, columns = 0;
-		int size[] = {rows, columns};
-		boolean giveSize = false; //Will indicate if user wants to give a specific size for the maze
+	public Game(GameOptions options) {
+		int rows = options.rows, columns = options.columns;
 
-		//Get Maze options from user
-		GameOutput.printStartMessage();
-		giveSize = GameInput.receiveMazeOptions(size);
+		boolean isRandom = options.randomMaze; //Will indicate if user wants to give a specific size for the maze
 
-		rows = size[0];
-		columns = size[1];
+		dragonType = options.dragonType;
 
-		//Get Dragon options from user
-		dragon_type = GameInput.receiveDragonOptions();
+		//Multiple dragon options
+		if(options.multipleDragons)
+			number_of_dragons = (rows + columns) / 10;
+		else
+			number_of_dragons = 1;
+		
+		remaining_dragons = number_of_dragons;
 
 		// A maze director is in charge of selecting a
 		// building pattern and to order its construction
 		MazeDirector director = new MazeDirector();
 
-		if(giveSize) {
+		if(isRandom) {
 			if(rows < 5 || columns < 5) {
 				GameOutput.printMazeSizeError();
 				MazeBuilder predefined = new PredefinedMaze();
@@ -270,19 +271,10 @@ public class Game {
 		director.constructMaze(rows, columns);
 		maze = director.getMaze();
 
-		//Multiple dragon options
-		if(GameInput.receiveMultipleDragonOptions())
-			number_of_dragons = (maze.getRows() + maze.getColumns()) / 10;
-		else
-			number_of_dragons = 1;
-
-		remaining_dragons = number_of_dragons;
-
 		hero = spawnHero();
 		dragons = spawnDragons();
 		sword = spawnSword();
 		eagle = spawnEagle(hero.getRow(), hero.getColumn());
-
 	}
 
 	//General Methods
@@ -358,7 +350,7 @@ public class Game {
 
 		return false;
 	}
-	
+
 	public boolean nextToDragons(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
 
 		if(dragons == null || dragons.isEmpty())
@@ -440,24 +432,24 @@ public class Game {
 			catch(Exception e) {
 				System.err.println("Problem reading user input!");
 			}
-			
+
 			updateEagle();
-						
+
 			GameOutput.clearScreen();
 			GameOutput.printGame(this);
-			
+
 			WaitTime.wait(250);
-			
+
 			goOn = checkDragonEncounters(goOn);
 			goOn = moveDragons(goOn);
-			
+
 			checkEnemyState();
 			checkHeroState();
-			
+
 			GameOutput.clearScreen();
 			GameOutput.printEventQueue(events);
 			GameOutput.printGame(this);
-			
+
 			WaitTime.wait(250);
 
 
