@@ -247,7 +247,7 @@ public class Game {
 			number_of_dragons = (rows + columns) / 10;
 		else
 			number_of_dragons = 1;
-		
+
 		remaining_dragons = number_of_dragons;
 
 		// A maze director is in charge of selecting a
@@ -271,10 +271,20 @@ public class Game {
 		director.constructMaze(rows, columns);
 		maze = director.getMaze();
 
-		hero = spawnHero();
-		dragons = spawnDragons();
-		sword = spawnSword();
-		eagle = spawnEagle(hero.getRow(), hero.getColumn());
+		if(options.randomSpawns) {
+			hero = spawnHero();
+			dragons = spawnDragons();
+			sword = spawnSword();
+			eagle = spawnEagle(hero.getRow(), hero.getColumn());
+		}
+		else {
+			hero = new Hero(options.heroRow, options.heroColumn);
+			dragons = options.dragons;
+			number_of_dragons = dragons.size();
+			remaining_dragons = number_of_dragons;
+			sword = new Sword(options.swordRow, options.swordColumn);
+			eagle = spawnEagle(hero.getRow(), hero.getColumn());
+		}
 	}
 
 	//General Methods
