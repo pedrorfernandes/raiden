@@ -34,7 +34,6 @@ public class Game {
 
 	//State Attributes
 	private int dragon_type;
-	//private int game_state; //Variable to prevent dragons from moving at the first turn
 	private int exit_state;
 	private int number_of_dragons;
 	private int remaining_dragons;
@@ -447,7 +446,7 @@ public class Game {
 			GameOutput.clearScreen();
 			GameOutput.printGame(this);
 			
-			WaitTime.wait(500);
+			WaitTime.wait(250);
 			
 			goOn = checkDragonEncounters(goOn);
 			goOn = moveDragons(goOn);
@@ -459,7 +458,7 @@ public class Game {
 			GameOutput.printEventQueue(events);
 			GameOutput.printGame(this);
 			
-			WaitTime.wait(500);
+			WaitTime.wait(250);
 
 
 		}
