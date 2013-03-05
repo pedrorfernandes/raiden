@@ -39,6 +39,8 @@ public class CLInterface extends GameInterface {
 			WaitTime.wait(250);
 
 			goOn = game.dragonTurn(goOn);
+			
+			game.checkState();
 
 			GameOutput.clearScreen();
 			GameOutput.printEventQueue(game.getEvents() );

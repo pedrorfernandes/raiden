@@ -435,9 +435,6 @@ public class Game {
 
 		updateEagle();
 
-		checkEnemyState();
-		checkHeroState();
-
 		return goOn;
 	}
 
@@ -446,11 +443,13 @@ public class Game {
 		goOn = checkDragonEncounters(goOn);
 		goOn = moveDragons(goOn);
 
-		checkEnemyState();
-		checkHeroState();
-
 		return goOn;
 
+	}
+	
+	public void checkState() {
+		checkEnemyState();
+		checkHeroState();
 	}
 
 
