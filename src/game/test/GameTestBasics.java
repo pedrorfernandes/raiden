@@ -10,6 +10,7 @@ import game.ui.GameOptions;
 import game.ui.TestInterface;
 
 import maze_objects.Dragon;
+import maze_objects.Hero;
 
 import org.junit.Test;
 
@@ -234,6 +235,28 @@ public class GameTestBasics {
 
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(5, test.getGame().getHero().getColumn());
+	}
+	
+	///Tests if hero picks up sword, sword is registered as taken, and hero as armed.
+	@Test
+	public void testPickingUpSword() {
+		Dragon d1 = new Dragon(1,  7,  Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		Stack<Character> heroMoves = createMovesStack("ss");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(3, test.getGame().getHero().getRow());
+		assertEquals(1, test.getGame().getHero().getColumn());
+		
+		assertEquals(true, test.getGame().getSword().isTaken());
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
 	}
 
 }
