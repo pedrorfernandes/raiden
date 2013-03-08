@@ -39,7 +39,7 @@ public class TestInterface  extends GameInterface {
 			goOn = game.heroTurn(input);
 
 			//GameOutput.clearScreen();
-			System.out.println("Heros' turn");
+			System.out.println("Hero's turn");
 			GameOutput.printGame(game);
 			WaitTime.wait(250);
 
