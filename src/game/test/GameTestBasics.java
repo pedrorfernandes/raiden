@@ -177,5 +177,63 @@ public class GameTestBasics {
 		assertEquals(8, test.getGame().getHero().getRow());
 		assertEquals(8, test.getGame().getHero().getColumn());
 	}
+	
+	@Test
+	public void testHeroAgainstSleepingDragon() {
+		Dragon d1 = new Dragon(5, 4, Dragon.STATIC);
+		d1.setState(Dragon.ASLEEP); //Creates a permanently asleep dragon, due to it being a STATIC dragon
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 4, hero_column = 4, sword_row = 7, sword_column = 8;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		//Tests moving down on a sleeping dragon
+		Stack<Character> heroMoves = createMovesStack("s");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(4, test.getGame().getHero().getRow());
+		assertEquals(4, test.getGame().getHero().getColumn());
+
+		//Tests moving up on a sleeping dragon
+		hero_row = 6;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		heroMoves = createMovesStack("w");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(6, test.getGame().getHero().getRow());
+		assertEquals(4, test.getGame().getHero().getColumn());
+
+		//Tests moving right on a sleeping dragon
+		hero_row = 5;
+		hero_column = 3;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createMovesStack("d");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(5, test.getGame().getHero().getRow());
+		assertEquals(3, test.getGame().getHero().getColumn());
+
+		//Tests moving left on a sleeping dragon
+		hero_row = 5;
+		hero_column = 5;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createMovesStack("a");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(5, test.getGame().getHero().getRow());
+		assertEquals(5, test.getGame().getHero().getColumn());
+	}
 
 }
