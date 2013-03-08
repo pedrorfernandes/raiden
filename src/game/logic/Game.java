@@ -313,6 +313,10 @@ public class Game {
 	public int getNumberOfDragons() {
 		return number_of_dragons;
 	}
+	
+	public int getRemainingDragons() {
+		return remaining_dragons;
+	}
 
 	public Sword getSword() {
 		return sword;
@@ -453,6 +457,4 @@ public class Game {
 		checkHeroState();
 		return goOn;
 	}
-
-
 }

@@ -195,6 +195,7 @@ public class GameTestBasics {
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
+		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
 		assertEquals(4, test.getGame().getHero().getRow());
 		assertEquals(4, test.getGame().getHero().getColumn());
 
@@ -207,6 +208,7 @@ public class GameTestBasics {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
+		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
 		assertEquals(6, test.getGame().getHero().getRow());
 		assertEquals(4, test.getGame().getHero().getColumn());
 
@@ -220,6 +222,7 @@ public class GameTestBasics {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
+		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(3, test.getGame().getHero().getColumn());
 
@@ -233,6 +236,7 @@ public class GameTestBasics {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
+		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(5, test.getGame().getHero().getColumn());
 	}
@@ -258,5 +262,150 @@ public class GameTestBasics {
 		assertEquals(true, test.getGame().getSword().isTaken());
 		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
 	}
+	
+	@Test
+	public void testLosingAgainstDragon() {
+		Dragon d1 = new Dragon(1, 3, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		Stack<Character> heroMoves = createMovesStack("d");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(Hero.DEAD, test.getGame().getHero().getState());
+	}
+	
+	@Test
+	public void testKillingDragon() {
+		Dragon d1 = new Dragon(1, 3, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		Stack<Character> heroMoves = createMovesStack("sswwd");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if the hero state remained armed
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+		
+		//Checks if the dragon was killed and the number of remaining dragons dropped
+		assertEquals(0, test.getGame().getRemainingDragons());
+		assertEquals(Dragon.DEAD, test.getGame().getDragon(0).getState());
+		
+		/* Tests if the hero kills the dragon if the dragon is right next to the sword */
+		sword_row = 1;
+		sword_column = 2;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		heroMoves = createMovesStack("d");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if the hero state remained armed
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+		
+		//Checks if the dragon was killed and the number of remaining dragons dropped
+		assertEquals(Dragon.DEAD, test.getGame().getDragon(0).getState());
+		assertEquals(0, test.getGame().getRemainingDragons());
+	}
+	
+	@Test
+	public void testSuccessfulExit() {
+		Dragon d1 = new Dragon(1, 3, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		Stack<Character> heroMoves = createMovesStack("sswwdddddddssssd");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if the exit is open
+		assertEquals(Game.OPEN, test.getGame().getExitState());
+		
+		//Checks if the hero exited the maze
+		assertEquals(Hero.EXITED_MAZE, test.getGame().getHero().getState());
+		
+		//Checks if the dragon was killed and there are no remaining dragons
+		assertEquals(0, test.getGame().getRemainingDragons());
+		assertEquals(Dragon.DEAD, test.getGame().getDragon(0).getState());
+	}
+	
+	@Test
+	public void testPrematureExit() {
+		Dragon d1 = new Dragon(8, 1, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		/* Test exit attempt without sword or killing all the dragons */
+		int hero_row = 4, hero_column = 8, sword_row = 6, sword_column = 8;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		Stack<Character> heroMoves = createMovesStack("sd");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if exit remains closed
+		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		
+		//Checks if hero didn't change its state and remained in its place
+		assertEquals(5, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		
+		
+		/* Test exit attempt with sword but without killing any dragons */
+		heroMoves = createMovesStack("sswd");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if exit remained closed
+		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		
+		//Checks if hero didn't change its state and remained in its place
+		assertEquals(5, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+		
+		
+		/* Test exit attempt with sword and after killing a dragon, but not all */
+		d1 = new Dragon(8, 8, Dragon.STATIC);
+		Dragon d2 = new Dragon(8, 1, Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		dragons.add(d2);
+
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		
+		heroMoves = createMovesStack("sssswwwd");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Checks if exit remains closed
+		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		
+		//Checks if hero didn't change its state and remained in its place
+		assertEquals(5, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+	}
+	
+	
 
 }
