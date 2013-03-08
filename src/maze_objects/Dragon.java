@@ -12,6 +12,8 @@ public class Dragon extends Movable {
 	private int type;
 	private boolean hasSword;
 	private int dragonSleepTurns;
+	private Random randomMove;
+	private Random randomSleep;
 
 	/*** Public Attributes ***/
 
@@ -58,6 +60,18 @@ public class Dragon extends Movable {
 		state = ALIVE;
 		type = dragon_type;
 		hasSword = false;
+		randomMove = new Random();
+		randomSleep = new Random();
+	}
+	
+	public Dragon(int dragon_row, int dragon_column, int dragon_type, Random move, Random sleep) {
+		row = dragon_row;
+		column = dragon_column;
+		state = ALIVE;
+		type = dragon_type;
+		hasSword = false;
+		randomMove = move;
+		randomSleep = sleep;
 	}
 
 	//General methods
@@ -80,11 +94,10 @@ public class Dragon extends Movable {
 
 		if(type == SLEEPING) {
 			if(state == ALIVE) {
-				Random random = new Random();
-				int n  = random.nextInt(CHANCE_TO_SLEEP);
+				int n  = randomSleep.nextInt(CHANCE_TO_SLEEP);
 				if(n == 1) {
 					state = ASLEEP;
-					dragonSleepTurns = (random.nextInt(MAX_SLEEP_TURNS) + 1); //Sleeps from 1 to max_sleep_turns
+					dragonSleepTurns = (randomSleep.nextInt(MAX_SLEEP_TURNS) + 1); //Sleeps from 1 to max_sleep_turns
 					return;
 				}
 			}
@@ -101,31 +114,30 @@ public class Dragon extends Movable {
 			}
 		}
 
-		Random random = new Random();
 		int move = 0;
 		int new_row = 0;
 		int new_column = 0;
 		do {
-			move = random.nextInt(POSSIBLE_MOVES);
+			move = randomMove.nextInt(POSSIBLE_MOVES);
 
 			switch(move) {
-			case 0:
+			case 0: // stand still
 				new_row = row;
 				new_column = column;
 				break;
-			case 1:
+			case 1: // down
 				new_row = row + 1;
 				new_column = column;
 				break;
-			case 2:
+			case 2: // up
 				new_row = row - 1;
 				new_column = column;
 				break;
-			case 3:
+			case 3: // right
 				new_column = column + 1;
 				new_row = row;
 				break;
-			case 4:
+			case 4: // left
 				new_column = column - 1;
 				new_row = row;
 				break;

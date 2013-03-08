@@ -8,6 +8,7 @@ import java.util.Stack;
 import game.logic.Game;
 import game.ui.GameOptions;
 import game.ui.TestInterface;
+import game.test.FakeRandom;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
@@ -16,12 +17,51 @@ import org.junit.Test;
 
 public class GameTestBasics {
 
-	private Stack<Character> createMovesStack(String moves){
+	private Stack<Character> createHeroMoves(String moves){
 		Stack<Character> movesStack = new Stack<Character>();
 		char[] chars = moves.toCharArray();
 		int i = chars.length-1;
 		while (i >= 0){
 			movesStack.push(chars[i]);
+			i--;
+		}
+
+		return movesStack;
+	}
+	
+	private Stack<Integer> createDragonMoves(String moves){
+		Stack<Integer> movesStack = new Stack<Integer>();
+		char[] chars = moves.toCharArray();
+		int i = chars.length-1;
+		while (i >= 0){
+			switch(chars[i]) {
+			case ' ': // stand still
+				movesStack.push(0);
+				break;
+			case 's': // down
+				movesStack.push(1);
+				break;
+			case 'w': // up
+				movesStack.push(2);
+				break;
+			case 'd': // right
+				movesStack.push(3);
+				break;
+			case 'a': // left
+				movesStack.push(4);
+				break;
+			}
+			i--;
+		}
+		return movesStack;
+	}
+	
+	private Stack<Integer> createDragonSleeps(String moves){
+		Stack<Integer> movesStack = new Stack<Integer>();
+		char[] chars = moves.toCharArray();
+		int i = chars.length-1;
+		while (i >= 0){
+			movesStack.push( Character.getNumericValue(chars[i]) );
 			i--;
 		}
 
@@ -59,7 +99,7 @@ public class GameTestBasics {
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
 		//Tests moving right to an empty space
-		Stack<Character> heroMoves = createMovesStack("d");
+		Stack<Character> heroMoves = createHeroMoves("d");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -72,7 +112,7 @@ public class GameTestBasics {
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
 		
-		heroMoves = createMovesStack("s");
+		heroMoves = createHeroMoves("s");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -89,7 +129,7 @@ public class GameTestBasics {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("w");
+		heroMoves = createHeroMoves("w");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -106,7 +146,7 @@ public class GameTestBasics {
 		hero_column = 8;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("a");
+		heroMoves = createHeroMoves("a");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -123,7 +163,7 @@ public class GameTestBasics {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("dddssssswddsssaddd");
+		heroMoves = createHeroMoves("dddssssswddsssaddd");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -142,7 +182,7 @@ public class GameTestBasics {
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
 		//Tests moving left against a wall
-		Stack<Character> heroMoves = createMovesStack("a");
+		Stack<Character> heroMoves = createHeroMoves("a");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -155,7 +195,7 @@ public class GameTestBasics {
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
 		
-		heroMoves = createMovesStack("w");
+		heroMoves = createHeroMoves("w");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -172,7 +212,7 @@ public class GameTestBasics {
 		hero_column = 8;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("d");
+		heroMoves = createHeroMoves("d");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -185,7 +225,7 @@ public class GameTestBasics {
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
 		
-		heroMoves = createMovesStack("s");
+		heroMoves = createHeroMoves("s");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -202,7 +242,7 @@ public class GameTestBasics {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("wawadddssdadassswdwswsdsdadassssssssadddsdsd");
+		heroMoves = createHeroMoves("wawadddssdadassswdwswsdsdadassssssssadddsdsd");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -222,7 +262,7 @@ public class GameTestBasics {
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
 		//Tests moving down on a sleeping dragon
-		Stack<Character> heroMoves = createMovesStack("s");
+		Stack<Character> heroMoves = createHeroMoves("s");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -240,7 +280,7 @@ public class GameTestBasics {
 		hero_row = 6;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		heroMoves = createMovesStack("w");
+		heroMoves = createHeroMoves("w");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -259,7 +299,7 @@ public class GameTestBasics {
 		hero_column = 3;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("d");
+		heroMoves = createHeroMoves("d");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -278,7 +318,7 @@ public class GameTestBasics {
 		hero_column = 5;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("a");
+		heroMoves = createHeroMoves("a");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -298,7 +338,7 @@ public class GameTestBasics {
 		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		Stack<Character> heroMoves = createMovesStack("ss");
+		Stack<Character> heroMoves = createHeroMoves("ss");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -319,7 +359,7 @@ public class GameTestBasics {
 		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		Stack<Character> heroMoves = createMovesStack("d");
+		Stack<Character> heroMoves = createHeroMoves("d");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -336,7 +376,7 @@ public class GameTestBasics {
 		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		Stack<Character> heroMoves = createMovesStack("sswwd");
+		Stack<Character> heroMoves = createHeroMoves("sswwd");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -358,7 +398,7 @@ public class GameTestBasics {
 		
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		heroMoves = createMovesStack("d");
+		heroMoves = createHeroMoves("d");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -380,7 +420,7 @@ public class GameTestBasics {
 		int hero_row = 1, hero_column = 1, sword_row = 3, sword_column = 1;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		Stack<Character> heroMoves = createMovesStack("sswwdddddddssssd");
+		Stack<Character> heroMoves = createHeroMoves("sswwdddddddssssd");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -406,7 +446,7 @@ public class GameTestBasics {
 		int hero_row = 4, hero_column = 8, sword_row = 6, sword_column = 8;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		Stack<Character> heroMoves = createMovesStack("sd");
+		Stack<Character> heroMoves = createHeroMoves("sd");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -425,7 +465,7 @@ public class GameTestBasics {
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
 		
-		heroMoves = createMovesStack("sswd");
+		heroMoves = createHeroMoves("sswd");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -448,7 +488,7 @@ public class GameTestBasics {
 
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
-		heroMoves = createMovesStack("sssswwwd");
+		heroMoves = createHeroMoves("sssswwwd");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -462,6 +502,31 @@ public class GameTestBasics {
 		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
 	}
 	
-	
+	@Test
+	public void testDragonMoves() {
+		// moves of the dragon when he is not sleeping
+		// after this stack empties, the numbers will be RANDOM
+		Stack<Integer> moveNumbers = createDragonMoves("aswdds");
+		// 2 -> doesnt sleep / 1 ->sleeps
+		// imediatelly after 1 you must specify the number of turns the dragon sleeps
+		// int this case he will sleep 3+1 turns
+		Stack<Integer> sleepNumbers = createDragonSleeps("2213222");
+
+		FakeRandom moves = new FakeRandom(moveNumbers);
+		FakeRandom sleeps = new FakeRandom(sleepNumbers);
+		
+		Dragon d1 = new Dragon(1,  7,  Dragon.SLEEPING, moves, sleeps);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		//Tests moving left against a wall
+		Stack<Character> heroMoves = createHeroMoves("               ");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+	}
 
 }
