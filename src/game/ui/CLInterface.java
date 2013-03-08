@@ -6,7 +6,6 @@ import general_utilities.WaitTime;
 
 public class CLInterface extends GameInterface {
 
-
 	public void startGame() {
 
 		GameOptions options = new GameOptions();
@@ -51,7 +50,6 @@ public class CLInterface extends GameInterface {
 			WaitTime.wait(250);
 
 		}
-
 	}
 
 }

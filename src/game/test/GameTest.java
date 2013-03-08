@@ -3,15 +3,29 @@ package game.test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import game.logic.Game;
 import game.ui.GameOptions;
+import game.ui.TestInterface;
 
 import maze_objects.Dragon;
 
 import org.junit.Test;
 
 public class GameTest {
+	
+	private Stack<Character> createMovesStack(String moves){
+		Stack<Character> movesStack = new Stack<Character>();
+		char[] chars = moves.toCharArray();
+		int i = chars.length-1;
+		while (i >= 0){
+			movesStack.push(chars[i]);
+			i--;
+		}
+	
+		return movesStack;
+	}
 
 	@Test
 	public void testCustomSpawns() {
@@ -26,8 +40,12 @@ public class GameTest {
 		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
 		
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
-		Game g = new Game(customOptions);
-		//g.play();
+
+		Stack<Character> heroMoves = createMovesStack("das");
+		
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
 	}
 
 }
