@@ -13,7 +13,7 @@ import maze_objects.Dragon;
 
 import org.junit.Test;
 
-public class GameTest {
+public class GameTestBasics {
 	
 	private Stack<Character> createMovesStack(String moves){
 		Stack<Character> movesStack = new Stack<Character>();
