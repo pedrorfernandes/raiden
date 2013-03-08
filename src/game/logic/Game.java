@@ -122,7 +122,10 @@ public class Game {
 	private boolean checkDragonEncounters(boolean goOn) { //Processes encounters between the hero and a dragon
 
 		for(int i = 0; i < dragons.size(); i++)
-			if (hero.getState() != Hero.DEAD && nextToOneDragon(hero.getRow(), hero.getColumn(), dragons.get(i)) && !(hero.getState() != Hero.ARMED && dragons.get(i).getState() == Dragon.ASLEEP)) {
+			if (hero.getState() != Hero.DEAD 
+			        && nextToOneDragon(hero.getRow(), hero.getColumn(), dragons.get(i)) 
+			        && !(hero.getState() != Hero.ARMED 
+			        && dragons.get(i).getState() == Dragon.ASLEEP)) {
 				if(fightDragon(dragons.get(i))) {
 					FightEvent wonFight = new FightEvent("wonFight");
 					events.add(wonFight);
@@ -152,7 +155,8 @@ public class Game {
 			if(dragons.get(i).getType() != Dragon.STATIC && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP)) {
 				dragons.get(i).moveDragon(this);
 
-				goOn = checkDragonEncounters(goOn);
+				// WARP KILLS
+				//goOn = checkDragonEncounters(goOn);
 			}
 		return goOn;
 	}
@@ -447,9 +451,11 @@ public class Game {
 
 	}
 	
-	public void checkState() {
+	public boolean checkState(boolean goOn) {
+		goOn = checkDragonEncounters(goOn);
 		checkEnemyState();
 		checkHeroState();
+		return goOn;
 	}
 
 
