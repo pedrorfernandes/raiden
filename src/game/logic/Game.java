@@ -4,13 +4,9 @@ import game.ui.CLInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
 import game.ui.GameEvent;
-import game.ui.GameInput;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.ResultEvent;
-import general_utilities.MazeInput;
-import general_utilities.WaitTime;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
