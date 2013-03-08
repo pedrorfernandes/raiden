@@ -68,6 +68,10 @@ public class GameTestBasics {
 		assertEquals(2, test.getGame().getHero().getColumn());
 
 		//Tests moving down to an empty space
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		heroMoves = createMovesStack("s");
 
 		test = new TestInterface(customOptions, heroMoves);
@@ -77,6 +81,10 @@ public class GameTestBasics {
 		assertEquals(1, test.getGame().getHero().getColumn());
 
 		//Tests moving up to an empty space
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 8;
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -90,6 +98,10 @@ public class GameTestBasics {
 		assertEquals(1, test.getGame().getHero().getColumn());
 
 		//Tests moving left to an empty space
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 8;
 		hero_column = 8;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -103,6 +115,10 @@ public class GameTestBasics {
 		assertEquals(7, test.getGame().getHero().getColumn());
 
 		//Tests a full sequence of moves through empty spaces
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 1;
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -135,6 +151,10 @@ public class GameTestBasics {
 		assertEquals(1, test.getGame().getHero().getColumn());
 
 		//Tests moving up against a wall
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		heroMoves = createMovesStack("w");
 
 		test = new TestInterface(customOptions, heroMoves);
@@ -144,6 +164,10 @@ public class GameTestBasics {
 		assertEquals(1, test.getGame().getHero().getColumn());
 
 		//Tests moving right against a wall
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 8;
 		hero_column = 8;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -157,6 +181,10 @@ public class GameTestBasics {
 		assertEquals(8, test.getGame().getHero().getColumn());
 
 		//Tests moving down against a wall
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		heroMoves = createMovesStack("s");
 
 		test = new TestInterface(customOptions, heroMoves);
@@ -166,6 +194,10 @@ public class GameTestBasics {
 		assertEquals(8, test.getGame().getHero().getColumn());
 
 		//Tests a full sequence of moves, mixed with going against walls
+		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 1;
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -200,6 +232,11 @@ public class GameTestBasics {
 		assertEquals(4, test.getGame().getHero().getColumn());
 
 		//Tests moving up on a sleeping dragon
+		d1 = new Dragon(5, 4, Dragon.STATIC);
+		d1.setState(Dragon.ASLEEP); //Creates a permanently asleep dragon, due to it being a STATIC dragon
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 6;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
@@ -213,6 +250,11 @@ public class GameTestBasics {
 		assertEquals(4, test.getGame().getHero().getColumn());
 
 		//Tests moving right on a sleeping dragon
+		d1 = new Dragon(5, 4, Dragon.STATIC);
+		d1.setState(Dragon.ASLEEP); //Creates a permanently asleep dragon, due to it being a STATIC dragon
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 5;
 		hero_column = 3;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -227,6 +269,11 @@ public class GameTestBasics {
 		assertEquals(3, test.getGame().getHero().getColumn());
 
 		//Tests moving left on a sleeping dragon
+		d1 = new Dragon(5, 4, Dragon.STATIC);
+		d1.setState(Dragon.ASLEEP); //Creates a permanently asleep dragon, due to it being a STATIC dragon
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		hero_row = 5;
 		hero_column = 5;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
@@ -302,8 +349,13 @@ public class GameTestBasics {
 		assertEquals(Dragon.DEAD, test.getGame().getDragon(0).getState());
 		
 		/* Tests if the hero kills the dragon if the dragon is right next to the sword */
+		d1 = new Dragon(1, 3, Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		sword_row = 1;
 		sword_column = 2;
+		
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		
 		heroMoves = createMovesStack("d");
@@ -369,6 +421,10 @@ public class GameTestBasics {
 		
 		
 		/* Test exit attempt with sword but without killing any dragons */
+		d1 = new Dragon(8, 1, Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+		
 		heroMoves = createMovesStack("sswd");
 
 		test = new TestInterface(customOptions, heroMoves);
