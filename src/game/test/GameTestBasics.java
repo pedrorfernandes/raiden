@@ -27,7 +27,7 @@ public class GameTestBasics {
 		return movesStack;
 	}
 
-	@Test
+	/*@Test
 	public void testCustomSpawns() {
 		Dragon d1 = new Dragon(1, 7, Dragon.SLEEPING);
 		Dragon d2 = new Dragon(3, 1, Dragon.STATIC);
@@ -46,7 +46,7 @@ public class GameTestBasics {
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-	}
+	}*/
 
 	@Test
 	public void testHeroToEmptySpace() {
@@ -107,6 +107,69 @@ public class GameTestBasics {
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
 		heroMoves = createMovesStack("dddssssswddsssaddd");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(8, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+	}
+	
+	@Test
+	public void testHeroToWall() {
+		Dragon d1 = new Dragon(1,  7,  Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		//Tests moving left against a wall
+		Stack<Character> heroMoves = createMovesStack("a");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(1, test.getGame().getHero().getRow());
+		assertEquals(1, test.getGame().getHero().getColumn());
+
+		//Tests moving up against a wall
+		heroMoves = createMovesStack("w");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(1, test.getGame().getHero().getRow());
+		assertEquals(1, test.getGame().getHero().getColumn());
+
+		//Tests moving right against a wall
+		hero_row = 8;
+		hero_column = 8;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createMovesStack("d");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(8, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+
+		//Tests moving down against a wall
+		heroMoves = createMovesStack("s");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(8, test.getGame().getHero().getRow());
+		assertEquals(8, test.getGame().getHero().getColumn());
+
+		//Tests a full sequence of moves, mixed with going against walls
+		hero_row = 1;
+		hero_column = 1;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createMovesStack("wawadddssdadassswdwswsdsdadassssssssadddsdsd");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
