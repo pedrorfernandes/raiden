@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import maze_objects.Dragon;
+import maze_objects.Hero;
 
 import org.junit.Test;
 
@@ -301,6 +302,77 @@ public class GameTestEagle {
 
 		//Check if the eagle is waiting
 		assertEquals(true, test.getGame().getEagle().isWaitingForHero());
+	}
+
+	@Test
+	public void testRetrievingEagle() {
+		
+		/* Test retrieving eagle when it flies up to hero's position */
+		Dragon d1 = new Dragon(8, 8, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 4, sword_row = 5, sword_column = 4;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		Stack<Character> heroMoves = createMovesStack("e       z");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Check if the eagle is on the original hero position
+		assertEquals(1, test.getGame().getEagle().getRow());
+		assertEquals(4, test.getGame().getEagle().getColumn());
+
+		//Check if the eagle is caught
+		assertEquals(true, test.getGame().getEagle().isWithHero());
+		
+		//Check if the hero gets the sword
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+		
+		//Check if the eagle is not on route to sword nor to hero
+		assertEquals(false, test.getGame().getEagle().isOnRouteToHero());
+		assertEquals(false, test.getGame().getEagle().isOnRouteToSword());
+		
+		//Check if the eagle is not grounded and dropped sword
+		assertEquals(false, test.getGame().getEagle().isOnGroundWithSword());
+		assertEquals(false, test.getGame().getEagle().isWaitingForHero());
+		assertEquals(false, test.getGame().getEagle().eagleHasSword());
+		
+		
+		
+		/* Test retrieving eagle when the hero goes on top of it */
+		d1 = new Dragon(8, 8, Dragon.STATIC);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		hero_row = 1;
+		hero_column = 4;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createMovesStack("es      wz");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Check if the eagle is on the original hero position
+		assertEquals(1, test.getGame().getEagle().getRow());
+		assertEquals(4, test.getGame().getEagle().getColumn());
+
+		//Check if the eagle is caught
+		assertEquals(true, test.getGame().getEagle().isWithHero());
+		
+		//Check if the hero gets the sword
+		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
+		
+		//Check if the eagle is not on route to sword nor to hero
+		assertEquals(false, test.getGame().getEagle().isOnRouteToHero());
+		assertEquals(false, test.getGame().getEagle().isOnRouteToSword());
+		
+		//Check if the eagle is not grounded and dropped sword
+		assertEquals(false, test.getGame().getEagle().isOnGroundWithSword());
+		assertEquals(false, test.getGame().getEagle().isWaitingForHero());
+		assertEquals(false, test.getGame().getEagle().eagleHasSword());
 	}
 
 }
