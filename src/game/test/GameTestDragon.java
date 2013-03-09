@@ -40,7 +40,7 @@ public class GameTestDragon extends GameTest {
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 	}
-	*/
+	 */
 
 	@Test
 	public void testDragonMoves() {
@@ -53,7 +53,7 @@ public class GameTestDragon extends GameTest {
 		GameOptions customOptions;
 		Stack<Character> heroMoves;
 		TestInterface test;
-		
+
 		//Tests moving right to an empty space
 		moveNumbers = createDragonMoves("d");
 		sleepNumbers = createDragonSleeps("2");
@@ -62,9 +62,9 @@ public class GameTestDragon extends GameTest {
 		d1 = new Dragon(5,  4,  Dragon.NORMAL , moves, sleeps);
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
-				
+
 		heroMoves = createHeroMoves(" ");
-		
+
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -72,7 +72,7 @@ public class GameTestDragon extends GameTest {
 		assertEquals(5, d1.getRow());
 		assertEquals(5, d1.getColumn());
 
-		
+
 		//Tests moving down to an empty space
 		moveNumbers = createDragonMoves("s");
 		sleepNumbers = createDragonSleeps("2");
@@ -81,7 +81,7 @@ public class GameTestDragon extends GameTest {
 		d1 = new Dragon(5,  4, Dragon.NORMAL , moves, sleeps);
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
-				
+
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		heroMoves = createHeroMoves(" ");
 
@@ -91,82 +91,143 @@ public class GameTestDragon extends GameTest {
 		assertEquals(6, d1.getRow());
 		assertEquals(4, d1.getColumn());
 
-		/*
+
 		//Tests moving up to an empty space
-		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		moveNumbers = createDragonMoves("w");
+		sleepNumbers = createDragonSleeps("2");
+		moves = new FakeRandom(moveNumbers);
+		sleeps = new FakeRandom(sleepNumbers);
+		d1 = new Dragon(5,  4, Dragon.NORMAL , moves, sleeps);
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
-		
-		hero_row = 8;
-		hero_column = 1;
-		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createHeroMoves("w");
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		heroMoves = createHeroMoves(" ");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(7, test.getGame().getHero().getRow());
-		assertEquals(1, test.getGame().getHero().getColumn());
+		assertEquals(4, d1.getRow());
+		assertEquals(4, d1.getColumn());
+
 
 		//Tests moving left to an empty space
-		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		moveNumbers = createDragonMoves("a");
+		sleepNumbers = createDragonSleeps("2");
+		moves = new FakeRandom(moveNumbers);
+		sleeps = new FakeRandom(sleepNumbers);
+		d1 = new Dragon(5,  4, Dragon.NORMAL , moves, sleeps);
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
-		
-		hero_row = 8;
-		hero_column = 8;
-		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createHeroMoves("a");
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		heroMoves = createHeroMoves(" ");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(8, test.getGame().getHero().getRow());
-		assertEquals(7, test.getGame().getHero().getColumn());
+		assertEquals(5, d1.getRow());
+		assertEquals(3, d1.getColumn());
 
 		//Tests a full sequence of moves through empty spaces
-		d1 = new Dragon(1,  7,  Dragon.STATIC);
+		moveNumbers = createDragonMoves("dddssssswddsssaddd");
+		sleepNumbers = createDragonSleeps("2");
+		moves = new FakeRandom(moveNumbers);
+		sleeps = new FakeRandom(sleepNumbers);
+		d1 = new Dragon(1,  1, Dragon.NORMAL , moves, sleeps);
 		dragons = new ArrayList<Dragon>(1);
 		dragons.add(d1);
-		
-		hero_row = 1;
-		hero_column = 1;
-		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createHeroMoves("dddssssswddsssaddd");
+		hero_column = 1; 
+		hero_row = 7; 
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+		heroMoves = createHeroMoves("                  ");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(8, test.getGame().getHero().getRow());
-		assertEquals(8, test.getGame().getHero().getColumn());
-		*/
+		assertEquals(8, d1.getRow());
+		assertEquals(8, d1.getColumn());
+
 	}
-	
+
 	@Test
 	public void testDragonSleeps() {
-		
+		Stack<Integer> moveNumbers;
+		Stack<Integer> sleepNumbers;
+		FakeRandom moves, sleeps;
+		ArrayList<Dragon>dragons;
+		Dragon d1;
+		GameOptions customOptions;
+		Stack<Character> heroMoves;
+		TestInterface test;
+		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
+
+		// Test if dragon is sleeping when game ends
+		moveNumbers = createDragonMoves("wwwwwww");
+		sleepNumbers = createDragonSleeps("2221322");
+
+		moves = new FakeRandom(moveNumbers);
+		sleeps = new FakeRandom(sleepNumbers);
+
+		d1 = new Dragon(8,  4,  Dragon.SLEEPING , moves, sleeps);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		hero_row = 1; hero_column = 1; sword_row = 7; sword_column = 8;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createHeroMoves("       ");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(5, d1.getRow());
+		assertEquals(4, d1.getColumn());
+		assertEquals(Dragon.SLEEPING, d1.getState() );
+
+		// Test if dragon is awake when game ends
+		moveNumbers = createDragonMoves("wwwwwww");
+		// sleeps for 4 turns then 1 turn wakes up, only after then dragon will move
+		sleepNumbers = createDragonSleeps("2221322");
+
+		moves = new FakeRandom(moveNumbers);
+		sleeps = new FakeRandom(sleepNumbers);
+
+		d1 = new Dragon(8,  4,  Dragon.SLEEPING , moves, sleeps);
+		dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		hero_row = 1; hero_column = 1; sword_row = 7; sword_column = 8;
+		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		heroMoves = createHeroMoves("            ");
+
+		test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		assertEquals(1, d1.getRow());
+		assertEquals(4, d1.getColumn());
+		assertEquals(Dragon.ALIVE, d1.getState() );
 	}
 
 	@Test
 	public void testDragonKillsHero() {
-		
+
 	}
-	
+
 	@Test
 	public void testDragonGetsKilled() {
-		
+
 	}
-	
+
 	@Test
 	public void testMultipleDragons() {
-		
+
 	}
-	
+
 	@Test
 	public void testDragonWakesUp() {
-		
+
 	}
 }

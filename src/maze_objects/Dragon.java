@@ -102,15 +102,10 @@ public class Dragon extends Movable {
 				}
 			}
 			else if(state == ASLEEP) {
-				
+				dragonSleepTurns--;
 				if(dragonSleepTurns == 0)
 					state = ALIVE;
-				else {
-					dragonSleepTurns--;
-				}
-
 				return;
-				
 			}
 		}
 
