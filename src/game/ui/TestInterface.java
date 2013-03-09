@@ -3,8 +3,6 @@ package game.ui;
 import java.util.Stack;
 
 import game.logic.Game;
-import general_utilities.WaitTime;
-
 
 public class TestInterface  extends GameInterface {
 	

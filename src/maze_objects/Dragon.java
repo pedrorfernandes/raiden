@@ -114,12 +114,9 @@ public class Dragon extends Movable {
 		int new_column = 0;
 		do {
 			move = randomMove.nextInt(POSSIBLE_MOVES);
-
 			switch(move) {
 			case 0: // stand still
-				new_row = row;
-				new_column = column;
-				break;
+				return;
 			case 1: // down
 				new_row = row + 1;
 				new_column = column;
@@ -138,7 +135,11 @@ public class Dragon extends Movable {
 				break;
 			}
 
-		} while(g.getMaze().checkIfWall(new_row, new_column) || g.isOnDragon(new_row, new_column) || g.getMaze().checkIfExit(new_row, new_column) || new_row == 0 || new_column == 0);
+		} while(g.getMaze().checkIfWall(new_row, new_column) 
+				|| g.isOnDragon(new_row, new_column)
+				|| g.getMaze().checkIfExit(new_row, new_column) 
+				|| new_row == 0 
+				|| new_column == 0);
 
 		makeMove(g, new_row, new_column);
 	}
