@@ -13,19 +13,7 @@ import maze_objects.Hero;
 
 import org.junit.Test;
 
-public class GameTestEagle {
-
-	private Stack<Character> createMovesStack(String moves){
-		Stack<Character> movesStack = new Stack<Character>();
-		char[] chars = moves.toCharArray();
-		int i = chars.length-1;
-		while (i >= 0){
-			movesStack.push(chars[i]);
-			i--;
-		}
-
-		return movesStack;
-	}
+public class GameTestEagle extends GameTest {
 
 	@Test
 	public void testMoveWithHero() {
@@ -36,7 +24,7 @@ public class GameTestEagle {
 		int hero_row = 1, hero_column = 1, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("wdddw");
+		Stack<Character> heroMoves = createHeroMoves("wdddw");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -62,7 +50,7 @@ public class GameTestEagle {
 		int hero_row = 3, hero_column = 4, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("e");
+		Stack<Character> heroMoves = createHeroMoves("e");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -88,7 +76,7 @@ public class GameTestEagle {
 		int hero_row = 3, hero_column = 4, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("ez");
+		Stack<Character> heroMoves = createHeroMoves("ez");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -111,7 +99,7 @@ public class GameTestEagle {
 		hero_column = 4;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ez");
+		heroMoves = createHeroMoves("ez");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -134,7 +122,7 @@ public class GameTestEagle {
 		hero_column = 2;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ez");
+		heroMoves = createHeroMoves("ez");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -156,7 +144,7 @@ public class GameTestEagle {
 		hero_column = 6;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ez");
+		heroMoves = createHeroMoves("ez");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -178,7 +166,7 @@ public class GameTestEagle {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("e  z");
+		heroMoves = createHeroMoves("e  z");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -202,7 +190,7 @@ public class GameTestEagle {
 		int hero_row = 1, hero_column = 4, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("ea       z");
+		Stack<Character> heroMoves = createHeroMoves("ea       z");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -225,7 +213,7 @@ public class GameTestEagle {
 		hero_column = 4;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ed        z");
+		heroMoves = createHeroMoves("ed        z");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -248,7 +236,7 @@ public class GameTestEagle {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ew    z");
+		heroMoves = createHeroMoves("ew    z");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -270,7 +258,7 @@ public class GameTestEagle {
 		hero_column = 6;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("ew  z");
+		heroMoves = createHeroMoves("ew  z");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -292,7 +280,7 @@ public class GameTestEagle {
 		hero_column = 1;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("es      z");
+		heroMoves = createHeroMoves("es      z");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -316,7 +304,7 @@ public class GameTestEagle {
 		int hero_row = 1, hero_column = 4, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("e       z");
+		Stack<Character> heroMoves = createHeroMoves("e       z");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -351,7 +339,7 @@ public class GameTestEagle {
 		hero_column = 4;
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		heroMoves = createMovesStack("es      wz");
+		heroMoves = createHeroMoves("es      wz");
 
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
@@ -386,7 +374,7 @@ public class GameTestEagle {
 		int hero_row = 1, hero_column = 4, sword_row = 5, sword_column = 4;
 		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 
-		Stack<Character> heroMoves = createMovesStack("e   z");
+		Stack<Character> heroMoves = createHeroMoves("e   z");
 
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();

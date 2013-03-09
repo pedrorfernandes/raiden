@@ -8,65 +8,13 @@ import java.util.Stack;
 import game.logic.Game;
 import game.ui.GameOptions;
 import game.ui.TestInterface;
-import game.test.FakeRandom;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
 
 import org.junit.Test;
 
-public class GameTestBasics {
-
-	private Stack<Character> createHeroMoves(String moves){
-		Stack<Character> movesStack = new Stack<Character>();
-		char[] chars = moves.toCharArray();
-		int i = chars.length-1;
-		while (i >= 0){
-			movesStack.push(chars[i]);
-			i--;
-		}
-
-		return movesStack;
-	}
-	
-	private Stack<Integer> createDragonMoves(String moves){
-		Stack<Integer> movesStack = new Stack<Integer>();
-		char[] chars = moves.toCharArray();
-		int i = chars.length-1;
-		while (i >= 0){
-			switch(chars[i]) {
-			case ' ': // stand still
-				movesStack.push(0);
-				break;
-			case 's': // down
-				movesStack.push(1);
-				break;
-			case 'w': // up
-				movesStack.push(2);
-				break;
-			case 'd': // right
-				movesStack.push(3);
-				break;
-			case 'a': // left
-				movesStack.push(4);
-				break;
-			}
-			i--;
-		}
-		return movesStack;
-	}
-	
-	private Stack<Integer> createDragonSleeps(String moves){
-		Stack<Integer> movesStack = new Stack<Integer>();
-		char[] chars = moves.toCharArray();
-		int i = chars.length-1;
-		while (i >= 0){
-			movesStack.push( Character.getNumericValue(chars[i]) );
-			i--;
-		}
-
-		return movesStack;
-	}
+public class GameTestBasics extends GameTest {
 
 	/*@Test
 	public void testCustomSpawns() {
@@ -501,31 +449,5 @@ public class GameTestBasics {
 		assertEquals(8, test.getGame().getHero().getColumn());
 		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
 	}
-	
-	@Test
-	public void testDragonMoves() {
-		// moves of the dragon when he is not sleeping
-		// after this stack empties, the numbers will be RANDOM
-		Stack<Integer> moveNumbers = createDragonMoves("aswdds");
-		// 2 -> doesnt sleep / 1 ->sleeps
-		// imediatelly after 1 you must specify the number of turns the dragon sleeps
-		// int this case he will sleep 3+1 turns
-		Stack<Integer> sleepNumbers = createDragonSleeps("2213222");
 
-		FakeRandom moves = new FakeRandom(moveNumbers);
-		FakeRandom sleeps = new FakeRandom(sleepNumbers);
-		
-		Dragon d1 = new Dragon(1,  7,  Dragon.SLEEPING, moves, sleeps);
-		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
-		dragons.add(d1);
-
-		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
-		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
-
-		//Tests moving left against a wall
-		Stack<Character> heroMoves = createHeroMoves("               ");
-
-		TestInterface test = new TestInterface(customOptions, heroMoves);
-		test.startGame();
-	}
 }
