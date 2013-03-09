@@ -501,7 +501,6 @@ public class GameTestBasics {
 		assertEquals(8, test.getGame().getHero().getColumn());
 		assertEquals(Hero.ARMED, test.getGame().getHero().getState());
 	}
-<<<<<<< Upstream, based on origin/master
 	
 	@Test
 	public void testDragonMoves() {
@@ -529,7 +528,4 @@ public class GameTestBasics {
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 	}
-
-=======
->>>>>>> 1d09852 Added eagle test if it finds the sword horizontally, vertically or diagonally and changes the necessary states.
 }
