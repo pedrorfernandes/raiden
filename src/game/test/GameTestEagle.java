@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import maze_objects.Dragon;
+import maze_objects.Eagle;
 import maze_objects.Hero;
 
 import org.junit.Test;
@@ -373,6 +374,35 @@ public class GameTestEagle {
 		assertEquals(false, test.getGame().getEagle().isOnGroundWithSword());
 		assertEquals(false, test.getGame().getEagle().isWaitingForHero());
 		assertEquals(false, test.getGame().getEagle().eagleHasSword());
+	}
+	
+	@Test
+	public void testEagleDies() {
+		
+		Dragon d1 = new Dragon(5, 5, Dragon.STATIC);
+		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
+		dragons.add(d1);
+
+		int hero_row = 1, hero_column = 4, sword_row = 5, sword_column = 4;
+		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
+
+		Stack<Character> heroMoves = createMovesStack("e   z");
+
+		TestInterface test = new TestInterface(customOptions, heroMoves);
+		test.startGame();
+
+		//Check if the eagle is on the sword position
+		assertEquals(5, test.getGame().getEagle().getRow());
+		assertEquals(4, test.getGame().getEagle().getColumn());
+
+		//Check if the eagle is dead
+		assertEquals(Eagle.DEAD, test.getGame().getEagle().getState());
+		
+		//Check if the eagle dropped the sword
+		assertEquals(false, test.getGame().getEagle().eagleHasSword());
+		
+		//Check if the sword is registered as not taken
+		assertEquals(false, test.getGame().getSword().isTaken());
 	}
 
 }
