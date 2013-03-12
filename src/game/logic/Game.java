@@ -119,9 +119,9 @@ public class Game {
 
 		for(int i = 0; i < dragons.size(); i++)
 			if (hero.getState() != Hero.DEAD 
-			        && nextToOneDragon(hero.getRow(), hero.getColumn(), dragons.get(i)) 
-			        && !(hero.getState() != Hero.ARMED 
-			        && dragons.get(i).getState() == Dragon.ASLEEP)) {
+			&& nextToOneDragon(hero.getRow(), hero.getColumn(), dragons.get(i)) 
+			&& !(hero.getState() != Hero.ARMED 
+			&& dragons.get(i).getState() == Dragon.ASLEEP)) {
 				if(fightDragon(dragons.get(i))) {
 					FightEvent wonFight = new FightEvent("wonFight");
 					events.add(wonFight);
@@ -236,23 +236,13 @@ public class Game {
 	public Game(GameOptions options) {
 		int rows = options.rows, columns = options.columns;
 
-		boolean isRandom = options.randomMaze; //Will indicate if user wants to give a specific size for the maze
-
 		dragonType = options.dragonType;
-
-		//Multiple dragon options
-		if(options.multipleDragons)
-			number_of_dragons = (rows + columns) / 10;
-		else
-			number_of_dragons = 1;
-
-		remaining_dragons = number_of_dragons;
 
 		// A maze director is in charge of selecting a
 		// building pattern and to order its construction
 		MazeDirector director = new MazeDirector();
 
-		if(isRandom) {
+		if(options.randomMaze) {
 			if(rows < 5 || columns < 5) {
 				GameOutput.printMazeSizeError();
 				MazeBuilder predefined = new PredefinedMaze();
@@ -268,6 +258,14 @@ public class Game {
 
 		director.constructMaze(rows, columns);
 		maze = director.getMaze();
+
+		//Multiple dragon options
+		if(options.multipleDragons)
+			number_of_dragons = (maze.getRows() + maze.getColumns()) / 10;
+		else
+			number_of_dragons = 1;
+
+		remaining_dragons = number_of_dragons;
 
 		if(options.randomSpawns) {
 			hero = spawnHero();
@@ -313,7 +311,7 @@ public class Game {
 	public int getNumberOfDragons() {
 		return number_of_dragons;
 	}
-	
+
 	public int getRemainingDragons() {
 		return remaining_dragons;
 	}
@@ -450,7 +448,7 @@ public class Game {
 		return goOn;
 
 	}
-	
+
 	public boolean checkState(boolean goOn) {
 		goOn = checkDragonEncounters(goOn);
 		checkEnemyState();
