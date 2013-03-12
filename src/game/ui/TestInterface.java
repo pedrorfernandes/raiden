@@ -38,7 +38,7 @@ public class TestInterface  extends GameInterface {
 
 			//GameOutput.clearScreen();
 			//System.out.println("Hero's turn");
-			GameOutput.printGame(game);
+			//GameOutput.printGame(game);
 			//WaitTime.wait(250);
 
 			goOn = game.dragonTurn(goOn);

@@ -43,6 +43,8 @@ public class Eagle extends Movable {
 
 	/*** Private Methods ***/
 
+	//Uses Bresenham's Line Algorithm (modified to meet our needs)
+	//http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
 	private ArrayList<Cell> getPath(){
 		ArrayList<Cell> wayToSword = new ArrayList<Cell>();
 

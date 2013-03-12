@@ -100,13 +100,13 @@ public class Game {
 	private boolean validSwordSpawn(int sword_row, int sword_column) {
 		return maze.checkIfEmpty(sword_row, sword_column) 
 				&& !nextToHeroOrOnTop(sword_row, sword_column)
-				&& !isOnDragon(sword_row, sword_column);
+				&& !isOnAliveDragon(sword_row, sword_column);
 	}
 
 	private boolean validDragonSpawn(int dragon_row, int dragon_column) {
 		return maze.checkIfEmpty(dragon_row, dragon_column)
 				&& !nextToHeroOrOnTop(dragon_row, dragon_column)
-				&& !nextToDragons(dragon_row, dragon_column);
+				&& !nextToAliveDragons(dragon_row, dragon_column);
 	}
 
 	private Eagle spawnEagle(int row, int column) { 
@@ -178,15 +178,18 @@ public class Game {
 			}
 	}
 
-	private boolean moveDragons(boolean goOn) { //Executes the dragons' turn
-		for(int i = 0; i < dragons.size(); i++)
-			if(dragons.get(i).getType() != Dragon.STATIC && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP)) {
-				dragons.get(i).moveDragon(this);
-
-				// WARP KILLS
-				//goOn = checkDragonEncounters(goOn);
+	//Executes the dragons' turn
+	private boolean moveDragons(boolean goOn) {
+		for(Dragon d : dragons)
+			if(dragonNotStaticOrDead(d)) {
+				d.moveDragon(this);
 			}
 		return goOn;
+	}
+
+	private boolean dragonNotStaticOrDead(Dragon dragon) {
+		return dragon.getType() != Dragon.STATIC
+				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP);
 	}
 
 	private void tryToSendEagle() {
@@ -374,10 +377,10 @@ public class Game {
 		return(row == eagle.getRow() && column == eagle.getColumn() && !eagle.isWithHero() );
 	}
 
-	public boolean checkIfDragon(int row, int column) {
-
-		for(int i = 0; i < dragons.size(); i++)
-			if(row == dragons.get(i).getRow() && column == dragons.get(i).getColumn() && (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
+	public boolean checkIfOnAliveDragon(int row, int column) {
+		for(Dragon dragon : dragons)
+			if(row == dragon.getRow() && column == dragon.getColumn()
+			&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP))
 				return true;
 
 		return false;
@@ -397,18 +400,20 @@ public class Game {
 		return false;
 	}
 
-	public boolean nextToDragons(int row, int column) { //True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+	//True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+	public boolean nextToAliveDragons(int row, int column) {
 
 		if(dragons == null || dragons.isEmpty())
 			return false;
 
-		for(int i = 0; i < dragons.size(); i++) {
-			if(((dragons.get(i).getRow() == row + 1 && dragons.get(i).getColumn() == column) ||
-					(dragons.get(i).getRow() == row - 1  && dragons.get(i).getColumn() == column) ||
-					(dragons.get(i).getColumn() == column + 1 && dragons.get(i).getRow() == row) ||
-					(dragons.get(i).getColumn() == column - 1 && dragons.get(i).getRow() == row) ||
-					(dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row))
-					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))	
+		for(Dragon dragon : dragons) {
+			if(nextToAliveDragon(row, column, dragon))
+				/*if(((dragon.getRow() == row + 1 && dragon.getColumn() == column)
+					|| (dragon.getRow() == row - 1  && dragon.getColumn() == column)
+					|| (dragon.getColumn() == column + 1 && dragon.getRow() == row)
+					|| (dragon.getColumn() == column - 1 && dragon.getRow() == row)
+					|| (dragon.getColumn() == column && dragon.getRow() == row))
+					&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP))	*/
 				return true;
 		}
 
@@ -416,22 +421,22 @@ public class Game {
 	}
 
 	public boolean nextToAliveDragon(int row, int column, Dragon dragon) {
-		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
-				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
-				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column - 1 && dragon.getRow() == row) ||
-				(dragon.getColumn() == column && dragon.getRow() == row))
+		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column)
+				|| (dragon.getRow() == row - 1  && dragon.getColumn() == column)
+				|| (dragon.getColumn() == column + 1 && dragon.getRow() == row)
+				|| (dragon.getColumn() == column - 1 && dragon.getRow() == row)
+				|| (dragon.getColumn() == column && dragon.getRow() == row))
 				&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP));
 	}
 
-	public boolean isOnDragon(int row, int column) {
+	public boolean isOnAliveDragon(int row, int column) {
 
 		if(dragons == null || dragons.isEmpty())
 			return false;
 
-		for(int i = 0; i < dragons.size(); i++) {
-			if((dragons.get(i).getColumn() == column && dragons.get(i).getRow() == row)
-					&& (dragons.get(i).getState() == Dragon.ALIVE || dragons.get(i).getState() == Dragon.ASLEEP))
+		for(Dragon dragon : dragons) {
+			if((dragon.getColumn() == column && dragon.getRow() == row)
+					&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP))
 				return true;
 		}
 
@@ -473,10 +478,8 @@ public class Game {
 	}
 
 	public boolean dragonTurn(boolean goOn) {
-
 		goOn = checkDragonEncounters(goOn);
 		goOn = moveDragons(goOn);
-
 		return goOn;
 
 	}

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
 
+//The maze has to have at least 3 rows and 3 columns. 5 for the best results.
 public class RandomMaze extends MazeBuilder {
 
-	public void buildMaze(int rows, int cols){ //Currently, the maze only accepts square mazes or with with more columns than rows
-		createNewMaze(rows, cols);             //The maze has to have at least 3 rows and 3 columns. 5 for the best results.
+	public void buildMaze(int rows, int cols){
+		createNewMaze(rows, cols);
 
 		// fill the maze with walls
 		for (int i = 0; i < rows; i++) {

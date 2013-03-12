@@ -53,7 +53,7 @@ public class Hero extends Movable {
 		int newRow = row + rowMovement;
 		int newColumn = column + columnMovement;
 
-		if(m.checkIfEmpty(newRow, newColumn) && !g.checkIfSword(newRow, newColumn) && !g.checkIfDragon(newRow, newColumn)) {
+		if(m.checkIfEmpty(newRow, newColumn) && !g.checkIfSword(newRow, newColumn) && !g.checkIfOnAliveDragon(newRow, newColumn)) {
 			makeMove(newRow, newColumn);
 		}
 		else if(m.checkIfExit(newRow, newColumn)) {

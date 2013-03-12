@@ -18,10 +18,10 @@ public class Dragon extends Movable {
 	/*** Public Attributes ***/
 
 	public static final int POSSIBLE_MOVES = 5; //This tells the number of moves a dragon may take.
-	//At the moment, 0 does not move, 1 move down, 2 move up, 3 move right, 4 move left
+	                                            //At the moment, 0 does not move, 1 move down, 2 move up, 3 move right, 4 move left
 
 	public static final int CHANCE_TO_SLEEP = 15; //Dragon has a 1/CHANCE_TO_SLEEP probability of sleeping
-	public static final int MAX_SLEEP_TURNS = 3; //Maximum number of turns the dragon may sleep for
+	public static final int MAX_SLEEP_TURNS = 3;  //Maximum number of turns the dragon may sleep for
 
 	//Dragon States
 	public static final int DEAD = 0;
@@ -49,6 +49,12 @@ public class Dragon extends Movable {
 			hasSword = true;
 			g.getSword().takeSword();
 		}
+	}
+	
+	private boolean validMoveTo(Game g, int new_row, int new_column) {
+		return !g.getMaze().checkIfWall(new_row, new_column) 
+				&& !g.isOnAliveDragon(new_row, new_column)
+				&& !g.getMaze().checkIfExit(new_row, new_column);
 	}
 
 	/*** Public Method Area ***/
@@ -94,10 +100,11 @@ public class Dragon extends Movable {
 
 		if(type == SLEEPING) {
 			if(state == ALIVE) {
-				int n  = randomSleep.nextInt(CHANCE_TO_SLEEP);
-				if(n == 1) {
+				if(randomSleep.nextInt(CHANCE_TO_SLEEP) == 1) {
 					state = ASLEEP;
-					dragonSleepTurns = (randomSleep.nextInt(MAX_SLEEP_TURNS) + 1); //Sleeps from 1 to max_sleep_turns
+					
+					//Sleeps from 1 to max_sleep_turns
+					dragonSleepTurns = (randomSleep.nextInt(MAX_SLEEP_TURNS) + 1); 
 					return;
 				}
 			}
@@ -112,6 +119,7 @@ public class Dragon extends Movable {
 		int move = 0;
 		int new_row = 0;
 		int new_column = 0;
+		
 		do {
 			move = randomMove.nextInt(POSSIBLE_MOVES);
 			switch(move) {
@@ -135,11 +143,7 @@ public class Dragon extends Movable {
 				break;
 			}
 
-		} while(g.getMaze().checkIfWall(new_row, new_column) 
-				|| g.isOnDragon(new_row, new_column)
-				|| g.getMaze().checkIfExit(new_row, new_column) 
-				|| new_row == 0 
-				|| new_column == 0);
+		} while(!validMoveTo(g, new_row, new_column));
 
 		makeMove(g, new_row, new_column);
 	}
