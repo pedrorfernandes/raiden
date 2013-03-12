@@ -374,7 +374,7 @@ public class GameTestBasics extends GameTest {
 		test.startGame();
 
 		//Checks if the exit is open
-		assertEquals(Game.OPEN, test.getGame().getExitState());
+		assertEquals(Game.EXIT_OPEN, test.getGame().getExitState());
 		
 		//Checks if the hero exited the maze
 		assertEquals(Hero.EXITED_MAZE, test.getGame().getHero().getState());
@@ -400,7 +400,7 @@ public class GameTestBasics extends GameTest {
 		test.startGame();
 
 		//Checks if exit remains closed
-		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		assertEquals(Game.EXIT_CLOSED, test.getGame().getExitState());
 		
 		//Checks if hero didn't change its state and remained in its place
 		assertEquals(5, test.getGame().getHero().getRow());
@@ -419,7 +419,7 @@ public class GameTestBasics extends GameTest {
 		test.startGame();
 
 		//Checks if exit remained closed
-		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		assertEquals(Game.EXIT_CLOSED, test.getGame().getExitState());
 		
 		//Checks if hero didn't change its state and remained in its place
 		assertEquals(5, test.getGame().getHero().getRow());
@@ -442,7 +442,7 @@ public class GameTestBasics extends GameTest {
 		test.startGame();
 
 		//Checks if exit remains closed
-		assertEquals(Game.CLOSED, test.getGame().getExitState());
+		assertEquals(Game.EXIT_CLOSED, test.getGame().getExitState());
 		
 		//Checks if hero didn't change its state and remained in its place
 		assertEquals(5, test.getGame().getHero().getRow());

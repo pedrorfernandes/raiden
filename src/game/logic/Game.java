@@ -25,30 +25,31 @@ import maze_objects.Eagle;
 public class Game {
 
 	//Exit states
-	public static final int OPEN = 1;
-	public static final int CLOSED = 0;
+	public static final int EXIT_OPEN = 1;
+	public static final int EXIT_CLOSED = 0;
 
 	/*** Private Attributes ***/
 
 	//State Attributes
 	private int dragonType;
-	private int exit_state;
-	private int number_of_dragons;
-	private int remaining_dragons;
+	private int exitState;
+	private int numberOfDragons;
+	private int remainingDragons;
 
 	//Game elements
 	private Maze maze;
 	private Sword sword;
 	private Hero hero;
 	private Eagle eagle;
-	//private Dragon dragon;
 	private ArrayList<Dragon> dragons;
 	private LinkedList<GameEvent> events = new LinkedList<GameEvent>();
 
 	/*** Private Methods ***/
 
 	//Game Initializers
-	private Hero spawnHero() { //Creates a hero object on a random valid position in the maze
+
+	//Creates a hero object on a random valid position in the maze
+	private Hero spawnHero() {
 		Random random = new Random();
 		int hero_row = 0;
 		int hero_column = 0;
@@ -56,13 +57,14 @@ public class Game {
 		do {
 			hero_row = random.nextInt(maze.getRows());
 			hero_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(hero_row, hero_column));
+		} while (!validHeroSpawn(hero_row, hero_column));
 
 		Hero h = new Hero(hero_row, hero_column);
 		return h;
 	}
 
-	private Sword spawnSword() { //Creates a sword object on a random valid position in the maze
+	//Creates a sword object on a random valid position in the maze
+	private Sword spawnSword() {
 		Random random = new Random();
 		int sword_row = 0;
 		int sword_column = 0;
@@ -70,13 +72,14 @@ public class Game {
 		do {
 			sword_row = random.nextInt(maze.getRows());
 			sword_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(sword_row, sword_column) || nextToHero(sword_row, sword_column) || isOnDragon(sword_row, sword_column));
+		} while (!validSwordSpawn(sword_row, sword_column));
 
 		Sword sd = new Sword(sword_row, sword_column);
 		return sd;
 	}
 
-	private Dragon spawnDragon() { //Creates a dragon object on a random valid position in the maze
+	//Creates a dragon object on a random valid position in the maze
+	private Dragon spawnDragon() {
 		Random random = new Random();
 		int dragon_row = 0;
 		int dragon_column = 0;
@@ -84,10 +87,26 @@ public class Game {
 		do {
 			dragon_row = random.nextInt(maze.getRows());
 			dragon_column = random.nextInt(maze.getColumns());
-		} while (!maze.checkIfEmpty(dragon_row, dragon_column) || nextToHero(dragon_row, dragon_column) || nextToDragons(dragon_row, dragon_column));
+		} while (!validDragonSpawn(dragon_row, dragon_column));
 
 		Dragon dragon = new Dragon(dragon_row, dragon_column, dragonType);
 		return dragon;
+	}
+
+	private boolean validHeroSpawn(int hero_row, int hero_column) {
+		return maze.checkIfEmpty(hero_row, hero_column);
+	}
+
+	private boolean validSwordSpawn(int sword_row, int sword_column) {
+		return maze.checkIfEmpty(sword_row, sword_column) 
+				&& !nextToHeroOrOnTop(sword_row, sword_column)
+				&& !isOnDragon(sword_row, sword_column);
+	}
+
+	private boolean validDragonSpawn(int dragon_row, int dragon_column) {
+		return maze.checkIfEmpty(dragon_row, dragon_column)
+				&& !nextToHeroOrOnTop(dragon_row, dragon_column)
+				&& !nextToDragons(dragon_row, dragon_column);
 	}
 
 	private Eagle spawnEagle(int row, int column) { 
@@ -96,18 +115,22 @@ public class Game {
 	}
 
 	private ArrayList<Dragon> spawnDragons() {
-		ArrayList<Dragon> ds = new ArrayList<Dragon>();
-		for(int i = 0; i < number_of_dragons; i++)
-			ds.add(spawnDragon());
+		ArrayList<Dragon> dragons = new ArrayList<Dragon>();
+		for(int i = 0; i < numberOfDragons; i++)
+			dragons.add(spawnDragon());
 
-		return ds;
+		return dragons;
 	}
 
-	private boolean isOnEagle(int row, int column) { //Returns true if the position given is the same as the eagle's and the eagle is alive
-		return(row == eagle.getRow() && column == eagle.getColumn() && eagle.getState() != Eagle.DEAD);
+	//Returns true if the position given is the same as the eagle's and the eagle is alive
+	private boolean isOnLivingEagle(int row, int column) {
+		return(row == eagle.getRow()
+				&& column == eagle.getColumn()
+				&& eagle.getState() != Eagle.DEAD);
 	}
 
-	private boolean nextToHero(int row, int column) { //True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
+	//True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
+	private boolean nextToHeroOrOnTop(int row, int column) {
 		return((row == hero.getRow() + 1 && column == hero.getColumn()) ||
 				(row == hero.getRow() - 1  && column == hero.getColumn()) ||
 				(column == hero.getColumn() + 1 && row == hero.getRow()) ||
@@ -115,14 +138,12 @@ public class Game {
 				(column == hero.getColumn() && row == hero.getRow()));
 	}
 
-	private boolean checkDragonEncounters(boolean goOn) { //Processes encounters between the hero and a dragon
+	//Processes encounters between the hero and a dragon
+	private boolean checkDragonEncounters(boolean goOn) {
 
 		for(int i = 0; i < dragons.size(); i++)
-			if (hero.getState() != Hero.DEAD 
-			&& nextToOneDragon(hero.getRow(), hero.getColumn(), dragons.get(i)) 
-			&& !(hero.getState() != Hero.ARMED 
-			&& dragons.get(i).getState() == Dragon.ASLEEP)) {
-				if(fightDragon(dragons.get(i))) {
+			if (dragonFightCanHappen(dragons.get(i))) {
+				if(wonAgainstDragon(dragons.get(i))) {
 					FightEvent wonFight = new FightEvent("wonFight");
 					events.add(wonFight);
 				}
@@ -137,9 +158,20 @@ public class Game {
 		return goOn;
 	}
 
+	private boolean dragonFightCanHappen(Dragon dragon) {
+		return hero.getState() != Hero.DEAD 
+				&& nextToAliveDragon(hero.getRow(), hero.getColumn(), dragon) 
+				&& !dragonAsleepHeroUnarmed(dragon);
+	}
+
+	private boolean dragonAsleepHeroUnarmed(Dragon dragon) {
+		return (hero.getState() != Hero.ARMED 
+				&& dragon.getState() == Dragon.ASLEEP);
+	}
+
 	private void checkEagleEncounters() {
 		for(int i = 0; i < dragons.size(); i++)
-			if(eagle.getState() != Eagle.DEAD && nextToOneDragon(eagle.getRow(), eagle.getColumn(), dragons.get(i))) {
+			if(eagle.getState() != Eagle.DEAD && nextToAliveDragon(eagle.getRow(), eagle.getColumn(), dragons.get(i))) {
 				eagle.killEagle();
 				EagleEvent eagleKilled = new EagleEvent("killed");
 				events.add(eagleKilled);
@@ -189,7 +221,7 @@ public class Game {
 				events.add(wh);
 			}
 
-			if(eagle.isWaitingForHero() && isOnEagle(hero.getRow(), hero.getColumn())) {
+			if(eagle.isWaitingForHero() && isOnLivingEagle(hero.getRow(), hero.getColumn())) {
 				eagle.returnToHero();
 				sword.takeSword();
 				hero.armHero(hero.getRow(), hero.getColumn() );
@@ -217,8 +249,8 @@ public class Game {
 	}
 
 	private void checkEnemyState() { //Checks if there are any enemies left
-		if(remaining_dragons == 0) {
-			exit_state = OPEN;
+		if(remainingDragons == 0) {
+			exitState = EXIT_OPEN;
 			ResultEvent exitOpen = new ResultEvent(0);
 			events.add(exitOpen);
 		}
@@ -261,11 +293,11 @@ public class Game {
 
 		//Multiple dragon options
 		if(options.multipleDragons)
-			number_of_dragons = (maze.getRows() + maze.getColumns()) / 10;
+			numberOfDragons = (maze.getRows() + maze.getColumns()) / 10;
 		else
-			number_of_dragons = 1;
+			numberOfDragons = 1;
 
-		remaining_dragons = number_of_dragons;
+		remainingDragons = numberOfDragons;
 
 		if(options.randomSpawns) {
 			hero = spawnHero();
@@ -276,8 +308,8 @@ public class Game {
 		else {
 			hero = new Hero(options.heroRow, options.heroColumn);
 			dragons = options.dragons;
-			number_of_dragons = dragons.size();
-			remaining_dragons = number_of_dragons;
+			numberOfDragons = dragons.size();
+			remainingDragons = numberOfDragons;
 			sword = new Sword(options.swordRow, options.swordColumn);
 			eagle = spawnEagle(hero.getRow(), hero.getColumn());
 		}
@@ -289,7 +321,7 @@ public class Game {
 	}
 
 	public int getExitState() {
-		return exit_state;
+		return exitState;
 	}
 
 	public Maze getMaze() {
@@ -309,11 +341,11 @@ public class Game {
 	}
 
 	public int getNumberOfDragons() {
-		return number_of_dragons;
+		return numberOfDragons;
 	}
 
 	public int getRemainingDragons() {
-		return remaining_dragons;
+		return remainingDragons;
 	}
 
 	public Sword getSword() {
@@ -351,10 +383,10 @@ public class Game {
 		return false;
 	}
 
-	public boolean fightDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
+	public boolean wonAgainstDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
-			remaining_dragons--;
+			remainingDragons--;
 			return true;
 		}
 		else if(hero.getState() == Hero.IN_GAME && dragon.getState() == Dragon.ALIVE) {
@@ -383,7 +415,7 @@ public class Game {
 		return false;
 	}
 
-	public boolean nextToOneDragon(int row, int column, Dragon dragon) {
+	public boolean nextToAliveDragon(int row, int column, Dragon dragon) {
 		return(((dragon.getRow() == row + 1 && dragon.getColumn() == column) ||
 				(dragon.getRow() == row - 1  && dragon.getColumn() == column) ||
 				(dragon.getColumn() == column + 1 && dragon.getRow() == row) ||

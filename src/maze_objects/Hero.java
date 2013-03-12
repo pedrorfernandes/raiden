@@ -58,7 +58,7 @@ public class Hero extends Movable {
 		}
 		else if(m.checkIfExit(newRow, newColumn)) {
 			if(state == ARMED) {
-				if(g.getExitState() == Game.OPEN) {
+				if(g.getExitState() == Game.EXIT_OPEN) {
 					exitMaze(newRow, newColumn);
 					return false;
 				}
