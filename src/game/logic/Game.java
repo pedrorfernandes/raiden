@@ -443,7 +443,7 @@ public class Game {
 		return false;
 	}
 
-	public boolean heroTurn(char input) { //Main game loop
+	public boolean heroTurn(char input) {
 		boolean goOn = true;
 
 		switch (input) {
