@@ -11,16 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import maze_objects.Dragon;
-import maze_objects.Hero;
-import maze_objects.Maze;
-import maze_objects.MazeBuilder;
-import maze_objects.MazeDirector;
-import maze_objects.PredefinedMaze;
-import maze_objects.RandomMaze;
-import maze_objects.Sword;
-import maze_objects.Eagle;
-
+import maze_objects.*;
 
 public class Game {
 
@@ -141,9 +132,9 @@ public class Game {
 	//Processes encounters between the hero and a dragon
 	private boolean checkDragonEncounters(boolean goOn) {
 
-		for(int i = 0; i < dragons.size(); i++)
-			if (dragonFightCanHappen(dragons.get(i))) {
-				if(wonAgainstDragon(dragons.get(i))) {
+		for(Dragon dragon : dragons)
+			if ( dragonFightCanHappen(dragon) ) {
+				if( wonAgainstDragon(dragon) ) {
 					FightEvent wonFight = new FightEvent("wonFight");
 					events.add(wonFight);
 				}
@@ -170,8 +161,8 @@ public class Game {
 	}
 
 	private void checkEagleEncounters() {
-		for(int i = 0; i < dragons.size(); i++)
-			if(eagle.getState() != Eagle.DEAD && nextToAliveDragon(eagle.getRow(), eagle.getColumn(), dragons.get(i))) {
+		for(Dragon dragon : dragons)
+			if(eagle.getState() != Eagle.DEAD && nextToAliveDragon(eagle.getRow(), eagle.getColumn(), dragon)) {
 				eagle.killEagle();
 				EagleEvent eagleKilled = new EagleEvent("killed");
 				events.add(eagleKilled);
@@ -408,12 +399,6 @@ public class Game {
 
 		for(Dragon dragon : dragons) {
 			if(nextToAliveDragon(row, column, dragon))
-				/*if(((dragon.getRow() == row + 1 && dragon.getColumn() == column)
-					|| (dragon.getRow() == row - 1  && dragon.getColumn() == column)
-					|| (dragon.getColumn() == column + 1 && dragon.getRow() == row)
-					|| (dragon.getColumn() == column - 1 && dragon.getRow() == row)
-					|| (dragon.getColumn() == column && dragon.getRow() == row))
-					&& (dragon.getState() == Dragon.ALIVE || dragon.getState() == Dragon.ASLEEP))	*/
 				return true;
 		}
 
