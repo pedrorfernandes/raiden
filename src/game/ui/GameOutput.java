@@ -3,8 +3,14 @@ package game.ui;
 
 import game.logic.Game;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.imageio.ImageIO;
 
 import maze_objects.Dragon;
 import maze_objects.Eagle;
@@ -38,6 +44,27 @@ public class GameOutput {
 		return mazePositions;
 	}
 
+	public static BufferedImage[][] getMazePictures(Maze m, MazePictures pictures) { //Returns an array with the symbols of the corresponding maze tiles
+		BufferedImage[][] mazePositions = new BufferedImage[m.getRows()][m.getColumns()];
+
+		for(int r = 0; r < m.getRows(); r++)
+			for(int c = 0; c < m.getColumns(); c++) {
+				Tile currentTile = m.getPositions()[r][c];
+				switch(currentTile) {
+				case wall:
+					mazePositions[r][c] = pictures.wall;
+					break;
+				case empty:
+					mazePositions[r][c] = pictures.empty;
+					break;
+				case exit:
+					mazePositions[r][c] = pictures.exit;
+					break;
+				}
+			}
+		return mazePositions;
+	}
+
 	public static void printMaze(Maze m) {
 
 		char[][] mazePositions = getMazeSymbols(m);
@@ -52,6 +79,16 @@ public class GameOutput {
 			System.out.print('\n');
 		}
 	}
+
+	/*public static void printMaze(Graphics g, Maze m) {
+
+		BufferedImage mazeImages[][] = GameOutput.getMazePictures(m);
+
+		for(int r = 0; r < m.getRows(); r++)
+			for(int c = 0; c < m.getColumns(); c++) {
+				g.drawImage(mazeImages[r][c], c * mazeImages[r][c].getWidth(), r * mazeImages[r][c].getHeight(), null);
+			}
+	}*/
 
 	public static void printGame(Game g) {
 
@@ -121,6 +158,60 @@ public class GameOutput {
 
 	}
 
+	public static void printGame(Game g, Graphics graphs, MazePictures pictures) {
+
+		Maze m = g.getMaze();
+		Hero h = g.getHero();
+		ArrayList<Dragon> d = g.getDragons();
+		Sword s = g.getSword();
+		Eagle e = g.getEagle();
+
+		BufferedImage[][] mazePositions = getMazePictures(m, pictures);
+
+		// hero printing
+		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
+			mazePositions[h.getRow()][h.getColumn()] = pictures.armedHero;
+		else
+			mazePositions[h.getRow()][h.getColumn()] = pictures.hero;
+
+		// dragon printing
+		for(int i = 0; i < g.getNumberOfDragons(); i++) {
+			if(d.get(i).getState() == Dragon.ALIVE && d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.guardedSword;
+			else if(d.get(i).getState() == Dragon.ALIVE && !d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.dragon;
+			else if(d.get(i).getState () == Dragon.ASLEEP && d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.sleepingGuardedSword;
+			else if(d.get(i).getState() == Dragon.ASLEEP && !d.get(i).getHasSword())
+				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.sleepingDragon;
+
+			if(!s.isTaken())
+				mazePositions[s.getRow()][s.getColumn()] = pictures.sword;
+		}
+
+		// eagle printing
+		if ( !e.isWithHero() && e.getState() != Eagle.DEAD){
+			if(g.checkIfEagle(h.getRow(), h.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagleOnHero;
+			else if(g.checkIfOnAwakeDragon(e.getRow(), e.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagleOnDragon;
+			else if(g.checkIfOnSleepingDragon(e.getRow(), e.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagleOnSleepingDragon;
+			else if(g.checkIfSword(e.getRow(), e.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagleWithSword;
+			else if(m.checkIfWall(e.getRow(), e.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagleOnWall;
+			else if(m.checkIfEmpty(e.getRow(), e.getColumn()))
+				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagle;
+		}
+
+		for (int x = 0; x < m.getRows(); x++) {
+			for (int y = 0; y < m.getColumns(); y++) {
+				graphs.drawImage(mazePositions[x][y], x * mazePositions[x][y].getHeight(), y * mazePositions[x][y].getWidth(), null);
+			}
+		}
+	}
+
 	public static void printAskForMove() {
 		System.out.print("Move your hero (WASD, only first input will be considered): ");
 		//System.out.print(PROMPT);
@@ -175,7 +266,7 @@ public class GameOutput {
 		System.out.println("Otherwise, only one will be generated. (Y/N): ");
 		System.out.print(PROMPT);
 	}
-	
+
 	public static void clearScreen(){
 		for(int i = 0; i < 100; i++)
 			System.out.println();

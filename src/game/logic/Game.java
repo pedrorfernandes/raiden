@@ -380,6 +380,24 @@ public class Game {
 
 		return false;
 	}
+	
+	public boolean checkIfOnSleepingDragon(int row, int column) {
+		for(Dragon dragon : dragons)
+			if(row == dragon.getRow() && column == dragon.getColumn()
+			&& dragon.getState() == Dragon.ASLEEP)
+				return true;
+
+		return false;
+	}
+	
+	public boolean checkIfOnAwakeDragon(int row, int column) {
+		for(Dragon dragon : dragons)
+			if(row == dragon.getRow() && column == dragon.getColumn()
+			&& dragon.getState() == Dragon.ALIVE)
+				return true;
+
+		return false;
+	}
 
 	public boolean wonAgainstDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
 		if(hero.getState() == Hero.ARMED) {
