@@ -1,6 +1,9 @@
-package game.ui;
+package game.cli;
 
 import game.logic.Game;
+import game.ui.GameInterface;
+import game.ui.GameOptions;
+import game.ui.GameOutput;
 import general_utilities.MazeInput;
 import general_utilities.WaitTime;
 

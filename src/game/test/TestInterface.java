@@ -1,8 +1,10 @@
-package game.ui;
+package game.test;
 
 import java.util.Stack;
 
 import game.logic.Game;
+import game.ui.GameInterface;
+import game.ui.GameOptions;
 
 public class TestInterface  extends GameInterface {
 	

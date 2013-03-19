@@ -7,7 +7,6 @@ import java.util.Stack;
 
 import game.logic.Game;
 import game.ui.GameOptions;
-import game.ui.TestInterface;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;

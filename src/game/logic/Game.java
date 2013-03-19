@@ -1,6 +1,6 @@
 package game.logic;
 
-import game.ui.CLInterface;
+import game.cli.CLInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
 import game.ui.GameEvent;

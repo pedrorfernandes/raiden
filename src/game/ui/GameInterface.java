@@ -2,7 +2,7 @@ package game.ui;
 
 import game.logic.Game;
 
-abstract class GameInterface {
+public abstract class GameInterface {
 	
 	protected Game game;
 	

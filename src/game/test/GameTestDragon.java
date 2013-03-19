@@ -2,7 +2,6 @@ package game.test;
 
 import static org.junit.Assert.assertEquals;
 import game.ui.GameOptions;
-import game.ui.TestInterface;
 
 import java.util.ArrayList;
 import java.util.Stack;
