@@ -17,7 +17,7 @@ import maze_objects.Tile;
 public class GameOutput {
 	private static String PROMPT = "> ";
 
-	private static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
+	public static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
 		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
 
 		for(int r = 0; r < m.getRows(); r++)

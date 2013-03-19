@@ -1,6 +1,7 @@
 package game.logic;
 
 import game.cli.CLInterface;
+import game.gui.GUInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
 import game.ui.GameEvent;
@@ -254,8 +255,11 @@ public class Game {
 
 	//Main
 	public static void main(String[] args) {
-		CLInterface cli = new CLInterface();
-		cli.startGame();
+		//CLInterface cli = new CLInterface();
+		//cli.startGame();
+		
+		GUInterface gui = new GUInterface();
+		gui.startGame();
 	}
 
 	//Constructors
