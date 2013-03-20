@@ -58,7 +58,7 @@ public class GUInterface extends GameInterface {
 
 		while(goOn){
 
-			input = mp.getNextKey();
+			//input = mp.getNextKey();
 
 			goOn = game.heroTurn(input);
 

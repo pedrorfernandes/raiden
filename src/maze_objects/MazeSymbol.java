@@ -11,8 +11,8 @@ public class MazeSymbol { //Symbols used in the printing functions to identify t
 
 	//Maze tiles images
 	public static final String wallPic = "images/wall.png";
-	public static final String emptyPic = "images/blank.png";
-	public static final String spacePic = "images/blank.png";
+	public static final String emptyPic = "images/empty.png";
+	public static final String spacePic = "images/empty.png";
 	public static final String exitPic = "images/exit.png";
 	public static final String swordPic = "images/sword.png";
 
