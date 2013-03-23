@@ -22,32 +22,33 @@ import general_utilities.WaitTime;
 
 public class GUInterface extends GameInterface {
 	
+	private static final int SPRITESIZE = 32;
+	private static final int OFFSET = 22; // the title of the window
 	private final MazePictures mazePictures = new MazePictures();
 	private final JFrame frame = new JFrame("Maze");
-	private final MazePanel mp = new MazePanel();
-//	private InfoPanel ip = new InfoPanel();
+	private final MazePanel mazePanel = new MazePanel();
+	private InfoPanel infoPanel = new InfoPanel();
 
-	private void startInterface() {
+	private void startInterface(GameOptions options) {
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());
-		c.add(mp);
-	//	c.add(ip, BorderLayout.PAGE_END);
+		c.add(mazePanel);
+		//c.add(infoPanel, BorderLayout.PAGE_START);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(500, 500));
+		frame.setPreferredSize(new Dimension(options.columns * SPRITESIZE, 
+                                             options.rows * SPRITESIZE + OFFSET));
 		frame.pack();
 		frame.setVisible(true);
-
-
 	}
 
 
 	public void startGame() {
 		GameOptions options = new GameOptions();
 		game = new Game(options);
-		startInterface();
-		GameOutput.printGame(game, mp.getGraphics(), mazePictures);
+		startInterface(options);
+		GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 		mainLoop();
 	}
 	
@@ -58,26 +59,27 @@ public class GUInterface extends GameInterface {
 
 		while(goOn){
 
-			input = mp.getNextKey();
+			input = mazePanel.getNextKey();
 			while( input == '\n'){
 				WaitTime.wait(50);
-				input = mp.getNextKey();
+				GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
+				input = mazePanel.getNextKey();
 			}
 
 			goOn = game.heroTurn(input);
 
-			GameOutput.printGame(game, mp.getGraphics(), mazePictures);
+			GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			WaitTime.wait(250);
 
 			goOn = game.dragonTurn(goOn);
-			GameOutput.printGame(game, mp.getGraphics(), mazePictures);
+			GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			WaitTime.wait(250);
 
 			goOn = game.checkState(goOn);
 
 			/*GameOutput.clearScreen();
 			GameOutput.printEventQueue(game.getEvents() );*/
-			GameOutput.printGame(game, mp.getGraphics(), mazePictures);
+			GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			WaitTime.wait(250);
 
 		}

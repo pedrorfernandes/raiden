@@ -41,7 +41,13 @@ public class GameInput {
 		
 		do {
 			GameOutput.printDragonOptions();
-			dragonType = in.nextInt();
+			
+			String s = in.nextLine();
+			dragonType = -1;
+			try{
+			    dragonType = Integer.parseInt(s);
+			}
+			catch(NumberFormatException ex){}
 		}
 		while(dragonType != 0 && dragonType != 1 && dragonType != 2);
 		
@@ -54,7 +60,6 @@ public class GameInput {
 		
 		Scanner in = new Scanner(System.in);
 		char c = 'a';
-
 
 		do {
 			GameOutput.printMultipleDragonOptions();
