@@ -39,11 +39,15 @@ public class MazePanel extends JPanel implements KeyListener {
         if (e.getKeyChar() == 'd') {
         	keys.add('d');
         }
-        /*
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("Left key pressed");
+        if (e.getKeyChar() == 'e') {
+        	keys.add('e');
         }
-        */
+        if (e.getKeyChar() == 'z') {
+        	keys.add('z');
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+        	keys.add(' ');
+        }
 	}
 
 	@Override
