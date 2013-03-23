@@ -220,7 +220,6 @@ public class GUInterface extends GameInterface {
 			public void actionPerformed(ActionEvent e) {
 
 				//Get Maze options from user
-				GameOutput.printStartMessage();
 				options.randomMaze = !usePredefinedMaze;
 
 				//Get Dragon options from user
