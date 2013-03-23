@@ -49,6 +49,11 @@ public class GameOptions {
 	public GameOptions() {
 		askOptions();
 	}
+	
+	public GameOptions(boolean askOptions) {
+		if(askOptions)
+			askOptions();
+	}
 
 	//Constructor for a random maze
 	public GameOptions(int rows, int columns, int dragonType, boolean multipleDragons, int heroRow, int heroColumn,
