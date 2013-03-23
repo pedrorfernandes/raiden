@@ -259,6 +259,12 @@ public class GUInterface extends GameInterface {
 						tabbedPane.setSelectedIndex(0);
 					}
 				}
+				else {
+					game = new Game(options);
+
+					optionsFrame.setVisible(false);
+					startInterface();
+				}
 			}
 		});
 
