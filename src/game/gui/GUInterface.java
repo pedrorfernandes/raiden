@@ -40,6 +40,8 @@ public class GUInterface extends GameInterface {
 	private int dragonType;
 
 	private GameOptions options = new GameOptions(false);
+	
+	private boolean interfaceReady = false;
 
 	private void startInterface() {
 
@@ -62,15 +64,18 @@ public class GUInterface extends GameInterface {
 		frame.pack();
 		frame.setVisible(true);
 
-		mainLoop();
+		interfaceReady = true;
 	}
 
 
 	public void startGame() {
 		startOptions();
+		mainLoop();
 	}
 
 	public void startOptions() {
+		
+		interfaceReady = false;
 
 		final JFrame optionsFrame = new JFrame("Maze: New Game");
 
@@ -275,6 +280,10 @@ public class GUInterface extends GameInterface {
 	}
 
 	private void mainLoop() {
+		
+		while(!interfaceReady){
+			WaitTime.wait(10);
+		}
 
 		boolean goOn = true;
 		char input = ' ';
@@ -284,31 +293,24 @@ public class GUInterface extends GameInterface {
 			input = mazePanel.getNextKey();
 			while( input == '\n'){
 				WaitTime.wait(50);
-				//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 				mazePanel.repaint();
 				input = mazePanel.getNextKey();
 			}
 
 			goOn = game.heroTurn(input);
 
-			//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			mazePanel.repaint();
 			WaitTime.wait(125);
 
 			goOn = game.dragonTurn(goOn);
-			//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			mazePanel.repaint();
 			WaitTime.wait(125);
 
 			goOn = game.checkState(goOn);
 
-			/*GameOutput.clearScreen();
-			GameOutput.printEventQueue(game.getEvents() );*/
-			//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			mazePanel.repaint();
 			GameOutput.printEventQueue(game.getEvents(), infoPanel);
 			WaitTime.wait(125);
-
 		}
 	}
 }
