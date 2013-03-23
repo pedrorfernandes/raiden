@@ -7,6 +7,7 @@ import game.ui.MazePictures;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -23,6 +24,8 @@ public class MazePanel extends JPanel implements KeyListener {
 		addKeyListener(this);
 		setBackground(Color.WHITE);
 		setFocusable( true );
+		setPreferredSize(new Dimension(game.getMaze().getRows() * GUInterface.SPRITESIZE,
+				game.getMaze().getColumns() * GUInterface.SPRITESIZE));
 		
 		this.game = game;
 		this.pictures = pictures;

@@ -22,8 +22,8 @@ import general_utilities.WaitTime;
 
 public class GUInterface extends GameInterface {
 	
-	private static final int SPRITESIZE = 32;
-	private static final int OFFSET = 22; // the title of the window
+	public static final int SPRITESIZE = 32;
+	//private static final int OFFSET = 22; // the title of the window
 	private final MazePictures mazePictures = new MazePictures();
 	private final JFrame frame = new JFrame("Maze");
 	private MazePanel mazePanel;
@@ -38,8 +38,8 @@ public class GUInterface extends GameInterface {
 		//c.add(infoPanel, BorderLayout.PAGE_START);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(game.getMaze().getColumns() * SPRITESIZE, 
-                                             game.getMaze().getRows() * SPRITESIZE + OFFSET));
+		frame.setResizable(false);
+		
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -49,7 +49,7 @@ public class GUInterface extends GameInterface {
 		GameOptions options = new GameOptions();
 		game = new Game(options);
 		startInterface();
-		GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
+		//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 		mainLoop();
 	}
 	
