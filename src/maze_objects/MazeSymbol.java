@@ -23,6 +23,7 @@ public class MazeSymbol { //Symbols used in the printing functions to identify t
 	//Hero related images
 	public static final String heroPic = "images/hero.png";
 	public static final String armedHeroPic = "images/armedHero.png";
+	public static final String deadHeroPic = "images/deadHero.png";
 
 	//Dragon related symbols
 	public static final char dragon = 'D';
@@ -31,6 +32,7 @@ public class MazeSymbol { //Symbols used in the printing functions to identify t
 	//Dragon related images
 	public static final String dragonPic = "images/dragon.png";
 	public static final String sleepingDragonPic = "images/sleepingDragon.png";
+	public static final String deadDragonPic = "images/deadDragon.png";
 
 	//Sword related symbols
 	public static final char guardedSword = 'F';

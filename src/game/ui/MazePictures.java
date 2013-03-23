@@ -18,6 +18,7 @@ public class MazePictures {
 	
 	public BufferedImage hero;
 	public BufferedImage armedHero;
+	public BufferedImage deadHero;
 	
 	public BufferedImage dragon;
 	public BufferedImage sleepingDragon;
@@ -31,6 +32,7 @@ public class MazePictures {
 	public BufferedImage eagleOnWall;
 	public BufferedImage eagleOnDragon;
 	public BufferedImage eagleOnSleepingDragon;
+	public BufferedImage deadDragon;
 	
 	public MazePictures() {
 		
@@ -43,6 +45,7 @@ public class MazePictures {
 			
 			hero = ImageIO.read(new File(MazeSymbol.heroPic));
 			armedHero = ImageIO.read(new File(MazeSymbol.armedHeroPic));
+			deadHero = ImageIO.read(new File(MazeSymbol.deadHeroPic));
 			
 			dragon = ImageIO.read(new File(MazeSymbol.dragonPic));
 			sleepingDragon = ImageIO.read(new File(MazeSymbol.sleepingDragonPic));
@@ -56,6 +59,8 @@ public class MazePictures {
 			eagleOnWall = ImageIO.read(new File(MazeSymbol.eagleOnWallPic));
 			eagleOnDragon = ImageIO.read(new File(MazeSymbol.eagleOnDragonPic));
 			eagleOnSleepingDragon = ImageIO.read(new File(MazeSymbol.eagleOnSleepingDragonPic));
+			deadDragon = ImageIO.read(new File(MazeSymbol.deadDragonPic));
+
 		} catch (IOException ex) {
 			System.out.println("Failed to load images");
 		}
