@@ -29,7 +29,7 @@ public class GUInterface extends GameInterface {
 	private MazePanel mazePanel;
 //	private InfoPanel infoPanel = new InfoPanel();
 
-	private void startInterface(GameOptions options) {
+	private void startInterface() {
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());
@@ -38,8 +38,8 @@ public class GUInterface extends GameInterface {
 		//c.add(infoPanel, BorderLayout.PAGE_START);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(options.columns * SPRITESIZE, 
-                                             options.rows * SPRITESIZE + OFFSET));
+		frame.setPreferredSize(new Dimension(game.getMaze().getColumns() * SPRITESIZE, 
+                                             game.getMaze().getRows() * SPRITESIZE + OFFSET));
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -48,7 +48,7 @@ public class GUInterface extends GameInterface {
 	public void startGame() {
 		GameOptions options = new GameOptions();
 		game = new Game(options);
-		startInterface(options);
+		startInterface();
 		GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 		mainLoop();
 	}
