@@ -41,6 +41,8 @@ public class GUInterface extends GameInterface {
 
 	private GameOptions options = new GameOptions(false);
 	
+	//This variable is used to check if the startInterface method loaded all the components already
+	//This is used to prevent mainLoop() calling things that haven't been initialized by the startInterface method yet
 	private boolean interfaceReady = false;
 
 	private void startInterface() {
