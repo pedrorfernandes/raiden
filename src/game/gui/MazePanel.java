@@ -20,12 +20,11 @@ public class MazePanel extends JPanel implements KeyListener {
 	
 	private LinkedList<Character> keys = new LinkedList<Character>();
 
-	public MazePanel(Game game, MazePictures pictures) {
+	public MazePanel(Game game, MazePictures pictures, Dimension dimension) {
 		addKeyListener(this);
 		setBackground(Color.WHITE);
 		setFocusable( true );
-		setPreferredSize(new Dimension(game.getMaze().getRows() * GUInterface.SPRITESIZE,
-				game.getMaze().getColumns() * GUInterface.SPRITESIZE));
+		setPreferredSize(dimension);
 		
 		this.game = game;
 		this.pictures = pictures;

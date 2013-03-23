@@ -1,6 +1,7 @@
 package game.ui;
 
 
+import game.gui.InfoPanel;
 import game.logic.Game;
 
 import java.awt.Graphics;
@@ -224,6 +225,15 @@ public class GameOutput {
 	public static void printEventQueue(LinkedList<GameEvent> events) { //Prints the events on the event queue given
 		while(!events.isEmpty())
 			printEvent(events.removeFirst());
+	}
+	
+	public static void printEventQueue(LinkedList<GameEvent> events, InfoPanel infoPanel) {
+		String info = new String();
+		
+		while(!events.isEmpty())
+			info += (events.removeFirst().getMessage()) + '\n';
+		
+		infoPanel.textPane.setText(info);
 	}
 
 	public static void printEvent(GameEvent ev) { //Prints the message field of the GameEvent given

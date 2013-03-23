@@ -27,15 +27,23 @@ public class GUInterface extends GameInterface {
 	private final MazePictures mazePictures = new MazePictures();
 	private final JFrame frame = new JFrame("Maze");
 	private MazePanel mazePanel;
-//	private InfoPanel infoPanel = new InfoPanel();
+	private InfoPanel infoPanel;
 
 	private void startInterface() {
+		
+		Dimension mazePanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
+				game.getMaze().getRows() * GUInterface.SPRITESIZE);
+		
+		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
+				100);
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());
-		mazePanel = new MazePanel(game, mazePictures);
+		
+		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension);
+		infoPanel = new InfoPanel(infoPanelDimension);
 		c.add(mazePanel);
-		//c.add(infoPanel, BorderLayout.PAGE_START);
+		c.add(infoPanel, BorderLayout.PAGE_START);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -84,6 +92,7 @@ public class GUInterface extends GameInterface {
 			GameOutput.printEventQueue(game.getEvents() );*/
 			//GameOutput.printGame(game, mazePanel.getGraphics(), mazePictures);
 			mazePanel.repaint();
+			GameOutput.printEventQueue(game.getEvents(), infoPanel);
 			WaitTime.wait(125);
 
 		}

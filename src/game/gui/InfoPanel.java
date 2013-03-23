@@ -1,21 +1,29 @@
 package game.gui;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 
 public class InfoPanel extends JPanel {
 
-	public JTextPane infoPanel;
+	public JTextPane textPane;
 	
-	public InfoPanel() {
-		setLayout(new BorderLayout());
+	public InfoPanel(Dimension dimension) {
+		setBorder(UIManager.getBorder("TextField.border"));
+		setPreferredSize(dimension);
+		setLayout(null);
 		
-		infoPanel = new JTextPane();
-		infoPanel.setBounds(10, 230, 430, 70);
-		infoPanel.setText("Welcome, challenger");
-		add(infoPanel);
+		textPane = new JTextPane();
+		textPane.setEditable(false);
+		textPane.setBounds(21, 11, 359, 86);
+		textPane.setText("Welcome, challenger");
+		textPane.setAlignmentX(CENTER_ALIGNMENT);
+		textPane.setAlignmentY(CENTER_ALIGNMENT);
+		textPane.setBackground(null);
+		textPane.setFocusable(false);
+		add(textPane);
 	}
 
 }
