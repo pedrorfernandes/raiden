@@ -15,15 +15,35 @@ public class MazePanel extends JPanel implements KeyListener {
 	public MazePanel() {
 		addKeyListener(this);
 		setBackground(Color.WHITE);
+		setFocusable( true );
 	}
 	
 	public char getNextKey() {
-		return keys.removeFirst();
+		if (keys.isEmpty() ) 
+			return '\n';
+		else 
+			return keys.removeFirst();
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keys.add(e.toString().charAt(0));
+        if (e.getKeyChar() == 'w') {
+        	keys.add('w');
+        }
+        if (e.getKeyChar() == 'a') {
+        	keys.add('a');
+        }
+        if (e.getKeyChar() == 's') {
+        	keys.add('s');
+        }
+        if (e.getKeyChar() == 'd') {
+        	keys.add('d');
+        }
+        /*
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            System.out.println("Left key pressed");
+        }
+        */
 	}
 
 	@Override

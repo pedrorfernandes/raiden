@@ -23,7 +23,8 @@ import maze_objects.Tile;
 public class GameOutput {
 	private static String PROMPT = "> ";
 
-	public static char[][] getMazeSymbols(Maze m) { //Returns an array with the symbols of the corresponding maze tiles
+	//Returns an array with the symbols of the corresponding maze tiles
+	public static char[][] getMazeSymbols(Maze m) { 
 		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
 
 		for(int r = 0; r < m.getRows(); r++)
@@ -44,7 +45,8 @@ public class GameOutput {
 		return mazePositions;
 	}
 
-	public static BufferedImage[][] getMazePictures(Maze m, MazePictures pictures) { //Returns an array with the symbols of the corresponding maze tiles
+	//Returns an array with the symbols of the corresponding maze tiles
+	public static BufferedImage[][] getMazePictures(Maze m, MazePictures pictures) { 
 		BufferedImage[][] mazePositions = new BufferedImage[m.getRows()][m.getColumns()];
 
 		for(int r = 0; r < m.getRows(); r++)
@@ -207,7 +209,9 @@ public class GameOutput {
 
 		for (int x = 0; x < m.getRows(); x++) {
 			for (int y = 0; y < m.getColumns(); y++) {
-				graphs.drawImage(mazePositions[x][y], x * mazePositions[x][y].getHeight(), y * mazePositions[x][y].getWidth(), null);
+				graphs.drawImage(mazePositions[x][y],
+						y * mazePositions[x][y].getWidth(),
+						x * mazePositions[x][y].getHeight(), null);
 			}
 		}
 	}

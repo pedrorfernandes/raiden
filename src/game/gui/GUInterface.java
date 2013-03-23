@@ -46,8 +46,8 @@ public class GUInterface extends GameInterface {
 	public void startGame() {
 		GameOptions options = new GameOptions();
 		game = new Game(options);
-		
 		startInterface();
+		GameOutput.printGame(game, mp.getGraphics(), mazePictures);
 		mainLoop();
 	}
 	
@@ -58,16 +58,18 @@ public class GUInterface extends GameInterface {
 
 		while(goOn){
 
-			//input = mp.getNextKey();
+			input = mp.getNextKey();
+			while( input == '\n'){
+				WaitTime.wait(50);
+				input = mp.getNextKey();
+			}
 
 			goOn = game.heroTurn(input);
 
-			GameOutput.clearScreen();
 			GameOutput.printGame(game, mp.getGraphics(), mazePictures);
 			WaitTime.wait(250);
 
 			goOn = game.dragonTurn(goOn);
-			GameOutput.clearScreen();
 			GameOutput.printGame(game, mp.getGraphics(), mazePictures);
 			WaitTime.wait(250);
 
