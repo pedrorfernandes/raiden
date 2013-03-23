@@ -5,6 +5,7 @@ import game.ui.GameInterface;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.MazePictures;
+import general_utilities.MazeInput;
 import general_utilities.WaitTime;
 
 import java.awt.BorderLayout;
@@ -222,11 +223,6 @@ public class GUInterface extends GameInterface {
 				GameOutput.printStartMessage();
 				options.randomMaze = !usePredefinedMaze;
 
-				if(!usePredefinedMaze) {
-					options.rows = Integer.parseInt(rowsTextField.getText());
-					options.columns = Integer.parseInt(columnsTextField.getText());
-				}
-
 				//Get Dragon options from user
 				options.dragonType = dragonType;
 
@@ -235,19 +231,34 @@ public class GUInterface extends GameInterface {
 
 				options.randomSpawns = true;
 
-				if(!usePredefinedMaze && (options.rows < 5 || options.columns < 5)) {
-					JOptionPane.showMessageDialog(optionsFrame,
-							"Please specify a row number and a column number equal or bigger than 5!",
-							"Maze size error",
-							JOptionPane.ERROR_MESSAGE);
+				if(!usePredefinedMaze) {
+					if(MazeInput.isInteger(rowsTextField.getText()) && MazeInput.isInteger(columnsTextField.getText())) {
+						options.rows = Integer.parseInt(rowsTextField.getText()); 
+						options.columns = Integer.parseInt(columnsTextField.getText());
 
-					tabbedPane.setSelectedIndex(0);
-				}
-				else {
-					game = new Game(options);
+						if(options.rows < 6 || options.columns < 6) {
+							JOptionPane.showMessageDialog(optionsFrame,
+									"Please specify a row number and a column number equal or bigger than 5!",
+									"Maze size error",
+									JOptionPane.ERROR_MESSAGE);
 
-					optionsFrame.setVisible(false);
-					startInterface();
+							tabbedPane.setSelectedIndex(0);
+						}
+						else {
+							game = new Game(options);
+
+							optionsFrame.setVisible(false);
+							startInterface();
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(optionsFrame,
+								"Please input numbers on the rows/columns fields, not gibberish.",
+								"Maze size input error",
+								JOptionPane.ERROR_MESSAGE);
+
+						tabbedPane.setSelectedIndex(0);
+					}
 				}
 			}
 		});
