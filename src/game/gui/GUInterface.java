@@ -25,6 +25,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import maze_objects.Dragon;
+
 public class GUInterface extends GameInterface {
 
 	public static final int SPRITESIZE = 32;
@@ -37,7 +39,7 @@ public class GUInterface extends GameInterface {
 
 	private boolean usePredefinedMaze = true;
 	private boolean useMultipleDragons = true;
-	private int dragonType;
+	private int dragonType = Dragon.SLEEPING;
 
 	private GameOptions options = new GameOptions(false);
 	
@@ -162,7 +164,7 @@ public class GUInterface extends GameInterface {
 
 		randomlySleepingButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				dragonType = 2;
+				dragonType = Dragon.SLEEPING;
 			}
 		});
 
@@ -173,7 +175,7 @@ public class GUInterface extends GameInterface {
 
 		staticButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				dragonType = 0;
+				dragonType = Dragon.STATIC;
 			}
 		});
 
@@ -184,7 +186,7 @@ public class GUInterface extends GameInterface {
 
 		alwaysAwakeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				dragonType = 1;
+				dragonType = Dragon.NORMAL;
 			}
 		});
 
