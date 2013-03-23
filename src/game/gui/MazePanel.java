@@ -1,21 +1,37 @@
 package game.gui;
 
+import game.logic.Game;
 import game.ui.GameEvent;
+import game.ui.GameOutput;
+import game.ui.MazePictures;
 
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
 public class MazePanel extends JPanel implements KeyListener {
 	
+	Game game;
+	MazePictures pictures;
+	
 	private LinkedList<Character> keys = new LinkedList<Character>();
 
-	public MazePanel() {
+	public MazePanel(Game game, MazePictures pictures) {
 		addKeyListener(this);
 		setBackground(Color.WHITE);
 		setFocusable( true );
+		
+		this.game = game;
+		this.pictures = pictures;
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		GameOutput.printGame(game, g, pictures);
 	}
 	
 	public char getNextKey() {
