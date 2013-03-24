@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -32,7 +33,7 @@ import javax.swing.KeyStroke;
 
 import maze_objects.Dragon;
 
-public class GUInterface extends GameInterface {
+public class GUInterface extends GameInterface implements KeyListener {
 
 	public static final int SPRITESIZE = 32;
 	private final MazePictures mazePictures = new MazePictures();
@@ -42,10 +43,12 @@ public class GUInterface extends GameInterface {
 	private JTextField rowsTextField;
 	private JTextField columnsTextField;
 
-	private boolean goOn;
 	private boolean usePredefinedMaze = true;
 	private boolean useMultipleDragons = true;
 	private int dragonType = Dragon.SLEEPING;
+	private int maze_rows;
+	private int maze_columns;
+	private boolean goOn = true;
 
 	private GameOptions options = new GameOptions(false);
 
@@ -64,13 +67,15 @@ public class GUInterface extends GameInterface {
 
 		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				100);
-/*
+		/*
 		Dimension mazePanelDimension = new Dimension(500, 500);
 
 		Dimension infoPanelDimension = new Dimension(500, 100);*/
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());
+		c.addKeyListener(this);
+		c.setFocusable(true);
 
 		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension);
 		infoPanel = new InfoPanel(infoPanelDimension);
@@ -83,33 +88,137 @@ public class GUInterface extends GameInterface {
 				"Game options");
 		menuBar.add(gameMenu);
 
-	    JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
+		JMenuItem optionsGameMenuItem = new JMenuItem("Game options",
+				KeyEvent.VK_O);
+		optionsGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_1, ActionEvent.ALT_MASK));
+		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Change options for next game");
+		gameMenu.add(optionsGameMenuItem);
+
+		optionsGameMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(
+						frame,
+						"Change the game settings? (Next game will use these definitions)",
+						"Change settings",
+						JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION) {
+					int predefMazeOption = JOptionPane.showConfirmDialog(
+							frame,
+							"Create a user defined maze?",
+							"User defined maze",
+							JOptionPane.YES_NO_OPTION);
+					
+					if(predefMazeOption == JOptionPane.YES_OPTION) {
+						usePredefinedMaze = false;
+						String rows, columns;
+
+						do {
+							rows = JOptionPane.showInputDialog(frame, "Number of rows? (Min. 6!)");
+						}
+						while(!MazeInput.isInteger(rows));
+
+						do {
+							columns = JOptionPane.showInputDialog(frame, "Number of columns? (Min. 6!)");
+						}
+						while(!MazeInput.isInteger(columns));
+
+						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
+							JOptionPane.showMessageDialog(frame,
+									"Invalid row and/or column number detected, keeping old maze settings!",
+									"Invalid input error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						else {
+							maze_rows = Integer.parseInt(rows);
+							maze_columns = Integer.parseInt(columns);
+						}
+					}
+					else
+						usePredefinedMaze = true;
+					
+					String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
+					String dragonOption = (String)JOptionPane.showInputDialog(
+					                    frame,
+					                    "Dragon type:",
+					                    "Dragon type",
+					                    JOptionPane.QUESTION_MESSAGE,
+					                    null,
+					                    possibilities,
+					                    possibilities[0]);
+					
+					if(dragonOption.equals( "Randomly sleeping" ))
+						dragonType = Dragon.SLEEPING;
+					else if(dragonOption.equals( "Always awake" ))
+						dragonType = Dragon.NORMAL;
+					else
+						dragonType = Dragon.STATIC;
+					
+					int multipleDragonsOption = JOptionPane.showConfirmDialog(
+							frame,
+							"Create a number of dragons proportional to the maze size?",
+							"Multiple dragons",
+							JOptionPane.YES_NO_OPTION);
+					
+					if(multipleDragonsOption == JOptionPane.YES_OPTION)
+						useMultipleDragons = true;
+					else
+						useMultipleDragons = false;
+					
+					updateOptions();
+					
+					JOptionPane.showMessageDialog(frame,
+						    "The new game settings are now configured, restart the game to apply changes!",
+						    "Settings changed",
+						    JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+
+		JMenuItem restartGameMenuItem = new JMenuItem("Restart game",
+				KeyEvent.VK_R);
+		restartGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_2, ActionEvent.ALT_MASK));
+		restartGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Restarts the game");
+		gameMenu.add(restartGameMenuItem);
+
+		restartGameMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(
+						frame,
+						"Do you really want to restart the game?",
+						"Confirm exit",
+						JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION) {
+					frame.setVisible(false);
+					restartGame();
+					return;
+				}
+			}
+		});
+
+		JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
 				KeyEvent.VK_E);
 		exitGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_1, ActionEvent.ALT_MASK));
+				KeyEvent.VK_3, ActionEvent.ALT_MASK));
 		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Exits the game");
 		gameMenu.add(exitGameMenuItem);
-		
+
 		exitGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
-					    frame,
-					    "Do you really want to exit the game?",
-					    "Confirm exit",
-					    JOptionPane.YES_NO_OPTION);
+						frame,
+						"Do you really want to exit the game?",
+						"Confirm exit",
+						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION)
 					System.exit(0);
 			}
 		});
-		
-		JMenuItem optionsGameMenuItem = new JMenuItem("Maze options",
-				KeyEvent.VK_O);
-		optionsGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_2, ActionEvent.ALT_MASK));
-		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Opens the game options");
-		gameMenu.add(optionsGameMenuItem);
+
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -123,8 +232,6 @@ public class GUInterface extends GameInterface {
 
 
 
-
-		//c.add(menuBar, BorderLayout.PAGE_START);
 		c.add(infoPanel, BorderLayout.PAGE_START);
 		c.add(mazePanel);
 
@@ -139,7 +246,6 @@ public class GUInterface extends GameInterface {
 
 	public void startGame() {
 		startOptions();
-		mainLoop();
 	}
 
 	public void startOptions() {
@@ -307,8 +413,8 @@ public class GUInterface extends GameInterface {
 
 				if(!usePredefinedMaze) {
 					if(MazeInput.isInteger(rowsTextField.getText()) && MazeInput.isInteger(columnsTextField.getText())) {
-						options.rows = Integer.parseInt(rowsTextField.getText()); 
-						options.columns = Integer.parseInt(columnsTextField.getText());
+						maze_rows = options.rows = Integer.parseInt(rowsTextField.getText()); 
+						maze_columns = options.columns = Integer.parseInt(columnsTextField.getText());
 
 						if(options.rows < 6 || options.columns < 6) {
 							JOptionPane.showMessageDialog(optionsFrame,
@@ -349,24 +455,51 @@ public class GUInterface extends GameInterface {
 
 	}
 
-	private void mainLoop() {
-
-		while(!interfaceReady){
-			WaitTime.wait(10);
-		}
-
+	private void restartGame() {
+		interfaceReady = false;
 		goOn = true;
-		char input = ' ';
+		game = new Game(options);
+		startInterface();
+	}
 
-		while(goOn){
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyChar() == 'w') {
+			updateGame('w');
+		}
+		if (e.getKeyChar() == 'a') {
+			updateGame('a');
+		}
+		if (e.getKeyChar() == 's') {
+			updateGame('s');
+		}
+		if (e.getKeyChar() == 'd') {
+			updateGame('d');
+		}
+		if (e.getKeyChar() == 'e') {
+			updateGame('e');
+		}
+		if (e.getKeyChar() == 'z') {
+			updateGame('z');
+		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			updateGame(' ');
+		}
+	}
 
-			input = mazePanel.getNextKey();
-			while( input == '\n'){
-				WaitTime.wait(50);
-				mazePanel.repaint();
-				input = mazePanel.getNextKey();
-			}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
 
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	private void updateGame(char input) {
+
+		if(goOn){ 
 			goOn = game.heroTurn(input);
 
 			mazePanel.repaint();
@@ -382,5 +515,36 @@ public class GUInterface extends GameInterface {
 			GameOutput.printEventQueue(game.getEvents(), infoPanel);
 			WaitTime.wait(125);
 		}
+
+
+		if(!goOn) {
+			int option = JOptionPane.showConfirmDialog(
+					frame,
+					"Game is over! Would you like to start a new game?",
+					"Game over",
+					JOptionPane.YES_NO_OPTION);
+			if(option == JOptionPane.YES_OPTION) {
+				frame.setVisible(false);
+				restartGame();
+				return;
+			}
+			else
+				System.exit(0);
+		}
 	}
+
+
+	private void updateOptions() {
+		if(options.randomMaze = !usePredefinedMaze) {
+			options.rows = maze_rows;
+			options.columns = maze_columns;
+		}
+
+		options.dragonType = dragonType;
+		
+		options.multipleDragons = useMultipleDragons;
+
+		options.randomSpawns = true;
+	}
+
 }
