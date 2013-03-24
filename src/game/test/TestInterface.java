@@ -8,12 +8,10 @@ import game.ui.GameOptions;
 
 public class TestInterface  extends GameInterface {
 	
-	private GameOptions options;
 	private Stack<Character> heroMoves;
 	
 	
 	public TestInterface(GameOptions options, Stack<Character> heroMoves){
-		this.options = options;
 		this.heroMoves = heroMoves;
 		game = new Game(options);
 	}

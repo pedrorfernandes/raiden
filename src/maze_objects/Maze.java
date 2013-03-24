@@ -2,6 +2,8 @@ package maze_objects;
 
 public class Maze implements java.io.Serializable {
 
+	private static final long serialVersionUID = -4816528368605071858L;
+	
 	/*** Private Attributes ***/
 
 	//Maze attributes

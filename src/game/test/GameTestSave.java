@@ -1,21 +1,15 @@
 package game.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import game.logic.Game;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import maze_objects.Dragon;
-import maze_objects.Hero;
 
 import org.junit.Test;
 
@@ -25,7 +19,7 @@ public class GameTestSave extends GameTest {
 	private Stack<Integer> sleepNumbers;
 	private FakeRandom moves, sleeps;
 	private ArrayList<Dragon>dragons;
-	private Dragon d1; private Dragon d2; private Dragon d3;
+	private Dragon d1; private Dragon d2;
 	private GameOptions customOptions;
 	private Stack<Character> heroMoves;
 	private TestInterface test;

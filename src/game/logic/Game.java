@@ -24,6 +24,8 @@ import maze_objects.Sword;
 
 public class Game implements java.io.Serializable {
 
+	private static final long serialVersionUID = 3457733541422500176L;
+	
 	//Exit states
 	public static final int EXIT_OPEN = 1;
 	public static final int EXIT_CLOSED = 0;

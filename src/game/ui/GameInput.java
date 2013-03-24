@@ -8,7 +8,9 @@ public class GameInput {
 
 	public static boolean receiveMazeOptions(int size[]) { //Receives user input for maze size. If user wants predefined maze, return false, true otherwise
 
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
+		
 		char c = 'a';
 
 
@@ -36,7 +38,9 @@ public class GameInput {
 	
 	public static int receiveDragonOptions() {
 		
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
+		
 		int dragonType;
 		
 		do {
@@ -58,7 +62,9 @@ public class GameInput {
 		
 		boolean spawnMultiple;
 		
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
+		
 		char c = 'a';
 
 		do {

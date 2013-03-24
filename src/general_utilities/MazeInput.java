@@ -7,6 +7,8 @@ import java.util.Scanner;
 public class MazeInput {
 
 	public static char getChar() throws IOException {
+		
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
 		char c;
 
@@ -16,7 +18,6 @@ public class MazeInput {
 		else
 			c = ' ';
 
-		//in.close();
 		return c;
 	}
 

@@ -2,6 +2,8 @@ package maze_objects;
 
 public class Sword extends Movable implements java.io.Serializable {
 	
+	private static final long serialVersionUID = 6107957989260469574L;
+	
 	/*** Private Attributes ***/
 	private boolean taken; //Identifies whether the sword has been caught already or not
 	

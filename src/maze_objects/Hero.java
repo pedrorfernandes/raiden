@@ -5,6 +5,8 @@ import game.ui.ExitEvent;
 
 public class Hero extends Movable implements java.io.Serializable {
 
+	private static final long serialVersionUID = -5953402713235051361L;
+	
 	//Hero states
 	public static final int ARMED = 1;
 	public static final int DEAD = 2;

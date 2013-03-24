@@ -6,7 +6,6 @@ import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.MazePictures;
 import general_utilities.MazeInput;
-import general_utilities.WaitTime;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -31,8 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-
 import maze_objects.Dragon;
 
 public class GUInterface extends GameInterface implements KeyListener {
@@ -87,6 +84,46 @@ public class GUInterface extends GameInterface implements KeyListener {
 		infoPanel = new InfoPanel(infoPanelDimension);
 
 		menuBar = new JMenuBar();
+		
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription(
+				"File menu");
+		menuBar.add(fileMenu);
+		
+		JMenuItem saveGameMenuItem = new JMenuItem("Save Game", KeyEvent.VK_S);
+		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Saves the current game to a file");
+		fileMenu.add(saveGameMenuItem);
+		
+		JMenuItem loadGameMenuItem = new JMenuItem("Load Game", KeyEvent.VK_L);
+		loadGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Loads a game saved state");
+		fileMenu.add(loadGameMenuItem);
+		
+		loadGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				  File file = fileChooser.getSelectedFile();
+				  // load from file
+				  game = GameOutput.load(file);
+				  frame.dispose();
+				  startInterface();
+				}
+			}
+		});
+		
+		saveGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				  File file = fileChooser.getSelectedFile();
+				  // save to file
+				  GameOutput.save(game, file);
+				}
+			}
+		});
 
 		JMenu gameMenu = new JMenu("Game");
 		gameMenu.setMnemonic(KeyEvent.VK_G);
@@ -96,8 +133,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		JMenuItem optionsGameMenuItem = new JMenuItem("Game options",
 				KeyEvent.VK_O);
-		optionsGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_1, ActionEvent.ALT_MASK));
 		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Change options for next game");
 		gameMenu.add(optionsGameMenuItem);
@@ -184,8 +219,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		JMenuItem restartGameMenuItem = new JMenuItem("Restart game",
 				KeyEvent.VK_R);
-		restartGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_2, ActionEvent.ALT_MASK));
 		restartGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Restarts the game");
 		gameMenu.add(restartGameMenuItem);
@@ -207,8 +240,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
 				KeyEvent.VK_E);
-		exitGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_3, ActionEvent.ALT_MASK));
 		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Exits the game");
 		gameMenu.add(exitGameMenuItem);
@@ -225,52 +256,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 		
-		
-		
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.getAccessibleContext().setAccessibleDescription(
-				"File menu");
-		menuBar.add(fileMenu);
-		
-		JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
-		//saveGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-		//		KeyEvent.VK_4, ActionEvent.ALT_MASK));
-		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Saves the current game to a file");
-		fileMenu.add(saveGameMenuItem);
-		
-		JMenuItem loadGameMenuItem = new JMenuItem("Load Game");
-		//loadGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-		//		KeyEvent.VK_4, ActionEvent.ALT_MASK));
-		loadGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Loads a game saved state");
-		fileMenu.add(loadGameMenuItem);
-		
-		loadGameMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				  File file = fileChooser.getSelectedFile();
-				  // load from file
-				  game = GameOutput.load(file);
-				  frame.dispose();
-				  startInterface();
-				}
-			}
-		});
-		
-		saveGameMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				  File file = fileChooser.getSelectedFile();
-				  // save to file
-				  GameOutput.save(game, file);
-				}
-			}
-		});
-		
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -279,8 +264,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 		menuBar.add(helpMenu);
 
 		JMenuItem keysHelpMenuItem = new JMenuItem("Default keys", KeyEvent.VK_K);
-		keysHelpMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_4, ActionEvent.ALT_MASK));
 		keysHelpMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Explains default keys");
 		helpMenu.add(keysHelpMenuItem);
@@ -297,8 +280,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 		});
 		
 		JMenuItem infoHelpMenuItem = new JMenuItem("How to play", KeyEvent.VK_I);
-		infoHelpMenuItem.setAccelerator(KeyStroke.getKeyStroke(
-				KeyEvent.VK_5, ActionEvent.ALT_MASK));
 		infoHelpMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Explains how to play the game");
 		helpMenu.add(infoHelpMenuItem);

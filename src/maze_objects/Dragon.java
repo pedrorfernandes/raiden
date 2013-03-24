@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class Dragon extends Movable implements java.io.Serializable {
 
+	private static final long serialVersionUID = 7619209920273918432L;
+	
 	/*** Private Attributes ***/
 
 	private int type;
