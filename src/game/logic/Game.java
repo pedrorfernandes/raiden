@@ -1,6 +1,5 @@
 package game.logic;
 
-import game.cli.CLInterface;
 import game.gui.GUInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
@@ -8,11 +7,20 @@ import game.ui.GameEvent;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.ResultEvent;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import maze_objects.*;
+import maze_objects.Dragon;
+import maze_objects.Eagle;
+import maze_objects.Hero;
+import maze_objects.Maze;
+import maze_objects.MazeBuilder;
+import maze_objects.MazeDirector;
+import maze_objects.PredefinedMaze;
+import maze_objects.RandomMaze;
+import maze_objects.Sword;
 
 public class Game {
 

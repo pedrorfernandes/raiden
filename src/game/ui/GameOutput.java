@@ -6,18 +6,14 @@ import game.logic.Game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
-import javax.imageio.ImageIO;
 
 import maze_objects.Dragon;
 import maze_objects.Eagle;
 import maze_objects.Hero;
-import maze_objects.MazeSymbol;
 import maze_objects.Maze;
+import maze_objects.MazeSymbol;
 import maze_objects.Sword;
 import maze_objects.Tile;
 

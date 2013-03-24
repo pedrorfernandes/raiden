@@ -1,11 +1,9 @@
 package game.gui;
 
 import game.logic.Game;
-import game.ui.GameEvent;
 import game.ui.GameOutput;
 import game.ui.MazePictures;
 
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,8 +11,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
+import javax.swing.JPanel;
+
 public class MazePanel extends JPanel implements KeyListener {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Game game;
 	MazePictures pictures;
 	

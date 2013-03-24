@@ -8,6 +8,10 @@ import javax.swing.UIManager;
 
 public class InfoPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JTextPane textPane;
 	
 	public InfoPanel(Dimension dimension) {

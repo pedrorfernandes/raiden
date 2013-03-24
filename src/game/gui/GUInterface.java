@@ -12,7 +12,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import maze_objects.Dragon;
-import javax.swing.JMenuBar;
 
 public class GUInterface extends GameInterface {
 
@@ -55,9 +54,7 @@ public class GUInterface extends GameInterface {
 	private boolean interfaceReady = false;
 	private JMenuBar menuBar;
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
+
 	private void startInterface() {
 
 		frame = new JFrame("Maze");
@@ -105,6 +102,14 @@ public class GUInterface extends GameInterface {
 					System.exit(0);
 			}
 		});
+		
+		JMenuItem optionsGameMenuItem = new JMenuItem("Maze options",
+				KeyEvent.VK_O);
+		optionsGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_2, ActionEvent.ALT_MASK));
+		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Opens the game options");
+		gameMenu.add(optionsGameMenuItem);
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);

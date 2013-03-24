@@ -37,32 +37,33 @@ public class MazePictures {
 	public MazePictures() {
 		
 		try {
-			sword = ImageIO.read(new File(MazeSymbol.swordPic));
-			wall = ImageIO.read(new File(MazeSymbol.wallPic));
-			exit = ImageIO.read(new File(MazeSymbol.exitPic));
-			empty = ImageIO.read(new File(MazeSymbol.emptyPic));
-			space = ImageIO.read(new File(MazeSymbol.spacePic));
+			sword = ImageIO.read(getClass().getResource(MazeSymbol.swordPic));
+			wall = ImageIO.read(getClass().getResource(MazeSymbol.wallPic));
+			exit = ImageIO.read(getClass().getResource(MazeSymbol.exitPic));
+			empty = ImageIO.read(getClass().getResource(MazeSymbol.emptyPic));
+			space = ImageIO.read(getClass().getResource(MazeSymbol.spacePic));
 			
-			hero = ImageIO.read(new File(MazeSymbol.heroPic));
-			armedHero = ImageIO.read(new File(MazeSymbol.armedHeroPic));
-			deadHero = ImageIO.read(new File(MazeSymbol.deadHeroPic));
+			hero = ImageIO.read(getClass().getResource(MazeSymbol.heroPic));
+			armedHero = ImageIO.read(getClass().getResource(MazeSymbol.armedHeroPic));
+			deadHero = ImageIO.read(getClass().getResource(MazeSymbol.deadHeroPic));
 			
-			dragon = ImageIO.read(new File(MazeSymbol.dragonPic));
-			sleepingDragon = ImageIO.read(new File(MazeSymbol.sleepingDragonPic));
+			dragon = ImageIO.read(getClass().getResource(MazeSymbol.dragonPic));
+			sleepingDragon = ImageIO.read(getClass().getResource(MazeSymbol.sleepingDragonPic));
 			
-			guardedSword = ImageIO.read(new File(MazeSymbol.guardedSwordPic));
-			sleepingGuardedSword = ImageIO.read(new File(MazeSymbol.sleepingGuardedSwordPic));
+			guardedSword = ImageIO.read(getClass().getResource(MazeSymbol.guardedSwordPic));
+			sleepingGuardedSword = ImageIO.read(getClass().getResource(MazeSymbol.sleepingGuardedSwordPic));
 			
-			eagle = ImageIO.read(new File(MazeSymbol.eaglePic));
-			eagleOnHero = ImageIO.read(new File(MazeSymbol.eagleOnHeroPic));
-			eagleWithSword = ImageIO.read(new File(MazeSymbol.eagleWithSwordPic));
-			eagleOnWall = ImageIO.read(new File(MazeSymbol.eagleOnWallPic));
-			eagleOnDragon = ImageIO.read(new File(MazeSymbol.eagleOnDragonPic));
-			eagleOnSleepingDragon = ImageIO.read(new File(MazeSymbol.eagleOnSleepingDragonPic));
-			deadDragon = ImageIO.read(new File(MazeSymbol.deadDragonPic));
+			eagle = ImageIO.read(getClass().getResource(MazeSymbol.eaglePic));
+			eagleOnHero = ImageIO.read(getClass().getResource(MazeSymbol.eagleOnHeroPic));
+			eagleWithSword = ImageIO.read(getClass().getResource(MazeSymbol.eagleWithSwordPic));
+			eagleOnWall = ImageIO.read(getClass().getResource(MazeSymbol.eagleOnWallPic));
+			eagleOnDragon = ImageIO.read(getClass().getResource(MazeSymbol.eagleOnDragonPic));
+			eagleOnSleepingDragon = ImageIO.read(getClass().getResource(MazeSymbol.eagleOnSleepingDragonPic));
+			deadDragon = ImageIO.read(getClass().getResource(MazeSymbol.deadDragonPic));
 
 		} catch (IOException ex) {
 			System.out.println("Failed to load images");
+			System.exit(0);
 		}
 		
 	}
