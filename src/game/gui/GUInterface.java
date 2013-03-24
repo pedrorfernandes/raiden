@@ -109,7 +109,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 							"Create a user defined maze?",
 							"User defined maze",
 							JOptionPane.YES_NO_OPTION);
-					
+
 					if(predefMazeOption == JOptionPane.YES_OPTION) {
 						usePredefinedMaze = false;
 						String rows, columns;
@@ -137,41 +137,41 @@ public class GUInterface extends GameInterface implements KeyListener {
 					}
 					else
 						usePredefinedMaze = true;
-					
+
 					String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
 					String dragonOption = (String)JOptionPane.showInputDialog(
-					                    frame,
-					                    "Dragon type:",
-					                    "Dragon type",
-					                    JOptionPane.QUESTION_MESSAGE,
-					                    null,
-					                    possibilities,
-					                    possibilities[0]);
-					
+							frame,
+							"Dragon type:",
+							"Dragon type",
+							JOptionPane.QUESTION_MESSAGE,
+							null,
+							possibilities,
+							possibilities[0]);
+
 					if(dragonOption.equals( "Randomly sleeping" ))
 						dragonType = Dragon.SLEEPING;
 					else if(dragonOption.equals( "Always awake" ))
 						dragonType = Dragon.NORMAL;
 					else
 						dragonType = Dragon.STATIC;
-					
+
 					int multipleDragonsOption = JOptionPane.showConfirmDialog(
 							frame,
 							"Create a number of dragons proportional to the maze size?",
 							"Multiple dragons",
 							JOptionPane.YES_NO_OPTION);
-					
+
 					if(multipleDragonsOption == JOptionPane.YES_OPTION)
 						useMultipleDragons = true;
 					else
 						useMultipleDragons = false;
-					
+
 					updateOptions();
-					
+
 					JOptionPane.showMessageDialog(frame,
-						    "The new game settings are now configured, restart the game to apply changes!",
-						    "Settings changed",
-						    JOptionPane.PLAIN_MESSAGE);
+							"The new game settings are now configured, restart the game to apply changes!",
+							"Settings changed",
+							JOptionPane.PLAIN_MESSAGE);
 				}
 			}
 		});
@@ -225,6 +225,51 @@ public class GUInterface extends GameInterface implements KeyListener {
 		helpMenu.getAccessibleContext().setAccessibleDescription(
 				"Help menu");
 		menuBar.add(helpMenu);
+
+		JMenuItem keysHelpMenuItem = new JMenuItem("Default keys", KeyEvent.VK_K);
+		keysHelpMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_4, ActionEvent.ALT_MASK));
+		keysHelpMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Explains default keys");
+		helpMenu.add(keysHelpMenuItem);
+
+		keysHelpMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(frame,
+						"Move the hero using WASD for the usual purposes\n\n" +
+						"Skip a move by pressing ENTER\n\n" +
+						"Command the eagle to fetch your sword using E\n",
+						"Default keys",
+					    JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		
+		JMenuItem infoHelpMenuItem = new JMenuItem("How to play", KeyEvent.VK_I);
+		infoHelpMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_5, ActionEvent.ALT_MASK));
+		infoHelpMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Explains how to play the game");
+		helpMenu.add(infoHelpMenuItem);
+
+		infoHelpMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(frame,
+						"You have to escape this confusing dungeon!\n\n" +
+						"\nThe exit is closed until all the dragons have been slayed.\n" +
+						"If you touch a dragon unarmed, you will die, so be careful while\n" +
+						"you don't have the sword on your hands!\n" +
+						"\nSleeping dragons are harmless, so use that for your advantage.\n" +
+						"Fortunately for you, these dragons aren't very smart, so they will roam\n" +
+						"around the maze aimlessly.\n" +
+						"\nOnce you're armed, you can slay all the dragons you encounter.\n" +
+						"\nUse your loyal companion to get you the sword! Launch your eagle\n" +
+						"and it will retrieve your sword for you! But be careful, dragons can\n" +
+						"kill your eagle while it's picking up the sword or waiting for you!\n" +
+						"\n\nGood luck on your journey, mighty hero!\n\n",
+						"How to play",
+					    JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 
 
 
@@ -541,7 +586,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 		}
 
 		options.dragonType = dragonType;
-		
+
 		options.multipleDragons = useMultipleDragons;
 
 		options.randomSpawns = true;
