@@ -16,9 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -49,6 +51,13 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private int maze_rows;
 	private int maze_columns;
 	private boolean goOn = true;
+	
+	char upKey = 'w';
+	char leftKey = 'a';
+	char downKey = 's';
+	char rightKey = 'd';
+	char eagleKey = 'e';
+	char surrenderKey = 'z';
 
 	private GameOptions options = new GameOptions(false);
 	
@@ -215,7 +224,53 @@ public class GUInterface extends GameInterface implements KeyListener {
 					System.exit(0);
 			}
 		});
-
+		
+		
+		
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription(
+				"File menu");
+		menuBar.add(fileMenu);
+		
+		JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
+		//saveGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+		//		KeyEvent.VK_4, ActionEvent.ALT_MASK));
+		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Saves the current game to a file");
+		fileMenu.add(saveGameMenuItem);
+		
+		JMenuItem loadGameMenuItem = new JMenuItem("Load Game");
+		//loadGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+		//		KeyEvent.VK_4, ActionEvent.ALT_MASK));
+		loadGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Loads a game saved state");
+		fileMenu.add(loadGameMenuItem);
+		
+		loadGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				  File file = fileChooser.getSelectedFile();
+				  // load from file
+				  game = GameOutput.load(file);
+				  frame.dispose();
+				  startInterface();
+				}
+			}
+		});
+		
+		saveGameMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				  File file = fileChooser.getSelectedFile();
+				  // save to file
+				  GameOutput.save(game, file);
+				}
+			}
+		});
+		
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -267,8 +322,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 					    JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-
-
 
 		frame.setJMenuBar(menuBar);
 
@@ -501,23 +554,23 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == 'w') {
-			updateGame('w');
+		if (e.getKeyChar() == upKey) {
+			updateGame(upKey);
 		}
-		if (e.getKeyChar() == 'a') {
-			updateGame('a');
+		if (e.getKeyChar() == leftKey) {
+			updateGame(leftKey);
 		}
-		if (e.getKeyChar() == 's') {
-			updateGame('s');
+		if (e.getKeyChar() == downKey) {
+			updateGame(downKey);
 		}
-		if (e.getKeyChar() == 'd') {
-			updateGame('d');
+		if (e.getKeyChar() == rightKey) {
+			updateGame(rightKey);
 		}
-		if (e.getKeyChar() == 'e') {
-			updateGame('e');
+		if (e.getKeyChar() == eagleKey) {
+			updateGame(eagleKey);
 		}
-		if (e.getKeyChar() == 'z') {
-			updateGame('z');
+		if (e.getKeyChar() == surrenderKey) {
+			updateGame(surrenderKey);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			updateGame(' ');
@@ -535,7 +588,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 	private void updateGame(char input) {
-
+		
 		if(goOn){ 
 			goOn = game.heroTurn(input);
 

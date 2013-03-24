@@ -292,11 +292,11 @@ public class GameOutput {
 		for(int i = 0; i < 100; i++)
 			System.out.println();
 	}
-
-	public static void save(Game game, String filename){
+	
+	public static void save(Game game, File file){
 		try
 		{
-			FileOutputStream fos = new FileOutputStream(filename);
+			FileOutputStream fos = new FileOutputStream(file);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(game);
 			oos.close();
@@ -306,11 +306,11 @@ public class GameOutput {
 			fail("Exception thrown during test: " + ex.toString());
 		}
 	}
-
-	public static Game load(String filename){
+	
+	public static Game load(File file){
 		try
 		{
-			FileInputStream fis = new FileInputStream(filename);
+			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			Game game = (Game) ois.readObject();
 			ois.close();

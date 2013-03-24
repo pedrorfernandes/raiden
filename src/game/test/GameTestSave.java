@@ -49,7 +49,8 @@ public class GameTestSave extends GameTest {
 		customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
 		test = new TestInterface(customOptions, heroMoves);
 		
-		GameOutput.save(test.getGame(), "gameTest.save");
+		File file = new File("gameTest.save");
+		GameOutput.save(test.getGame(), file);
 		
 		// And in this one it will move left
 		moveNumbers = createDragonMoves("a");
@@ -70,7 +71,7 @@ public class GameTestSave extends GameTest {
 		
 		heroMoves = createHeroMoves(" ");
 		test = new TestInterface(customOptions, heroMoves);
-		Game loadedGame = GameOutput.load("gameTest.save");
+		Game loadedGame = GameOutput.load(file);
 		test.setGame(loadedGame);
 		test.startGame();
 		
@@ -81,7 +82,7 @@ public class GameTestSave extends GameTest {
 		
 
 		// Clean up the file
-		new File("gameTest.save").delete();
+		file.delete();
 
 	}
 }
