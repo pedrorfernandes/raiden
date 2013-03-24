@@ -5,7 +5,7 @@ import game.logic.Game;
 import java.util.Random;
 
 
-public class Dragon extends Movable {
+public class Dragon extends Movable implements java.io.Serializable {
 
 	/*** Private Attributes ***/
 

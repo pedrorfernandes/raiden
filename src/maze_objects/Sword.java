@@ -1,6 +1,6 @@
 package maze_objects;
 
-public class Sword extends Movable {
+public class Sword extends Movable implements java.io.Serializable {
 	
 	/*** Private Attributes ***/
 	private boolean taken; //Identifies whether the sword has been caught already or not

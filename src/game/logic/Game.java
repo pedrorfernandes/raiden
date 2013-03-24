@@ -22,7 +22,7 @@ import maze_objects.PredefinedMaze;
 import maze_objects.RandomMaze;
 import maze_objects.Sword;
 
-public class Game {
+public class Game implements java.io.Serializable {
 
 	//Exit states
 	public static final int EXIT_OPEN = 1;

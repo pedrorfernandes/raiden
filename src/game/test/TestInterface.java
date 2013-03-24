@@ -15,10 +15,10 @@ public class TestInterface  extends GameInterface {
 	public TestInterface(GameOptions options, Stack<Character> heroMoves){
 		this.options = options;
 		this.heroMoves = heroMoves;
+		game = new Game(options);
 	}
 	
 	public void startGame() {
-		game = new Game(options);
 		mainLoop(heroMoves);
 	}
 

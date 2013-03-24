@@ -3,7 +3,7 @@ package maze_objects;
 import game.logic.Game;
 import game.ui.ExitEvent;
 
-public class Hero extends Movable {
+public class Hero extends Movable implements java.io.Serializable {
 
 	//Hero states
 	public static final int ARMED = 1;

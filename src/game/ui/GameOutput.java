@@ -1,11 +1,18 @@
 package game.ui;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import game.gui.InfoPanel;
 import game.logic.Game;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -183,7 +190,7 @@ public class GameOutput {
 			if(!s.isTaken())
 				mazePositions[s.getRow()][s.getColumn()] = pictures.sword;
 		}
-		
+
 		// hero printing
 		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
 			mazePositions[h.getRow()][h.getColumn()] = pictures.armedHero;
@@ -226,13 +233,13 @@ public class GameOutput {
 		while(!events.isEmpty())
 			printEvent(events.removeFirst());
 	}
-	
+
 	public static void printEventQueue(LinkedList<GameEvent> events, InfoPanel infoPanel) {
 		String info = new String();
-		
+
 		while(!events.isEmpty())
 			info += (events.removeFirst().getMessage()) + '\n';
-		
+
 		infoPanel.textPane.setText(info);
 	}
 
@@ -284,5 +291,35 @@ public class GameOutput {
 	public static void clearScreen(){
 		for(int i = 0; i < 100; i++)
 			System.out.println();
+	}
+
+	public static void save(Game game, String filename){
+		try
+		{
+			FileOutputStream fos = new FileOutputStream(filename);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(game);
+			oos.close();
+		}
+		catch (Exception ex)
+		{
+			fail("Exception thrown during test: " + ex.toString());
+		}
+	}
+
+	public static Game load(String filename){
+		try
+		{
+			FileInputStream fis = new FileInputStream(filename);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			Game game = (Game) ois.readObject();
+			ois.close();
+			return game;
+		}
+		catch (Exception ex)
+		{
+			fail("Exception thrown during test: " + ex.toString());
+		}
+		return null;
 	}
 }

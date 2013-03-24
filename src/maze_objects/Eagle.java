@@ -2,7 +2,7 @@ package maze_objects;
 
 import java.util.ArrayList;
 
-public class Eagle extends Movable {
+public class Eagle extends Movable implements java.io.Serializable {
 
 	/*** Private Attributes ***/
 

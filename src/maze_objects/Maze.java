@@ -1,6 +1,6 @@
 package maze_objects;
 
-public class Maze {
+public class Maze implements java.io.Serializable {
 
 	/*** Private Attributes ***/
 

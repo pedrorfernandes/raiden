@@ -1,6 +1,7 @@
 package maze_objects;
 
-abstract class Movable { //Dynamic objects that move along the maze
+//Dynamic objects that move along the maze
+abstract class Movable implements java.io.Serializable { 
 
 	/*** Private/Protected Attributes ***/
 

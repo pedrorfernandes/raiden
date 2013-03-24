@@ -540,17 +540,17 @@ public class GUInterface extends GameInterface implements KeyListener {
 			goOn = game.heroTurn(input);
 
 			mazePanel.repaint();
-			WaitTime.wait(125);
+			//WaitTime.wait(125);
 
 			goOn = game.dragonTurn(goOn);
 			mazePanel.repaint();
-			WaitTime.wait(125);
+			//WaitTime.wait(125);
 
 			goOn = game.checkState(goOn);
 
 			mazePanel.repaint();
 			GameOutput.printEventQueue(game.getEvents(), infoPanel);
-			WaitTime.wait(125);
+			//WaitTime.wait(125);
 		}
 
 
