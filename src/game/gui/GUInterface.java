@@ -51,10 +51,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private boolean goOn = true;
 
 	private GameOptions options = new GameOptions(false);
-
-	//This variable is used to check if the startInterface method loaded all the components already
-	//This is used to prevent mainLoop() calling things that haven't been initialized by the startInterface method yet
-	private boolean interfaceReady = false;
+	
 	private JMenuBar menuBar;
 
 
@@ -284,8 +281,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
-
-		interfaceReady = true;
 	}
 
 
@@ -294,8 +289,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 	public void startOptions() {
-
-		interfaceReady = false;
 
 		final JFrame optionsFrame = new JFrame("Maze: New Game");
 		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -501,7 +494,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 	private void restartGame() {
-		interfaceReady = false;
 		goOn = true;
 		game = new Game(options);
 		startInterface();

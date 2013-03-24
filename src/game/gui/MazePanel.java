@@ -3,13 +3,10 @@ package game.gui;
 import game.logic.Game;
 import game.ui.GameOutput;
 import game.ui.MazePictures;
-import general_utilities.WaitTime;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
@@ -26,7 +23,6 @@ public class MazePanel extends JPanel {
 	private LinkedList<Character> keys = new LinkedList<Character>();
 
 	public MazePanel(Game game, MazePictures pictures, Dimension dimension) {
-		//addKeyListener(this);
 		setBackground(Color.WHITE);
 		setFocusable( true );
 		setPreferredSize(dimension);
