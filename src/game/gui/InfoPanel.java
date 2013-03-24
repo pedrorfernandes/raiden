@@ -25,5 +25,4 @@ public class InfoPanel extends JPanel {
 		textPane.setFocusable(false);
 		add(textPane);
 	}
-
 }

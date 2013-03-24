@@ -12,56 +12,116 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import maze_objects.Dragon;
+import javax.swing.JMenuBar;
 
 public class GUInterface extends GameInterface {
 
 	public static final int SPRITESIZE = 32;
 	private final MazePictures mazePictures = new MazePictures();
-	private JFrame frame = new JFrame("Maze");
+	private JFrame frame;
 	private MazePanel mazePanel;
 	private InfoPanel infoPanel;
 	private JTextField rowsTextField;
 	private JTextField columnsTextField;
 
+	private boolean goOn;
 	private boolean usePredefinedMaze = true;
 	private boolean useMultipleDragons = true;
 	private int dragonType = Dragon.SLEEPING;
 
 	private GameOptions options = new GameOptions(false);
-	
+
 	//This variable is used to check if the startInterface method loaded all the components already
 	//This is used to prevent mainLoop() calling things that haven't been initialized by the startInterface method yet
 	private boolean interfaceReady = false;
+	private JMenuBar menuBar;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	private void startInterface() {
+
+		frame = new JFrame("Maze");
 
 		Dimension mazePanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				game.getMaze().getRows() * GUInterface.SPRITESIZE);
 
 		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				100);
+/*
+		Dimension mazePanelDimension = new Dimension(500, 500);
+
+		Dimension infoPanelDimension = new Dimension(500, 100);*/
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());
 
 		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension);
 		infoPanel = new InfoPanel(infoPanelDimension);
-		c.add(mazePanel);
+
+		menuBar = new JMenuBar();
+
+		JMenu gameMenu = new JMenu("Game");
+		gameMenu.setMnemonic(KeyEvent.VK_G);
+		gameMenu.getAccessibleContext().setAccessibleDescription(
+				"Game options");
+		menuBar.add(gameMenu);
+
+	    JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
+				KeyEvent.VK_E);
+		exitGameMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_1, ActionEvent.ALT_MASK));
+		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Exits the game");
+		gameMenu.add(exitGameMenuItem);
+		
+		exitGameMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(
+					    frame,
+					    "Do you really want to exit the game?",
+					    "Confirm exit",
+					    JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION)
+					System.exit(0);
+			}
+		});
+
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
+		helpMenu.getAccessibleContext().setAccessibleDescription(
+				"Help menu");
+		menuBar.add(helpMenu);
+
+
+
+		frame.setJMenuBar(menuBar);
+
+
+
+
+		//c.add(menuBar, BorderLayout.PAGE_START);
 		c.add(infoPanel, BorderLayout.PAGE_START);
+		c.add(mazePanel);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -78,10 +138,11 @@ public class GUInterface extends GameInterface {
 	}
 
 	public void startOptions() {
-		
+
 		interfaceReady = false;
 
 		final JFrame optionsFrame = new JFrame("Maze: New Game");
+		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(500, 250));
@@ -284,12 +345,12 @@ public class GUInterface extends GameInterface {
 	}
 
 	private void mainLoop() {
-		
+
 		while(!interfaceReady){
 			WaitTime.wait(10);
 		}
 
-		boolean goOn = true;
+		goOn = true;
 		char input = ' ';
 
 		while(goOn){
