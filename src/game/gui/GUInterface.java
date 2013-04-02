@@ -49,17 +49,25 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private int maze_columns;
 	private boolean goOn = true;
 	
-	char upKey = 'w';
-	char leftKey = 'a';
-	char downKey = 's';
-	char rightKey = 'd';
-	char eagleKey = 'e';
-	char surrenderKey = 'z';
+	// keys that the player can press
+	static int upKey = KeyEvent.VK_W;
+	static int leftKey = KeyEvent.VK_A;
+	static int downKey = KeyEvent.VK_S;
+	static int rightKey = KeyEvent.VK_D;
+	static int eagleKey = KeyEvent.VK_E;
+	static int surrenderKey = KeyEvent.VK_ESCAPE;
+
+	// chars that the game logic interprets
+	char upKeyChar = 'w';
+	char leftKeyChar = 'a';
+	char downKeyChar = 's';
+	char rightKeyChar = 'd';
+	char eagleKeyChar = 'e';
+	char surrenderKeyChar = 'z';
 
 	private GameOptions options = new GameOptions(false);
 	
 	private JMenuBar menuBar;
-
 
 	private void startInterface() {
 
@@ -537,23 +545,23 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyChar() == upKey) {
-			updateGame(upKey);
+		if (e.getKeyCode() == upKey) {
+			updateGame(upKeyChar);
 		}
-		if (e.getKeyChar() == leftKey) {
-			updateGame(leftKey);
+		if (e.getKeyCode() == leftKey) {
+			updateGame(leftKeyChar);
 		}
-		if (e.getKeyChar() == downKey) {
-			updateGame(downKey);
+		if (e.getKeyCode() == downKey) {
+			updateGame(downKeyChar);
 		}
-		if (e.getKeyChar() == rightKey) {
-			updateGame(rightKey);
+		if (e.getKeyCode() == rightKey) {
+			updateGame(rightKeyChar);
 		}
-		if (e.getKeyChar() == eagleKey) {
-			updateGame(eagleKey);
+		if (e.getKeyCode() == eagleKey) {
+			updateGame(eagleKeyChar);
 		}
-		if (e.getKeyChar() == surrenderKey) {
-			updateGame(surrenderKey);
+		if (e.getKeyCode() == surrenderKey) {
+			updateGame(surrenderKeyChar);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			updateGame(' ');
