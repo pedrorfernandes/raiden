@@ -314,6 +314,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
@@ -523,6 +524,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		optionsFrame.setResizable(false);
 		optionsFrame.pack();
+		optionsFrame.setLocationRelativeTo(null);
 		optionsFrame.setVisible(true);
 
 	}
