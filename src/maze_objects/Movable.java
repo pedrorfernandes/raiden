@@ -11,6 +11,8 @@ public abstract class Movable implements java.io.Serializable {
 	protected int row;
 	protected int column;
 	protected int state;
+	
+	public boolean print = true;
 
 	/*** Public Methods ***/
 

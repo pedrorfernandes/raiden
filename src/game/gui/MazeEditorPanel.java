@@ -16,6 +16,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JDialog;
 import javax.swing.JToolBar;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -23,11 +26,13 @@ import javax.swing.JPanel;
 
 import maze_objects.Dragon;
 import maze_objects.Maze;
+import maze_objects.Movable;
+import maze_objects.Sword;
 import maze_objects.Tile;
 
 public class MazeEditorPanel extends JDialog implements ActionListener {
 
-	private MazeObjectToDraw currentObject;
+	private MazeObjectToDraw currentObject = new MazeObjectToDraw();
 	private Game game;
 	private MazePictures pictures;
 	private GameOptions options = new GameOptions(false);
@@ -43,7 +48,7 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 
 	}
 
-	public MazeEditorPanel(Game game, MazePictures pictures) {
+	public MazeEditorPanel(final Game game, MazePictures pictures) {
 		this.game = game;
 		this.pictures = pictures;
 
@@ -55,21 +60,48 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 		JButton btnFloor = new JButton("Floor");
 		toolBar.add(btnFloor);
 
+		btnFloor.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				currentObject.set(Tile.empty);
+			}
+		});
+
 		JButton btnWall = new JButton("Wall");
 		toolBar.add(btnWall);
+
+		btnWall.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				currentObject.set(Tile.wall);
+			}
+		});
 
 		JButton btnExit = new JButton("Exit");
 		toolBar.add(btnExit);
 
+		btnExit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				currentObject.set(Tile.exit);
+			}
+		});
+
 		JButton btnDragon = new JButton("Dragon");
 		toolBar.add(btnDragon);
+
+		btnDragon.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				currentObject.set(new Dragon(0, 0, options.dragonType));
+			}
+		});
 
 		JButton btnSword = new JButton("Sword");
 		toolBar.add(btnSword);
 
+		btnSword.addActionListener(new SetSword());
+
 		JButton btnHero = new JButton("Hero");
 		toolBar.add(btnHero);
 
+		btnHero.addActionListener(new SetHero());
 
 		String rows;
 		String columns;
@@ -135,8 +167,12 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 			useMultipleDragons = false;
 
 		updateOptions();
+		this.game = new Game(options);
+		this.game.setMaze(new Maze(options.rows, options.columns, true));
+		this.game.getHero().print = false;
+		this.game.getSword().print = false;
 
-		MazePainterPanel mazePainter = new MazePainterPanel(pictures, currentObject, options);
+		MazePainterPanel mazePainter = new MazePainterPanel(pictures, currentObject, this.game, this.options);
 		getContentPane().add(mazePainter, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -145,7 +181,8 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 	}
 
 	private void updateOptions() {
-		
+
+		options.randomMaze = true;
 		options.rows = maze_rows;
 		options.columns = maze_columns;
 
@@ -156,6 +193,24 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 		options.randomSpawns = false;
 	}
 
+	class SetHero implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			currentObject.set(game.getHero());
+		}
+
+	}
+
+	class SetSword implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			currentObject.set(game.getSword());
+		}
+
+	}
+
 }
 
 class MazePainterPanel extends JPanel implements MouseListener {
@@ -163,7 +218,19 @@ class MazePainterPanel extends JPanel implements MouseListener {
 	private Game game;
 	private MazePictures pictures;
 	private MazeObjectToDraw currentObject;
-	private GameOptions options;
+	private ArrayList<Movable> movableObjects = new ArrayList<Movable>();
+
+	public MazePainterPanel(MazePictures pictures, MazeObjectToDraw currentObject, Game game, GameOptions options) {
+
+		this.game = game;
+		this.pictures = pictures;
+		this.currentObject = currentObject;
+
+		setFocusable(true);
+		addMouseListener(this);
+
+		setPreferredSize(new Dimension(options.rows * 32, options.columns * 32));
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -189,8 +256,24 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		int printRow = e.getY() / 32;
+		int printColumn = e.getX() / 32;
+
 		System.out.println("mouse pressed!");
-		game.getMaze().getPositions()[e.getY()/32][e.getX()/32] = Tile.exit;
+		if(currentObject.isMovable) {
+			deleteObjectOn(printRow, printColumn);
+			currentObject.movable.setRow(printRow);
+			currentObject.movable.setColumn(printColumn);
+			currentObject.movable.print = true;
+			movableObjects.add(currentObject.movable);
+
+			if(currentObject.movable instanceof Dragon) {
+				game.addDragon((Dragon) currentObject.movable);
+			}
+		}
+		else
+			game.getMaze().getPositions()[printRow][printColumn] = currentObject.tile;
+
 		repaint();
 	}
 
@@ -199,17 +282,34 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	}
 
-	public MazePainterPanel(MazePictures pictures, MazeObjectToDraw currentObject, GameOptions options) {
-		game = new Game(options);
-		game.setMaze(new Maze(options.rows, options.columns, true));
-		this.pictures = pictures;
-		this.currentObject = currentObject;
-		this.options = options;
+	private void deleteObjectOn(int row, int column) {
 
-		setFocusable(true);
-		addMouseListener(this);
+		Iterator<Movable> iter = movableObjects.iterator(); 
+		
+		if(movableObjects != null)
+			while(iter.hasNext()) {
+				Movable movable = iter.next();
 
-		setPreferredSize(new Dimension(options.rows * 32, options.columns * 32));
+				if(movable.getRow() == row && movable.getColumn() == column) {
+
+					if(movable instanceof Dragon) {
+						Iterator<Dragon> dragonIter = game.getDragons().iterator(); 
+						
+						while(dragonIter.hasNext()) {
+							Dragon dragon = dragonIter.next();
+							
+							if(dragon.getRow() == row && dragon.getColumn() == column)
+								dragonIter.remove();
+						}
+					}
+
+					movable.setRow(0);
+					movable.setColumn(0);
+					movable.print = false;
+					iter.remove();
+				}
+			}
+
 	}
 
 }

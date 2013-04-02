@@ -43,7 +43,7 @@ public class Game implements java.io.Serializable {
 	private Sword sword;
 	private Hero hero;
 	private Eagle eagle;
-	private ArrayList<Dragon> dragons;
+	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	private LinkedList<GameEvent> events = new LinkedList<GameEvent>();
 
 	/*** Private Methods ***/
@@ -352,6 +352,20 @@ public class Game implements java.io.Serializable {
 
 	public Dragon getDragon(int i) {
 		return dragons.get(i);
+	}
+	
+	public void addDragon(Dragon dragon) {
+		dragons.add(dragon);
+		numberOfDragons++;
+		remainingDragons++;
+	}
+	
+	public void removeDragon(Dragon dragon) {
+		dragons.remove(dragon);
+		numberOfDragons--;
+		
+		if(dragon.getState() != Dragon.DEAD)
+			remainingDragons--;
 	}
 
 	public ArrayList<Dragon> getDragons() {

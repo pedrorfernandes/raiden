@@ -9,6 +9,10 @@ public class MazeObjectToDraw {
 	Tile tile;
 	Movable movable;
 	
+	public MazeObjectToDraw() {
+		set(Tile.empty);
+	}
+	
 	public void setMovable() {isMovable = true;}
 	public void setTile() {isMovable = false;}
 	

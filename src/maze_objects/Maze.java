@@ -27,7 +27,7 @@ public class Maze implements java.io.Serializable {
 		if(onlyWalls) {
 			for(int i = 0; i < numberOfRows; i++)
 				for(int j = 0; j < numberOfColumns; j++) {
-					if(i == 0 || j == 0 || i == numberOfRows || j == numberOfColumns)
+					if(i == 0 || j == 0 || i == numberOfRows - 1 || j == numberOfColumns - 1)
 						positions[i][j] = Tile.wall;
 					else
 						positions[i][j] = Tile.empty;

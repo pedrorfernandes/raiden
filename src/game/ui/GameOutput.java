@@ -106,10 +106,11 @@ public class GameOutput {
 		char[][] mazePositions = getMazeSymbols(m);
 
 		// hero printing
-		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
-			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.armedHero;
-		else
-			mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
+		if(h.print)
+			if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
+				mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.armedHero;
+			else
+				mazePositions[h.getRow()][h.getColumn()] = MazeSymbol.hero;
 
 		// dragon printing
 		for(int i = 0; i < g.getNumberOfDragons(); i++) {
@@ -174,7 +175,7 @@ public class GameOutput {
 		BufferedImage[][] mazePositions = getMazePictures(m, pictures);
 
 		// dragon printing
-		for(int i = 0; i < g.getNumberOfDragons(); i++) {
+		for(int i = 0; i < d.size(); i++) {
 			if(d.get(i).getState() == Dragon.ALIVE && d.get(i).getHasSword())
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.guardedSword;
 			else if(d.get(i).getState() == Dragon.ALIVE && !d.get(i).getHasSword())
@@ -185,18 +186,19 @@ public class GameOutput {
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.sleepingDragon;
 			else if(d.get(i).getState() == Dragon.DEAD)
 				mazePositions[d.get(i).getRow()][d.get(i).getColumn()] = pictures.deadDragon;
-
-			if(!s.isTaken())
-				mazePositions[s.getRow()][s.getColumn()] = pictures.sword;
 		}
+		
+		if(!s.isTaken() && s.print)
+			mazePositions[s.getRow()][s.getColumn()] = pictures.sword;
 
 		// hero printing
-		if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
-			mazePositions[h.getRow()][h.getColumn()] = pictures.armedHero;
-		else if (h.getState() == Hero.DEAD)
-			mazePositions[h.getRow()][h.getColumn()] = pictures.deadHero;
-		else
-			mazePositions[h.getRow()][h.getColumn()] = pictures.hero;
+		if(h.print)
+			if(h.getState() == Hero.ARMED || h.getState() == Hero.EXITED_MAZE)
+				mazePositions[h.getRow()][h.getColumn()] = pictures.armedHero;
+			else if (h.getState() == Hero.DEAD)
+				mazePositions[h.getRow()][h.getColumn()] = pictures.deadHero;
+			else
+				mazePositions[h.getRow()][h.getColumn()] = pictures.hero;
 
 		// eagle printing
 		if ( !e.isWithHero() && e.getState() != Eagle.DEAD){
@@ -291,7 +293,7 @@ public class GameOutput {
 		for(int i = 0; i < 100; i++)
 			System.out.println();
 	}
-	
+
 	public static void save(Game game, File file){
 		try
 		{
@@ -305,7 +307,7 @@ public class GameOutput {
 			fail("Exception thrown during test: " + ex.toString());
 		}
 	}
-	
+
 	public static Game load(File file){
 		try
 		{
