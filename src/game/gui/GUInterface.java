@@ -57,13 +57,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 	static int eagleKey = KeyEvent.VK_E;
 	static int surrenderKey = KeyEvent.VK_ESCAPE;
 
-	char upKey = 'w';
-	char leftKey = 'a';
-	char downKey = 's';
-	char rightKey = 'd';
-	char eagleKey = 'e';
-	char surrenderKey = 'z';
-
 	// chars that the game logic interprets
 	char upKeyChar = 'w';
 	char leftKeyChar = 'a';
