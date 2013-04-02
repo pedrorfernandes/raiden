@@ -57,6 +57,13 @@ public class GUInterface extends GameInterface implements KeyListener {
 	static int eagleKey = KeyEvent.VK_E;
 	static int surrenderKey = KeyEvent.VK_ESCAPE;
 
+	char upKey = 'w';
+	char leftKey = 'a';
+	char downKey = 's';
+	char rightKey = 'd';
+	char eagleKey = 'e';
+	char surrenderKey = 'z';
+
 	// chars that the game logic interprets
 	char upKeyChar = 'w';
 	char leftKeyChar = 'a';
@@ -92,43 +99,43 @@ public class GUInterface extends GameInterface implements KeyListener {
 		infoPanel = new InfoPanel(infoPanelDimension);
 
 		menuBar = new JMenuBar();
-		
+
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.getAccessibleContext().setAccessibleDescription(
 				"File menu");
 		menuBar.add(fileMenu);
-		
+
 		JMenuItem saveGameMenuItem = new JMenuItem("Save Game", KeyEvent.VK_S);
 		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Saves the current game to a file");
 		fileMenu.add(saveGameMenuItem);
-		
+
 		JMenuItem loadGameMenuItem = new JMenuItem("Load Game", KeyEvent.VK_L);
 		loadGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Loads a game saved state");
 		fileMenu.add(loadGameMenuItem);
-		
+
 		loadGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				  File file = fileChooser.getSelectedFile();
-				  // load from file
-				  game = GameOutput.load(file);
-				  frame.dispose();
-				  startInterface();
+					File file = fileChooser.getSelectedFile();
+					// load from file
+					game = GameOutput.load(file);
+					frame.dispose();
+					startInterface();
 				}
 			}
 		});
-		
+
 		saveGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				  File file = fileChooser.getSelectedFile();
-				  // save to file
-				  GameOutput.save(game, file);
+					File file = fileChooser.getSelectedFile();
+					// save to file
+					GameOutput.save(game, file);
 				}
 			}
 		});
@@ -166,12 +173,18 @@ public class GUInterface extends GameInterface implements KeyListener {
 						do {
 							rows = JOptionPane.showInputDialog(frame, "Number of rows? (Min. 6!)");
 						}
-						while(!MazeInput.isInteger(rows));
+						while(!MazeInput.isInteger(rows) && rows != null);
+
+						if(rows == null)
+							return;
 
 						do {
 							columns = JOptionPane.showInputDialog(frame, "Number of columns? (Min. 6!)");
 						}
-						while(!MazeInput.isInteger(columns));
+						while(!MazeInput.isInteger(columns) && columns != null);
+
+						if(columns == null)
+							return;
 
 						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
 							JOptionPane.showMessageDialog(frame,
@@ -197,6 +210,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 							possibilities,
 							possibilities[0]);
 
+					if(dragonOption == null)
+						return;
 					if(dragonOption.equals( "Randomly sleeping" ))
 						dragonType = Dragon.SLEEPING;
 					else if(dragonOption.equals( "Always awake" ))
@@ -263,7 +278,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 					System.exit(0);
 			}
 		});
-		
+
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -280,13 +295,13 @@ public class GUInterface extends GameInterface implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frame,
 						"Move the hero using WASD for the usual purposes\n\n" +
-						"Skip a move by pressing ENTER\n\n" +
-						"Command the eagle to fetch your sword using E\n",
-						"Default keys",
-					    JOptionPane.PLAIN_MESSAGE);
+								"Skip a move by pressing ENTER\n\n" +
+								"Command the eagle to fetch your sword using E\n",
+								"Default keys",
+								JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		
+
 		JMenuItem infoHelpMenuItem = new JMenuItem("How to play", KeyEvent.VK_I);
 		infoHelpMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Explains how to play the game");
@@ -296,19 +311,19 @@ public class GUInterface extends GameInterface implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frame,
 						"You have to escape this confusing dungeon!\n\n" +
-						"\nThe exit is closed until all the dragons have been slayed.\n" +
-						"If you touch a dragon unarmed, you will die, so be careful while\n" +
-						"you don't have the sword on your hands!\n" +
-						"\nSleeping dragons are harmless, so use that for your advantage.\n" +
-						"Fortunately for you, these dragons aren't very smart, so they will roam\n" +
-						"around the maze aimlessly.\n" +
-						"\nOnce you're armed, you can slay all the dragons you encounter.\n" +
-						"\nUse your loyal companion to get you the sword! Launch your eagle\n" +
-						"and it will retrieve your sword for you! But be careful, dragons can\n" +
-						"kill your eagle while it's picking up the sword or waiting for you!\n" +
-						"\n\nGood luck on your journey, mighty hero!\n\n",
-						"How to play",
-					    JOptionPane.PLAIN_MESSAGE);
+								"\nThe exit is closed until all the dragons have been slayed.\n" +
+								"If you touch a dragon unarmed, you will die, so be careful while\n" +
+								"you don't have the sword on your hands!\n" +
+								"\nSleeping dragons are harmless, so use that for your advantage.\n" +
+								"Fortunately for you, these dragons aren't very smart, so they will roam\n" +
+								"around the maze aimlessly.\n" +
+								"\nOnce you're armed, you can slay all the dragons you encounter.\n" +
+								"\nUse your loyal companion to get you the sword! Launch your eagle\n" +
+								"and it will retrieve your sword for you! But be careful, dragons can\n" +
+								"kill your eagle while it's picking up the sword or waiting for you!\n" +
+								"\n\nGood luck on your journey, mighty hero!\n\n",
+								"How to play",
+								JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 
@@ -579,7 +594,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 	private void updateGame(char input) {
-		
+
 		if(goOn){ 
 			goOn = game.heroTurn(input);
 
