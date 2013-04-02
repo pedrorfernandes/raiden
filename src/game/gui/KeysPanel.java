@@ -22,6 +22,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 	// Class defining a general purpose message box
 	public KeysPanel(Frame parent, String title, String message)  {
 		super(parent, title, true);
+		setTitle("");
 		// If there was a parent, set dialog position inside
 		if(parent != null) {
 			Dimension parentSize = parent.getSize();     // Parent size

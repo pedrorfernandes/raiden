@@ -13,7 +13,7 @@ public class CLInterface extends GameInterface {
 
 		GameOptions options = new GameOptions();
 		game = new Game(options);
-		GameOutput.clearScreen();
+		GameOutput.clearScreen();          
 		GameOutput.printGame(game);
 		mainLoop();
 

@@ -25,7 +25,7 @@ import maze_objects.Sword;
 public class Game implements java.io.Serializable {
 
 	private static final long serialVersionUID = 3457733541422500176L;
-	
+
 	//Exit states
 	public static final int EXIT_OPEN = 1;
 	public static final int EXIT_CLOSED = 0;
@@ -267,7 +267,7 @@ public class Game implements java.io.Serializable {
 	public static void main(String[] args) {
 		//CLInterface cli = new CLInterface();
 		//cli.startGame();
-		
+
 		GUInterface gui = new GUInterface();
 		gui.startGame();
 	}
@@ -315,9 +315,15 @@ public class Game implements java.io.Serializable {
 		}
 		else {
 			hero = new Hero(options.heroRow, options.heroColumn);
-			dragons = options.dragons;
-			numberOfDragons = dragons.size();
-			remainingDragons = numberOfDragons;
+			if(options.dragons != null) {
+				dragons = options.dragons;
+				numberOfDragons = dragons.size();
+				remainingDragons = numberOfDragons;
+			}
+			else {
+				numberOfDragons = 0;
+				remainingDragons = 0;
+			}
 			sword = new Sword(options.swordRow, options.swordColumn);
 			eagle = spawnEagle(hero.getRow(), hero.getColumn());
 		}
@@ -334,6 +340,10 @@ public class Game implements java.io.Serializable {
 
 	public Maze getMaze() {
 		return maze;
+	}
+	
+	public void setMaze(Maze maze) {
+		this.maze = maze;
 	}
 
 	public Hero getHero() {
@@ -390,7 +400,7 @@ public class Game implements java.io.Serializable {
 
 		return false;
 	}
-	
+
 	public boolean checkIfOnSleepingDragon(int row, int column) {
 		for(Dragon dragon : dragons)
 			if(row == dragon.getRow() && column == dragon.getColumn()
@@ -399,7 +409,7 @@ public class Game implements java.io.Serializable {
 
 		return false;
 	}
-	
+
 	public boolean checkIfOnAwakeDragon(int row, int column) {
 		for(Dragon dragon : dragons)
 			if(row == dragon.getRow() && column == dragon.getColumn()
@@ -507,4 +517,5 @@ public class Game implements java.io.Serializable {
 		checkHeroState();
 		return goOn;
 	}
+
 }
