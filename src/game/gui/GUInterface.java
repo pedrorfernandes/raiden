@@ -232,6 +232,27 @@ public class GUInterface extends GameInterface implements KeyListener {
 				}
 			}
 		});
+		
+		JMenuItem mazeEditorGameMenuItem = new JMenuItem("Maze Editor",
+				KeyEvent.VK_M);
+		mazeEditorGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Opens the maze editor dialog");
+		gameMenu.add(mazeEditorGameMenuItem);
+
+		/*mazeEditorGameMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(
+						frame,
+						"Do you really want to restart the game?",
+						"Confirm exit",
+						JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION) {
+					frame.setVisible(false);
+					restartGame();
+					return;
+				}
+			}
+		});*/
 
 		JMenuItem restartGameMenuItem = new JMenuItem("Restart game",
 				KeyEvent.VK_R);
