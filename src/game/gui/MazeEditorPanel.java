@@ -7,20 +7,27 @@ import game.ui.MazePictures;
 import general_utilities.MazeInput;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JDialog;
 import javax.swing.JToolBar;
 import java.awt.BorderLayout;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -30,29 +37,43 @@ import maze_objects.Movable;
 import maze_objects.Sword;
 import maze_objects.Tile;
 
-public class MazeEditorPanel extends JDialog implements ActionListener {
+public class MazeEditorPanel extends JDialog {
 
-	private MazeObjectToDraw currentObject = new MazeObjectToDraw();
-	private Game game;
-	private MazePictures pictures;
-	private GameOptions options = new GameOptions(false);
+	public MazeObjectToDraw currentObject = new MazeObjectToDraw();
+	public Game game;
+	public GameOptions options = new GameOptions(false);
+	public MazePictures pictures;
+	
+	//This boolean indicates if the user clicked on a new dragon or is repeating the same
+	public boolean newDragon; 
 
 	private int maze_rows;
 	private int maze_columns;
 	private int dragonType;
 	private boolean useMultipleDragons;
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public MazeEditorPanel(final Game game, MazePictures pictures) {
+	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
+		super(parent, "Maze Editor", true);
 		this.game = game;
 		this.pictures = pictures;
 
-		setTitle("Maze Editor");
+		JMenuBar menuBar = new JMenuBar();
+
+
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription(
+				"File menu");
+		menuBar.add(fileMenu);
+
+		JMenuItem saveGameMenuItem = new JMenuItem("Save Maze", KeyEvent.VK_S);
+		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Saves the current maze to a file");
+		fileMenu.add(saveGameMenuItem);
+
+		saveGameMenuItem.addActionListener(new SaveMaze());
+
+		setJMenuBar(menuBar);
 
 		JToolBar toolBar = new JToolBar();
 		getContentPane().add(toolBar, BorderLayout.NORTH);
@@ -90,6 +111,7 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 		btnDragon.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				currentObject.set(new Dragon(0, 0, options.dragonType));
+				newDragon = true;
 			}
 		});
 
@@ -172,7 +194,7 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 		this.game.getHero().print = false;
 		this.game.getSword().print = false;
 
-		MazePainterPanel mazePainter = new MazePainterPanel(pictures, currentObject, this.game, this.options);
+		MazePainterPanel mazePainter = new MazePainterPanel(this);
 		getContentPane().add(mazePainter, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -211,31 +233,41 @@ public class MazeEditorPanel extends JDialog implements ActionListener {
 
 	}
 
+	class SaveMaze implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser();
+			if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				// save to file
+				GameOutput.save(game, file);
+			}
+		}
+		
+	}
 }
 
 class MazePainterPanel extends JPanel implements MouseListener {
 
-	private Game game;
-	private MazePictures pictures;
-	private MazeObjectToDraw currentObject;
+	MazeEditorPanel parent;
+
 	private ArrayList<Movable> movableObjects = new ArrayList<Movable>();
 
-	public MazePainterPanel(MazePictures pictures, MazeObjectToDraw currentObject, Game game, GameOptions options) {
+	public MazePainterPanel(MazeEditorPanel parent) {
 
-		this.game = game;
-		this.pictures = pictures;
-		this.currentObject = currentObject;
+		this.parent = parent;
 
 		setFocusable(true);
 		addMouseListener(this);
 
-		setPreferredSize(new Dimension(options.rows * 32, options.columns * 32));
+		setPreferredSize(new Dimension(parent.options.rows * 32, parent.options.columns * 32));
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		GameOutput.printGame(game, g, pictures);
+		GameOutput.printGame(parent.game, g, parent.pictures);
 	}
 
 	@Override
@@ -260,32 +292,40 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		int printColumn = e.getX() / 32;
 
 		System.out.println("mouse pressed!");
-		if(currentObject.isMovable) {
+		if(parent.currentObject.isMovable) {
+			movableObjects.remove(parent.currentObject.movable);
+			
+			if( (parent.currentObject.movable instanceof Dragon) && !parent.newDragon )
+				parent.game.removeDragon((Dragon) parent.currentObject.movable);
+			
 			deleteObjectOn(printRow, printColumn);
-			currentObject.movable.setRow(printRow);
-			currentObject.movable.setColumn(printColumn);
-			currentObject.movable.print = true;
-			movableObjects.add(currentObject.movable);
-
-			if(currentObject.movable instanceof Dragon) {
-				game.addDragon((Dragon) currentObject.movable);
+			parent.currentObject.movable.setRow(printRow);
+			parent.currentObject.movable.setColumn(printColumn);
+			parent.currentObject.movable.print = true;
+			movableObjects.add(parent.currentObject.movable);
+			
+			if(parent.currentObject.movable instanceof Dragon) {
+				parent.game.addDragon((Dragon) parent.currentObject.movable);
+				parent.newDragon = false;
 			}
 		}
 		else
-			game.getMaze().getPositions()[printRow][printColumn] = currentObject.tile;
+			parent.game.getMaze().getPositions()[printRow][printColumn] = parent.currentObject.tile;
 
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
+		// TODO Auto-generated method stub
 	}
 
 	private void deleteObjectOn(int row, int column) {
+		
+		parent.game.getMaze().getPositions()[row][column] = Tile.empty;
 
 		Iterator<Movable> iter = movableObjects.iterator(); 
-		
+
 		if(movableObjects != null)
 			while(iter.hasNext()) {
 				Movable movable = iter.next();
@@ -293,11 +333,11 @@ class MazePainterPanel extends JPanel implements MouseListener {
 				if(movable.getRow() == row && movable.getColumn() == column) {
 
 					if(movable instanceof Dragon) {
-						Iterator<Dragon> dragonIter = game.getDragons().iterator(); 
-						
+						Iterator<Dragon> dragonIter = parent.game.getDragons().iterator(); 
+
 						while(dragonIter.hasNext()) {
 							Dragon dragon = dragonIter.next();
-							
+
 							if(dragon.getRow() == row && dragon.getColumn() == column)
 								dragonIter.remove();
 						}

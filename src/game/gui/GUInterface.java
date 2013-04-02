@@ -241,7 +241,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		mazeEditorGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new MazeEditorPanel(game, mazePictures);
+				new MazeEditorPanel(frame, game, mazePictures);
 			}
 		});
 
