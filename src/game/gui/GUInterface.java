@@ -50,12 +50,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private boolean goOn = true;
 	
 	// keys that the player can press
-	static int upKey = KeyEvent.VK_W;
-	static int leftKey = KeyEvent.VK_A;
-	static int downKey = KeyEvent.VK_S;
-	static int rightKey = KeyEvent.VK_D;
-	static int eagleKey = KeyEvent.VK_E;
-	static int surrenderKey = KeyEvent.VK_ESCAPE;
+	GameKeys keys = new GameKeys();
 
 	// chars that the game logic interprets
 	char upKeyChar = 'w';
@@ -70,7 +65,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private JMenuBar menuBar;
 
 	private void startInterface() {
-
 		frame = new JFrame("Maze");
 
 		Dimension mazePanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
@@ -144,6 +138,17 @@ public class GUInterface extends GameInterface implements KeyListener {
 		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Change options for next game");
 		gameMenu.add(optionsGameMenuItem);
+		
+		JMenuItem changeKeysItem = new JMenuItem("Change keys", KeyEvent.VK_C);
+		changeKeysItem.getAccessibleContext().setAccessibleDescription(
+				"Choose which keys you use to play");
+		gameMenu.add(changeKeysItem);
+		
+		changeKeysItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new KeysPanel(frame, "Key Mappings");
+			}
+		});
 
 		optionsGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -574,22 +579,22 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == upKey) {
+		if (e.getKeyCode() == GameKeys.upKey) {
 			updateGame(upKeyChar);
 		}
-		if (e.getKeyCode() == leftKey) {
+		if (e.getKeyCode() == GameKeys.leftKey) {
 			updateGame(leftKeyChar);
 		}
-		if (e.getKeyCode() == downKey) {
+		if (e.getKeyCode() == GameKeys.downKey) {
 			updateGame(downKeyChar);
 		}
-		if (e.getKeyCode() == rightKey) {
+		if (e.getKeyCode() == GameKeys.rightKey) {
 			updateGame(rightKeyChar);
 		}
-		if (e.getKeyCode() == eagleKey) {
+		if (e.getKeyCode() == GameKeys.eagleKey) {
 			updateGame(eagleKeyChar);
 		}
-		if (e.getKeyCode() == surrenderKey) {
+		if (e.getKeyCode() == GameKeys.surrenderKey) {
 			updateGame(surrenderKeyChar);
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
