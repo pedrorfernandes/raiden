@@ -1,7 +1,7 @@
 package maze_objects;
 
 //Dynamic objects that move along the maze
-abstract class Movable implements java.io.Serializable { 
+public abstract class Movable implements java.io.Serializable { 
 
 	private static final long serialVersionUID = -113368199479679000L;
 	
@@ -11,6 +11,8 @@ abstract class Movable implements java.io.Serializable {
 	protected int row;
 	protected int column;
 	protected int state;
+	
+	public boolean print = true;
 
 	/*** Public Methods ***/
 
