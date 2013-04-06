@@ -1,37 +1,18 @@
 package game.gui;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameKeys {
-	static int upKey = KeyEvent.VK_W;
-	static int leftKey = KeyEvent.VK_A;
-	static int downKey = KeyEvent.VK_S;
-	static int rightKey = KeyEvent.VK_D;
-	static int eagleKey = KeyEvent.VK_E;
-	static int surrenderKey = KeyEvent.VK_ESCAPE;
+	static GameKey upKey = new GameKey(KeyEvent.VK_W, 'w');
+	static GameKey leftKey = new GameKey(KeyEvent.VK_A, 'a');
+	static GameKey downKey = new GameKey(KeyEvent.VK_S, 's');
+	static GameKey rightKey = new GameKey(KeyEvent.VK_D, 'd');
+	static GameKey eagleKey = new GameKey(KeyEvent.VK_E, 'e');
+	static GameKey surrenderKey = new GameKey(KeyEvent.VK_ESCAPE, 'z');
+	static GameKey waitKey = new GameKey(KeyEvent.VK_SPACE, ' ');
 	
-	public static void changeKey(String key, int newKeyCode){
-		switch (key) {
-		case "upKey":
-			upKey = newKeyCode;
-			break;
-		case "leftKey":
-			leftKey = newKeyCode;
-			break;
-		case "downKey":
-			downKey = newKeyCode;
-			break;
-		case "rightKey":
-			rightKey = newKeyCode;
-			break;
-		case "eagleKey":
-			eagleKey = newKeyCode;
-			break;
-		case "surrenderKey":
-			surrenderKey = newKeyCode;
-			break;
-		default:
-			break;
-		}
-	}
+	static ArrayList<GameKey> keyList = new ArrayList<GameKey>(
+			Arrays.asList(upKey, leftKey, downKey, rightKey, eagleKey, surrenderKey, waitKey));
 }

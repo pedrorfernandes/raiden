@@ -2,11 +2,13 @@ package game.gui;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,7 +23,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 1820059510973932243L;
 	Frame parent;
 	JButton exit, upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
-					eagleKeyButton, surrenderKeyButton;
+					eagleKeyButton, surrenderKeyButton, waitKeyButton;
 	
 	public KeysPanel(Frame parent, String title)  {
 		super(parent, title, true);
@@ -36,7 +38,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 
 		// Create the button pane
 		JPanel buttonPane = new JPanel();
-		buttonPane.setBounds(0, 239, 400, 39);
+		buttonPane.setBounds(0, 239, 270, 39);
 		exit = new JButton("Kthxbai");
 		buttonPane.add(exit);
 		exit.addActionListener(this);
@@ -44,58 +46,66 @@ public class KeysPanel extends JDialog implements ActionListener{
 		getContentPane().add(buttonPane);
 
 		JLabel lblMoveUp = new JLabel("Move up");
-		lblMoveUp.setBounds(17, 53, 61, 16);
+		lblMoveUp.setBounds(17, 27, 61, 16);
 		getContentPane().add(lblMoveUp);
 
 		JLabel lblMoveLeft = new JLabel("Move left");
-		lblMoveLeft.setBounds(17, 81, 61, 16);
+		lblMoveLeft.setBounds(17, 55, 61, 16);
 		getContentPane().add(lblMoveLeft);
 
 		JLabel lblMoveRight_1 = new JLabel("Move right");
-		lblMoveRight_1.setBounds(17, 137, 77, 16);
+		lblMoveRight_1.setBounds(17, 111, 77, 16);
 		getContentPane().add(lblMoveRight_1);
 
 		JLabel lblModeDown = new JLabel("Mode down");
-		lblModeDown.setBounds(17, 109, 77, 16);
+		lblModeDown.setBounds(17, 83, 77, 16);
 		getContentPane().add(lblModeDown);
 
 		JLabel lblSendEagle = new JLabel("Send eagle");
-		lblSendEagle.setBounds(17, 165, 77, 16);
+		lblSendEagle.setBounds(17, 139, 77, 16);
 		getContentPane().add(lblSendEagle);
 
 		JLabel lblGiveUp = new JLabel("Give up");
-		lblGiveUp.setBounds(17, 193, 61, 16);
+		lblGiveUp.setBounds(17, 167, 61, 16);
 		getContentPane().add(lblGiveUp);
 		
-		upKeyButton = new JButton(getKeyString(GameKeys.upKey));
-		upKeyButton.setBounds(128, 48, 117, 29);
+		JLabel lblWait = new JLabel("Wait");
+		lblWait.setBounds(17, 195, 61, 16);
+		getContentPane().add(lblWait);
+		
+		upKeyButton = new JButton(getKeyString(GameKeys.upKey ));
+		upKeyButton.setBounds(128, 22, 117, 29);
 		getContentPane().add(upKeyButton);		
 		upKeyButton.addActionListener(this);
 		
-		leftKeyButton = new JButton(getKeyString(GameKeys.leftKey));
-		leftKeyButton.setBounds(128, 76, 117, 29);
+		leftKeyButton = new JButton(getKeyString(GameKeys.leftKey ));
+		leftKeyButton.setBounds(128, 50, 117, 29);
 		getContentPane().add(leftKeyButton);		
 		leftKeyButton.addActionListener(this);
 		
-		downKeyButton = new JButton(getKeyString(GameKeys.downKey));
-		downKeyButton.setBounds(128, 104, 117, 29);
+		downKeyButton = new JButton(getKeyString(GameKeys.downKey ));
+		downKeyButton.setBounds(128, 78, 117, 29);
 		getContentPane().add(downKeyButton);		
 		downKeyButton.addActionListener(this);
 		
-		rightKeyButton = new JButton(getKeyString(GameKeys.rightKey));
-		rightKeyButton.setBounds(128, 132, 117, 29);
+		rightKeyButton = new JButton(getKeyString(GameKeys.rightKey ));
+		rightKeyButton.setBounds(128, 106, 117, 29);
 		getContentPane().add(rightKeyButton);		
 		rightKeyButton.addActionListener(this);
 
-		eagleKeyButton = new JButton(getKeyString(GameKeys.eagleKey));
-		eagleKeyButton.setBounds(128, 160, 117, 29);
+		eagleKeyButton = new JButton(getKeyString(GameKeys.eagleKey ));
+		eagleKeyButton.setBounds(128, 134, 117, 29);
 		getContentPane().add(eagleKeyButton);		
 		eagleKeyButton.addActionListener(this);
 		
-		surrenderKeyButton = new JButton(getKeyString(GameKeys.surrenderKey));
-		surrenderKeyButton.setBounds(128, 188, 117, 29);
+		surrenderKeyButton = new JButton(getKeyString(GameKeys.surrenderKey ));
+		surrenderKeyButton.setBounds(128, 162, 117, 29);
 		getContentPane().add(surrenderKeyButton);		
 		surrenderKeyButton.addActionListener(this);
+		
+		waitKeyButton = new JButton(getKeyString(GameKeys.waitKey ));
+		waitKeyButton.setBounds(128, 190, 117, 29);
+		getContentPane().add(waitKeyButton);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		pack();  
@@ -105,15 +115,25 @@ public class KeysPanel extends JDialog implements ActionListener{
 	
 	public class ChooseKey extends JDialog implements KeyListener {
 
-		int keypressed = -1;
-		String key;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1949938095975353345L;
 		
-		public ChooseKey(Frame parent, String key) {
+		int keypressed = -1;
+		GameKey key;
+		ArrayList<GameKey> usedKeys = new ArrayList<GameKey>();
+		
+		public ChooseKey(Frame parent, GameKey key) {
 			super(parent, "Key Configuration", true);
 			this.key = key;
+			for (GameKey gameKey : GameKeys.keyList) {
+				if (!gameKey.equals(key) )
+					usedKeys.add(gameKey);
+			}
 			setSize(300, 150);
+			setLayout(new GridBagLayout());
 			JLabel message = new JLabel("Press the new key");
-			message.setBounds(17, 53, 61, 16);
 			getContentPane().add(message);
 			
 			setResizable(false);
@@ -125,8 +145,8 @@ public class KeysPanel extends JDialog implements ActionListener{
 	
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() != KeyEvent.VK_ESCAPE){
-				GameKeys.changeKey(key, e.getKeyCode());
+			if (! usedKeys.contains(new GameKey(e.getKeyCode(), ' '))){
+				key.changeKey( e.getKeyCode());
 				this.dispose();
 			}
 		}
@@ -150,33 +170,33 @@ public class KeysPanel extends JDialog implements ActionListener{
 			dispose();                 
 		}
 		else if (e.getSource() == upKeyButton){
-			new ChooseKey(parent, "upKey");
+			new ChooseKey(parent, GameKeys.upKey);
 			upKeyButton.setText(getKeyString(GameKeys.upKey));
 		}
 		else if (e.getSource() == leftKeyButton){
-			new ChooseKey(parent, "leftKey");
+			new ChooseKey(parent, GameKeys.leftKey);
 			leftKeyButton.setText(getKeyString(GameKeys.leftKey));
 		}
 		else if (e.getSource() == rightKeyButton){
-			new ChooseKey(parent, "rightKey");
+			new ChooseKey(parent, GameKeys.rightKey);
 			rightKeyButton.setText(getKeyString(GameKeys.rightKey));
 		}
 		else if (e.getSource() == downKeyButton){
-			new ChooseKey(parent, "downKey");
+			new ChooseKey(parent, GameKeys.downKey);
 			downKeyButton.setText(getKeyString(GameKeys.downKey));
 		}
 		else if (e.getSource() == eagleKeyButton){
-			new ChooseKey(parent, "eagleKey");
+			new ChooseKey(parent, GameKeys.eagleKey);
 			eagleKeyButton.setText(getKeyString(GameKeys.eagleKey));
 		}
 		else if (e.getSource() == surrenderKeyButton){
-			new ChooseKey(parent, "surrenderKey");
+			new ChooseKey(parent, GameKeys.surrenderKey);
 			surrenderKeyButton.setText(getKeyString(GameKeys.surrenderKey));
 		}
 	}
 
-	public static String getKeyString(int keyCode) {
-		switch (keyCode) {
+	public static String getKeyString(GameKey keyCode) {
+		switch (keyCode.getKey()) {
 
 		/* Keyboard and Mouse Masks */
 		case KeyEvent.VK_ALT:
@@ -213,6 +233,8 @@ public class KeysPanel extends JDialog implements ActionListener{
 			return "ESC";
 		case KeyEvent.VK_TAB:
 			return "TAB";
+		case KeyEvent.VK_SPACE:
+			return "SPACE";
 
 			/* Functions Keys */
 		case KeyEvent.VK_F1:
@@ -294,6 +316,6 @@ public class KeysPanel extends JDialog implements ActionListener{
 		case KeyEvent.VK_HELP:
 			return "HELP";
 		}
-		return Character.toString((char) keyCode);
+		return Character.toString((char) keyCode.getKey());
 	}
 }

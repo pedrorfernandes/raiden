@@ -49,17 +49,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private int maze_columns;
 	private boolean goOn = true;
 	
-	// keys that the player can press
-	GameKeys keys = new GameKeys();
-
-	// chars that the game logic interprets
-	char upKeyChar = 'w';
-	char leftKeyChar = 'a';
-	char downKeyChar = 's';
-	char rightKeyChar = 'd';
-	char eagleKeyChar = 'e';
-	char surrenderKeyChar = 'z';
-
 	private GameOptions options = new GameOptions(false);
 	
 	private JMenuBar menuBar;
@@ -570,26 +559,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == GameKeys.upKey) {
-			updateGame(upKeyChar);
-		}
-		if (e.getKeyCode() == GameKeys.leftKey) {
-			updateGame(leftKeyChar);
-		}
-		if (e.getKeyCode() == GameKeys.downKey) {
-			updateGame(downKeyChar);
-		}
-		if (e.getKeyCode() == GameKeys.rightKey) {
-			updateGame(rightKeyChar);
-		}
-		if (e.getKeyCode() == GameKeys.eagleKey) {
-			updateGame(eagleKeyChar);
-		}
-		if (e.getKeyCode() == GameKeys.surrenderKey) {
-			updateGame(surrenderKeyChar);
-		}
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			updateGame(' ');
+		for (GameKey gameKey : GameKeys.keyList) {
+			if (e.getKeyCode() == gameKey.getKey())
+				updateGame(gameKey.getChar());
 		}
 	}
 
