@@ -22,6 +22,16 @@ import maze_objects.PredefinedMaze;
 import maze_objects.RandomMaze;
 import maze_objects.Sword;
 
+/**
+ * The Game class holds all the elements necessary for our 
+ * "game": the hero, a maze, dragons, a sword and an eagle.
+ * It has to determine the next action that will happen 
+ * and check the validity of all the moves of every "movable"
+ * object.
+ * This class is also responsible for ordering the construction
+ * of a maze
+ *
+ */
 public class Game implements java.io.Serializable {
 
 	private static final long serialVersionUID = 3457733541422500176L;
@@ -265,6 +275,12 @@ public class Game implements java.io.Serializable {
 	/*** Public Methods ***/
 
 	//Main
+	/**
+	 * Main initializes the game with a gui by default
+	 * with specified arguments it will start with a cli
+	 * or display help options.
+	 * @param args The startup arguments
+	 */
 	public static void main(String[] args) {
 		//CLInterface cli = new CLInterface();
 		//cli.startGame();
@@ -274,6 +290,11 @@ public class Game implements java.io.Serializable {
 	}
 
 	//Constructors
+	/**
+	 * Starts a game with the specified options
+	 * (size of the maze, number of dragons, etc..)
+	 * @param options The game options that the new game will use
+	 */
 	public Game(GameOptions options) {
 		this.options = options;
 		int rows = options.rows, columns = options.columns;
@@ -404,7 +425,8 @@ public class Game implements java.io.Serializable {
 
 	//Game Methods
 
-	public boolean checkIfSword(int row, int column) { //Checks if an untaken sword is in that place
+	//Checks if an untaken sword is in that place
+	public boolean checkIfSword(int row, int column) { 
 		return(row == sword.getRow() && column == sword.getColumn() && !sword.isTaken());
 	}
 
@@ -439,7 +461,8 @@ public class Game implements java.io.Serializable {
 		return false;
 	}
 
-	public boolean wonAgainstDragon(Dragon dragon) { //True if the hero killed the dragon (was carrying sword), false if the hero died
+	//True if the hero killed the dragon (was carrying sword), false if the hero died
+	public boolean wonAgainstDragon(Dragon dragon) { 
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
 			remainingDragons--;
@@ -490,12 +513,19 @@ public class Game implements java.io.Serializable {
 		return false;
 	}
 
+	/**
+	 * Processes a hero movement and checks its validity
+	 * If the move is valid, it is executed
+	 * @param input The hero's move
+	 * @return False if the game ends after the move, True if continues
+	 */
 	public boolean heroTurn(char input) {
 		boolean goOn = true;
 
 		switch (input) {
 		case 's':
-			goOn = hero.moveHero(1, 0, this); //tries to move hero the number or rows or columns given
+			//tries to move hero the number or rows or columns given
+			goOn = hero.moveHero(1, 0, this); 
 			break;
 		case 'w':
 			goOn = hero.moveHero(-1, 0, this);
