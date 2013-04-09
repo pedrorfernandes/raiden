@@ -159,7 +159,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 						String rows, columns;
 
 						do {
-							rows = JOptionPane.showInputDialog(frame, "Number of rows? (Min. 6!)");
+							rows = JOptionPane.showInputDialog(frame, "Number of rows? (Min. 6, Max. 500 but clipping will occur!)");
 						}
 						while(!MazeInput.isInteger(rows) && rows != null);
 
@@ -167,14 +167,15 @@ public class GUInterface extends GameInterface implements KeyListener {
 							return;
 
 						do {
-							columns = JOptionPane.showInputDialog(frame, "Number of columns? (Min. 6!)");
+							columns = JOptionPane.showInputDialog(frame, "Number of columns? (Min. 6, Max. 500 but clipping will occur!)");
 						}
 						while(!MazeInput.isInteger(columns) && columns != null);
 
 						if(columns == null)
 							return;
 
-						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
+						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
+								 || Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 							JOptionPane.showMessageDialog(frame,
 									"Invalid row and/or column number detected, keeping old maze settings!",
 									"Invalid input error",
@@ -516,6 +517,14 @@ public class GUInterface extends GameInterface implements KeyListener {
 						if(options.rows < 6 || options.columns < 6) {
 							JOptionPane.showMessageDialog(optionsFrame,
 									"Please specify a row number and a column number equal or bigger than 5!",
+									"Maze size error",
+									JOptionPane.ERROR_MESSAGE);
+
+							tabbedPane.setSelectedIndex(0);
+						}
+						else if(options.rows > 500 || options.columns > 500) {
+							JOptionPane.showMessageDialog(optionsFrame,
+									"Please specify a row number and a column number no bigger than 500!",
 									"Maze size error",
 									JOptionPane.ERROR_MESSAGE);
 

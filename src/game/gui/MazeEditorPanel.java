@@ -93,7 +93,7 @@ public class MazeEditorPanel extends JDialog {
 		String columns;
 
 		do {
-			rows = JOptionPane.showInputDialog(this, "Number of rows? (Min. 6!)");
+			rows = JOptionPane.showInputDialog(this, "Number of rows? (Min. 6, Max. 500 but clipping will occur!)");
 		}
 		while(!MazeInput.isInteger(rows) && rows != null);
 
@@ -101,14 +101,15 @@ public class MazeEditorPanel extends JDialog {
 			return 1;
 
 		do {
-			columns = JOptionPane.showInputDialog(this, "Number of columns? (Min. 6!)");
+			columns = JOptionPane.showInputDialog(this, "Number of columns? (Min. 6, Max. 500 but clipping will occur!)");
 		}
 		while(!MazeInput.isInteger(columns) && columns != null);
 
 		if(columns == null)
 			return 1;
 
-		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
+		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
+				 || Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 			JOptionPane.showMessageDialog(this,
 					"Invalid row and/or column number detected, using 10 for both!",
 					"Invalid input error",
