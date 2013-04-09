@@ -39,7 +39,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 		// Create the button pane
 		JPanel buttonPane = new JPanel();
 		buttonPane.setBounds(0, 239, 270, 39);
-		exit = new JButton("Kthxbai");
+		exit = new JButton("Done");
 		buttonPane.add(exit);
 		exit.addActionListener(this);
 		getContentPane().setLayout(null);
@@ -106,6 +106,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 		waitKeyButton = new JButton(getKeyString(GameKeys.waitKey ));
 		waitKeyButton.setBounds(128, 190, 117, 29);
 		getContentPane().add(waitKeyButton);
+		waitKeyButton.addActionListener(this);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		pack();  
@@ -193,6 +194,10 @@ public class KeysPanel extends JDialog implements ActionListener{
 			new ChooseKey(parent, GameKeys.surrenderKey);
 			surrenderKeyButton.setText(getKeyString(GameKeys.surrenderKey));
 		}
+		else if (e.getSource() == waitKeyButton){
+			new ChooseKey(parent, GameKeys.waitKey);
+			waitKeyButton.setText(getKeyString(GameKeys.waitKey));
+		}
 	}
 
 	public static String getKeyString(GameKey keyCode) {
@@ -235,7 +240,9 @@ public class KeysPanel extends JDialog implements ActionListener{
 			return "TAB";
 		case KeyEvent.VK_SPACE:
 			return "SPACE";
-
+		case KeyEvent.VK_BACK_SPACE:
+			return "BACKSPACE";
+			
 			/* Functions Keys */
 		case KeyEvent.VK_F1:
 			return "F1";
