@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Eagle extends Movable implements java.io.Serializable {
 
 	private static final long serialVersionUID = -1321096383108241473L;
-	
+
 	/*** Private Attributes ***/
 
 	private int place;         //Tells if eagle is on top of a wall or a dragon
@@ -209,7 +209,7 @@ public class Eagle extends Movable implements java.io.Serializable {
 
 	public void killEagle() {
 		state = DEAD;
-		
+
 		withHero = false;
 		onRouteToHero = false;
 		waitingForHero = false;
@@ -232,6 +232,7 @@ public class Eagle extends Movable implements java.io.Serializable {
 			onGroundWithSword = false;
 			onRouteToSword = false;
 			onRouteToHero = true;
+
 			hasSword = true;
 			sword.takeSword();
 		}

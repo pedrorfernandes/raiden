@@ -151,6 +151,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 						"Change settings",
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION) {
+					
 					int predefMazeOption = JOptionPane.showConfirmDialog(
 							frame,
 							"Create a user defined maze?",
@@ -221,6 +222,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 					else
 						useMultipleDragons = false;
 
+					useLoadedFile = false;
 					updateOptions();
 
 					JOptionPane.showMessageDialog(frame,

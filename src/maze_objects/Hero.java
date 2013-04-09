@@ -6,7 +6,7 @@ import game.ui.ExitEvent;
 public class Hero extends Movable implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5953402713235051361L;
-	
+
 	//Hero states
 	public static final int ARMED = 1;
 	public static final int DEAD = 2;
@@ -33,7 +33,7 @@ public class Hero extends Movable implements java.io.Serializable {
 		row = r;
 		column = c;
 	}
-	
+
 	//Constructors
 	public Hero() {
 		row = 1;
@@ -74,14 +74,10 @@ public class Hero extends Movable implements java.io.Serializable {
 				g.addEvent(ee);
 			}
 		}
-		else if(g.checkIfSword(newRow, newColumn) && !g.getSword().isTaken()) {
+		else if(g.checkIfSword(newRow, newColumn) && !g.getSword().isTaken() && !g.getEagle().isOnGroundWithSword()) {
 			armHero(newRow, newColumn);
 			g.getSword().takeSword();
 		}
-		
-		/*if(g.checkIfEagle(newRow, newColumn) && g.getEagle().isWaitingForHero() ){
-			g.getEagle().setWithHero(true);
-		}*/
 
 		return true;
 	}
