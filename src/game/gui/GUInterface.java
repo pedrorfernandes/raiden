@@ -42,15 +42,18 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private JTextField rowsTextField;
 	private JTextField columnsTextField;
 
+	private File loadedFile;
+	private boolean useLoadedFile = false;
+
 	private boolean usePredefinedMaze = true;
 	private boolean useMultipleDragons = true;
 	private int dragonType = Dragon.SLEEPING;
 	private int maze_rows;
 	private int maze_columns;
 	private boolean goOn = true;
-	
+
 	private GameOptions options = new GameOptions(false);
-	
+
 	private JMenuBar menuBar;
 
 	private void startInterface() {
@@ -96,9 +99,10 @@ public class GUInterface extends GameInterface implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
+					loadedFile = fileChooser.getSelectedFile();
 					// load from file
-					game = GameOutput.load(file);
+					game = GameOutput.load(loadedFile);
+					useLoadedFile = true;
 					frame.dispose();
 					startInterface();
 				}
@@ -127,12 +131,12 @@ public class GUInterface extends GameInterface implements KeyListener {
 		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Change options for next game");
 		gameMenu.add(optionsGameMenuItem);
-		
+
 		JMenuItem changeKeysItem = new JMenuItem("Change keys", KeyEvent.VK_C);
 		changeKeysItem.getAccessibleContext().setAccessibleDescription(
 				"Choose which keys you use to play");
 		gameMenu.add(changeKeysItem);
-		
+
 		changeKeysItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new KeysPanel(frame, "Key Mappings");
@@ -226,7 +230,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 				}
 			}
 		});
-		
+
 		JMenuItem mazeEditorGameMenuItem = new JMenuItem("Maze Editor",
 				KeyEvent.VK_M);
 		mazeEditorGameMenuItem.getAccessibleContext().setAccessibleDescription(
@@ -552,8 +556,13 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 	private void restartGame() {
-		goOn = true;
-		game = new Game(options);
+		if(useLoadedFile) {
+			game = GameOutput.load(loadedFile);
+		}
+		else {
+			GameOptions oldOptions = game.getOptions();
+			game = new Game(oldOptions);
+		}
 		startInterface();
 	}
 
