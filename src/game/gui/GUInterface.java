@@ -559,11 +559,12 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	private void restartGame() {
 		if(useLoadedFile) {
+			goOn = true;
 			game = GameOutput.load(loadedFile);
 		}
 		else {
-			GameOptions oldOptions = game.getOptions();
-			game = new Game(oldOptions);
+			goOn = true;
+			game = new Game(options);
 		}
 		startInterface();
 	}
