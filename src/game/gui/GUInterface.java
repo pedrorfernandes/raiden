@@ -64,10 +64,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				100);
-		/*
-		Dimension mazePanelDimension = new Dimension(500, 500);
-
-		Dimension infoPanelDimension = new Dimension(500, 100);*/
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BorderLayout());

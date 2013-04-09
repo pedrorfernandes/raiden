@@ -58,6 +58,7 @@ public class MazeEditorPanel extends JDialog {
 
 	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
 		super(parent, "Maze Editor", true);
+		getContentPane().setLayout(new BorderLayout());
 		this.game = game;
 		this.pictures = pictures;
 
@@ -74,7 +75,8 @@ public class MazeEditorPanel extends JDialog {
 		getContentPane().add(mazePainter, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		pack();                                   
+		pack();
+		setResizable(false);
 		setVisible(true);
 	}
 
@@ -155,6 +157,7 @@ public class MazeEditorPanel extends JDialog {
 
 	private void createToolBar() {
 		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 
 		JButton btnFloor = new JButton("Floor");
@@ -286,7 +289,8 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		setFocusable(true);
 		addMouseListener(this);
 
-		setPreferredSize(new Dimension(parent.options.rows * 32, parent.options.columns * 32));
+		setPreferredSize(new Dimension(parent.options.columns * GUInterface.SPRITESIZE,
+				parent.options.rows * GUInterface.SPRITESIZE));
 	}
 
 	@Override
