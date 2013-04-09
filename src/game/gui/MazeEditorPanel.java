@@ -335,11 +335,8 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		int printRow = e.getY() / 32;
 		int printColumn = e.getX() / 32;
 		
-		if( ( ( printRow <= 0 ) || ( printRow >= (parent.options.rows - 1) )
-				|| ( printColumn <= 0) || ( printColumn >= (parent.options.columns - 1) ) )
-				&& ( parent.currentObject.isMovable
-				     || ( parent.currentObject.tile != Tile.exit
-				          && parent.currentObject.tile != Tile.wall ) ) )
+		if( checkIfAtCorner(printRow, printColumn)
+				|| ( checkIfAtMargin(printRow, printColumn) && checkIfNotWallOrExitTile() ) )
 			return;
 
 		if(parent.game.getMaze().getPositions()[printRow][printColumn] == Tile.exit)
@@ -372,6 +369,12 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		checkIfCreatedHeroAndSword();
 
 		repaint();
+	}
+
+	private boolean checkIfNotWallOrExitTile() {
+		return parent.currentObject.isMovable
+		     || ( parent.currentObject.tile != Tile.exit
+		          && parent.currentObject.tile != Tile.wall );
 	}
 
 	@Override
@@ -431,6 +434,22 @@ class MazePainterPanel extends JPanel implements MouseListener {
 			else if(movable instanceof Sword)
 				parent.createdSword = true;
 		}
+	}
+	
+	private boolean checkIfAtMargin(int printRow, int printColumn) {
+		return printRow <= 0 || printRow >= (parent.options.rows - 1) || printColumn <= 0 || printColumn >= (parent.options.columns - 1);
+	}
+	
+	private boolean checkIfAtCorner(int printRow, int printColumn) {
+		if(printRow == 0)
+			if(printColumn == 0 || printColumn == (parent.options.columns - 1))
+				return true;
+		
+		if(printRow == (parent.options.rows - 1))
+			if(printColumn == 0 || printColumn == (parent.options.columns - 1))
+				return true;
+		
+		return false;
 	}
 
 }
