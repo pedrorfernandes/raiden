@@ -397,8 +397,18 @@ class MazePainterPanel extends JPanel implements MouseListener {
 						while(dragonIter.hasNext()) {
 							Dragon dragon = dragonIter.next();
 
-							if(dragon.getRow() == row && dragon.getColumn() == column)
+							if(dragon.getRow() == row && dragon.getColumn() == column) {
+								boolean dragonWasDead;
+								
+								if(dragon.getState() == Dragon.DEAD)
+									dragonWasDead = true;
+								else
+									dragonWasDead = false;
+								
 								dragonIter.remove();
+								
+								parent.game.removeDragon(dragonWasDead);
+							}
 						}
 					}
 

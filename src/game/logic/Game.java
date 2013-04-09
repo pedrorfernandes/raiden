@@ -356,7 +356,7 @@ public class Game implements java.io.Serializable {
 	public GameOptions getOptions() {
 		return options;
 	}
-	
+
 	public int getDragonState(int i) {
 		return dragons.get(i).getState();
 	}
@@ -368,7 +368,7 @@ public class Game implements java.io.Serializable {
 	public Maze getMaze() {
 		return maze;
 	}
-	
+
 	public void setMaze(Maze maze) {
 		this.maze = maze;
 	}
@@ -380,18 +380,25 @@ public class Game implements java.io.Serializable {
 	public Dragon getDragon(int i) {
 		return dragons.get(i);
 	}
-	
+
 	public void addDragon(Dragon dragon) {
 		dragons.add(dragon);
 		numberOfDragons++;
 		remainingDragons++;
 	}
-	
+
 	public void removeDragon(Dragon dragon) {
 		dragons.remove(dragon);
 		numberOfDragons--;
-		
+
 		if(dragon.getState() != Dragon.DEAD)
+			remainingDragons--;
+	}
+
+	public void removeDragon(boolean wasDead) {
+		numberOfDragons--;
+
+		if(!wasDead)
 			remainingDragons--;
 	}
 
