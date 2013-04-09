@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -58,7 +59,7 @@ public class MazeEditorPanel extends JDialog {
 
 	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
 		super(parent, "Maze Editor", true);
-		getContentPane().setLayout(new BorderLayout());
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		this.game = game;
 		this.pictures = pictures;
 
@@ -72,11 +73,12 @@ public class MazeEditorPanel extends JDialog {
 		initializeNewGame();
 
 		MazePainterPanel mazePainter = new MazePainterPanel(this);
-		getContentPane().add(mazePainter, BorderLayout.CENTER);
+		getContentPane().add(mazePainter);
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		pack();
 		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
@@ -158,7 +160,7 @@ public class MazeEditorPanel extends JDialog {
 	private void createToolBar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		getContentPane().add(toolBar, BorderLayout.NORTH);
+		getContentPane().add(toolBar);
 
 		JButton btnFloor = new JButton("Floor");
 		toolBar.add(btnFloor);
