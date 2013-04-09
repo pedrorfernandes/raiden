@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -23,8 +24,8 @@ public class KeysPanel extends JDialog implements ActionListener{
 	private static final long serialVersionUID = 1820059510973932243L;
 	Frame parent;
 	JButton exit, upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
-					eagleKeyButton, surrenderKeyButton, waitKeyButton;
-	
+	eagleKeyButton, surrenderKeyButton, waitKeyButton;
+
 	public KeysPanel(Frame parent, String title)  {
 		super(parent, title, true);
 		this.parent = parent;
@@ -68,26 +69,26 @@ public class KeysPanel extends JDialog implements ActionListener{
 		JLabel lblGiveUp = new JLabel("Give up");
 		lblGiveUp.setBounds(17, 167, 61, 16);
 		getContentPane().add(lblGiveUp);
-		
+
 		JLabel lblWait = new JLabel("Wait");
 		lblWait.setBounds(17, 195, 61, 16);
 		getContentPane().add(lblWait);
-		
+
 		upKeyButton = new JButton(getKeyString(GameKeys.upKey ));
 		upKeyButton.setBounds(128, 22, 117, 29);
 		getContentPane().add(upKeyButton);		
 		upKeyButton.addActionListener(this);
-		
+
 		leftKeyButton = new JButton(getKeyString(GameKeys.leftKey ));
 		leftKeyButton.setBounds(128, 50, 117, 29);
 		getContentPane().add(leftKeyButton);		
 		leftKeyButton.addActionListener(this);
-		
+
 		downKeyButton = new JButton(getKeyString(GameKeys.downKey ));
 		downKeyButton.setBounds(128, 78, 117, 29);
 		getContentPane().add(downKeyButton);		
 		downKeyButton.addActionListener(this);
-		
+
 		rightKeyButton = new JButton(getKeyString(GameKeys.rightKey ));
 		rightKeyButton.setBounds(128, 106, 117, 29);
 		getContentPane().add(rightKeyButton);		
@@ -97,34 +98,34 @@ public class KeysPanel extends JDialog implements ActionListener{
 		eagleKeyButton.setBounds(128, 134, 117, 29);
 		getContentPane().add(eagleKeyButton);		
 		eagleKeyButton.addActionListener(this);
-		
+
 		surrenderKeyButton = new JButton(getKeyString(GameKeys.surrenderKey ));
 		surrenderKeyButton.setBounds(128, 162, 117, 29);
 		getContentPane().add(surrenderKeyButton);		
 		surrenderKeyButton.addActionListener(this);
-		
+
 		waitKeyButton = new JButton(getKeyString(GameKeys.waitKey ));
 		waitKeyButton.setBounds(128, 190, 117, 29);
 		getContentPane().add(waitKeyButton);
 		waitKeyButton.addActionListener(this);
-		
+
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
 		pack();  
-		
+
 		setVisible(true);
 	}
-	
+
 	public class ChooseKey extends JDialog implements KeyListener {
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -1949938095975353345L;
-		
+
 		int keypressed = -1;
 		GameKey key;
 		ArrayList<GameKey> usedKeys = new ArrayList<GameKey>();
-		
+
 		public ChooseKey(Frame parent, GameKey key) {
 			super(parent, "Key Configuration", true);
 			this.key = key;
@@ -136,14 +137,14 @@ public class KeysPanel extends JDialog implements ActionListener{
 			setLayout(new GridBagLayout());
 			JLabel message = new JLabel("Press the new key");
 			getContentPane().add(message);
-			
+
 			setResizable(false);
 			setLocationRelativeTo(null);
 			addKeyListener(this);
 			setVisible(true);
 			setFocusable(true);
 		}
-	
+
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (! usedKeys.contains(new GameKey(e.getKeyCode(), ' '))){
@@ -161,15 +162,19 @@ public class KeysPanel extends JDialog implements ActionListener{
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
 		}
-		
-		
+
+
 	}
 
 	public void actionPerformed(ActionEvent e)  {
 		if (e.getSource() == exit){
 			setVisible(false);                         
 			dispose();                 
+		} else{
+			changeKeyFromKeyButton(e);
 		}
+
+		/*
 		else if (e.getSource() == upKeyButton){
 			new ChooseKey(parent, GameKeys.upKey);
 			upKeyButton.setText(getKeyString(GameKeys.upKey));
@@ -197,6 +202,38 @@ public class KeysPanel extends JDialog implements ActionListener{
 		else if (e.getSource() == waitKeyButton){
 			new ChooseKey(parent, GameKeys.waitKey);
 			waitKeyButton.setText(getKeyString(GameKeys.waitKey));
+		}
+		 */
+	}
+
+	private void changeKeyFromKeyButton(ActionEvent e) {
+		for (Field key : GameKeys.class.getDeclaredFields() ) {
+			Object gamekeyObject = null;
+			GameKey gameKey = null;
+			try {
+				gamekeyObject = key.get(GameKeys.class);
+				gameKey = (GameKey) gamekeyObject;
+			} catch (Exception e2) {
+				return;
+			}
+
+			String keyButtonString = key.getName() + "Button";
+			try {
+				Field field = this.getClass().getDeclaredField(keyButtonString);
+				Object buttonObject = null;
+				try {
+					buttonObject = field.get(this);
+				} catch (Exception e2) {
+					return;
+				}
+				JButton button = (JButton) buttonObject;
+				if (e.getSource() == button){
+					new ChooseKey(parent, gameKey);
+					button.setText(getKeyString(gameKey));
+				}
+			} catch (Exception e2) {
+				return;
+			}
 		}
 	}
 
@@ -242,7 +279,7 @@ public class KeysPanel extends JDialog implements ActionListener{
 			return "SPACE";
 		case KeyEvent.VK_BACK_SPACE:
 			return "BACKSPACE";
-			
+
 			/* Functions Keys */
 		case KeyEvent.VK_F1:
 			return "F1";
