@@ -109,7 +109,8 @@ public class KeysPanel extends JDialog implements ActionListener{
 		getContentPane().add(waitKeyButton);
 		waitKeyButton.addActionListener(this);
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setResizable(false);
 		pack();  
 
 		setVisible(true);
