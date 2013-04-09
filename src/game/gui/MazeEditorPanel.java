@@ -30,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import maze_objects.Dragon;
+import maze_objects.Hero;
+import maze_objects.Sword;
 import maze_objects.Maze;
 import maze_objects.Movable;
 import maze_objects.Tile;
@@ -47,6 +49,8 @@ public class MazeEditorPanel extends JDialog {
 	public boolean newDragon; 
 
 	public int numberOfExits = 0;
+	public boolean createdHero;
+	public boolean createdSword;
 
 	private int maze_rows;
 	private int maze_columns;
@@ -249,6 +253,7 @@ public class MazeEditorPanel extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			if(numberOfExits == 0) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
 						"You need at least one exit on your maze!",
@@ -256,6 +261,23 @@ public class MazeEditorPanel extends JDialog {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			
+			if(!createdHero) {
+				JOptionPane.showMessageDialog(MazeEditorPanel.this,
+						"You need to place your hero!",
+						"No hero found",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			if(!createdSword) {
+				JOptionPane.showMessageDialog(MazeEditorPanel.this,
+						"You need to place a sword!",
+						"No sword found",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
 			JFileChooser fileChooser = new JFileChooser();
 			if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -312,9 +334,18 @@ class MazePainterPanel extends JPanel implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int printRow = e.getY() / 32;
 		int printColumn = e.getX() / 32;
+		
+		if( ( ( printRow <= 0 ) || ( printRow >= (parent.options.rows - 1) )
+				|| ( printColumn <= 0) || ( printColumn >= (parent.options.columns - 1) ) )
+				&& ( parent.currentObject.isMovable
+				     || ( parent.currentObject.tile != Tile.exit
+				          && parent.currentObject.tile != Tile.wall ) ) )
+			return;
 
 		if(parent.game.getMaze().getPositions()[printRow][printColumn] == Tile.exit)
 			parent.numberOfExits--;
+		
+		deleteObjectOn(printRow, printColumn);
 
 		if(parent.currentObject.isMovable) {
 			movableObjects.remove(parent.currentObject.movable);
@@ -322,7 +353,6 @@ class MazePainterPanel extends JPanel implements MouseListener {
 			if( (parent.currentObject.movable instanceof Dragon) && !parent.newDragon )
 				parent.game.removeDragon((Dragon) parent.currentObject.movable);
 
-			deleteObjectOn(printRow, printColumn);
 			parent.currentObject.movable.setRow(printRow);
 			parent.currentObject.movable.setColumn(printColumn);
 			parent.currentObject.movable.print = true;
@@ -338,6 +368,8 @@ class MazePainterPanel extends JPanel implements MouseListener {
 			if(parent.currentObject.tile == Tile.exit)
 				parent.numberOfExits++;
 		}
+		
+		checkIfCreatedHeroAndSword();
 
 		repaint();
 	}
@@ -377,6 +409,18 @@ class MazePainterPanel extends JPanel implements MouseListener {
 				}
 			}
 
+	}
+	
+	private void checkIfCreatedHeroAndSword() {
+		parent.createdHero = false;
+		parent.createdSword = false;
+		
+		for(Movable movable : movableObjects) {
+			if(movable instanceof Hero)
+				parent.createdHero = true;
+			else if(movable instanceof Sword)
+				parent.createdSword = true;
+		}
 	}
 
 }
