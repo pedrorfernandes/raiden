@@ -39,6 +39,7 @@ public class Game implements java.io.Serializable {
 	private int remainingDragons;
 
 	//Game elements
+	private GameOptions options;
 	private Maze maze;
 	private Sword sword;
 	private Hero hero;
@@ -274,6 +275,7 @@ public class Game implements java.io.Serializable {
 
 	//Constructors
 	public Game(GameOptions options) {
+		this.options = options;
 		int rows = options.rows, columns = options.columns;
 
 		dragonType = options.dragonType;
@@ -330,6 +332,10 @@ public class Game implements java.io.Serializable {
 	}
 
 	//General Methods
+	public GameOptions getOptions() {
+		return options;
+	}
+	
 	public int getDragonState(int i) {
 		return dragons.get(i).getState();
 	}

@@ -39,6 +39,10 @@ import maze_objects.Tile;
 
 public class MazeEditorPanel extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -981182364507201188L;
 	public MazeObjectToDraw currentObject = new MazeObjectToDraw();
 	public Game game;
 	public GameOptions options = new GameOptions(false);
@@ -57,24 +61,99 @@ public class MazeEditorPanel extends JDialog {
 		this.game = game;
 		this.pictures = pictures;
 
-		JMenuBar menuBar = new JMenuBar();
+		createMenuBar();
 
+		createToolBar();
 
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.getAccessibleContext().setAccessibleDescription(
-				"File menu");
-		menuBar.add(fileMenu);
+		if(askNewGameOptions() == 1)
+			return;
+		
+		initializeNewGame();
 
-		JMenuItem saveGameMenuItem = new JMenuItem("Save Maze", KeyEvent.VK_S);
-		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Saves the current maze to a file");
-		fileMenu.add(saveGameMenuItem);
+		MazePainterPanel mazePainter = new MazePainterPanel(this);
+		getContentPane().add(mazePainter, BorderLayout.CENTER);
 
-		saveGameMenuItem.addActionListener(new SaveMaze());
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		pack();                                   
+		setVisible(true);
+	}
 
-		setJMenuBar(menuBar);
+	private void initializeNewGame() {
+		this.game = new Game(options);
+		this.game.setMaze(new Maze(options.rows, options.columns, true));
+		this.game.getHero().print = false;
+		this.game.getSword().print = false;
+	}
 
+	private int askNewGameOptions() {
+		String rows;
+		String columns;
+
+		do {
+			rows = JOptionPane.showInputDialog(this, "Number of rows? (Min. 6!)");
+		}
+		while(!MazeInput.isInteger(rows) && rows != null);
+
+		if(rows == null)
+			return 1;
+
+		do {
+			columns = JOptionPane.showInputDialog(this, "Number of columns? (Min. 6!)");
+		}
+		while(!MazeInput.isInteger(columns) && columns != null);
+
+		if(columns == null)
+			return 1;
+
+		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
+			JOptionPane.showMessageDialog(this,
+					"Invalid row and/or column number detected, using 10 for both!",
+					"Invalid input error",
+					JOptionPane.ERROR_MESSAGE);
+
+			maze_rows = 10;
+			maze_columns = 10;
+		}
+		else {
+			maze_rows = Integer.parseInt(rows);
+			maze_columns = Integer.parseInt(columns);
+		}
+
+		String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
+		String dragonOption = (String)JOptionPane.showInputDialog(
+				this,
+				"Dragon type:",
+				"Dragon type",
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				possibilities,
+				possibilities[0]);
+
+		if(dragonOption == null)
+			return 1;
+		if(dragonOption.equals( "Randomly sleeping" ))
+			dragonType = Dragon.SLEEPING;
+		else if(dragonOption.equals( "Always awake" ))
+			dragonType = Dragon.NORMAL;
+		else
+			dragonType = Dragon.STATIC;
+
+		int multipleDragonsOption = JOptionPane.showConfirmDialog(
+				this,
+				"Create a number of dragons proportional to the maze size?",
+				"Multiple dragons",
+				JOptionPane.YES_NO_OPTION);
+
+		if(multipleDragonsOption == JOptionPane.YES_OPTION)
+			useMultipleDragons = true;
+		else
+			useMultipleDragons = false;
+
+		updateOptions();
+		return 0;
+	}
+
+	private void createToolBar() {
 		JToolBar toolBar = new JToolBar();
 		getContentPane().add(toolBar, BorderLayout.NORTH);
 
@@ -124,82 +203,26 @@ public class MazeEditorPanel extends JDialog {
 		toolBar.add(btnHero);
 
 		btnHero.addActionListener(new SetHero());
+	}
 
-		String rows;
-		String columns;
+	private void createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
 
-		do {
-			rows = JOptionPane.showInputDialog(this, "Number of rows? (Min. 6!)");
-		}
-		while(!MazeInput.isInteger(rows) && rows != null);
 
-		if(rows == null)
-			return;
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		fileMenu.getAccessibleContext().setAccessibleDescription(
+				"File menu");
+		menuBar.add(fileMenu);
 
-		do {
-			columns = JOptionPane.showInputDialog(this, "Number of columns? (Min. 6!)");
-		}
-		while(!MazeInput.isInteger(columns) && columns != null);
+		JMenuItem saveGameMenuItem = new JMenuItem("Save Maze", KeyEvent.VK_S);
+		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Saves the current maze to a file");
+		fileMenu.add(saveGameMenuItem);
 
-		if(columns == null)
-			return;
+		saveGameMenuItem.addActionListener(new SaveMaze());
 
-		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6) {
-			JOptionPane.showMessageDialog(this,
-					"Invalid row and/or column number detected, using 10 for both!",
-					"Invalid input error",
-					JOptionPane.ERROR_MESSAGE);
-
-			maze_rows = 10;
-			maze_columns = 10;
-		}
-		else {
-			maze_rows = Integer.parseInt(rows);
-			maze_columns = Integer.parseInt(columns);
-		}
-
-		String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
-		String dragonOption = (String)JOptionPane.showInputDialog(
-				this,
-				"Dragon type:",
-				"Dragon type",
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				possibilities,
-				possibilities[0]);
-
-		if(dragonOption == null)
-			return;
-		if(dragonOption.equals( "Randomly sleeping" ))
-			dragonType = Dragon.SLEEPING;
-		else if(dragonOption.equals( "Always awake" ))
-			dragonType = Dragon.NORMAL;
-		else
-			dragonType = Dragon.STATIC;
-
-		int multipleDragonsOption = JOptionPane.showConfirmDialog(
-				this,
-				"Create a number of dragons proportional to the maze size?",
-				"Multiple dragons",
-				JOptionPane.YES_NO_OPTION);
-
-		if(multipleDragonsOption == JOptionPane.YES_OPTION)
-			useMultipleDragons = true;
-		else
-			useMultipleDragons = false;
-
-		updateOptions();
-		this.game = new Game(options);
-		this.game.setMaze(new Maze(options.rows, options.columns, true));
-		this.game.getHero().print = false;
-		this.game.getSword().print = false;
-
-		MazePainterPanel mazePainter = new MazePainterPanel(this);
-		getContentPane().add(mazePainter, BorderLayout.CENTER);
-
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		pack();                                   
-		setVisible(true);
+		setJMenuBar(menuBar);
 	}
 
 	private void updateOptions() {
@@ -250,6 +273,8 @@ public class MazeEditorPanel extends JDialog {
 
 class MazePainterPanel extends JPanel implements MouseListener {
 
+	private static final long serialVersionUID = -5533602405577612408L;
+
 	MazeEditorPanel parent;
 
 	private ArrayList<Movable> movableObjects = new ArrayList<Movable>();
@@ -272,17 +297,17 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		return;
 
 	}
 
@@ -317,7 +342,7 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	private void deleteObjectOn(int row, int column) {

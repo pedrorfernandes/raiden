@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import maze_objects.Dragon;
 
-public class GameOptions {
+public class GameOptions implements java.io.Serializable {
+
+	private static final long serialVersionUID = 5808918369509311374L;
+	
 	public int rows;
 	public int columns;
 
