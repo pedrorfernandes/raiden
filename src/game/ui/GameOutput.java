@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import maze_objects.Dragon;
@@ -71,7 +72,11 @@ public class GameOutput {
 			    file = new File(filePath + SAVE_EXTENSION);
 			}
 			
-			// save to file
+			JOptionPane.showMessageDialog(null,
+					"File successfully saved!",
+					"File saved",
+					JOptionPane.INFORMATION_MESSAGE);
+			
 			save(game, file);
 		}
 	}
