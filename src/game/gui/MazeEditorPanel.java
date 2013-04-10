@@ -6,6 +6,7 @@ import game.ui.GameOutput;
 import game.ui.MazePictures;
 import general_utilities.MazeInput;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -25,6 +27,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import maze_objects.Dragon;
@@ -70,8 +73,16 @@ public class MazeEditorPanel extends JDialog {
 		initializeNewGame();
 
 		MazePainterPanel mazePainter = new MazePainterPanel(this);
-		getContentPane().add(mazePainter);
 
+		Dimension mazeEditorDimension = new Dimension(options.columns * GUInterface.SPRITESIZE, options.rows * GUInterface.SPRITESIZE);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(mazePainter);
+		Dimension scrollPaneDimension = new Dimension(mazeEditorDimension.width + GUInterface.SCROLLBAR_PIXELS, mazeEditorDimension.height + GUInterface.SCROLLBAR_PIXELS);
+		scrollPane.setPreferredSize(GUInterface.getFormattedPreferredDimension(scrollPaneDimension, GUInterface.MAXIMUM_WINDOW_SIZE));
+
+		getContentPane().add(scrollPane);
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
 		pack();
@@ -107,7 +118,7 @@ public class MazeEditorPanel extends JDialog {
 			return 1;
 
 		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
-				 || Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
+				|| Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 			JOptionPane.showMessageDialog(this,
 					"Invalid row and/or column number detected, using 10 for both!",
 					"Invalid input error",
@@ -149,7 +160,8 @@ public class MazeEditorPanel extends JDialog {
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar);
 
-		JButton btnFloor = new JButton("Floor");
+		JButton btnFloor = new JButton("");
+		btnFloor.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/empty.png")));
 		toolBar.add(btnFloor);
 
 		btnFloor.addActionListener(new ActionListener(){
@@ -158,7 +170,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnWall = new JButton("Wall");
+		JButton btnWall = new JButton("");
+		btnWall.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/wall.png")));
 		toolBar.add(btnWall);
 
 		btnWall.addActionListener(new ActionListener(){
@@ -167,7 +180,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnExit = new JButton("Exit");
+		JButton btnExit = new JButton("");
+		btnExit.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/exit.png")));
 		toolBar.add(btnExit);
 
 		btnExit.addActionListener(new ActionListener(){
@@ -176,7 +190,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnDragon = new JButton("Dragon");
+		JButton btnDragon = new JButton("");
+		btnDragon.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/dragon.png")));
 		toolBar.add(btnDragon);
 
 		btnDragon.addActionListener(new ActionListener(){
@@ -186,12 +201,14 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnSword = new JButton("Sword");
+		JButton btnSword = new JButton("");
+		btnSword.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/sword.png")));
 		toolBar.add(btnSword);
 
 		btnSword.addActionListener(new SetSword());
 
-		JButton btnHero = new JButton("Hero");
+		JButton btnHero = new JButton("");
+		btnHero.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/hero.png")));
 		toolBar.add(btnHero);
 
 		btnHero.addActionListener(new SetHero());
@@ -213,6 +230,47 @@ public class MazeEditorPanel extends JDialog {
 		fileMenu.add(saveGameMenuItem);
 
 		saveGameMenuItem.addActionListener(new SaveMaze());
+		
+		JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
+				KeyEvent.VK_E);
+		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Exits the game");
+		fileMenu.add(exitGameMenuItem);
+
+		exitGameMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(
+						MazeEditorPanel.this,
+						"Do you really want to exit the game?",
+						"Confirm exit",
+						JOptionPane.YES_NO_OPTION);
+				if(option == JOptionPane.YES_OPTION)
+					dispose();
+			}
+		});
+		
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
+		helpMenu.getAccessibleContext().setAccessibleDescription(
+				"Help menu");
+		menuBar.add(helpMenu);
+
+		JMenuItem keysHelpMenuItem = new JMenuItem("Help", KeyEvent.VK_H);
+		keysHelpMenuItem.getAccessibleContext().setAccessibleDescription(
+				"Explains how to use the editor");
+		helpMenu.add(keysHelpMenuItem);
+
+		keysHelpMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(MazeEditorPanel.this, "\nPlace the objects on the toolbar to create a custom game.\n" +
+						"If you want to place multiple dragons, click the dragon icon again after placing one, and place the new one.\n" +
+						"You cannot place anything on the corners, and only exits or walls on the map borders.\n" +
+						"You can't create a game that doesn't have one hero and one sword and at least an exit.\n" +
+						"You can, however, create an enemyless game, but, come on, where's the fun in that?\n\n",
+								"Help",
+								JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 
 		setJMenuBar(menuBar);
 	}
@@ -252,7 +310,7 @@ public class MazeEditorPanel extends JDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			if(numberOfExits == 0) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
 						"You need at least one exit on your maze!",
@@ -260,7 +318,7 @@ public class MazeEditorPanel extends JDialog {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			if(!createdHero) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
 						"You need to place your hero!",
@@ -268,7 +326,7 @@ public class MazeEditorPanel extends JDialog {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			if(!createdSword) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
 						"You need to place a sword!",
@@ -276,7 +334,7 @@ public class MazeEditorPanel extends JDialog {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 			GameOutput.showSaveGameDialog(game);
 		}
 
@@ -292,14 +350,19 @@ class MazePainterPanel extends JPanel implements MouseListener {
 	private ArrayList<Movable> movableObjects = new ArrayList<Movable>();
 
 	public MazePainterPanel(MazeEditorPanel parent) {
-
+		
+		
 		this.parent = parent;
 
 		setFocusable(true);
 		addMouseListener(this);
 
-		setPreferredSize(new Dimension(parent.options.columns * GUInterface.SPRITESIZE,
-				parent.options.rows * GUInterface.SPRITESIZE));
+		Dimension defaultPreferred = new Dimension(parent.options.columns * GUInterface.SPRITESIZE,
+				parent.options.rows * GUInterface.SPRITESIZE);
+
+		setMaximumSize(GUInterface.MAXIMUM_WINDOW_SIZE);
+
+		setPreferredSize(defaultPreferred);
 	}
 
 	@Override
@@ -328,14 +391,14 @@ class MazePainterPanel extends JPanel implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		int printRow = e.getY() / 32;
 		int printColumn = e.getX() / 32;
-		
+
 		if( checkIfAtCorner(printRow, printColumn)
 				|| ( checkIfAtMargin(printRow, printColumn) && checkIfNotWallOrExitTile() ) )
 			return;
 
 		if(parent.game.getMaze().getPositions()[printRow][printColumn] == Tile.exit)
 			parent.numberOfExits--;
-		
+
 		deleteObjectOn(printRow, printColumn);
 
 		if(parent.currentObject.isMovable) {
@@ -359,7 +422,7 @@ class MazePainterPanel extends JPanel implements MouseListener {
 			if(parent.currentObject.tile == Tile.exit)
 				parent.numberOfExits++;
 		}
-		
+
 		checkIfCreatedHeroAndSword();
 
 		repaint();
@@ -367,8 +430,8 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	private boolean checkIfNotWallOrExitTile() {
 		return parent.currentObject.isMovable
-		     || ( parent.currentObject.tile != Tile.exit
-		          && parent.currentObject.tile != Tile.wall );
+				|| ( parent.currentObject.tile != Tile.exit
+				&& parent.currentObject.tile != Tile.wall );
 	}
 
 	@Override
@@ -396,14 +459,14 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 							if(dragon.getRow() == row && dragon.getColumn() == column) {
 								boolean dragonWasDead;
-								
+
 								if(dragon.getState() == Dragon.DEAD)
 									dragonWasDead = true;
 								else
 									dragonWasDead = false;
-								
+
 								dragonIter.remove();
-								
+
 								parent.game.removeDragon(dragonWasDead);
 							}
 						}
@@ -417,11 +480,11 @@ class MazePainterPanel extends JPanel implements MouseListener {
 			}
 
 	}
-	
+
 	private void checkIfCreatedHeroAndSword() {
 		parent.createdHero = false;
 		parent.createdSword = false;
-		
+
 		for(Movable movable : movableObjects) {
 			if(movable instanceof Hero)
 				parent.createdHero = true;
@@ -429,20 +492,20 @@ class MazePainterPanel extends JPanel implements MouseListener {
 				parent.createdSword = true;
 		}
 	}
-	
+
 	private boolean checkIfAtMargin(int printRow, int printColumn) {
 		return printRow <= 0 || printRow >= (parent.options.rows - 1) || printColumn <= 0 || printColumn >= (parent.options.columns - 1);
 	}
-	
+
 	private boolean checkIfAtCorner(int printRow, int printColumn) {
 		if(printRow == 0)
 			if(printColumn == 0 || printColumn == (parent.options.columns - 1))
 				return true;
-		
+
 		if(printRow == (parent.options.rows - 1))
 			if(printColumn == 0 || printColumn == (parent.options.columns - 1))
 				return true;
-		
+
 		return false;
 	}
 
