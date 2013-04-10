@@ -1,5 +1,10 @@
 package maze_objects;
 
+/**
+ * A maze contains tiles: walls, empty spaces and exits.
+ * The type of these tiles will determine where the
+ * movable objects can go.
+ */
 public class Maze implements java.io.Serializable {
 
 	private static final long serialVersionUID = -4816528368605071858L;

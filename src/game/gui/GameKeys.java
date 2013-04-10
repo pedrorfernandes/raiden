@@ -11,7 +11,7 @@ public class GameKeys {
 	static GameKey rightKey = new GameKey(KeyEvent.VK_D, 'd');
 	static GameKey eagleKey = new GameKey(KeyEvent.VK_E, 'e');
 	static GameKey surrenderKey = new GameKey(KeyEvent.VK_ESCAPE, 'z');
-	static GameKey waitKey = new GameKey(KeyEvent.VK_SPACE, ' ');
+	static GameKey waitKey = new GameKey(KeyEvent.VK_ENTER, ' ');
 	
 	static ArrayList<GameKey> keyList = new ArrayList<GameKey>(
 			Arrays.asList(upKey, leftKey, downKey, rightKey, eagleKey, surrenderKey, waitKey));

@@ -264,7 +264,8 @@ public class Game implements java.io.Serializable {
 		}
 	}
 
-	private void checkEnemyState() { //Checks if there are any enemies left
+	//Checks if there are any enemies left
+	private void checkEnemyState() { 
 		if(remainingDragons == 0) {
 			exitState = EXIT_OPEN;
 			ResultEvent exitOpen = new ResultEvent(0);
@@ -475,7 +476,7 @@ public class Game implements java.io.Serializable {
 			remainingDragons--;
 			return true;
 		}
-		else if(hero.getState() == Hero.IN_GAME && dragon.getState() == Dragon.ALIVE) {
+		else if(hero.getState() == Hero.ALIVE && dragon.getState() == Dragon.ALIVE) {
 			hero.setState(Hero.DEAD);
 			return false;
 		}
@@ -523,7 +524,7 @@ public class Game implements java.io.Serializable {
 	/**
 	 * Processes a hero movement and checks its validity
 	 * If the move is valid, it is executed
-	 * @param input The hero's move
+	 * @param input A character that represents the hero's move
 	 * @return False if the game ends after the move, True if continues
 	 */
 	public boolean heroTurn(char input) {
@@ -561,6 +562,12 @@ public class Game implements java.io.Serializable {
 		return goOn;
 	}
 
+	/**
+	 * Processes the turn for all the dragons in the game
+	 * Determines if the game is over after a dragon moves
+	 * @param goOn The state of the game (continue or not)
+	 * @return The state of the game after all the dragons moves
+	 */
 	public boolean dragonTurn(boolean goOn) {
 		goOn = checkDragonEncounters(goOn);
 		goOn = moveDragons(goOn);
@@ -568,6 +575,12 @@ public class Game implements java.io.Serializable {
 
 	}
 
+	/**
+	 * Verifies the dragon encounters and also
+	 * if the dragons and the hero are dead
+	 * @param goOn The state of the game (continue or not)
+	 * @return The state state of the game after all the moves
+	 */
 	public boolean checkState(boolean goOn) {
 		goOn = checkDragonEncounters(goOn);
 		checkEnemyState();

@@ -280,6 +280,8 @@ public class KeysPanel extends JDialog implements ActionListener{
 			return "SPACE";
 		case KeyEvent.VK_BACK_SPACE:
 			return "BACKSPACE";
+		case KeyEvent.VK_ENTER:
+			return "ENTER";
 
 			/* Functions Keys */
 		case KeyEvent.VK_F1:

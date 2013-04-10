@@ -5,6 +5,12 @@ import game.logic.Game;
 import java.util.Random;
 
 
+/**
+ * The dragon is the hero's enemy.
+ * It moves randomly to new locations and if it's next to a hero
+ * or an eagle's hero, the dragon will slay it.
+ *
+ */
 public class Dragon extends Movable implements java.io.Serializable {
 
 	private static final long serialVersionUID = 7619209920273918432L;
@@ -72,6 +78,15 @@ public class Dragon extends Movable implements java.io.Serializable {
 		randomSleep = new Random();
 	}
 	
+	/**
+	 * Creates a new dragon with the specified Random objects.
+	 * Note: it's possible to determine a dragons path if you mess with the Random.
+	 * @param dragon_row The row to spawn
+	 * @param dragon_column The column to spawn
+	 * @param dragon_type The type of dragon to spawn (sleeping, static..)
+	 * @param move The Random object that determines the dragon's moves
+	 * @param sleep The Random object that determines the dragon's sleeping patterns
+	 */
 	public Dragon(int dragon_row, int dragon_column, int dragon_type, Random move, Random sleep) {
 		row = dragon_row;
 		column = dragon_column;
@@ -92,6 +107,10 @@ public class Dragon extends Movable implements java.io.Serializable {
 	}
 
 	//Game methods
+	/**
+	 * Moves the dragon to it's next location (given by random)
+	 * @param g The game where the dragon moves
+	 */
 	public void moveDragon(Game g) {
 
 		if(type == STATIC)

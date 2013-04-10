@@ -214,7 +214,7 @@ public class GameTestBasics extends GameTest {
 		TestInterface test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		assertEquals(Hero.ALIVE, test.getGame().getHero().getState());
 		assertEquals(4, test.getGame().getHero().getRow());
 		assertEquals(4, test.getGame().getHero().getColumn());
 
@@ -232,7 +232,7 @@ public class GameTestBasics extends GameTest {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		assertEquals(Hero.ALIVE, test.getGame().getHero().getState());
 		assertEquals(6, test.getGame().getHero().getRow());
 		assertEquals(4, test.getGame().getHero().getColumn());
 
@@ -251,7 +251,7 @@ public class GameTestBasics extends GameTest {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		assertEquals(Hero.ALIVE, test.getGame().getHero().getState());
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(3, test.getGame().getHero().getColumn());
 
@@ -270,7 +270,7 @@ public class GameTestBasics extends GameTest {
 		test = new TestInterface(customOptions, heroMoves);
 		test.startGame();
 
-		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		assertEquals(Hero.ALIVE, test.getGame().getHero().getState());
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(5, test.getGame().getHero().getColumn());
 	}
@@ -404,7 +404,7 @@ public class GameTestBasics extends GameTest {
 		//Checks if hero didn't change its state and remained in its place
 		assertEquals(5, test.getGame().getHero().getRow());
 		assertEquals(8, test.getGame().getHero().getColumn());
-		assertEquals(Hero.IN_GAME, test.getGame().getHero().getState());
+		assertEquals(Hero.ALIVE, test.getGame().getHero().getState());
 		
 		
 		/* Test exit attempt with sword but without killing any dragons */
