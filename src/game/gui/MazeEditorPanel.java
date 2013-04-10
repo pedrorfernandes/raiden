@@ -14,14 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -31,9 +29,9 @@ import javax.swing.JToolBar;
 
 import maze_objects.Dragon;
 import maze_objects.Hero;
-import maze_objects.Sword;
 import maze_objects.Maze;
 import maze_objects.Movable;
+import maze_objects.Sword;
 import maze_objects.Tile;
 
 public class MazeEditorPanel extends JDialog {
@@ -279,12 +277,7 @@ public class MazeEditorPanel extends JDialog {
 				return;
 			}
 			
-			JFileChooser fileChooser = new JFileChooser();
-			if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				// save to file
-				GameOutput.save(game, file);
-			}
+			GameOutput.showSaveGameDialog(game);
 		}
 
 	}

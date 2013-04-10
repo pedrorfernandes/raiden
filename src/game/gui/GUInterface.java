@@ -30,6 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import maze_objects.Dragon;
 
 public class GUInterface extends GameInterface implements KeyListener {
@@ -94,25 +96,37 @@ public class GUInterface extends GameInterface implements KeyListener {
 		loadGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
+				
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(GameOutput.SAVE_EXTENSION_DESCRIPTION, GameOutput.SAVE_EXTENSION_TYPE);
+				fileChooser.setFileFilter(filter);
+				
 				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-					loadedFile = fileChooser.getSelectedFile();
-					// load from file
-					game = GameOutput.load(loadedFile);
-					useLoadedFile = true;
-					frame.dispose();
-					startInterface();
+					
+					File file = fileChooser.getSelectedFile();
+					
+					String filePath = file.getAbsolutePath();
+					
+					if(filePath.endsWith(GameOutput.SAVE_EXTENSION)) {
+						loadedFile = fileChooser.getSelectedFile();
+						// load from file
+						game = GameOutput.load(loadedFile);
+						useLoadedFile = true;
+						frame.dispose();
+						startInterface();
+					}
+					else
+						JOptionPane.showMessageDialog(frame,
+								"Invalid file choosen!",
+								"Invalid file",
+								JOptionPane.ERROR_MESSAGE);
+						
 				}
 			}
 		});
 
 		saveGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-					// save to file
-					GameOutput.save(game, file);
-				}
+				GameOutput.showSaveGameDialog(game);
 			}
 		});
 

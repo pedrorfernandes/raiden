@@ -15,6 +15,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import maze_objects.Dragon;
 import maze_objects.Eagle;
 import maze_objects.Hero;
@@ -25,6 +28,9 @@ import maze_objects.Tile;
 
 public class GameOutput {
 	private static String PROMPT = "> ";
+	public static String SAVE_EXTENSION = ".nanner";
+	public static String SAVE_EXTENSION_TYPE = "nanner";
+	public static String SAVE_EXTENSION_DESCRIPTION = "nanner Files";
 
 	//Returns an array with the symbols of the corresponding maze tiles
 	public static char[][] getMazeSymbols(Maze m) { 
@@ -46,6 +52,27 @@ public class GameOutput {
 				}
 			}
 		return mazePositions;
+	}
+	
+	public static void showSaveGameDialog(Game game) {
+		JFileChooser fileChooser = new JFileChooser();
+		
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(SAVE_EXTENSION_DESCRIPTION, SAVE_EXTENSION_TYPE);
+		fileChooser.setFileFilter(filter);
+		
+		if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+			
+			File file = fileChooser.getSelectedFile();
+			
+			String filePath = file.getAbsolutePath();
+			
+			if(!filePath.endsWith(SAVE_EXTENSION)) {
+			    file = new File(filePath + SAVE_EXTENSION);
+			}
+			
+			// save to file
+			save(game, file);
+		}
 	}
 
 	//Returns an array with the symbols of the corresponding maze tiles
