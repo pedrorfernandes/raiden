@@ -1,12 +1,12 @@
 package game.ui.gui;
 
 import game.logic.Game;
+import game.maze.Maze;
+import game.maze.Tile;
 import game.objects.Dragon;
 import game.objects.Hero;
-import game.objects.Maze;
 import game.objects.Movable;
 import game.objects.Sword;
-import game.objects.Tile;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
 import game.ui.MazePictures;

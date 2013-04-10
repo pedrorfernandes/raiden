@@ -1,4 +1,6 @@
-package game.objects;
+ package game.objects;
+
+import game.maze.Cell;
 
 import java.util.ArrayList;
 

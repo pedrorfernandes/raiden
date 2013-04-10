@@ -1,6 +1,7 @@
 package game.objects;
 
 import game.logic.Game;
+import game.maze.Maze;
 import game.ui.ExitEvent;
 
 /**

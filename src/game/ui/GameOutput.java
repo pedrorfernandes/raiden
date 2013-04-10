@@ -3,13 +3,13 @@ package game.ui;
 
 import static org.junit.Assert.fail;
 import game.logic.Game;
+import game.maze.Maze;
+import game.maze.MazeSymbol;
+import game.maze.Tile;
 import game.objects.Dragon;
 import game.objects.Eagle;
 import game.objects.Hero;
-import game.objects.Maze;
-import game.objects.MazeSymbol;
 import game.objects.Sword;
-import game.objects.Tile;
 import game.ui.gui.InfoPanel;
 
 import java.awt.Graphics;

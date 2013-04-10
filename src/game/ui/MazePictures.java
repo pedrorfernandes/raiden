@@ -1,6 +1,6 @@
 package game.ui;
 
-import game.objects.MazeSymbol;
+import game.maze.MazeSymbol;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

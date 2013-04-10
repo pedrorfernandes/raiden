@@ -1,13 +1,13 @@
 package game.logic;
 
+import game.maze.Maze;
+import game.maze.MazeBuilder;
+import game.maze.MazeDirector;
+import game.maze.PredefinedMaze;
+import game.maze.RandomMaze;
 import game.objects.Dragon;
 import game.objects.Eagle;
 import game.objects.Hero;
-import game.objects.Maze;
-import game.objects.MazeBuilder;
-import game.objects.MazeDirector;
-import game.objects.PredefinedMaze;
-import game.objects.RandomMaze;
 import game.objects.Sword;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;

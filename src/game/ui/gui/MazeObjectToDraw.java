@@ -1,7 +1,7 @@
 package game.ui.gui;
 
+import game.maze.Tile;
 import game.objects.Movable;
-import game.objects.Tile;
 
 public class MazeObjectToDraw {
 	
