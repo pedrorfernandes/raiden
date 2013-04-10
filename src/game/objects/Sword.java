@@ -1,5 +1,8 @@
 package game.objects;
 
+/**
+ * The sword that the hero must pick up to win the game
+ */
 public class Sword extends Movable implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 6107957989260469574L;

@@ -1,5 +1,9 @@
 package game.objects;
 
+/**
+ * A maze director is in charge of selecting a
+ * building pattern and to order its construction
+ */
 public class MazeDirector {
 	private MazeBuilder mazeBuilder;
 	

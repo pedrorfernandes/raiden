@@ -1,6 +1,8 @@
 package game.objects;
 
-//Dynamic objects that move along the maze
+/**
+ * Dynamic objects that move along the maze
+ */
 public abstract class Movable implements java.io.Serializable { 
 
 	private static final long serialVersionUID = -113368199479679000L;

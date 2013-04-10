@@ -62,7 +62,10 @@ public class Game implements java.io.Serializable {
 
 	//Game Initializers
 
-	//Creates a hero object on a random valid position in the maze
+	/**
+	 * Creates a hero object on a random valid position in the maze
+	 * @return The created hero
+	 */
 	private Hero spawnHero() {
 		Random random = new Random();
 		int hero_row = 0;
@@ -77,7 +80,10 @@ public class Game implements java.io.Serializable {
 		return h;
 	}
 
-	//Creates a sword object on a random valid position in the maze
+	/**
+	 * Creates a sword object on a random valid position in the maze
+	 * @return The created sword
+	 */
 	private Sword spawnSword() {
 		Random random = new Random();
 		int sword_row = 0;
@@ -92,7 +98,10 @@ public class Game implements java.io.Serializable {
 		return sd;
 	}
 
-	//Creates a dragon object on a random valid position in the maze
+	/**
+	 * Creates a dragon object on a random valid position in the maze
+	 * @return The created dragon
+	 */
 	private Dragon spawnDragon() {
 		Random random = new Random();
 		int dragon_row = 0;
@@ -136,14 +145,22 @@ public class Game implements java.io.Serializable {
 		return dragons;
 	}
 
-	//Returns true if the position given is the same as the eagle's and the eagle is alive
+	/**
+	 * @param row The row to test
+	 * @param column The column to test
+	 * @return true if the position given is the same as the eagle's and the eagle is alive
+	 */
 	private boolean isOnLivingEagle(int row, int column) {
 		return(row == eagle.getRow()
 				&& column == eagle.getColumn()
 				&& eagle.getState() != Eagle.DEAD);
 	}
 
-	//True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
+	/**
+	 * @param row The row to test
+	 * @param column The column to test
+	 * @return True if the object is adjacent to the hero (horizontally, vertically or on top), false if not
+	 */
 	private boolean nextToHeroOrOnTop(int row, int column) {
 		return((row == hero.getRow() + 1 && column == hero.getColumn()) ||
 				(row == hero.getRow() - 1  && column == hero.getColumn()) ||
@@ -152,7 +169,11 @@ public class Game implements java.io.Serializable {
 				(column == hero.getColumn() && row == hero.getRow()));
 	}
 
-	//Processes encounters between the hero and a dragon
+	/**
+	 * Processes encounters between the hero and a dragon
+	 * @param goOn The state of the game (continue or not)
+	 * @return The new state of the game
+	 */
 	private boolean checkDragonEncounters(boolean goOn) {
 
 		for(Dragon dragon : dragons)
@@ -192,7 +213,11 @@ public class Game implements java.io.Serializable {
 			}
 	}
 
-	//Executes the dragons' turn
+	/**
+	 * Executes all of the dragons' turns
+	 * @param goOn The state of the game
+	 * @return The state of the game after the dragons' turns
+	 */
 	private boolean moveDragons(boolean goOn) {
 		for(Dragon d : dragons)
 			if(dragonNotStaticOrDead(d)) {
@@ -252,7 +277,10 @@ public class Game implements java.io.Serializable {
 		}
 	}
 
-	private void checkHeroState() { //Checks if hero died or exited the maze, creating the necessary events
+	/**
+	 * Checks if hero died or exited the maze, creating the necessary events
+	 */
+	private void checkHeroState() {
 		switch(hero.getState()) {
 		case Hero.EXITED_MAZE:
 			ResultEvent won = new ResultEvent(2);
@@ -265,7 +293,9 @@ public class Game implements java.io.Serializable {
 		}
 	}
 
-	//Checks if there are any enemies left
+	/**
+	 * Checks if there are any enemies left
+	 */
 	private void checkEnemyState() { 
 		if(remainingDragons == 0) {
 			exitState = EXIT_OPEN;
@@ -318,8 +348,6 @@ public class Game implements java.io.Serializable {
 
 		dragonType = options.dragonType;
 
-		// A maze director is in charge of selecting a
-		// building pattern and to order its construction
 		MazeDirector director = new MazeDirector();
 
 		if(options.randomMaze) {
@@ -449,7 +477,6 @@ public class Game implements java.io.Serializable {
 
 	//Game Methods
 
-	//Checks if an untaken sword is in that place
 	public boolean checkIfSword(int row, int column) { 
 		return(row == sword.getRow() && column == sword.getColumn() && !sword.isTaken());
 	}
@@ -485,7 +512,10 @@ public class Game implements java.io.Serializable {
 		return false;
 	}
 
-	//True if the hero killed the dragon (was carrying sword), false if the hero died
+	/**
+	 * @param dragon
+	 * @return True if the hero killed the dragon (was carrying sword), false if the hero died
+	 */
 	public boolean wonAgainstDragon(Dragon dragon) { 
 		if(hero.getState() == Hero.ARMED) {
 			dragon.setState(Dragon.DEAD);
@@ -500,7 +530,11 @@ public class Game implements java.io.Serializable {
 		return false;
 	}
 
-	//True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+	/**
+	 * @param row
+	 * @param column
+	 * @return True if the hero is adjacent to the dragon (horizontally, vertically or on top), false if not
+	 */
 	public boolean nextToAliveDragons(int row, int column) {
 
 		if(dragons == null || dragons.isEmpty())

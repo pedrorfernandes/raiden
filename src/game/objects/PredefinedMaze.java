@@ -1,5 +1,8 @@
 package game.objects;
 
+/**
+ * A mazebuilder pattern for the predefined maze specified in the first class
+ */
 public class PredefinedMaze extends MazeBuilder {
 	private final int DEFAULT_ROW_SIZE = 10;
 	private final int DEFAULT_COLUMN_SIZE = 10;

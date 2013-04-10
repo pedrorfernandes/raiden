@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
 
-//The maze has to have at least 3 rows and 3 columns. 5 for the best results.
+/**
+ * The maze builder pattern for a randomly generated maze
+ */
 public class RandomMaze extends MazeBuilder {
 
 	public void buildMaze(int rows, int cols){

@@ -3,7 +3,9 @@ package game.ui.utilities;
 import java.io.IOException;
 import java.util.Scanner;
 
-/* Utilities to receive player input */
+/**
+ * Utilities to receive player input
+ */
 public class MazeInput {
 
 	public static char getChar() throws IOException {

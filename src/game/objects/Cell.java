@@ -1,5 +1,8 @@
 package game.objects;
 
+/**
+ * Contains the row and column of a given tile in the maze
+ */
 class Cell {
 	public int i;
 	public int j;

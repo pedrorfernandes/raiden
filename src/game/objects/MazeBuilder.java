@@ -1,5 +1,9 @@
 package game.objects;
 
+/**
+ * The mazebuilder abstract class
+ * The derived classes must implement a building pattern for a maze
+ */
 abstract public class MazeBuilder {
 	protected Maze maze;
 	

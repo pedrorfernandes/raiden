@@ -1,6 +1,9 @@
 package game.objects;
 
-//Symbols used in the printing functions to identify the different objects. This makes reading easier.
+/**
+ * Symbols used in the printing functions to identify the different objects. 
+ * This makes reading easier.
+ */
 public class MazeSymbol {
 
 	//Maze tiles related symbols
