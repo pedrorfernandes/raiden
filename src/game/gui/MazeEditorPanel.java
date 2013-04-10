@@ -223,24 +223,24 @@ public class MazeEditorPanel extends JDialog {
 				"File menu");
 		menuBar.add(fileMenu);
 
-		JMenuItem saveGameMenuItem = new JMenuItem("Save Maze", KeyEvent.VK_S);
+		JMenuItem saveGameMenuItem = new JMenuItem("Save maze", KeyEvent.VK_S);
 		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
 				"Saves the current maze to a file");
 		fileMenu.add(saveGameMenuItem);
 
 		saveGameMenuItem.addActionListener(new SaveMaze());
 		
-		JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
+		JMenuItem exitGameMenuItem = new JMenuItem("Exit editor",
 				KeyEvent.VK_E);
 		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Exits the game");
+				"Exits the editor");
 		fileMenu.add(exitGameMenuItem);
 
 		exitGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						MazeEditorPanel.this,
-						"Do you really want to exit the game?",
+						"Do you really want to exit the editor?\nDon't forget to save!",
 						"Confirm exit",
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION)
