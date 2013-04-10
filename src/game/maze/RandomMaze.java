@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The maze builder pattern for a randomly generated maze.
  */
@@ -67,13 +67,6 @@ public class RandomMaze extends MazeBuilder {
 		generateExit(rows, cols);
 	}
 
-	/**
-	 * Check walls.
-	 *
-	 * @param i the i
-	 * @param j the j
-	 * @return the int
-	 */
 	private int checkWalls(int i, int j){
 		int numberWalls = 0;
 		if( (i-1) >= 0 && maze.positions[i-1][j] == Tile.wall )
@@ -87,14 +80,6 @@ public class RandomMaze extends MazeBuilder {
 		return numberWalls;
 	}
 
-	/**
-	 * Check possibilities.
-	 *
-	 * @param currentCell the current cell
-	 * @param rows the rows
-	 * @param cols the cols
-	 * @return the array list
-	 */
 	private ArrayList<Cell> checkPossibilities(Cell currentCell, int rows, int cols){
 		ArrayList<Cell> nearbyCells = new ArrayList<Cell>();
 
@@ -175,12 +160,6 @@ public class RandomMaze extends MazeBuilder {
 		return nearbyCells;
 	}
 
-	/**
-	 * Generate exit.
-	 *
-	 * @param rows the rows
-	 * @param cols the cols
-	 */
 	private void generateExit(int rows, int cols){
 		boolean done = false;
 		Cell exitCell = new Cell();

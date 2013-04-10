@@ -1,15 +1,14 @@
 package game.maze;
 
-// TODO: Auto-generated Javadoc
 /**
  * A mazebuilder pattern for the predefined maze specified in the first class.
  */
 public class PredefinedMaze extends MazeBuilder {
 	
-	/** The default row size. */
+	/** The default maze row size. */
 	private final int DEFAULT_ROW_SIZE = 10;
 	
-	/** The default column size. */
+	/** The default maze column size. */
 	private final int DEFAULT_COLUMN_SIZE = 10;
 
 	/* (non-Javadoc)

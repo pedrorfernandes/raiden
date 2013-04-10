@@ -19,7 +19,7 @@ abstract public class MazeBuilder {
 	public void createNewMaze(int rows, int cols) { maze = new Maze(rows, cols); }
 	
 	/**
-	 * Builds the maze.
+	 * Builds the maze. It can either build a predefined maze or a user customized random maze
 	 *
 	 * @param rows the maze row number
 	 * @param cols the maze column number
