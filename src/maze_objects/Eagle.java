@@ -2,13 +2,16 @@ package maze_objects;
 
 import java.util.ArrayList;
 
+/**
+ * The eagle is a non playable character that the hero can summon in is aid.
+ * Its only purpose is to grab the sword and bring it to the hero
+ */
 public class Eagle extends Movable implements java.io.Serializable {
 
 	private static final long serialVersionUID = -1321096383108241473L;
 
 	/*** Private Attributes ***/
 
-	private int place;         //Tells if eagle is on top of a wall or a dragon
 	private boolean hasSword;  //Tells if eagle has the sword
 
 	private boolean onRouteToSword;   //Tells if eagle is going after a sword;
@@ -45,8 +48,12 @@ public class Eagle extends Movable implements java.io.Serializable {
 
 	/*** Private Methods ***/
 
-	//Uses Bresenham's Line Algorithm (modified to meet our needs)
-	//http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+	/**
+	 * Determines the quickest path in a straight line to the sword
+	 * Uses Bresenham's Line Algorithm (modified to meet our needs)
+	 * http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+	 * @return An arraylist of cells with the path
+	 */
 	private ArrayList<Cell> getPath(){
 		ArrayList<Cell> wayToSword = new ArrayList<Cell>();
 
@@ -101,7 +108,14 @@ public class Eagle extends Movable implements java.io.Serializable {
 	/*** Public Methods ***/
 
 	//Constructors
-	public Eagle(int r, int c, boolean isWithHero) { //Creates an eagle on the given spot, with or without hero
+	
+	/**
+	 * Creates an eagle on the given spot, with or without hero
+	 * @param r The row where the eagle will spawn
+	 * @param c The column where the eagle will spawn
+	 * @param isWithHero If the eagle is with the hero or not
+	 */
+	public Eagle(int r, int c, boolean isWithHero) { 
 		row = r;
 		column = c;
 		withHero = isWithHero;
@@ -114,13 +128,6 @@ public class Eagle extends Movable implements java.io.Serializable {
 	}
 
 	//General Methods
-	public int getPlace() {
-		return place;
-	}
-
-	public void setPlace(int p) {
-		place = p;
-	}
 
 	public boolean eagleHasSword() {
 		return hasSword;
@@ -183,6 +190,12 @@ public class Eagle extends Movable implements java.io.Serializable {
 	}
 
 	//Game Methods
+	/**
+	 * The function that triggers an eagle to fetch the sword
+	 * @param r The row where the eagle was launched
+	 * @param c The column where the eagle was launched
+	 * @param s The sword the eagle is after
+	 */
 	public void takeOff(int r, int c, Sword s) {
 		startRow = r;
 		startColumn = c;
@@ -225,6 +238,9 @@ public class Eagle extends Movable implements java.io.Serializable {
 		column = c;
 	}
 
+	/**
+	 * Orders the eagle to take the next step in its predetermined path
+	 */
 	public void moveEagle() {		
 		if(onGroundCounter < ON_GROUND_TURNS && onGroundWithSword)
 			onGroundCounter++;
