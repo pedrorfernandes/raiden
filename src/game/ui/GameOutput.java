@@ -2,8 +2,15 @@ package game.ui;
 
 
 import static org.junit.Assert.fail;
-import game.gui.InfoPanel;
 import game.logic.Game;
+import game.objects.Dragon;
+import game.objects.Eagle;
+import game.objects.Hero;
+import game.objects.Maze;
+import game.objects.MazeSymbol;
+import game.objects.Sword;
+import game.objects.Tile;
+import game.ui.gui.InfoPanel;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -19,13 +26,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import maze_objects.Dragon;
-import maze_objects.Eagle;
-import maze_objects.Hero;
-import maze_objects.Maze;
-import maze_objects.MazeSymbol;
-import maze_objects.Sword;
-import maze_objects.Tile;
 
 public class GameOutput {
 	private static String PROMPT = "> ";

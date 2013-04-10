@@ -1,11 +1,12 @@
 package game.ui;
 
+import game.objects.MazeSymbol;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import maze_objects.MazeSymbol;
 
 public class MazePictures {
 	

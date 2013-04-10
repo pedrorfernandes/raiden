@@ -1,8 +1,9 @@
 package game.ui;
 
+import game.objects.Dragon;
+
 import java.util.ArrayList;
 
-import maze_objects.Dragon;
 
 public class GameOptions implements java.io.Serializable {
 
