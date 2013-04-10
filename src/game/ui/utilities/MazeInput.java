@@ -4,10 +4,16 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Utilities to receive player input
+ * The Class MazeInput implements utilities to receive and parse the user's input
  */
 public class MazeInput {
 
+	/**
+	 * Receives a char from user input
+	 *
+	 * @return First char in user input
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static char getChar() throws IOException {
 		
 		@SuppressWarnings("resource")
@@ -23,6 +29,12 @@ public class MazeInput {
 		return c;
 	}
 
+	/**
+	 * Checks if the string given is an integer
+	 *
+	 * @param s The string to analyze
+	 * @return true, if the string represents an integer
+	 */
 	public static boolean isInteger(String s) {
 		try { 
 			Integer.parseInt(s); 
