@@ -28,6 +28,7 @@ import maze_objects.Tile;
 
 public class GameOutput {
 	private static String PROMPT = "> ";
+	
 	public static String SAVE_EXTENSION = ".nanner";
 	public static String SAVE_EXTENSION_TYPE = "nanner";
 	public static String SAVE_EXTENSION_DESCRIPTION = "nanner Files";

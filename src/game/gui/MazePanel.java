@@ -20,10 +20,13 @@ public class MazePanel extends JPanel {
 
 	private LinkedList<Character> keys = new LinkedList<Character>();
 
-	public MazePanel(Game game, MazePictures pictures, Dimension dimension) {
+	public MazePanel(Game game, MazePictures pictures, Dimension preferred, Dimension maximum) {
 		setBackground(Color.WHITE);
 		setFocusable( true );
-		setPreferredSize(dimension);
+		setMaximumSize(maximum);
+		setPreferredSize(preferred);
+		
+		setMaximumSize(new Dimension(50, 50));
 
 		this.game = game;
 		this.pictures = pictures;

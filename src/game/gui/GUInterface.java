@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -28,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -36,7 +38,12 @@ import maze_objects.Dragon;
 
 public class GUInterface extends GameInterface implements KeyListener {
 
+	public static final int SCROLLBAR_PIXELS = 3;
+
 	public static final int SPRITESIZE = 32;
+	
+	public static Dimension MAXIMUM_WINDOW_SIZE = new Dimension(1024, 500);
+	
 	private final MazePictures mazePictures = new MazePictures();
 	private JFrame frame;
 	private MazePanel mazePanel;
@@ -66,14 +73,21 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				100);
+		
 
 		Container c = frame.getContentPane();
-		c.setLayout(new BorderLayout());
+		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
 		c.addKeyListener(this);
 		c.setFocusable(true);
-
-		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension);
-		infoPanel = new InfoPanel(infoPanelDimension);
+		
+		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension, MAXIMUM_WINDOW_SIZE);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(mazePanel);
+		Dimension scrollPaneDimension = new Dimension(mazePanelDimension.width + SCROLLBAR_PIXELS, mazePanelDimension.height + SCROLLBAR_PIXELS);
+		scrollPane.setPreferredSize(GUInterface.getFormattedPreferredDimension(scrollPaneDimension, MAXIMUM_WINDOW_SIZE));
+		
+		infoPanel = new InfoPanel(infoPanelDimension, MAXIMUM_WINDOW_SIZE);
 
 		menuBar = new JMenuBar();
 
@@ -344,11 +358,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 		});
 
 		frame.setJMenuBar(menuBar);
-
-
-
-		c.add(infoPanel, BorderLayout.PAGE_START);
-		c.add(mazePanel);
+		
+		c.add(infoPanel);
+		c.add(scrollPane);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -499,7 +511,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 		multipleDragonButtons.add(noMultipleDragonsButton);
 		dragonOptionsPanel.add(noMultipleDragonsButton);
 
-		yesMultipleDragonsButton.addActionListener(new ActionListener(){
+		noMultipleDragonsButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				useMultipleDragons = false;
 			}
@@ -654,6 +666,18 @@ public class GUInterface extends GameInterface implements KeyListener {
 		options.multipleDragons = useMultipleDragons;
 
 		options.randomSpawns = true;
+	}
+	
+	public static Dimension getFormattedPreferredDimension(Dimension oldPreferred, Dimension maximumDimension) {
+		Dimension formattedDimension = new Dimension(oldPreferred);
+
+		if(oldPreferred.height > maximumDimension.height)
+			formattedDimension.height = maximumDimension.height;
+
+		if(oldPreferred.width > maximumDimension.width)
+			formattedDimension.width = maximumDimension.width;
+		
+		return formattedDimension;
 	}
 
 }
