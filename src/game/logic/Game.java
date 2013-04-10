@@ -1,5 +1,6 @@
 package game.logic;
 
+import game.cli.CLInterface;
 import game.gui.GUInterface;
 import game.ui.EagleEvent;
 import game.ui.FightEvent;
@@ -283,11 +284,26 @@ public class Game implements java.io.Serializable {
 	 * @param args The startup arguments
 	 */
 	public static void main(String[] args) {
-		//CLInterface cli = new CLInterface();
-		//cli.startGame();
+		
+		if(args.length != 1) {
+			System.out.println("Wrong number of arguments to call the program. Use -help for calling instructions!\n");
+			System.exit(0);
+		}
 
-		GUInterface gui = new GUInterface();
-		gui.startGame();
+		if(args[0].equals("-h") || args[0].equals("-help"))
+			System.out.println("Use -cli to start the command line interface, -gui to start the graphical interface.\n");
+		else if(args[0].equals("-cli")) {
+			CLInterface cli = new CLInterface();
+			cli.startGame();
+		}
+		else if(args[0].equals("-gui")) {
+			GUInterface gui = new GUInterface();
+			gui.startGame();
+		}
+		else {
+			System.out.println("Wrong usage! Call with -help to check calling instructions.\n");
+			System.exit(0);
+		}
 	}
 
 	//Constructors

@@ -610,12 +610,12 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	private void updateGame(char input) {
@@ -624,17 +624,14 @@ public class GUInterface extends GameInterface implements KeyListener {
 			goOn = game.heroTurn(input);
 
 			mazePanel.repaint();
-			//WaitTime.wait(125);
 
 			goOn = game.dragonTurn(goOn);
 			mazePanel.repaint();
-			//WaitTime.wait(125);
 
 			goOn = game.checkState(goOn);
 
 			mazePanel.repaint();
 			GameOutput.printEventQueue(game.getEvents(), infoPanel);
-			//WaitTime.wait(125);
 		}
 
 
