@@ -347,7 +347,7 @@ public class GameOutput {
 		}
 		catch (Exception ex)
 		{
-			fail("Exception thrown during test: " + ex.toString());
+			fail("Problem loading file: " + ex.toString());
 		}
 		return null;
 	}

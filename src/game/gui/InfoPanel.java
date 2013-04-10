@@ -1,16 +1,11 @@
 package game.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
 
 public class InfoPanel extends JPanel {
 

@@ -120,7 +120,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 					
 					String filePath = file.getAbsolutePath();
 					
-					if(filePath.endsWith(GameOutput.SAVE_EXTENSION)) {
+					if(filePath.endsWith(GameOutput.SAVE_EXTENSION) && file.exists()) {
 						loadedFile = fileChooser.getSelectedFile();
 						// load from file
 						game = GameOutput.load(loadedFile);

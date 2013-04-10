@@ -6,7 +6,6 @@ import game.ui.GameOutput;
 import game.ui.MazePictures;
 import general_utilities.MazeInput;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
