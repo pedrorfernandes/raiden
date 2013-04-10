@@ -134,7 +134,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 						}
 						else
 							JOptionPane.showMessageDialog(frame,
-									"Invalid file choosen!",
+									"Invalid file chosen!",
 									"Invalid file",
 									JOptionPane.ERROR_MESSAGE);
 
