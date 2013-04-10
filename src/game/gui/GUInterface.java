@@ -41,9 +41,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 	public static final int SCROLLBAR_PIXELS = 3;
 
 	public static final int SPRITESIZE = 32;
-	
+
 	public static Dimension MAXIMUM_WINDOW_SIZE = new Dimension(1024, 500);
-	
+
 	private final MazePictures mazePictures = new MazePictures();
 	private JFrame frame;
 	private MazePanel mazePanel;
@@ -73,20 +73,20 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		Dimension infoPanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				100);
-		
+
 
 		Container c = frame.getContentPane();
 		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
 		c.addKeyListener(this);
 		c.setFocusable(true);
-		
+
 		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension, MAXIMUM_WINDOW_SIZE);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(mazePanel);
 		Dimension scrollPaneDimension = new Dimension(mazePanelDimension.width + SCROLLBAR_PIXELS, mazePanelDimension.height + SCROLLBAR_PIXELS);
 		scrollPane.setPreferredSize(GUInterface.getFormattedPreferredDimension(scrollPaneDimension, MAXIMUM_WINDOW_SIZE));
-		
+
 		infoPanel = new InfoPanel(infoPanelDimension, MAXIMUM_WINDOW_SIZE);
 
 		menuBar = new JMenuBar();
@@ -110,30 +110,37 @@ public class GUInterface extends GameInterface implements KeyListener {
 		loadGameMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-				
+
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(GameOutput.SAVE_EXTENSION_DESCRIPTION, GameOutput.SAVE_EXTENSION_TYPE);
 				fileChooser.setFileFilter(filter);
-				
-				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
-					
-					File file = fileChooser.getSelectedFile();
-					
-					String filePath = file.getAbsolutePath();
-					
-					if(filePath.endsWith(GameOutput.SAVE_EXTENSION) && file.exists()) {
-						loadedFile = fileChooser.getSelectedFile();
-						// load from file
-						game = GameOutput.load(loadedFile);
-						useLoadedFile = true;
-						frame.dispose();
-						startInterface();
+
+				boolean fileNotChosenOrCancelled = true;
+
+				while(fileNotChosenOrCancelled) {
+					if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+
+						File file = fileChooser.getSelectedFile();
+
+						String filePath = file.getAbsolutePath();
+
+						if(filePath.endsWith(GameOutput.SAVE_EXTENSION) && file.exists()) {
+							loadedFile = fileChooser.getSelectedFile();
+							// load from file
+							game = GameOutput.load(loadedFile);
+							useLoadedFile = true;
+							frame.dispose();
+							startInterface();
+							fileNotChosenOrCancelled = false;
+						}
+						else
+							JOptionPane.showMessageDialog(frame,
+									"Invalid file choosen!",
+									"Invalid file",
+									JOptionPane.ERROR_MESSAGE);
+
 					}
 					else
-						JOptionPane.showMessageDialog(frame,
-								"Invalid file choosen!",
-								"Invalid file",
-								JOptionPane.ERROR_MESSAGE);
-						
+						fileNotChosenOrCancelled = false;
 				}
 			}
 		});
@@ -175,7 +182,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 						"Change settings",
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION) {
-					
+
 					int predefMazeOption = JOptionPane.showConfirmDialog(
 							frame,
 							"Create a user defined maze?",
@@ -203,7 +210,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 							return;
 
 						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
-								 || Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
+								|| Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 							JOptionPane.showMessageDialog(frame,
 									"Invalid row and/or column number detected, keeping old maze settings!",
 									"Invalid input error",
@@ -358,7 +365,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 		});
 
 		frame.setJMenuBar(menuBar);
-		
+
 		c.add(infoPanel);
 		c.add(scrollPane);
 
@@ -664,7 +671,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		options.randomSpawns = true;
 	}
-	
+
 	public static Dimension getFormattedPreferredDimension(Dimension oldPreferred, Dimension maximumDimension) {
 		Dimension formattedDimension = new Dimension(oldPreferred);
 
@@ -673,7 +680,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		if(oldPreferred.width > maximumDimension.width)
 			formattedDimension.width = maximumDimension.width;
-		
+
 		return formattedDimension;
 	}
 
