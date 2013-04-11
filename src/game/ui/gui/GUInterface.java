@@ -76,7 +76,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 
 		Container c = frame.getContentPane();
-		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
+		c.setLayout(new BorderLayout());
 		c.addKeyListener(this);
 		c.setFocusable(true);
 
@@ -89,7 +89,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		infoPanel = new InfoPanel(infoPanelDimension, MAXIMUM_WINDOW_SIZE);
 
-		menuBar = new JMenuBar();
+		menuBar =  new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -366,11 +366,11 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 		frame.setJMenuBar(menuBar);
 
-		c.add(infoPanel);
-		c.add(scrollPane);
+		c.add(infoPanel, BorderLayout.PAGE_START);
+		c.add(scrollPane, BorderLayout.CENTER);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
