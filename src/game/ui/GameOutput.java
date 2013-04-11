@@ -10,10 +10,13 @@ import game.objects.Dragon;
 import game.objects.Eagle;
 import game.objects.Hero;
 import game.objects.Sword;
+import game.ui.gui.GUInterface;
 import game.ui.gui.InfoPanel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -271,24 +274,36 @@ public class GameOutput {
 				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagle;
 		}
 		
-		int width = (int)size.getWidth() / mazePositions[0].length;
-		int height = (int)size.getHeight()  / mazePositions.length;
-		
-		//System.out.println("width: " + width + "height: "+ height);
+		double xScale =  size.getWidth() / ( mazePositions[0].length * GUInterface.SPRITESIZE );
+		double yScale =  size.getHeight() / ( mazePositions.length * GUInterface.SPRITESIZE );
 
 		for (int x = 0; x < m.getRows(); x++) {
 			for (int y = 0; y < m.getColumns(); y++) {
-				graphs.drawImage(mazePositions[x][y],
-						//y * mazePositions[x][y].getWidth(),
-						//x * mazePositions[x][y].getHeight(), null);
-						y*width, x*height, width, height, null);
+				
+				BufferedImage originalSprite = mazePositions[x][y];
+				
+				Graphics2D graphsTo2D = (Graphics2D)graphs;
+				
+		        int newW = (int)(originalSprite.getWidth() * xScale);
+		        int newH = (int)(originalSprite.getHeight() * yScale);
+		        
+		        int dx = (int) size.getWidth() - ( mazePositions[0].length * newW );
+		        dx = dx/2;
+		        
+		        int dy = (int) size.getHeight() - ( mazePositions.length * newH );
+		        dy = dy/2;
+		        
+		        graphsTo2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		        graphsTo2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		        graphsTo2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		        
+		        graphsTo2D.drawImage(originalSprite, y * newW + dx, x*newH + dy, newW, newH, null);
 			}
 		}
 	}
 
 	public static void printAskForMove() {
 		System.out.print("Move your hero (WASD, only first input will be considered): ");
-		//System.out.print(PROMPT);
 	}
 
 	/**

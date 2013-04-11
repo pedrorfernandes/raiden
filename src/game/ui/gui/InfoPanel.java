@@ -21,6 +21,7 @@ public class InfoPanel extends JPanel {
 		Dimension preferredDimension = GUInterface.getFormattedPreferredDimension(preferred, maximum);
 
 		setPreferredSize(preferredDimension);
+		setMinimumSize(preferredDimension);
 
 
 		setBorder(UIManager.getBorder("TextField.border"));

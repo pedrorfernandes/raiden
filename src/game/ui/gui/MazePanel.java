@@ -4,7 +4,6 @@ import game.logic.Game;
 import game.ui.GameOutput;
 import game.ui.MazePictures;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -21,12 +20,11 @@ public class MazePanel extends JPanel {
 	private LinkedList<Character> keys = new LinkedList<Character>();
 
 	public MazePanel(Game game, MazePictures pictures, Dimension preferred, Dimension maximum) {
-		setBackground(Color.WHITE);
-		setFocusable( true );
+		setBackground(null);
+		setFocusable(true);
 		setMaximumSize(maximum);
-		setPreferredSize(preferred);
-		
-		//setMaximumSize(new Dimension(50, 50));
+		setMinimumSize(GUInterface.getFormattedPreferredDimension(preferred, maximum));
+		setPreferredSize(GUInterface.getFormattedPreferredDimension(preferred, maximum));
 
 		this.game = game;
 		this.pictures = pictures;

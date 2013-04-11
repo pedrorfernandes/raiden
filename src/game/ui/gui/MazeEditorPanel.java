@@ -15,6 +15,7 @@ import game.ui.utilities.MazeInput;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -72,15 +73,16 @@ public class MazeEditorPanel extends JDialog {
 		initializeNewGame();
 
 		MazePainterPanel mazePainter = new MazePainterPanel(this);
+		
+		GridBagConstraints mazePainter_constraints = new GridBagConstraints();
 
-		Dimension mazeEditorDimension = new Dimension(options.columns * GUInterface.SPRITESIZE, options.rows * GUInterface.SPRITESIZE);
+		mazePainter_constraints.weightx = 0;
+		mazePainter_constraints.weighty = 0;
+		mazePainter_constraints.gridx = 0;
+		mazePainter_constraints.gridy = 0;
+		mazePainter_constraints.fill = GridBagConstraints.BOTH;
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(mazePainter);
-		Dimension scrollPaneDimension = new Dimension(mazeEditorDimension.width + GUInterface.SCROLLBAR_PIXELS, mazeEditorDimension.height + GUInterface.SCROLLBAR_PIXELS);
-		scrollPane.setPreferredSize(GUInterface.getFormattedPreferredDimension(scrollPaneDimension, GUInterface.MAXIMUM_WINDOW_SIZE));
-
-		getContentPane().add(scrollPane);
+		getContentPane().add(mazePainter, mazePainter_constraints);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -356,11 +358,11 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		setFocusable(true);
 		addMouseListener(this);
 
-		Dimension defaultPreferred = new Dimension(parent.options.columns * GUInterface.SPRITESIZE,
-				parent.options.rows * GUInterface.SPRITESIZE);
+		Dimension defaultPreferred = GUInterface.getFormattedPreferredDimension(new Dimension(parent.options.columns * GUInterface.SPRITESIZE,
+				parent.options.rows * GUInterface.SPRITESIZE), GUInterface.MAXIMUM_WINDOW_SIZE);
 
 		setMaximumSize(GUInterface.MAXIMUM_WINDOW_SIZE);
-
+		setMinimumSize(defaultPreferred);
 		setPreferredSize(defaultPreferred);
 	}
 
@@ -389,8 +391,31 @@ class MazePainterPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int printRow = e.getY() / 32;
-		int printColumn = e.getX() / 32;
+		double currentXScale =  this.getSize().getWidth() / ( parent.game.getMaze().getColumns() * GUInterface.SPRITESIZE );
+		double currentYScale =  this.getSize().getHeight() / ( parent.game.getMaze().getRows() * GUInterface.SPRITESIZE );
+		
+		int currentW = (int)(GUInterface.SPRITESIZE * currentXScale);
+        int currentH = (int)(GUInterface.SPRITESIZE * currentYScale);
+        
+        int dx = (int)  this.getSize().getWidth() - ( parent.game.getMaze().getColumns() * currentW );
+        dx = dx/2;
+        
+        int dy = (int)  this.getSize().getHeight() - ( parent.game.getMaze().getRows() * currentH );
+        dy = dy/2;
+		
+		int maxRow = parent.game.getMaze().getRows() - 1;
+		int maxCol = parent.game.getMaze().getColumns() - 1;
+        
+        
+		int printRow = (e.getY() - dy) / currentH;
+		
+		if(printRow > maxRow || printRow < 0)
+			return;
+		
+		int printColumn = (e.getX() - dx) / currentW;
+		
+		if(printColumn > maxCol || printColumn < 0)
+			return;
 
 		if( checkIfAtCorner(printRow, printColumn)
 				|| ( checkIfAtMargin(printRow, printColumn) && checkIfNotWallOrExitTile() ) )

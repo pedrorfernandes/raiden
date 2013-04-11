@@ -12,13 +12,14 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -30,7 +31,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,7 +42,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	public static final int SPRITESIZE = 32;
 
-	public static Dimension MAXIMUM_WINDOW_SIZE = new Dimension(1024, 500);
+	public static Dimension MAXIMUM_WINDOW_SIZE = new Dimension(500,500);
 
 	private final MazePictures mazePictures = new MazePictures();
 	private JFrame frame;
@@ -76,19 +76,45 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 
 		Container c = frame.getContentPane();
-		c.setLayout(new BorderLayout());
+		c.setLayout(new GridBagLayout());
 		c.addKeyListener(this);
 		c.setFocusable(true);
 
 		mazePanel = new MazePanel(game, mazePictures, mazePanelDimension, MAXIMUM_WINDOW_SIZE);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(mazePanel);
-		Dimension scrollPaneDimension = new Dimension(mazePanelDimension.width + SCROLLBAR_PIXELS, mazePanelDimension.height + SCROLLBAR_PIXELS);
-		scrollPane.setPreferredSize(GUInterface.getFormattedPreferredDimension(scrollPaneDimension, MAXIMUM_WINDOW_SIZE));
-
 		infoPanel = new InfoPanel(infoPanelDimension, MAXIMUM_WINDOW_SIZE);
 
+		createMenuBar();
+
+		GridBagConstraints infoPanel_constraints = new GridBagConstraints();
+
+		infoPanel_constraints.weightx = 1;
+		infoPanel_constraints.weighty = 1;
+		infoPanel_constraints.gridx = 0;
+		infoPanel_constraints.gridy = 0;
+		infoPanel_constraints.fill = GridBagConstraints.BOTH;
+
+		c.add(infoPanel, infoPanel_constraints);
+
+		GridBagConstraints mazePanel_constraints = new GridBagConstraints();
+
+		mazePanel_constraints.weightx = 1;
+		mazePanel_constraints.weighty = 1;
+		mazePanel_constraints.gridx = 0;
+		mazePanel_constraints.gridy = 1;
+		mazePanel_constraints.fill = GridBagConstraints.BOTH;
+
+		c.add(mazePanel, mazePanel_constraints);
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(true);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+
+
+	private void createMenuBar() {
 		menuBar =  new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
@@ -365,15 +391,6 @@ public class GUInterface extends GameInterface implements KeyListener {
 		});
 
 		frame.setJMenuBar(menuBar);
-
-		c.add(infoPanel, BorderLayout.PAGE_START);
-		c.add(scrollPane, BorderLayout.CENTER);
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 	}
 
 
