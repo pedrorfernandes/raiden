@@ -89,10 +89,10 @@ public class GUInterface extends GameInterface implements KeyListener {
 		GridBagConstraints infoPanel_constraints = new GridBagConstraints();
 
 		infoPanel_constraints.weightx = 1;
-		infoPanel_constraints.weighty = 1;
+		infoPanel_constraints.weighty = 0;
 		infoPanel_constraints.gridx = 0;
 		infoPanel_constraints.gridy = 0;
-		infoPanel_constraints.fill = GridBagConstraints.BOTH;
+		infoPanel_constraints.fill = GridBagConstraints.HORIZONTAL;
 
 		c.add(infoPanel, infoPanel_constraints);
 
