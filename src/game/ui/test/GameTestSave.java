@@ -13,6 +13,9 @@ import java.util.Stack;
 
 import org.junit.Test;
 
+/**
+ * A simple test to determine if game saving and loading is working properly.
+ */
 public class GameTestSave extends GameTest {
 	private int hero_row; private int hero_column; private int sword_row = 7; private int sword_column = 8;
 	private Stack<Integer> moveNumbers;

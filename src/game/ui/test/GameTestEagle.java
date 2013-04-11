@@ -12,6 +12,9 @@ import java.util.Stack;
 
 import org.junit.Test;
 
+/**
+ * A series of tests to determine if the eagle is working as expected.
+ */
 public class GameTestEagle extends GameTest {
 
 	@Test

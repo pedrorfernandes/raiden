@@ -4,6 +4,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * The Class GameKeys holds all of the keycodes used for the player to interact with the game in a graphical interface.
+ */
 public class GameKeys {
 	static GameKey upKey = new GameKey(KeyEvent.VK_W, 'w');
 	static GameKey leftKey = new GameKey(KeyEvent.VK_A, 'a');

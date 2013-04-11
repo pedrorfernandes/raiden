@@ -16,11 +16,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * The KeysPanel is a simple JDialog that displays all the current mapped keys and allows the player to change them.
+ */
 public class KeysPanel extends JDialog implements ActionListener{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1820059510973932243L;
 	Frame parent;
 	JButton exit, upKeyButton, downKeyButton, leftKeyButton, rightKeyButton,
@@ -118,9 +118,6 @@ public class KeysPanel extends JDialog implements ActionListener{
 
 	public class ChooseKey extends JDialog implements KeyListener {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -1949938095975353345L;
 
 		int keypressed = -1;
@@ -174,39 +171,13 @@ public class KeysPanel extends JDialog implements ActionListener{
 		} else{
 			changeKeyFromKeyButton(e);
 		}
-
-		/*
-		else if (e.getSource() == upKeyButton){
-			new ChooseKey(parent, GameKeys.upKey);
-			upKeyButton.setText(getKeyString(GameKeys.upKey));
-		}
-		else if (e.getSource() == leftKeyButton){
-			new ChooseKey(parent, GameKeys.leftKey);
-			leftKeyButton.setText(getKeyString(GameKeys.leftKey));
-		}
-		else if (e.getSource() == rightKeyButton){
-			new ChooseKey(parent, GameKeys.rightKey);
-			rightKeyButton.setText(getKeyString(GameKeys.rightKey));
-		}
-		else if (e.getSource() == downKeyButton){
-			new ChooseKey(parent, GameKeys.downKey);
-			downKeyButton.setText(getKeyString(GameKeys.downKey));
-		}
-		else if (e.getSource() == eagleKeyButton){
-			new ChooseKey(parent, GameKeys.eagleKey);
-			eagleKeyButton.setText(getKeyString(GameKeys.eagleKey));
-		}
-		else if (e.getSource() == surrenderKeyButton){
-			new ChooseKey(parent, GameKeys.surrenderKey);
-			surrenderKeyButton.setText(getKeyString(GameKeys.surrenderKey));
-		}
-		else if (e.getSource() == waitKeyButton){
-			new ChooseKey(parent, GameKeys.waitKey);
-			waitKeyButton.setText(getKeyString(GameKeys.waitKey));
-		}
-		 */
 	}
 
+	/**
+	 * This function will determine the key mapping button pressed by the user and 
+	 * will order the interface to choose a new keypress for the corresponding action
+	 * @param e The button pressed action event.
+	 */
 	private void changeKeyFromKeyButton(ActionEvent e) {
 		for (Field key : GameKeys.class.getDeclaredFields() ) {
 			Object gamekeyObject = null;
@@ -238,6 +209,11 @@ public class KeysPanel extends JDialog implements ActionListener{
 		}
 	}
 
+	/**
+	 * Translates a keycode to a string so the user can read.
+	 * @param keyCode A specified keycode
+	 * @return A string that contains the keycode's meaning
+	 */
 	public static String getKeyString(GameKey keyCode) {
 		switch (keyCode.getKey()) {
 

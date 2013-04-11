@@ -11,6 +11,9 @@ import java.util.Stack;
 
 import org.junit.Test;
 
+/**
+ * A series of tests to check advanced dragon behaviours, such as sleeping and interaction with various dragons.
+ */
 public class GameTestDragon extends GameTest {
 
 	private int hero_row; private int hero_column; private int sword_row = 7; private int sword_column = 8;

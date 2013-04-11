@@ -13,6 +13,9 @@ import game.ui.GameOptions;
 
 import org.junit.Test;
 
+/**
+ * A series of tests to test basic elements of the game such as movements and encounters with enemies.
+ */
 public class GameTestBasics extends GameTest {
 
 	/*@Test

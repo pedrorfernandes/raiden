@@ -6,10 +6,14 @@ import game.logic.Game;
 import game.ui.GameInterface;
 import game.ui.GameOptions;
 
-public class TestInterface  extends GameInterface {
+/**
+ * The Class TestInterface is the interface used for generating JUnit tests.
+ * It generates a game and goes through a whole game loop for each test but doesn't print anything.
+ */
+public class TestInterface extends GameInterface {
 	
+	/** The stack that contains all of the hero movements for a given test. */
 	private Stack<Character> heroMoves;
-	
 	
 	public TestInterface(GameOptions options, Stack<Character> heroMoves){
 		this.heroMoves = heroMoves;
@@ -17,10 +21,13 @@ public class TestInterface  extends GameInterface {
 	}
 	
 	public void startGame() {
-		mainLoop(heroMoves);
+		mainLoop();
 	}
 
-	private void mainLoop(Stack<Character> heroMoves) {
+	/**
+	 * The main loop in a test ends when the hero finishes all it's movements or when any game over condition is verified.
+	 */
+	private void mainLoop() {
 
 		boolean goOn = true;
 		char input = ' ';
@@ -53,9 +60,6 @@ public class TestInterface  extends GameInterface {
 			//GameOutput.printEventQueue(game.getEvents() );
 			//GameOutput.printGame(game);
 			//WaitTime.wait(250);
-
 		}
-
 	}
-
 }

@@ -1,5 +1,8 @@
 package game.ui.gui;
 
+/**
+ * The Class GameKey maps a given keycode with a character that the game interprets as an action.
+ */
 public class GameKey {
 	
 	public int keycode;
