@@ -7,7 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * The Class MazePictures holds every sprite necessary for printing 
+ * a game in a graphical interface.
+ */
 public class MazePictures {
 	
 	public BufferedImage sword;
@@ -34,6 +37,9 @@ public class MazePictures {
 	public BufferedImage eagleOnSleepingDragon;
 	public BufferedImage deadDragon;
 	
+	/**
+	 * Tries to load every sprite from a file with the respective image.
+	 */
 	public MazePictures() {
 		
 		try {
@@ -65,8 +71,5 @@ public class MazePictures {
 			System.out.println("Failed to load images");
 			System.exit(0);
 		}
-		
 	}
-
-
 }

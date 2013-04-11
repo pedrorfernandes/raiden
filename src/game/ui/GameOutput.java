@@ -27,6 +27,10 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
+/**
+ * The Class GameOutput is responsible for every printing operation, including printing the graphics for the game.
+ * It also handles the basic file input/output operations such as saving and loading.
+ */
 public class GameOutput {
 	private static String PROMPT = "> ";
 	
@@ -34,7 +38,11 @@ public class GameOutput {
 	public static String SAVE_EXTENSION_TYPE = "nanner";
 	public static String SAVE_EXTENSION_DESCRIPTION = "nanner Files";
 
-	//Returns an array with the symbols of the corresponding maze tiles
+	/**
+	 * Gets the immovable maze symbols from a given maze, such as walls and empty tiles.
+	 * @param m A maze
+	 * @return An array with the symbols of the corresponding maze tiles
+	 */
 	public static char[][] getMazeSymbols(Maze m) { 
 		char[][] mazePositions = new char[m.getRows()][m.getColumns()];
 
@@ -56,6 +64,10 @@ public class GameOutput {
 		return mazePositions;
 	}
 	
+	/**
+	 * Shows the save game dialog window with only the files of the predefined extension and type.
+	 * @param game the game
+	 */
 	public static void showSaveGameDialog(Game game) {
 		JFileChooser fileChooser = new JFileChooser();
 		
@@ -81,7 +93,12 @@ public class GameOutput {
 		}
 	}
 
-	//Returns an array with the symbols of the corresponding maze tiles
+	/**
+	 * Gets the immovable maze sprites from a given maze, such as walls and empty tiles.
+	 * @param m the m
+	 * @param pictures the pictures
+	 * @return An array with the symbols of the corresponding maze tiles
+	 */
 	public static BufferedImage[][] getMazePictures(Maze m, MazePictures pictures) { 
 		BufferedImage[][] mazePositions = new BufferedImage[m.getRows()][m.getColumns()];
 
@@ -103,6 +120,10 @@ public class GameOutput {
 		return mazePositions;
 	}
 
+	/**
+	 * Prints the maze in a command line environment
+	 * @param m The maze
+	 */
 	public static void printMaze(Maze m) {
 
 		char[][] mazePositions = getMazeSymbols(m);
@@ -118,16 +139,10 @@ public class GameOutput {
 		}
 	}
 
-	/*public static void printMaze(Graphics g, Maze m) {
-
-		BufferedImage mazeImages[][] = GameOutput.getMazePictures(m);
-
-		for(int r = 0; r < m.getRows(); r++)
-			for(int c = 0; c < m.getColumns(); c++) {
-				g.drawImage(mazeImages[r][c], c * mazeImages[r][c].getWidth(), r * mazeImages[r][c].getHeight(), null);
-			}
-	}*/
-
+	/**
+	 * Prints the game in a command line interface.
+	 * @param g The game to print.
+	 */
 	public static void printGame(Game g) {
 
 		Maze m = g.getMaze();
@@ -197,6 +212,12 @@ public class GameOutput {
 
 	}
 
+	/**
+	 * Prints the game in a graphical interface.
+	 * @param g The game to print.
+	 * @param graphs Graphics object to print on.
+	 * @param pictures The sprites used to print the game.
+	 */
 	public static void printGame(Game g, Graphics graphs, MazePictures pictures) {
 
 		Maze m = g.getMaze();
@@ -263,7 +284,11 @@ public class GameOutput {
 		//System.out.print(PROMPT);
 	}
 
-	public static void printEventQueue(LinkedList<GameEvent> events) { //Prints the events on the event queue given
+	/**
+	 * Prints the events on the event queue given
+	 * @param events The game events
+	 */
+	public static void printEventQueue(LinkedList<GameEvent> events) {
 		while(!events.isEmpty())
 			printEvent(events.removeFirst());
 	}
@@ -277,15 +302,26 @@ public class GameOutput {
 		infoPanel.textPane.setText(info);
 	}
 
-	public static void printEvent(GameEvent ev) { //Prints the message field of the GameEvent given
+	/**
+	 * Prints the message field of the GameEvent given
+	 * @param ev The game event
+	 */
+	public static void printEvent(GameEvent ev) {
 		System.out.println(ev.getMessage());
 	}
 
-	public static void printStartMessage() { //Prints a welcome message
+	/**
+	 * Prints a welcome message for the command line interface.
+	 */
+	public static void printStartMessage() {
 		System.out.println("Welcome, challenger.");
 	}
 
-	public static void printOptions(int n) { //Asks player for the maze options wanted. n = 0 to ask for maze type, n = 1 to ask for rows, n = 2 to ask for columns
+	/**
+	 * Asks player for the maze options wanted. n = 0 to ask for maze type, n = 1 to ask for rows, n = 2 to ask for columns
+	 * @param n The question
+	 */
+	public static void printOptions(int n) { 
 
 		switch(n) {
 		case 0:
@@ -327,6 +363,11 @@ public class GameOutput {
 			System.out.println();
 	}
 
+	/**
+	 * Saves a given game to a file.
+	 * @param game The game.
+	 * @param file The specified file.
+	 */
 	public static void save(Game game, File file){
 		try
 		{
@@ -341,6 +382,11 @@ public class GameOutput {
 		}
 	}
 
+	/**
+	 * Load a game from a specified file.
+	 * @param file The file.
+	 * @return The loaded game.
+	 */
 	public static Game load(File file){
 		try
 		{

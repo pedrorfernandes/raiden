@@ -1,8 +1,15 @@
 package game.ui;
 
+/**
+ * The Class ExitEvent stores an event if the hero tries to reach the exit.
+ */
 public class ExitEvent extends GameEvent {
 
-	public ExitEvent(int id) { //ID = 0, tried to exit without a weapon, ID = 1, tried to exit without killing the enemies
+	/**
+	 * Instantiates a new exit event.
+	 * @param id ID = 0, tried to exit without a weapon, ID = 1, tried to exit without killing the enemies
+	 */
+	public ExitEvent(int id) {
 		
 		if(id == 0)
 			message = "You are not armed, it's dangerous to go alone like that!\n";

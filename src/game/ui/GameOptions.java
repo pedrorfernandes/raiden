@@ -5,6 +5,9 @@ import game.objects.Dragon;
 import java.util.ArrayList;
 
 
+/**
+ * The Class GameOptions holds the various settings necessary to initialize a game
+ */
 public class GameOptions implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5808918369509311374L;
@@ -59,7 +62,19 @@ public class GameOptions implements java.io.Serializable {
 			askOptions();
 	}
 
-	//Constructor for a random maze
+	/**
+	 * Constructor for a random maze.
+	 *
+	 * @param rows the rows
+	 * @param columns the columns
+	 * @param dragonType the dragon type
+	 * @param multipleDragons if there are multiple dragons
+	 * @param heroRow the hero row
+	 * @param heroColumn the hero column
+	 * @param swordRow the sword row
+	 * @param swordColumn the sword column
+	 * @param dragons the dragons
+	 */
 	public GameOptions(int rows, int columns, int dragonType, boolean multipleDragons, int heroRow, int heroColumn,
 			int swordRow, int swordColumn, ArrayList<Dragon> dragons) { 
 
@@ -83,7 +98,17 @@ public class GameOptions implements java.io.Serializable {
 
 	}
 
-	//Constructor for a predefined maze
+	/**
+	 * Constructor for a predefined maze
+	 *
+	 * @param dragonType the dragon type
+	 * @param multipleDragons if there are multiple dragons
+	 * @param heroRow the hero row
+	 * @param heroColumn the hero column
+	 * @param swordRow the sword row
+	 * @param swordColumn the sword column
+	 * @param dragons the dragons
+	 */
 	public GameOptions(int dragonType, boolean multipleDragons, int heroRow, int heroColumn,
 			int swordRow, int swordColumn, ArrayList<Dragon> dragons) {
 

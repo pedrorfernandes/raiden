@@ -4,9 +4,17 @@ import java.util.Scanner;
 
 import game.ui.GameOutput;
 
+/**
+ * The Class GameInput is mainly useful for the command line interface
+ */
 public class GameInput {
 
-	public static boolean receiveMazeOptions(int size[]) { //Receives user input for maze size. If user wants predefined maze, return false, true otherwise
+	/**
+	 * Receives user input for maze size.
+	 * @param size the size
+	 * @return If user wants predefined maze, return false, true otherwise
+	 */
+	public static boolean receiveMazeOptions(int size[]) { 
 
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);

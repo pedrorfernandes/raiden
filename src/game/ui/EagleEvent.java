@@ -2,8 +2,13 @@ package game.ui;
 
 public class EagleEvent extends GameEvent {
 	
-	public EagleEvent(String id) { //ID "killed" means the eagle was killed, ID "gotSword" means the eagle caught the sword
-		name = id;                 //ID "isWaiting" means the eagle is grounded, waiting for the hero, the rest is self explanatory
+	/**
+	 * Instantiates a new eagle event.
+	 *
+	 * @param id ID "killed" means the eagle was killed, ID "gotSword" means the eagle caught the sword. ID "isWaiting" means the eagle is grounded, waiting for the hero, the rest is self explanatory
+	 */
+	public EagleEvent(String id) {
+		name = id;
 		
 		if(id.equals("killed"))
 			message = "Oh no! Your eagle was killed!\n";
