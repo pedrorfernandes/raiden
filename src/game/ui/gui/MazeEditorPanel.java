@@ -367,7 +367,8 @@ class MazePainterPanel extends JPanel implements MouseListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		GameOutput.printGame(parent.game, g, parent.pictures);
+		Dimension size = this.getSize();
+		GameOutput.printGame(parent.game, g, parent.pictures, size);
 	}
 
 	@Override

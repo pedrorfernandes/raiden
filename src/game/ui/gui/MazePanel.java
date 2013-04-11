@@ -26,7 +26,7 @@ public class MazePanel extends JPanel {
 		setMaximumSize(maximum);
 		setPreferredSize(preferred);
 		
-		setMaximumSize(new Dimension(50, 50));
+		//setMaximumSize(new Dimension(50, 50));
 
 		this.game = game;
 		this.pictures = pictures;
@@ -35,7 +35,8 @@ public class MazePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		GameOutput.printGame(game, g, pictures);
+		Dimension size = this.getSize();
+		GameOutput.printGame(game, g, pictures, size);
 	}
 
 	public char getNextKey() {

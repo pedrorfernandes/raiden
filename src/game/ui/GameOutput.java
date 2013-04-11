@@ -12,6 +12,7 @@ import game.objects.Hero;
 import game.objects.Sword;
 import game.ui.gui.InfoPanel;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -218,7 +219,7 @@ public class GameOutput {
 	 * @param graphs Graphics object to print on.
 	 * @param pictures The sprites used to print the game.
 	 */
-	public static void printGame(Game g, Graphics graphs, MazePictures pictures) {
+	public static void printGame(Game g, Graphics graphs, MazePictures pictures, Dimension size) {
 
 		Maze m = g.getMaze();
 		Hero h = g.getHero();
@@ -269,12 +270,18 @@ public class GameOutput {
 			else if(m.checkIfEmpty(e.getRow(), e.getColumn()))
 				mazePositions[ e.getRow() ][e.getColumn() ] = pictures.eagle;
 		}
+		
+		int width = (int)size.getWidth() / mazePositions[0].length;
+		int height = (int)size.getHeight()  / mazePositions.length;
+		
+		//System.out.println("width: " + width + "height: "+ height);
 
 		for (int x = 0; x < m.getRows(); x++) {
 			for (int y = 0; y < m.getColumns(); y++) {
 				graphs.drawImage(mazePositions[x][y],
-						y * mazePositions[x][y].getWidth(),
-						x * mazePositions[x][y].getHeight(), null);
+						//y * mazePositions[x][y].getWidth(),
+						//x * mazePositions[x][y].getHeight(), null);
+						y*width, x*height, width, height, null);
 			}
 		}
 	}
