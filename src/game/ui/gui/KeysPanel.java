@@ -153,12 +153,12 @@ public class KeysPanel extends JDialog implements ActionListener{
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
+			return;
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
+			return;
 		}
 
 

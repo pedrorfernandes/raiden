@@ -36,35 +36,66 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GUInterface constructs the main GUI to interact with the user. It implements two main frames,
+ * one for asking the initial game options and the other do display the game.
+ */
 public class GUInterface extends GameInterface implements KeyListener {
 
-	public static final int SCROLLBAR_PIXELS = 3;
-
+	/** The side size of the sprites currently being used. */
 	public static final int SPRITESIZE = 32;
 
+	/** The maximum window size. */
 	public static Dimension MAXIMUM_WINDOW_SIZE = new Dimension(500,500);
 
+	/** The maze images to be used. */
 	private final MazePictures mazePictures = new MazePictures();
+	
+	/** The frame that will be displayed. */
 	private JFrame frame;
+	
+	/** The maze panel integrated in the main game gui. */
 	private MazePanel mazePanel;
+	
+	/** The informations panel integrated in the main game gui. */
 	private InfoPanel infoPanel;
+	
+	/** The rows text field to be used in the options dialog. */
 	private JTextField rowsTextField;
+	
+	/** The columns text field to be used in the options dialog. */
 	private JTextField columnsTextField;
 
+	/** The currently loaded save game file, if any. */
 	private File loadedFile;
+	
+	/** Indicates if a loaded save file is being used. */
 	private boolean useLoadedFile = false;
 
+	/** Indicates whether the user wants to use the predefined maze or make a new one */
 	private boolean usePredefinedMaze = true;
+	
 	private boolean useMultipleDragons = true;
+	
+	/** The dragon type specified by the user. */
 	private int dragonType = Dragon.SLEEPING;
+	
 	private int maze_rows;
+	
 	private int maze_columns;
+	
+	/** This variable indicates whether to continue the game or not */
 	private boolean goOn = true;
 
+	/** The options specified by the user */
 	private GameOptions options = new GameOptions(false);
 
 	private JMenuBar menuBar;
 
+	/**
+	 * Initializes the graphical interface, setting up the needed components.
+	 */
 	private void startInterface() {
 		frame = new JFrame("Maze");
 
@@ -114,6 +145,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 
+	/**
+	 * Creates the menu bar.
+	 */
 	private void createMenuBar() {
 		menuBar =  new JMenuBar();
 
@@ -394,10 +428,16 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see game.ui.GameInterface#startGame()
+	 */
 	public void startGame() {
 		startOptions();
 	}
 
+	/**
+	 * Starts and displays the first options dialog.
+	 */
 	public void startOptions() {
 
 		final JFrame optionsFrame = new JFrame("Maze: New Game");
@@ -612,6 +652,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 	}
 
+	/**
+	 * Restarts game.
+	 */
 	private void restartGame() {
 		if(useLoadedFile) {
 			goOn = true;
@@ -624,6 +667,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 		startInterface();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		for (GameKey gameKey : GameKeys.keyList) {
@@ -632,16 +678,27 @@ public class GUInterface extends GameInterface implements KeyListener {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		return;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 		return;
 	}
 
+	/**
+	 * Updates the game depending on user input.
+	 *
+	 * @param input the user input
+	 */
 	private void updateGame(char input) {
 
 		if(goOn){ 
@@ -676,6 +733,9 @@ public class GUInterface extends GameInterface implements KeyListener {
 	}
 
 
+	/**
+	 * Updates the options variable with the user specified parameters.
+	 */
 	private void updateOptions() {
 		if(options.randomMaze = !usePredefinedMaze) {
 			options.rows = maze_rows;
@@ -689,6 +749,14 @@ public class GUInterface extends GameInterface implements KeyListener {
 		options.randomSpawns = true;
 	}
 
+	/**
+	 * Formats the preferred dimension variable given depending on the maximum dimension specified.
+	 *
+	 * @param oldPreferred the original preferred dimension
+	 * @param maximumDimension the maximum dimension to be compared
+	 * @return maximumDimension in cases where the preferred dimension is wider or taller than the maximum dimension,
+	 * preferredDimension otherwise.
+	 */
 	public static Dimension getFormattedPreferredDimension(Dimension oldPreferred, Dimension maximumDimension) {
 		Dimension formattedDimension = new Dimension(oldPreferred);
 
