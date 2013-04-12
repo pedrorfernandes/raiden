@@ -316,6 +316,11 @@ public class GameOutput {
 			printEvent(events.removeFirst());
 	}
 
+	/**
+	 * Prints the events on the event queue given to the infopanel
+	 * @param events The game events
+	 * @param infoPanel The infoPanel element to write to
+	 */
 	public static void printEventQueue(LinkedList<GameEvent> events, InfoPanel infoPanel) {
 		String info = new String();
 
