@@ -99,8 +99,8 @@ public class GameOutput {
 
 	/**
 	 * Gets the immovable maze sprites from a given maze, such as walls and empty tiles.
-	 * @param m the m
-	 * @param pictures the pictures
+	 * @param m The maze
+	 * @param pictures The picture sprites to put on the array
 	 * @return An array with the symbols of the corresponding maze tiles
 	 */
 	public static BufferedImage[][] getMazePictures(Maze m, MazePictures pictures) { 
@@ -221,6 +221,7 @@ public class GameOutput {
 	 * @param g The game to print.
 	 * @param graphs Graphics object to print on.
 	 * @param pictures The sprites used to print the game.
+	 * @param size The size of the panel the game's being printed on
 	 */
 	public static void printGame(Game g, Graphics graphs, MazePictures pictures, Dimension size) {
 
