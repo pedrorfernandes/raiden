@@ -1,4 +1,4 @@
-package game.ui.utilities;
+package game.ui;
 
 /**
  * The Class WaitTime implements a method to make the system(thread) wait for a given time

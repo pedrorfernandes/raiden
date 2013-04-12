@@ -9,8 +9,8 @@ import game.objects.Movable;
 import game.objects.Sword;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
+import game.ui.MazeInput;
 import game.ui.MazePictures;
-import game.ui.utilities.MazeInput;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,7 +26,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;

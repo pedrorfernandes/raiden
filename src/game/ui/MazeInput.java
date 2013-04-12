@@ -1,4 +1,4 @@
-package game.ui.utilities;
+package game.ui;
 
 import java.io.IOException;
 import java.util.Scanner;

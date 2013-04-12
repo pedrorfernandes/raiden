@@ -4,8 +4,8 @@ import game.logic.Game;
 import game.ui.GameInterface;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
-import game.ui.utilities.MazeInput;
-import game.ui.utilities.WaitTime;
+import game.ui.MazeInput;
+import game.ui.WaitTime;
 
 /**
  * The Class CLInterface handles a game played in the command line.

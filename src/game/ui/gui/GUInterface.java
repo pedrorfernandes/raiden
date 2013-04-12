@@ -5,8 +5,8 @@ import game.objects.Dragon;
 import game.ui.GameInterface;
 import game.ui.GameOptions;
 import game.ui.GameOutput;
+import game.ui.MazeInput;
 import game.ui.MazePictures;
-import game.ui.utilities.MazeInput;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
