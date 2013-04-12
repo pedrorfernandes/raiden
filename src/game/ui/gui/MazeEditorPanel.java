@@ -37,26 +37,57 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 
+/**
+ * The Class MazeEditorPanel, extending JDialog, implements a dialog that allows the user to create
+ * a custom maze, positioning tiles selected from a toolbar, using the mouse.
+ */
 public class MazeEditorPanel extends JDialog {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -981182364507201188L;
 
+	/** The current object selected. */
 	public MazeObjectToDraw currentObject = new MazeObjectToDraw();
+	
+	/** The game that is being created. */
 	public Game game;
+	
+	/** The game options specified by the user. */
 	public GameOptions options = new GameOptions(false);
+	
+	/** The image files to be used in the maze drawing. */
 	public MazePictures pictures;
 
-	//This boolean indicates if the user clicked on a new dragon or is repeating the same
+	/** The newDragon boolean indicates if the user clicked on a new dragon or is still placing
+	 * a previous one.
+	 */
 	public boolean newDragon; 
 
+	/** Tracks the number of exits currently placed on the maze. */
 	public int numberOfExits = 0;
+	
+	/** This boolean indicates if there's a hero on the maze. */
 	public boolean createdHero;
+	
+	/** This boolean indicates if there's a sword on the maze. */
 	public boolean createdSword;
 
+	/** The current maze number of rows. */
 	private int maze_rows;
+	
+	/** The current maze number of columns. */
 	private int maze_columns;
+	
+	/** The dragon type that's being placed on the maze. */
 	private int dragonType;
 
+	/**
+	 * Instantiates a new maze editor panel.
+	 *
+	 * @param parent the parent frame
+	 * @param game the game variable that's going to be used
+	 * @param pictures the images to be used on the game drawing
+	 */
 	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
 		super(parent, "Maze Editor", true);
 		setLayout(new GridBagLayout());
@@ -91,6 +122,9 @@ public class MazeEditorPanel extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	 * Initializes a new game with the specified options.
+	 */
 	private void initializeNewGame() {
 		this.game = new Game(options);
 		this.game.setMaze(new Maze(options.rows, options.columns, true));
@@ -98,6 +132,11 @@ public class MazeEditorPanel extends JDialog {
 		this.game.getSword().print = false;
 	}
 
+	/**
+	 * Asks for the options to use on the new game being created.
+	 *
+	 * @return 0 on success, 1 otherwise
+	 */
 	private int askNewGameOptions() {
 		String rows;
 		String columns;
@@ -156,6 +195,9 @@ public class MazeEditorPanel extends JDialog {
 		return 0;
 	}
 
+	/**
+	 * Creates the tool bar with the game elements.
+	 */
 	private void createToolBar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -226,6 +268,9 @@ public class MazeEditorPanel extends JDialog {
 		getContentPane().add(toolBar, toolBar_constraints);
 	}
 
+	/**
+	 * Creates the menu bar for the dialog with a File and a Help menu.
+	 */
 	private void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 
@@ -287,6 +332,9 @@ public class MazeEditorPanel extends JDialog {
 		setJMenuBar(menuBar);
 	}
 
+	/**
+	 * Updates the game options with the user given parameters.
+	 */
 	private void updateOptions() {
 
 		options.randomMaze = true;
@@ -300,8 +348,15 @@ public class MazeEditorPanel extends JDialog {
 		options.randomSpawns = false;
 	}
 
+	/**
+	 * This class implements an ActionListen whose action is to set the currentObject variable to the
+	 * game's hero.
+	 */
 	class SetHero implements ActionListener {
 
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			currentObject.set(game.getHero());
@@ -309,8 +364,15 @@ public class MazeEditorPanel extends JDialog {
 
 	}
 
+	/**
+	 * This class implements an ActionListen whose action is to set the currentObject variable to the
+	 * game's sword.
+	 */
 	class SetSword implements ActionListener {
 
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			currentObject.set(game.getSword());
@@ -318,8 +380,17 @@ public class MazeEditorPanel extends JDialog {
 
 	}
 
+	/**
+	 * This class implements an ActionListener whose action is to call a save game dialog
+	 * if the required conditions are met.
+	 * It shows instead a specific error message if there is not at least one exit on the map,
+	 * if the hero has not been placed yet or if the sword has not been placed either.
+	 */
 	class SaveMaze implements ActionListener {
 
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
@@ -353,14 +424,27 @@ public class MazeEditorPanel extends JDialog {
 	}
 }
 
+/**
+ * The Class MazePainterPanel, extending JPanel, implements a MouseListener to respond to user clicks
+ * by interpreting the clicked tile and changing it accordingly to the element currently selected in the 
+ * element toolbar.
+ */
 class MazePainterPanel extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = -5533602405577612408L;
 
+	/** The parent MazeEditorPanel. */
 	MazeEditorPanel parent;
 
+	/** An array containing the current Movable objects placed on the maze. */
 	private ArrayList<Movable> movableObjects = new ArrayList<Movable>();
 
+	/**
+	 * Instantiates a new MazePainterPanel, setting up the needed configurations and the size options
+	 * according to the size of the maze to be created.
+	 *
+	 * @param parent the parent MazeEditorPanel
+	 */
 	public MazePainterPanel(MazeEditorPanel parent) {
 		
 		
@@ -475,6 +559,13 @@ class MazePainterPanel extends JPanel implements MouseListener {
 		return;
 	}
 
+	/**
+	 * Deletes the object on the given row and column, updating any game related variables
+	 * or maze editor variables.
+	 *
+	 * @param row the row of the object
+	 * @param column the column of the object
+	 */
 	private void deleteObjectOn(int row, int column) {
 
 		parent.game.getMaze().getPositions()[row][column] = Tile.empty;
