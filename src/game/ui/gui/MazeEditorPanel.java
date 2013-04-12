@@ -13,9 +13,11 @@ import game.ui.MazePictures;
 import game.ui.utilities.MazeInput;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -58,7 +60,7 @@ public class MazeEditorPanel extends JDialog {
 
 	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
 		super(parent, "Maze Editor", true);
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		setLayout(new GridBagLayout());
 		this.game = game;
 		this.pictures = pictures;
 
@@ -75,16 +77,16 @@ public class MazeEditorPanel extends JDialog {
 		
 		GridBagConstraints mazePainter_constraints = new GridBagConstraints();
 
-		mazePainter_constraints.weightx = 0;
-		mazePainter_constraints.weighty = 0;
+		mazePainter_constraints.weightx = 1;
+		mazePainter_constraints.weighty = 1;
 		mazePainter_constraints.gridx = 0;
-		mazePainter_constraints.gridy = 0;
+		mazePainter_constraints.gridy = 1;
 		mazePainter_constraints.fill = GridBagConstraints.BOTH;
 
 		getContentPane().add(mazePainter, mazePainter_constraints);
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setResizable(false);
+		setResizable(true);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -158,7 +160,7 @@ public class MazeEditorPanel extends JDialog {
 	private void createToolBar() {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		getContentPane().add(toolBar);
+		toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		JButton btnFloor = new JButton("");
 		btnFloor.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/empty.png")));
@@ -212,6 +214,17 @@ public class MazeEditorPanel extends JDialog {
 		toolBar.add(btnHero);
 
 		btnHero.addActionListener(new SetHero());
+		
+		GridBagConstraints toolBar_constraints = new GridBagConstraints();
+
+		toolBar_constraints.weightx = 1;
+		toolBar_constraints.weighty = 1;
+		toolBar_constraints.gridx = 0;
+		toolBar_constraints.gridy = 0;
+		toolBar_constraints.fill = GridBagConstraints.BOTH;
+		toolBar_constraints.anchor = GridBagConstraints.PAGE_START;
+		
+		getContentPane().add(toolBar, toolBar_constraints);
 	}
 
 	private void createMenuBar() {

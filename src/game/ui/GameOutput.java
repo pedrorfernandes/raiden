@@ -38,9 +38,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class GameOutput {
 	private static String PROMPT = "> ";
 	
-	public static String SAVE_EXTENSION = ".nanner";
-	public static String SAVE_EXTENSION_TYPE = "nanner";
-	public static String SAVE_EXTENSION_DESCRIPTION = "nanner Files";
+	public static String SAVE_EXTENSION = ".dmaze";
+	public static String SAVE_EXTENSION_TYPE = "dmaze";
+	public static String SAVE_EXTENSION_DESCRIPTION = "DragonMaze files";
 
 	/**
 	 * Gets the immovable maze symbols from a given maze, such as walls and empty tiles.
