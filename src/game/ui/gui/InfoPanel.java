@@ -33,11 +33,11 @@ public class InfoPanel extends JPanel {
 		setMinimumSize(preferredDimension);
 
 
-		setBorder(UIManager.getBorder("TextField.border"));
+		setBorder(UIManager.getBorder("TextField.border")); //$NON-NLS-1$
 
 		textPane = new JTextPane();
 		textPane.setEditable(false);
-		textPane.setText("Welcome, challenger");
+		textPane.setText(Messages.getString("InfoPanel.1")); //$NON-NLS-1$
 		textPane.setAlignmentX(CENTER_ALIGNMENT);
 		textPane.setAlignmentY(CENTER_ALIGNMENT);
 		textPane.setBackground(null);

@@ -40,7 +40,7 @@ public class CLInterface extends GameInterface {
 				input = MazeInput.getChar();
 			}
 			catch(Exception e) {
-				System.err.println("Problem reading user input!");
+				System.err.println(Messages.getString("CLInterface.0")); //$NON-NLS-1$
 			}
 
 			goOn = game.heroTurn(input);

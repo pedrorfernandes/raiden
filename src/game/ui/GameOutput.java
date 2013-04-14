@@ -36,11 +36,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * It also handles the basic file input/output operations such as saving and loading.
  */
 public class GameOutput {
-	private static String PROMPT = "> ";
+	private static String PROMPT = "> "; //$NON-NLS-1$
 	
-	public static String SAVE_EXTENSION = ".dmaze";
-	public static String SAVE_EXTENSION_TYPE = "dmaze";
-	public static String SAVE_EXTENSION_DESCRIPTION = "DragonMaze files";
+	public static String SAVE_EXTENSION = ".dmaze"; //$NON-NLS-1$
+	public static String SAVE_EXTENSION_TYPE = "dmaze"; //$NON-NLS-1$
+	public static String SAVE_EXTENSION_DESCRIPTION = "DragonMaze files"; //$NON-NLS-1$
 
 	/**
 	 * Gets the immovable maze symbols from a given maze, such as walls and empty tiles.
@@ -89,8 +89,8 @@ public class GameOutput {
 			}
 			
 			JOptionPane.showMessageDialog(null,
-					"File successfully saved!",
-					"File saved",
+					Messages.getString("GameOutput.4"), //$NON-NLS-1$
+					Messages.getString("GameOutput.5"), //$NON-NLS-1$
 					JOptionPane.INFORMATION_MESSAGE);
 			
 			save(game, file);
@@ -304,7 +304,7 @@ public class GameOutput {
 	}
 
 	public static void printAskForMove() {
-		System.out.print("Move your hero (WASD, only first input will be considered): ");
+		System.out.print(Messages.getString("GameOutput.6")); //$NON-NLS-1$
 	}
 
 	/**
@@ -342,7 +342,7 @@ public class GameOutput {
 	 * Prints a welcome message for the command line interface.
 	 */
 	public static void printStartMessage() {
-		System.out.println("Welcome, challenger.");
+		System.out.println(Messages.getString("GameOutput.7")); //$NON-NLS-1$
 	}
 
 	/**
@@ -353,16 +353,16 @@ public class GameOutput {
 
 		switch(n) {
 		case 0:
-			System.out.println("Give a specific maze size? (Y/N): ");
+			System.out.println(Messages.getString("GameOutput.8")); //$NON-NLS-1$
 			System.out.print(PROMPT);
 			break;
 		case 1:
-			System.out.println("Please specify the desired maze size.");
-			System.out.println("Number of rows? ");
+			System.out.println(Messages.getString("GameOutput.9")); //$NON-NLS-1$
+			System.out.println(Messages.getString("GameOutput.10")); //$NON-NLS-1$
 			System.out.print(PROMPT);
 			break;
 		case 2:
-			System.out.println("Number of columns? ");
+			System.out.println(Messages.getString("GameOutput.11")); //$NON-NLS-1$
 			System.out.print(PROMPT);
 			break;
 		}
@@ -370,19 +370,19 @@ public class GameOutput {
 	}
 
 	public static void printMazeSizeError() {
-		System.out.println("Invalid maze size given. Starting predefined maze!");
+		System.out.println(Messages.getString("GameOutput.12")); //$NON-NLS-1$
 	}
 
 	public static void printDragonOptions() { //Prints dragon type related options
-		System.out.println("\nPlease specify the type of dragons you want on the maze.");
-		System.out.println("0 for static dragons, 1 for an always awake dragons, 2 for randomly sleeping dragons.");
-		System.out.println("Choose your option ");
+		System.out.println(Messages.getString("GameOutput.13")); //$NON-NLS-1$
+		System.out.println(Messages.getString("GameOutput.14")); //$NON-NLS-1$
+		System.out.println(Messages.getString("GameOutput.15")); //$NON-NLS-1$
 		System.out.print(PROMPT);
 	}
 
 	public static void printMultipleDragonOptions() {
-		System.out.println("\nWould you like to generate a number of dragons proportional to the size of the maze?");
-		System.out.println("Otherwise, only one will be generated. (Y/N): ");
+		System.out.println(Messages.getString("GameOutput.16")); //$NON-NLS-1$
+		System.out.println(Messages.getString("GameOutput.17")); //$NON-NLS-1$
 		System.out.print(PROMPT);
 	}
 
@@ -406,7 +406,7 @@ public class GameOutput {
 		}
 		catch (Exception ex)
 		{
-			fail("Exception thrown during test: " + ex.toString());
+			fail(Messages.getString("GameOutput.18") + ex.toString()); //$NON-NLS-1$
 		}
 	}
 
@@ -426,7 +426,7 @@ public class GameOutput {
 		}
 		catch (Exception ex)
 		{
-			fail("Problem loading file: " + ex.toString());
+			fail(Messages.getString("GameOutput.19") + ex.toString()); //$NON-NLS-1$
 		}
 		return null;
 	}

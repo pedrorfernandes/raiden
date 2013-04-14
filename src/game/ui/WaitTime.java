@@ -15,7 +15,7 @@ public class WaitTime {
 			int time = n;
 			Thread.sleep(time);
 		} catch (Exception e) {
-			System.err.println("Problem executing thread sleep!");
+			System.err.println(Messages.getString("WaitTime.0")); //$NON-NLS-1$
 		}
 	}
 }

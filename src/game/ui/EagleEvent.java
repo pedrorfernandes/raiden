@@ -10,25 +10,25 @@ public class EagleEvent extends GameEvent {
 	public EagleEvent(String id) {
 		name = id;
 		
-		if(id.equals("killed"))
-			message = "Oh no! Your eagle was killed!\n";
+		if(id.equals("killed")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.1"); //$NON-NLS-1$
 		
-		else if(id.equals("gotSword"))
-			message = "Your eagle caught the sword!\n";
+		else if(id.equals("gotSword")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.3"); //$NON-NLS-1$
 		
-		else if(id.equals("isWaiting"))
-			message = "Your eagle has arrived and is waiting for you!\n";
+		else if(id.equals("isWaiting")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.5"); //$NON-NLS-1$
 		
-		else if(id.equals("cantSendDead"))
-			message = "Your eagle is dead!";
-		else if(id.equals("cantSendOnRoute"))
-			message = "Your eagle is not with you!";
-		else if(id.equals("noSword"))
-			message = "There is no sword for the eagle to catch!";
-		else if(id.equals("eagleReturned"))
-			message = "The eagle returned safely to you!";
+		else if(id.equals("cantSendDead")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.7"); //$NON-NLS-1$
+		else if(id.equals("cantSendOnRoute")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.9"); //$NON-NLS-1$
+		else if(id.equals("noSword")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.11"); //$NON-NLS-1$
+		else if(id.equals("eagleReturned")) //$NON-NLS-1$
+			message = Messages.getString("EagleEvent.13"); //$NON-NLS-1$
 		else
-			message = "Something happened to your eagle..."; //In case an inexistent id is given
+			message = Messages.getString("EagleEvent.14"); //In case an inexistent id is given //$NON-NLS-1$
 	}
 
 }

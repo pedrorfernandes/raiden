@@ -12,11 +12,11 @@ public class FightEvent extends GameEvent {
 	public FightEvent(String id) {
 		name = id;
 		
-		if(id.equals("lostFight"))
-			message = "You lost the fight!\n";
+		if(id.equals("lostFight")) //$NON-NLS-1$
+			message = Messages.getString("FightEvent.1"); //$NON-NLS-1$
 		
-		else if(id.equals("wonFight"))
-			message = "WOW! You slayed the dragon!\n";
+		else if(id.equals("wonFight")) //$NON-NLS-1$
+			message = Messages.getString("FightEvent.3"); //$NON-NLS-1$
 	}
 	
 }

@@ -11,16 +11,16 @@ public class ResultEvent extends GameEvent {
 	 */
 	public ResultEvent(int id) {
 		if(id == 0) {
-			name = "exitOpened";
-			message = "You slayed all the dragons! The exit is open!\n";
+			name = "exitOpened"; //$NON-NLS-1$
+			message = Messages.getString("ResultEvent.1"); //$NON-NLS-1$
 		}
 		else if(id == 1) {
-			name = "lost";
-			message = "Oh no, the dragon killed you!\n";
+			name = "lost"; //$NON-NLS-1$
+			message = Messages.getString("ResultEvent.3"); //$NON-NLS-1$
 		}
 		else if(id == 2) {
-			name = "won";
-			message = "Congratulations, you exited the maze!\n";
+			name = "won"; //$NON-NLS-1$
+			message = Messages.getString("ResultEvent.5"); //$NON-NLS-1$
 		}
 	}
 }

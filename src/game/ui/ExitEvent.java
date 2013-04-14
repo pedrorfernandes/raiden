@@ -12,9 +12,9 @@ public class ExitEvent extends GameEvent {
 	public ExitEvent(int id) {
 		
 		if(id == 0)
-			message = "You are not armed, it's dangerous to go alone like that!\n";
+			message = Messages.getString("ExitEvent.0"); //$NON-NLS-1$
 		else if(id == 1)
-			message = "The exit is closed! You have to kill the dragons first!\n";
+			message = Messages.getString("ExitEvent.1"); //$NON-NLS-1$
 		
 	}
 	

@@ -97,7 +97,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	 * Initializes the graphical interface, setting up the needed components.
 	 */
 	private void startInterface() {
-		frame = new JFrame("Maze");
+		frame = new JFrame("Maze"); //$NON-NLS-1$
 
 		Dimension mazePanelDimension = new Dimension(game.getMaze().getColumns() * GUInterface.SPRITESIZE,
 				game.getMaze().getRows() * GUInterface.SPRITESIZE);
@@ -151,20 +151,20 @@ public class GUInterface extends GameInterface implements KeyListener {
 	private void createMenuBar() {
 		menuBar =  new JMenuBar();
 
-		JMenu fileMenu = new JMenu("File");
+		JMenu fileMenu = new JMenu(Messages.getString("GUInterface.1")); //$NON-NLS-1$
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.getAccessibleContext().setAccessibleDescription(
-				"File menu");
+				Messages.getString("GUInterface.2")); //$NON-NLS-1$
 		menuBar.add(fileMenu);
 
-		JMenuItem saveGameMenuItem = new JMenuItem("Save Game", KeyEvent.VK_S);
+		JMenuItem saveGameMenuItem = new JMenuItem(Messages.getString("GUInterface.3"), KeyEvent.VK_S); //$NON-NLS-1$
 		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Saves the current game to a file");
+				Messages.getString("GUInterface.4")); //$NON-NLS-1$
 		fileMenu.add(saveGameMenuItem);
 
-		JMenuItem loadGameMenuItem = new JMenuItem("Load Game", KeyEvent.VK_L);
+		JMenuItem loadGameMenuItem = new JMenuItem(Messages.getString("GUInterface.5"), KeyEvent.VK_L); //$NON-NLS-1$
 		loadGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Loads a game saved state");
+				Messages.getString("GUInterface.6")); //$NON-NLS-1$
 		fileMenu.add(loadGameMenuItem);
 
 		loadGameMenuItem.addActionListener(new ActionListener() {
@@ -194,8 +194,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 						}
 						else
 							JOptionPane.showMessageDialog(frame,
-									"Invalid file chosen!",
-									"Invalid file",
+									Messages.getString("GUInterface.7"), //$NON-NLS-1$
+									Messages.getString("GUInterface.8"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 
 					}
@@ -211,26 +211,26 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JMenu gameMenu = new JMenu("Game");
+		JMenu gameMenu = new JMenu(Messages.getString("GUInterface.9")); //$NON-NLS-1$
 		gameMenu.setMnemonic(KeyEvent.VK_G);
 		gameMenu.getAccessibleContext().setAccessibleDescription(
-				"Game options");
+				Messages.getString("GUInterface.10")); //$NON-NLS-1$
 		menuBar.add(gameMenu);
 
-		JMenuItem optionsGameMenuItem = new JMenuItem("Game options",
+		JMenuItem optionsGameMenuItem = new JMenuItem(Messages.getString("GUInterface.11"), //$NON-NLS-1$
 				KeyEvent.VK_O);
 		optionsGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Change options for next game");
+				Messages.getString("GUInterface.12")); //$NON-NLS-1$
 		gameMenu.add(optionsGameMenuItem);
 
-		JMenuItem changeKeysItem = new JMenuItem("Change keys", KeyEvent.VK_C);
+		JMenuItem changeKeysItem = new JMenuItem(Messages.getString("GUInterface.13"), KeyEvent.VK_C); //$NON-NLS-1$
 		changeKeysItem.getAccessibleContext().setAccessibleDescription(
-				"Choose which keys you use to play");
+				Messages.getString("GUInterface.14")); //$NON-NLS-1$
 		gameMenu.add(changeKeysItem);
 
 		changeKeysItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new KeysPanel(frame, "Key Mappings");
+				new KeysPanel(frame, Messages.getString("GUInterface.15")); //$NON-NLS-1$
 			}
 		});
 
@@ -238,15 +238,15 @@ public class GUInterface extends GameInterface implements KeyListener {
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						frame,
-						"Change the game settings? (Next game will use these definitions)",
-						"Change settings",
+						Messages.getString("GUInterface.16"), //$NON-NLS-1$
+						Messages.getString("GUInterface.17"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION) {
 
 					int predefMazeOption = JOptionPane.showConfirmDialog(
 							frame,
-							"Create a user defined maze?",
-							"User defined maze",
+							Messages.getString("GUInterface.18"), //$NON-NLS-1$
+							Messages.getString("GUInterface.19"), //$NON-NLS-1$
 							JOptionPane.YES_NO_OPTION);
 
 					if(predefMazeOption == JOptionPane.YES_OPTION) {
@@ -254,7 +254,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 						String rows, columns;
 
 						do {
-							rows = JOptionPane.showInputDialog(frame, "Number of rows? (Min. 6, Max. 500 but clipping will occur!)");
+							rows = JOptionPane.showInputDialog(frame, Messages.getString("GUInterface.20")); //$NON-NLS-1$
 						}
 						while(!MazeInput.isInteger(rows) && rows != null);
 
@@ -262,7 +262,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 							return;
 
 						do {
-							columns = JOptionPane.showInputDialog(frame, "Number of columns? (Min. 6, Max. 500 but clipping will occur!)");
+							columns = JOptionPane.showInputDialog(frame, Messages.getString("GUInterface.21")); //$NON-NLS-1$
 						}
 						while(!MazeInput.isInteger(columns) && columns != null);
 
@@ -272,8 +272,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 						if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
 								|| Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 							JOptionPane.showMessageDialog(frame,
-									"Invalid row and/or column number detected, keeping old maze settings!",
-									"Invalid input error",
+									Messages.getString("GUInterface.22"), //$NON-NLS-1$
+									Messages.getString("GUInterface.23"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 						}
 						else {
@@ -284,11 +284,11 @@ public class GUInterface extends GameInterface implements KeyListener {
 					else
 						usePredefinedMaze = true;
 
-					String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
+					String[] possibilities = {Messages.getString("GUInterface.24"), Messages.getString("GUInterface.25"), Messages.getString("GUInterface.26")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					String dragonOption = (String)JOptionPane.showInputDialog(
 							frame,
-							"Dragon type:",
-							"Dragon type",
+							Messages.getString("GUInterface.27"), //$NON-NLS-1$
+							Messages.getString("GUInterface.28"), //$NON-NLS-1$
 							JOptionPane.QUESTION_MESSAGE,
 							null,
 							possibilities,
@@ -296,17 +296,17 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 					if(dragonOption == null)
 						return;
-					if(dragonOption.equals( "Randomly sleeping" ))
+					if(dragonOption.equals( Messages.getString("GUInterface.29") )) //$NON-NLS-1$
 						dragonType = Dragon.SLEEPING;
-					else if(dragonOption.equals( "Always awake" ))
+					else if(dragonOption.equals( Messages.getString("GUInterface.30") )) //$NON-NLS-1$
 						dragonType = Dragon.NORMAL;
 					else
 						dragonType = Dragon.STATIC;
 
 					int multipleDragonsOption = JOptionPane.showConfirmDialog(
 							frame,
-							"Create a number of dragons proportional to the maze size?",
-							"Multiple dragons",
+							Messages.getString("GUInterface.31"), //$NON-NLS-1$
+							Messages.getString("GUInterface.32"), //$NON-NLS-1$
 							JOptionPane.YES_NO_OPTION);
 
 					if(multipleDragonsOption == JOptionPane.YES_OPTION)
@@ -318,17 +318,17 @@ public class GUInterface extends GameInterface implements KeyListener {
 					updateOptions();
 
 					JOptionPane.showMessageDialog(frame,
-							"The new game settings are now configured, restart the game to apply changes!",
-							"Settings changed",
+							Messages.getString("GUInterface.33"), //$NON-NLS-1$
+							Messages.getString("GUInterface.34"), //$NON-NLS-1$
 							JOptionPane.PLAIN_MESSAGE);
 				}
 			}
 		});
 
-		JMenuItem mazeEditorGameMenuItem = new JMenuItem("Maze Editor",
+		JMenuItem mazeEditorGameMenuItem = new JMenuItem(Messages.getString("GUInterface.35"), //$NON-NLS-1$
 				KeyEvent.VK_M);
 		mazeEditorGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Opens the maze editor dialog");
+				Messages.getString("GUInterface.36")); //$NON-NLS-1$
 		gameMenu.add(mazeEditorGameMenuItem);
 
 		mazeEditorGameMenuItem.addActionListener(new ActionListener(){
@@ -337,18 +337,18 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JMenuItem restartGameMenuItem = new JMenuItem("Restart game",
+		JMenuItem restartGameMenuItem = new JMenuItem(Messages.getString("GUInterface.37"), //$NON-NLS-1$
 				KeyEvent.VK_R);
 		restartGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Restarts the game");
+				Messages.getString("GUInterface.38")); //$NON-NLS-1$
 		gameMenu.add(restartGameMenuItem);
 
 		restartGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						frame,
-						"Do you really want to restart the game?",
-						"Confirm exit",
+						Messages.getString("GUInterface.39"), //$NON-NLS-1$
+						Messages.getString("GUInterface.40"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION) {
 					frame.setVisible(false);
@@ -358,18 +358,18 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JMenuItem exitGameMenuItem = new JMenuItem("Exit game",
+		JMenuItem exitGameMenuItem = new JMenuItem(Messages.getString("GUInterface.41"), //$NON-NLS-1$
 				KeyEvent.VK_E);
 		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Exits the game");
+				Messages.getString("GUInterface.42")); //$NON-NLS-1$
 		gameMenu.add(exitGameMenuItem);
 
 		exitGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						frame,
-						"Do you really want to exit the game?",
-						"Confirm exit",
+						Messages.getString("GUInterface.43"), //$NON-NLS-1$
+						Messages.getString("GUInterface.44"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION)
 					System.exit(0);
@@ -377,49 +377,49 @@ public class GUInterface extends GameInterface implements KeyListener {
 		});
 
 
-		JMenu helpMenu = new JMenu("Help");
+		JMenu helpMenu = new JMenu(Messages.getString("GUInterface.45")); //$NON-NLS-1$
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		helpMenu.getAccessibleContext().setAccessibleDescription(
-				"Help menu");
+				Messages.getString("GUInterface.46")); //$NON-NLS-1$
 		menuBar.add(helpMenu);
 
-		JMenuItem keysHelpMenuItem = new JMenuItem("Default keys", KeyEvent.VK_K);
+		JMenuItem keysHelpMenuItem = new JMenuItem(Messages.getString("GUInterface.47"), KeyEvent.VK_K); //$NON-NLS-1$
 		keysHelpMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Explains default keys");
+				Messages.getString("GUInterface.48")); //$NON-NLS-1$
 		helpMenu.add(keysHelpMenuItem);
 
 		keysHelpMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frame,
-						"Move the hero using WASD for the usual purposes\n\n" +
-								"Skip a move by pressing ENTER\n\n" +
-								"Command the eagle to fetch your sword using E\n",
-								"Default keys",
+						Messages.getString("GUInterface.49") + //$NON-NLS-1$
+								Messages.getString("GUInterface.50") + //$NON-NLS-1$
+								Messages.getString("GUInterface.51"), //$NON-NLS-1$
+								Messages.getString("GUInterface.52"), //$NON-NLS-1$
 								JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 
-		JMenuItem infoHelpMenuItem = new JMenuItem("How to play", KeyEvent.VK_I);
+		JMenuItem infoHelpMenuItem = new JMenuItem(Messages.getString("GUInterface.53"), KeyEvent.VK_I); //$NON-NLS-1$
 		infoHelpMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Explains how to play the game");
+				Messages.getString("GUInterface.54")); //$NON-NLS-1$
 		helpMenu.add(infoHelpMenuItem);
 
 		infoHelpMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frame,
-						"You have to escape this confusing dungeon!\n\n" +
-								"\nThe exit is closed until all the dragons have been slayed.\n" +
-								"If you touch a dragon unarmed, you will die, so be careful while\n" +
-								"you don't have the sword on your hands!\n" +
-								"\nSleeping dragons are harmless, so use that for your advantage.\n" +
-								"Fortunately for you, these dragons aren't very smart, so they will roam\n" +
-								"around the maze aimlessly.\n" +
-								"\nOnce you're armed, you can slay all the dragons you encounter.\n" +
-								"\nUse your loyal companion to get you the sword! Launch your eagle\n" +
-								"and it will retrieve your sword for you! But be careful, dragons can\n" +
-								"kill your eagle while it's picking up the sword or waiting for you!\n" +
-								"\n\nGood luck on your journey, mighty hero!\n\n",
-								"How to play",
+						Messages.getString("GUInterface.55") + //$NON-NLS-1$
+								Messages.getString("GUInterface.56") + //$NON-NLS-1$
+								Messages.getString("GUInterface.57") + //$NON-NLS-1$
+								Messages.getString("GUInterface.58") + //$NON-NLS-1$
+								Messages.getString("GUInterface.59") + //$NON-NLS-1$
+								Messages.getString("GUInterface.60") + //$NON-NLS-1$
+								Messages.getString("GUInterface.61") + //$NON-NLS-1$
+								Messages.getString("GUInterface.62") + //$NON-NLS-1$
+								Messages.getString("GUInterface.63") + //$NON-NLS-1$
+								Messages.getString("GUInterface.64") + //$NON-NLS-1$
+								Messages.getString("GUInterface.65") + //$NON-NLS-1$
+								Messages.getString("GUInterface.66"), //$NON-NLS-1$
+								Messages.getString("GUInterface.67"), //$NON-NLS-1$
 								JOptionPane.PLAIN_MESSAGE);
 			}
 		});
@@ -440,7 +440,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 	 */
 	public void startOptions() {
 
-		final JFrame optionsFrame = new JFrame("Maze: New Game");
+		final JFrame optionsFrame = new JFrame(Messages.getString("GUInterface.68")); //$NON-NLS-1$
 		optionsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -448,16 +448,16 @@ public class GUInterface extends GameInterface implements KeyListener {
 		optionsFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel mazeSizePanel = new JPanel();
-		tabbedPane.addTab("Maze Size", null, mazeSizePanel, null);
+		tabbedPane.addTab(Messages.getString("GUInterface.69"), null, mazeSizePanel, null); //$NON-NLS-1$
 		mazeSizePanel.setLayout(null);
 
-		JLabel predefMazeLabel = new JLabel("Use the predefined maze?");
+		JLabel predefMazeLabel = new JLabel(Messages.getString("GUInterface.70")); //$NON-NLS-1$
 		predefMazeLabel.setBounds(8, 0, 256, 30);
 		mazeSizePanel.add(predefMazeLabel);
 
 		ButtonGroup predefMaze = new ButtonGroup();
 
-		JRadioButton yesPredefButton = new JRadioButton("Yes");
+		JRadioButton yesPredefButton = new JRadioButton(Messages.getString("GUInterface.71")); //$NON-NLS-1$
 		predefMaze.add(yesPredefButton);
 		yesPredefButton.setSelected(true);
 		yesPredefButton.setBounds(0, 40, 54, 23);
@@ -471,7 +471,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JRadioButton noPredefButton = new JRadioButton("No, let me create a custom one");
+		JRadioButton noPredefButton = new JRadioButton(Messages.getString("GUInterface.72")); //$NON-NLS-1$
 		predefMaze.add(noPredefButton);
 		noPredefButton.setBounds(56, 36, 299, 30);
 		mazeSizePanel.add(noPredefButton);
@@ -484,11 +484,11 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JLabel lblRows = new JLabel("Rows:");
+		JLabel lblRows = new JLabel(Messages.getString("GUInterface.73")); //$NON-NLS-1$
 		lblRows.setBounds(8, 110, 46, 14);
 		mazeSizePanel.add(lblRows);
 
-		JLabel lblColumns = new JLabel("Columns:");
+		JLabel lblColumns = new JLabel(Messages.getString("GUInterface.74")); //$NON-NLS-1$
 		lblColumns.setBounds(8, 135, 65, 14);
 		mazeSizePanel.add(lblColumns);
 
@@ -505,16 +505,16 @@ public class GUInterface extends GameInterface implements KeyListener {
 		columnsTextField.setColumns(10);
 
 		JPanel dragonOptionsPanel = new JPanel();
-		tabbedPane.addTab("Dragon Options", null, dragonOptionsPanel, null);
+		tabbedPane.addTab(Messages.getString("GUInterface.75"), null, dragonOptionsPanel, null); //$NON-NLS-1$
 
-		JLabel dragonTypeLabel = new JLabel("What kind of dragons would you like in the maze?");
+		JLabel dragonTypeLabel = new JLabel(Messages.getString("GUInterface.76")); //$NON-NLS-1$
 		dragonTypeLabel.setBounds(10, 11, 377, 14);
 		dragonTypeLabel.setAlignmentY(Component.TOP_ALIGNMENT);
 		dragonTypeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		ButtonGroup dragonTypeButtons = new ButtonGroup();
 
-		JRadioButton randomlySleepingButton = new JRadioButton("Randomly sleeping");
+		JRadioButton randomlySleepingButton = new JRadioButton(Messages.getString("GUInterface.77")); //$NON-NLS-1$
 		randomlySleepingButton.setSelected(true);
 		randomlySleepingButton.setBounds(10, 32, 234, 23);
 		dragonTypeButtons.add(randomlySleepingButton);
@@ -528,7 +528,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JRadioButton staticButton = new JRadioButton("Static");
+		JRadioButton staticButton = new JRadioButton(Messages.getString("GUInterface.78")); //$NON-NLS-1$
 		staticButton.setBounds(10, 84, 234, 23);
 		dragonTypeButtons.add(staticButton);
 		dragonOptionsPanel.add(staticButton);
@@ -539,7 +539,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JRadioButton alwaysAwakeButton = new JRadioButton("Always awake");
+		JRadioButton alwaysAwakeButton = new JRadioButton(Messages.getString("GUInterface.79")); //$NON-NLS-1$
 		alwaysAwakeButton.setBounds(10, 58, 234, 23);
 		dragonTypeButtons.add(alwaysAwakeButton);
 		dragonOptionsPanel.add(alwaysAwakeButton);
@@ -550,15 +550,15 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JLabel multipleDragonLabel = new JLabel("Generate multiple dragons?");
+		JLabel multipleDragonLabel = new JLabel(Messages.getString("GUInterface.80")); //$NON-NLS-1$
 		multipleDragonLabel.setBounds(10, 131, 262, 14);
 		dragonOptionsPanel.add(multipleDragonLabel);
 
 		ButtonGroup multipleDragonButtons = new ButtonGroup();
 
-		JRadioButton yesMultipleDragonsButton = new JRadioButton("Yes");
+		JRadioButton yesMultipleDragonsButton = new JRadioButton(Messages.getString("GUInterface.81")); //$NON-NLS-1$
 		yesMultipleDragonsButton.setSelected(true);
-		yesMultipleDragonsButton.setToolTipText("Dragons will be generated proportionally to maze size!");
+		yesMultipleDragonsButton.setToolTipText(Messages.getString("GUInterface.82")); //$NON-NLS-1$
 		yesMultipleDragonsButton.setBounds(10, 152, 109, 23);
 		multipleDragonButtons.add(yesMultipleDragonsButton);
 		dragonOptionsPanel.add(yesMultipleDragonsButton);
@@ -569,8 +569,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JRadioButton noMultipleDragonsButton = new JRadioButton("No");
-		noMultipleDragonsButton.setToolTipText("Only one dragon will be generated!");
+		JRadioButton noMultipleDragonsButton = new JRadioButton(Messages.getString("GUInterface.83")); //$NON-NLS-1$
+		noMultipleDragonsButton.setToolTipText(Messages.getString("GUInterface.84")); //$NON-NLS-1$
 		noMultipleDragonsButton.setBounds(10, 178, 109, 23);
 		multipleDragonButtons.add(noMultipleDragonsButton);
 		dragonOptionsPanel.add(noMultipleDragonsButton);
@@ -581,7 +581,7 @@ public class GUInterface extends GameInterface implements KeyListener {
 			}
 		});
 
-		JButton btnEnterTheMaze = new JButton("Enter the maze!");
+		JButton btnEnterTheMaze = new JButton(Messages.getString("GUInterface.85")); //$NON-NLS-1$
 		btnEnterTheMaze.setBounds(251, 84, 136, 61);
 		dragonOptionsPanel.add(btnEnterTheMaze);
 
@@ -606,16 +606,16 @@ public class GUInterface extends GameInterface implements KeyListener {
 
 						if(options.rows < 6 || options.columns < 6) {
 							JOptionPane.showMessageDialog(optionsFrame,
-									"Please specify a row number and a column number equal or bigger than 5!",
-									"Maze size error",
+									Messages.getString("GUInterface.86"), //$NON-NLS-1$
+									Messages.getString("GUInterface.87"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 
 							tabbedPane.setSelectedIndex(0);
 						}
 						else if(options.rows > 500 || options.columns > 500) {
 							JOptionPane.showMessageDialog(optionsFrame,
-									"Please specify a row number and a column number no bigger than 500!",
-									"Maze size error",
+									Messages.getString("GUInterface.88"), //$NON-NLS-1$
+									Messages.getString("GUInterface.89"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 
 							tabbedPane.setSelectedIndex(0);
@@ -629,8 +629,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 					}
 					else {
 						JOptionPane.showMessageDialog(optionsFrame,
-								"Please input numbers on the rows/columns fields, not gibberish.",
-								"Maze size input error",
+								Messages.getString("GUInterface.90"), //$NON-NLS-1$
+								Messages.getString("GUInterface.91"), //$NON-NLS-1$
 								JOptionPane.ERROR_MESSAGE);
 
 						tabbedPane.setSelectedIndex(0);
@@ -719,8 +719,8 @@ public class GUInterface extends GameInterface implements KeyListener {
 		if(!goOn) {
 			int option = JOptionPane.showConfirmDialog(
 					frame,
-					"Game is over! Would you like to start a new game?",
-					"Game over",
+					Messages.getString("GUInterface.92"), //$NON-NLS-1$
+					Messages.getString("GUInterface.93"), //$NON-NLS-1$
 					JOptionPane.YES_NO_OPTION);
 			if(option == JOptionPane.YES_OPTION) {
 				frame.setVisible(false);

@@ -89,7 +89,7 @@ public class MazeEditorPanel extends JDialog {
 	 * @param pictures the images to be used on the game drawing
 	 */
 	public MazeEditorPanel(Frame parent, final Game game, MazePictures pictures) {
-		super(parent, "Maze Editor", true);
+		super(parent, Messages.getString("MazeEditorPanel.0"), true); //$NON-NLS-1$
 		setLayout(new GridBagLayout());
 		this.game = game;
 		this.pictures = pictures;
@@ -142,7 +142,7 @@ public class MazeEditorPanel extends JDialog {
 		String columns;
 
 		do {
-			rows = JOptionPane.showInputDialog(this, "Number of rows? (Min. 6, Max. 500 but clipping will occur!)");
+			rows = JOptionPane.showInputDialog(this, Messages.getString("MazeEditorPanel.1")); //$NON-NLS-1$
 		}
 		while(!MazeInput.isInteger(rows) && rows != null);
 
@@ -150,7 +150,7 @@ public class MazeEditorPanel extends JDialog {
 			return 1;
 
 		do {
-			columns = JOptionPane.showInputDialog(this, "Number of columns? (Min. 6, Max. 500 but clipping will occur!)");
+			columns = JOptionPane.showInputDialog(this, Messages.getString("MazeEditorPanel.2")); //$NON-NLS-1$
 		}
 		while(!MazeInput.isInteger(columns) && columns != null);
 
@@ -160,8 +160,8 @@ public class MazeEditorPanel extends JDialog {
 		if(Integer.parseInt(rows)  < 6 || Integer.parseInt(columns) < 6
 				|| Integer.parseInt(columns) > 500 || Integer.parseInt(columns) > 500) {
 			JOptionPane.showMessageDialog(this,
-					"Invalid row and/or column number detected, using 10 for both!",
-					"Invalid input error",
+					Messages.getString("MazeEditorPanel.3"), //$NON-NLS-1$
+					Messages.getString("MazeEditorPanel.4"), //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 
 			maze_rows = 10;
@@ -172,11 +172,11 @@ public class MazeEditorPanel extends JDialog {
 			maze_columns = Integer.parseInt(columns);
 		}
 
-		String[] possibilities = {"Randomly sleeping", "Always awake", "Static"};
+		String[] possibilities = {Messages.getString("MazeEditorPanel.5"), Messages.getString("MazeEditorPanel.6"), Messages.getString("MazeEditorPanel.7")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		String dragonOption = (String)JOptionPane.showInputDialog(
 				this,
-				"Dragon type:",
-				"Dragon type",
+				Messages.getString("MazeEditorPanel.8"), //$NON-NLS-1$
+				Messages.getString("MazeEditorPanel.9"), //$NON-NLS-1$
 				JOptionPane.QUESTION_MESSAGE,
 				null,
 				possibilities,
@@ -184,9 +184,9 @@ public class MazeEditorPanel extends JDialog {
 
 		if(dragonOption == null)
 			return 1;
-		if(dragonOption.equals( "Randomly sleeping" ))
+		if(dragonOption.equals( Messages.getString("MazeEditorPanel.10") )) //$NON-NLS-1$
 			dragonType = Dragon.SLEEPING;
-		else if(dragonOption.equals( "Always awake" ))
+		else if(dragonOption.equals( Messages.getString("MazeEditorPanel.11") )) //$NON-NLS-1$
 			dragonType = Dragon.NORMAL;
 		else
 			dragonType = Dragon.STATIC;
@@ -203,8 +203,8 @@ public class MazeEditorPanel extends JDialog {
 		toolBar.setFloatable(false);
 		toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		JButton btnFloor = new JButton("");
-		btnFloor.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/empty.png")));
+		JButton btnFloor = new JButton(""); //$NON-NLS-1$
+		btnFloor.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/empty.png"))); //$NON-NLS-1$
 		toolBar.add(btnFloor);
 
 		btnFloor.addActionListener(new ActionListener(){
@@ -213,8 +213,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnWall = new JButton("");
-		btnWall.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/wall.png")));
+		JButton btnWall = new JButton(""); //$NON-NLS-1$
+		btnWall.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/wall.png"))); //$NON-NLS-1$
 		toolBar.add(btnWall);
 
 		btnWall.addActionListener(new ActionListener(){
@@ -223,8 +223,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnExit = new JButton("");
-		btnExit.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/exit.png")));
+		JButton btnExit = new JButton(""); //$NON-NLS-1$
+		btnExit.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/exit.png"))); //$NON-NLS-1$
 		toolBar.add(btnExit);
 
 		btnExit.addActionListener(new ActionListener(){
@@ -233,8 +233,8 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnDragon = new JButton("");
-		btnDragon.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/dragon.png")));
+		JButton btnDragon = new JButton(""); //$NON-NLS-1$
+		btnDragon.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/dragon.png"))); //$NON-NLS-1$
 		toolBar.add(btnDragon);
 
 		btnDragon.addActionListener(new ActionListener(){
@@ -244,14 +244,14 @@ public class MazeEditorPanel extends JDialog {
 			}
 		});
 
-		JButton btnSword = new JButton("");
-		btnSword.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/sword.png")));
+		JButton btnSword = new JButton(""); //$NON-NLS-1$
+		btnSword.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/sword.png"))); //$NON-NLS-1$
 		toolBar.add(btnSword);
 
 		btnSword.addActionListener(new SetSword());
 
-		JButton btnHero = new JButton("");
-		btnHero.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/hero.png")));
+		JButton btnHero = new JButton(""); //$NON-NLS-1$
+		btnHero.setIcon(new ImageIcon(InfoPanel.class.getResource("/images/hero.png"))); //$NON-NLS-1$
 		toolBar.add(btnHero);
 
 		btnHero.addActionListener(new SetHero());
@@ -275,56 +275,56 @@ public class MazeEditorPanel extends JDialog {
 		JMenuBar menuBar = new JMenuBar();
 
 
-		JMenu fileMenu = new JMenu("File");
+		JMenu fileMenu = new JMenu(Messages.getString("MazeEditorPanel.24")); //$NON-NLS-1$
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.getAccessibleContext().setAccessibleDescription(
-				"File menu");
+				Messages.getString("MazeEditorPanel.25")); //$NON-NLS-1$
 		menuBar.add(fileMenu);
 
-		JMenuItem saveGameMenuItem = new JMenuItem("Save maze", KeyEvent.VK_S);
+		JMenuItem saveGameMenuItem = new JMenuItem(Messages.getString("MazeEditorPanel.26"), KeyEvent.VK_S); //$NON-NLS-1$
 		saveGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Saves the current maze to a file");
+				Messages.getString("MazeEditorPanel.27")); //$NON-NLS-1$
 		fileMenu.add(saveGameMenuItem);
 
 		saveGameMenuItem.addActionListener(new SaveMaze());
 		
-		JMenuItem exitGameMenuItem = new JMenuItem("Exit editor",
+		JMenuItem exitGameMenuItem = new JMenuItem(Messages.getString("MazeEditorPanel.28"), //$NON-NLS-1$
 				KeyEvent.VK_E);
 		exitGameMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Exits the editor");
+				Messages.getString("MazeEditorPanel.29")); //$NON-NLS-1$
 		fileMenu.add(exitGameMenuItem);
 
 		exitGameMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						MazeEditorPanel.this,
-						"Do you really want to exit the editor?\nDon't forget to save!",
-						"Confirm exit",
+						Messages.getString("MazeEditorPanel.30"), //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.31"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION);
 				if(option == JOptionPane.YES_OPTION)
 					dispose();
 			}
 		});
 		
-		JMenu helpMenu = new JMenu("Help");
+		JMenu helpMenu = new JMenu(Messages.getString("MazeEditorPanel.32")); //$NON-NLS-1$
 		helpMenu.setMnemonic(KeyEvent.VK_H);
 		helpMenu.getAccessibleContext().setAccessibleDescription(
-				"Help menu");
+				Messages.getString("MazeEditorPanel.33")); //$NON-NLS-1$
 		menuBar.add(helpMenu);
 
-		JMenuItem keysHelpMenuItem = new JMenuItem("Help", KeyEvent.VK_H);
+		JMenuItem keysHelpMenuItem = new JMenuItem(Messages.getString("MazeEditorPanel.34"), KeyEvent.VK_H); //$NON-NLS-1$
 		keysHelpMenuItem.getAccessibleContext().setAccessibleDescription(
-				"Explains how to use the editor");
+				Messages.getString("MazeEditorPanel.35")); //$NON-NLS-1$
 		helpMenu.add(keysHelpMenuItem);
 
 		keysHelpMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(MazeEditorPanel.this, "\nPlace the objects on the toolbar to create a custom game.\n" +
-						"If you want to place multiple dragons, click the dragon icon again after placing one, and place the new one.\n" +
-						"You cannot place anything on the corners, and only exits or walls on the map borders.\n" +
-						"You can't create a game that doesn't have one hero and one sword and at least an exit.\n" +
-						"You can, however, create an enemyless game, but, come on, where's the fun in that?\n\n",
-								"Help",
+				JOptionPane.showMessageDialog(MazeEditorPanel.this, Messages.getString("MazeEditorPanel.36") + //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.37") + //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.38") + //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.39") + //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.40"), //$NON-NLS-1$
+								Messages.getString("MazeEditorPanel.41"), //$NON-NLS-1$
 								JOptionPane.PLAIN_MESSAGE);
 			}
 		});
@@ -396,24 +396,24 @@ public class MazeEditorPanel extends JDialog {
 
 			if(numberOfExits == 0) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
-						"You need at least one exit on your maze!",
-						"No exits found",
+						Messages.getString("MazeEditorPanel.42"), //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.43"), //$NON-NLS-1$
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
 			if(!createdHero) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
-						"You need to place your hero!",
-						"No hero found",
+						Messages.getString("MazeEditorPanel.44"), //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.45"), //$NON-NLS-1$
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
 			if(!createdSword) {
 				JOptionPane.showMessageDialog(MazeEditorPanel.this,
-						"You need to place a sword!",
-						"No sword found",
+						Messages.getString("MazeEditorPanel.46"), //$NON-NLS-1$
+						Messages.getString("MazeEditorPanel.47"), //$NON-NLS-1$
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
