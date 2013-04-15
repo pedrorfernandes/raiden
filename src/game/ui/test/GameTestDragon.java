@@ -26,35 +26,6 @@ public class GameTestDragon extends GameTest {
 	private Stack<Character> heroMoves;
 	private TestInterface test;
 	
-	/*
-	@Test
-	public void testDragon() {
-		// moves of the dragon when he is not sleeping
-		// after this stack empties, the numbers will be RANDOM
-		Stack<Integer> moveNumbers = createDragonMoves("aswdds");
-		// 2 -> doesnt sleep (any other int different than 1 works as well) / 1 ->sleeps
-		// imediatelly after 1 you must specify the number of turns the dragon sleeps
-		// For example, "2213222". In this case he will sleep 3+1 turns
-		Stack<Integer> sleepNumbers = createDragonSleeps("2213222");
-
-		FakeRandom moves = new FakeRandom(moveNumbers);
-		FakeRandom sleeps = new FakeRandom(sleepNumbers);
-
-		Dragon d1 = new Dragon(5,  4,  Dragon.NORMAL , moves, sleeps);
-		ArrayList<Dragon>dragons = new ArrayList<Dragon>(1);
-		dragons.add(d1);
-
-		int hero_row = 1, hero_column = 1, sword_row = 7, sword_column = 8;
-		GameOptions customOptions = new GameOptions(0, false, hero_row, hero_column, sword_row, sword_column, dragons);
-
-		//Tests moving right to an empty space
-		Stack<Character> heroMoves = createHeroMoves(" ");
-
-		TestInterface test = new TestInterface(customOptions, heroMoves);
-		test.startGame();
-	}
-	 */
-
 	@Test
 	public void testDragonMoves() {
 		hero_row = 1; hero_column = 1; sword_row = 7; sword_column = 8;

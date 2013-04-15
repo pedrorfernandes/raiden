@@ -43,23 +43,9 @@ public class TestInterface extends GameInterface {
 
 			goOn = game.heroTurn(input);
 
-			//GameOutput.clearScreen();
-			//System.out.println("Hero's turn");
-			//GameOutput.printGame(game);
-			//WaitTime.wait(250);
-
 			goOn = game.dragonTurn(goOn);
-			//GameOutput.clearScreen();
-			//System.out.println("Dragons' turn");
-			//GameOutput.printGame(game);
-			//WaitTime.wait(250);
 
 			goOn = game.checkState(goOn);
-
-			//GameOutput.clearScreen();
-			//GameOutput.printEventQueue(game.getEvents() );
-			//GameOutput.printGame(game);
-			//WaitTime.wait(250);
 		}
 	}
 }

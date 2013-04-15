@@ -36,7 +36,6 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GUInterface constructs the main GUI to interact with the user. It implements two main frames,
  * one for asking the initial game options and the other do display the game.
