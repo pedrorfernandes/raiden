@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
@@ -27,10 +29,12 @@ public class GameScreen extends Screen {
 	public static Heliboy hb, hb2;
 
 	private Image currentSprite, character, character2, character3, heliboy,
-			heliboy2, heliboy3, heliboy4, heliboy5;
+	heliboy2, heliboy3, heliboy4, heliboy5;
 	private Animation anim, hanim;
 
 	private ArrayList<Tile> tilearray = new ArrayList<Tile>();
+
+	boolean dragStatus;
 
 	int livesLeft = 1;
 	Paint paint, paint2;
@@ -190,13 +194,6 @@ public class GameScreen extends Screen {
 
 				}
 
-				if (event.x > 400) {
-					// Move right.
-					robot.moveRight();
-					robot.setMovingRight(true);
-
-				}
-
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
@@ -211,10 +208,28 @@ public class GameScreen extends Screen {
 					pause();
 
 				}
+			}
 
-				if (event.x > 400) {
-					// Move right.
-					robot.stopRight();
+			if (event.type == MotionEvent.ACTION_DOWN) {
+				dragStatus = true;
+			}
+
+			if (event.type == MotionEvent.ACTION_UP) {
+				dragStatus = false;
+				robot.stopRight();
+				robot.stopLeft();
+			} else if (event.type == MotionEvent.ACTION_MOVE) {
+				if(dragStatus) {
+					if(event.x >= robot.getCenterX()){
+						robot.stopLeft();
+						robot.moveRight();
+						robot.setMovingRight(true);
+					}
+					else {
+						robot.stopRight();
+						robot.moveLeft();
+						robot.setMovingLeft(true);
+					}
 				}
 			}
 

@@ -9,7 +9,7 @@ public class Robot {
 
 	// Constants are Here
 	final int JUMPSPEED = -15;
-	final int MOVESPEED = 5;
+	final int MOVESPEED = 6;
 
 	private int centerX = 100;
 	private int centerY = 377;
