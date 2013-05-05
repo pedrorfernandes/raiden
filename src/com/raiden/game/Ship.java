@@ -3,17 +3,21 @@ package com.raiden.game;
 public class Ship {
 
 	// ship speed
-	private int moveSpeed = 8;
+	private int moveSpeed = 10;
+	
+	// image sprite half size
+	private int halfSizeX = 78;
+	private int halfSizeY = 63;
 
 	// initial starting point
-	private int centerX = 100;
-	private int centerY = 377;
+	private int centerX = GameScreen.screenSize.x / 2;
+	private int centerY = GameScreen.screenSize.y - halfSizeY * 6;
 	
 	private boolean readyToFire = true;
 
 	// position to move next
-	private int newX = 100;
-	private int newY = 377;
+	private int newX = centerX;
+	private int newY = centerY;
 	
 	// box which the player can move in
 	private int minX = 0;
@@ -21,9 +25,7 @@ public class Ship {
 	private int maxX = GameScreen.screenSize.x - 1;
 	private int maxY = GameScreen.screenSize.y - 1;
 	
-	private int halfSizeX = 81;
-	private int halfSizeY = 63;
-		
+
 	public void update() {
 		if (newX < centerX) {
 			if ( (centerX - newX) < moveSpeed)
@@ -71,5 +73,17 @@ public class Ship {
 	
 	public int getY(){
 		return centerY-halfSizeY;
+	}
+	
+	public boolean isMoving(){
+		return (centerX == newX && centerY == newY);
+	}
+	
+	public boolean isMovingLeft(){
+		return (newX - centerX) < 0 ;
+	}
+	
+	public boolean isMovingRight(){
+		return (newX - centerX) > 0;
 	}
 }

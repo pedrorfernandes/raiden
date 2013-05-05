@@ -26,7 +26,9 @@ public class GameScreen extends Screen {
     int livesLeft = 1;
     Paint paint;
     
-    public static Ship hero;
+    private static Ship hero;
+    private Image heroImage;
+    private Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
     
     private Point dragPoint;
     
@@ -38,6 +40,17 @@ public class GameScreen extends Screen {
 
         // Initialize game objects here
         hero = new Ship();
+        heroAnimation = new Animation();
+        heroAnimation.addFrame(Assets.hero1, 100);
+        heroAnimation.addFrame(Assets.hero2, 100);
+        heroTurningLeftAnimation = new Animation();
+        heroTurningLeftAnimation.addFrame(Assets.heroLeft1, 100);
+        heroTurningLeftAnimation.addFrame(Assets.heroLeft2, 100);
+        heroTurningRightAnimation = new Animation();
+        heroTurningRightAnimation.addFrame(Assets.heroRight1, 100);
+        heroTurningRightAnimation.addFrame(Assets.heroRight2, 100);
+        heroImage = heroAnimation.getImage();
+        
         dragPoint = new Point();
 
         // Defining a paint object
@@ -79,12 +92,10 @@ public class GameScreen extends Screen {
             state = GameState.Running;
     }
 
-    private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
-        
-        //This is identical to the update() method from our Unit 2/3 game.
-        
-        
-        // 1. All touch input is handled here:
+    private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {        
+        heroImage = heroAnimation.getImage();
+    	
+        // All touch input is handled here
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
@@ -98,7 +109,6 @@ public class GameScreen extends Screen {
 			}
 			
 			if (event.type == MotionEvent.ACTION_MOVE) {
-				//if(dragStatus) {
 				hero.move(event.x - dragPoint.x, event.y - dragPoint.y);
 				dragPoint.x = event.x; dragPoint.y = event.y;
 			}
@@ -114,8 +124,15 @@ public class GameScreen extends Screen {
         
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
-        // For example, robot.update();
         hero.update();
+        if ( hero.isMovingLeft() )
+	        heroImage = heroTurningLeftAnimation.getImage();
+        else if ( hero.isMovingRight() )
+	        heroImage = heroTurningRightAnimation.getImage();
+        else
+	        heroImage = heroAnimation.getImage();
+
+        animate();
     }
 
     private void updatePaused(List<TouchEvent> touchEvents) {
@@ -153,7 +170,8 @@ public class GameScreen extends Screen {
         // Example:
         // g.drawImage(Assets.background, 0, 0);
         g.clearScreen(0);
-        g.drawImage(Assets.hero, hero.getX(), hero.getY());
+        
+        g.drawImage(heroImage, hero.getX(), hero.getY());
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
@@ -164,6 +182,13 @@ public class GameScreen extends Screen {
             drawPausedUI();
         if (state == GameState.GameOver)
             drawGameOverUI();
+
+    }
+    
+    private void animate() {
+    	heroAnimation.update(10);
+    	heroTurningLeftAnimation.update(10);
+    	heroTurningRightAnimation.update(10);
 
     }
 
@@ -214,7 +239,8 @@ public class GameScreen extends Screen {
 
     @Override
     public void resume() {
-
+		if (state == GameState.Paused)
+			state = GameState.Running;
     }
 
     @Override
