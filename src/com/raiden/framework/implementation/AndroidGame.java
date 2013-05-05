@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -26,8 +27,10 @@ public abstract class AndroidGame extends Activity implements Game {
     FileIO fileIO;
     Screen screen;
     WakeLock wakeLock;
+    
+    Point size;
 
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -36,15 +39,19 @@ public abstract class AndroidGame extends Activity implements Game {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        int frameBufferWidth = isPortrait ? 800: 1280;
-        int frameBufferHeight = isPortrait ? 1280: 800;
+        size = new Point();
+        // getWindowManager().getDefaultDisplay().getSize(size); // API level 13 only
+        size.x = getWindowManager().getDefaultDisplay().getWidth();
+        size.y = getWindowManager().getDefaultDisplay().getHeight();
+        
+        int frameBufferWidth = isPortrait ? size.x : size.y;
+        int frameBufferHeight = isPortrait ? size.y : size.x;
+
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
         
-        float scaleX = (float) frameBufferWidth
-                / getWindowManager().getDefaultDisplay().getWidth();
-        float scaleY = (float) frameBufferHeight
-                / getWindowManager().getDefaultDisplay().getHeight();
+        float scaleX = (float) frameBufferWidth / size.x;
+        float scaleY = (float) frameBufferHeight / size.y;
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
@@ -112,5 +119,9 @@ public abstract class AndroidGame extends Activity implements Game {
     public Screen getCurrentScreen() {
 
         return screen;
+    }
+    
+    public Point getSize() {
+    	return size;
     }
 }

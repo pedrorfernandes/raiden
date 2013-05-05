@@ -17,11 +17,9 @@ public class LoadingScreen extends Screen {
         Graphics g = game.getGraphics();
         Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
         Assets.click = game.getAudio().createSound("explode.wav");
-
-
+        Assets.hero = g.newImage("hero.png", ImageFormat.ARGB4444);
         
         game.setScreen(new MainMenuScreen(game));
-
 
     }
 

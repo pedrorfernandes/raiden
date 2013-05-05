@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.view.MotionEvent;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
@@ -23,11 +25,20 @@ public class GameScreen extends Screen {
 
     int livesLeft = 1;
     Paint paint;
-
+    
+    public static Ship hero;
+    
+    private Point dragPoint;
+    
+    public static Point screenSize;
+    
     public GameScreen(Game game) {
         super(game);
+        screenSize = game.getSize();
 
         // Initialize game objects here
+        hero = new Ship();
+        dragPoint = new Point();
 
         // Defining a paint object
         paint = new Paint();
@@ -77,30 +88,20 @@ public class GameScreen extends Screen {
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
+            if (event.type == MotionEvent.ACTION_DOWN) {
+            	dragPoint.x = event.x;
+            	dragPoint.y = event.y;
+			}
 
-            if (event.type == TouchEvent.TOUCH_DOWN) {
-
-                if (event.x < 640) {
-                    // Move left.
-                }
-
-                else if (event.x > 640) {
-                    // Move right.
-                }
-
-            }
-
-            if (event.type == TouchEvent.TOUCH_UP) {
-
-                if (event.x < 640) {
-                    // Stop moving left.
-                }
-
-                else if (event.x > 640) {
-                    // Stop moving right. }
-                }
-            }
-
+			if (event.type == MotionEvent.ACTION_UP) {
+				// don't move
+			}
+			
+			if (event.type == MotionEvent.ACTION_MOVE) {
+				//if(dragStatus) {
+				hero.move(event.x - dragPoint.x, event.y - dragPoint.y);
+				dragPoint.x = event.x; dragPoint.y = event.y;
+			}
             
         }
         
@@ -114,6 +115,7 @@ public class GameScreen extends Screen {
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
         // For example, robot.update();
+        hero.update();
     }
 
     private void updatePaused(List<TouchEvent> touchEvents) {
@@ -150,7 +152,8 @@ public class GameScreen extends Screen {
 
         // Example:
         // g.drawImage(Assets.background, 0, 0);
-        // g.drawImage(Assets.character, characterX, characterY);
+        g.clearScreen(0);
+        g.drawImage(Assets.hero, hero.getX(), hero.getY());
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
