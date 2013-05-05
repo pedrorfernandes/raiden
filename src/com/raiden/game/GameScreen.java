@@ -124,13 +124,13 @@ public class GameScreen extends Screen {
         
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
-        hero.update();
         if ( hero.isMovingLeft() )
 	        heroImage = heroTurningLeftAnimation.getImage();
         else if ( hero.isMovingRight() )
 	        heroImage = heroTurningRightAnimation.getImage();
         else
 	        heroImage = heroAnimation.getImage();
+        hero.update();
 
         animate();
     }

@@ -25,6 +25,9 @@ public class Ship {
 	private int maxX = GameScreen.screenSize.x - 1;
 	private int maxY = GameScreen.screenSize.y - 1;
 	
+    final int LOW_THRESHOLD = 0;
+    final int HIGH_THRESHOLD = 7;
+    private int turningThreshold = HIGH_THRESHOLD;
 
 	public void update() {
 		if (newX < centerX) {
@@ -76,14 +79,24 @@ public class Ship {
 	}
 	
 	public boolean isMoving(){
-		return (centerX == newX && centerY == newY);
+		return(centerX == newX && centerY == newY);
 	}
 	
 	public boolean isMovingLeft(){
-		return (newX - centerX) < 0 ;
+		if ( (newX - centerX) < 0 && Math.abs(newX - centerX) > turningThreshold ){
+			turningThreshold = LOW_THRESHOLD;
+			return true;
+		}
+		turningThreshold = HIGH_THRESHOLD;
+		return false;
 	}
 	
 	public boolean isMovingRight(){
-		return (newX - centerX) > 0;
+		if ( (newX - centerX) > 0 && Math.abs(newX - centerX) > turningThreshold ){
+			turningThreshold = LOW_THRESHOLD;
+			return true;
+		}
+		turningThreshold = HIGH_THRESHOLD;
+		return false;
 	}
 }
