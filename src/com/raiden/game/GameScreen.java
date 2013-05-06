@@ -14,7 +14,7 @@ import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class GameScreen extends Screen {
-    enum GameState {
+	enum GameState {
         Ready, Running, Paused, GameOver
     }
 
@@ -37,6 +37,7 @@ public class GameScreen extends Screen {
     public static Point screenSize;
     
 	private int volume = 100;
+    private static final int FIRST_SHOT_FIRED = 8;
     
     public GameScreen(Game game) {
         super(game);
@@ -140,7 +141,7 @@ public class GameScreen extends Screen {
 			}
 			hero.shoot();
         } else if (stopedShooting) {
-        	if (Assets.machinegun.getCurrentPosition() > 8){
+        	if (Assets.machinegun.getCurrentPosition() > FIRST_SHOT_FIRED){
         		Assets.machinegun.seekBegin();
         		Assets.machinegun.stop();
         		stopedShooting = false;
