@@ -9,6 +9,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
@@ -23,6 +24,7 @@ public class AndroidGraphics implements Graphics {
 	Paint paint;
 	Rect srcRect = new Rect();
 	Rect dstRect = new Rect();
+	Matrix matrix;
 
 	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
 		this.assets = assets;
@@ -141,6 +143,16 @@ public class AndroidGraphics implements Graphics {
 		dstRect.bottom = y + height;
 
 		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+	}
+	
+	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle){
+		if (matrix == null){
+			matrix = new Matrix();
+		}
+		matrix.reset();
+		matrix.setTranslate(x, y);
+		matrix.postRotate(90.0f - angle, x+width/2, y+height/2);
+		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
 	}
 
 	@Override

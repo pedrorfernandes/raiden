@@ -18,7 +18,6 @@ public class AndroidInput implements Input {
             touchHandler = new MultiTouchHandler(view, scaleX, scaleY);        
     }
 
-
     @Override
     public boolean isTouchDown(int pointer) {
         return touchHandler.isTouchDown(pointer);
@@ -33,8 +32,6 @@ public class AndroidInput implements Input {
     public int getTouchY(int pointer) {
         return touchHandler.getTouchY(pointer);
     }
-
-
 
     @Override
     public List<TouchEvent> getTouchEvents() {

@@ -32,6 +32,7 @@ public class GameScreen extends Screen {
     private Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
     
     private Point dragPoint;
+    private boolean shooting = false;
     
     public static Point screenSize;
     
@@ -94,26 +95,28 @@ public class GameScreen extends Screen {
     }
 
     private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {        
-        heroImage = heroAnimation.getImage();
     	
         // All touch input is handled here
         int len = touchEvents.size();
         for (int i = 0; i < len; i++) {
             TouchEvent event = touchEvents.get(i);
-            if (event.type == MotionEvent.ACTION_DOWN) {
+            if (event.type == TouchEvent.TOUCH_DOWN) {
             	dragPoint.x = event.x;
             	dragPoint.y = event.y;
-            	hero.shoot();
+            	shooting = true;
 			}
 
-			if (event.type == MotionEvent.ACTION_UP) {
-				// don't move
+			if (event.type == TouchEvent.TOUCH_UP) {
+				shooting = false;
 			}
 			
-			if (event.type == MotionEvent.ACTION_MOVE) {
+			if (event.type == TouchEvent.TOUCH_DRAGGED) {
 				hero.move(event.x - dragPoint.x, event.y - dragPoint.y);
 				dragPoint.x = event.x; dragPoint.y = event.y;
-				hero.shoot();
+			}
+			
+			if (event.type == TouchEvent.TOUCH_HOLD) {
+				// nothing for now
 			}
             
         }
@@ -126,6 +129,8 @@ public class GameScreen extends Screen {
         
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
+        if (shooting) hero.shoot();
+        
         if ( hero.isMovingLeft() )
 	        heroImage = heroTurningLeftAnimation.getImage();
         else if ( hero.isMovingRight() )
@@ -186,9 +191,18 @@ public class GameScreen extends Screen {
         ArrayList<Bullet> heroShots = hero.getShotsFired();
         for (int i = 0; i < heroShots.size(); i++) {
 			Bullet bullet = heroShots.get(i);
-			g.drawImage(Assets.heroBullet1, 
+			if (bullet.getAngle() == 90.0f){
+				g.drawImage(Assets.heroBullet1, 
 					    bullet.getX()-Assets.heroBullet1.getHalfWidth(), 
 					    bullet.getY()-Assets.heroBullet1.getHalfHeight());
+			} else {
+				g.drawRotatedImage(Assets.heroBullet1, 
+					    bullet.getX()-Assets.heroBullet1.getHalfWidth(), 
+					    bullet.getY()-Assets.heroBullet1.getHalfHeight(),
+					    Assets.heroBullet1.getWidth(),
+					    Assets.heroBullet1.getHeight(), 
+					    bullet.getAngle());
+			}
 		}
 
         // Secondly, draw the UI above the game elements.

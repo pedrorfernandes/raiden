@@ -3,27 +3,33 @@ package com.raiden.game;
 public class Bullet {
 	private int x, y, speed;
 	private boolean visible;
-	private double angle;
+	private float angle;
 	private int radius;
 	
 	private static int minX = 0;
 	private static int minY = 0;
 	private static int maxX = GameScreen.screenSize.x - 1;
 	private static int maxY = GameScreen.screenSize.y - 1;
-
+	
+	private int moveX;
+	private int moveY;
+	
 	public Bullet(int x, int y, double angle) {
 		this.x = x;
 		this.y = y;
-		this.angle = Math.toRadians(angle);
-		this.speed = 10;
+		this.angle = (float)angle;
+		this.speed = 15;
 		this.radius = 5;
 		this.visible = true;
+		double radians = Math.toRadians(angle);
+		this.moveX = (int)(speed * Math.cos(radians));
+		this.moveY = (int)(speed * Math.sin(-radians));
 	}
 	
 	public void update(){
 		
-		x += (int)(speed * Math.cos(angle));
-		y += (int)(speed * Math.sin(-angle));
+		x += moveX;
+		y += moveY;
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;
@@ -44,5 +50,9 @@ public class Bullet {
 	
 	public int getY(){
 		return y;
+	}
+	
+	public float getAngle() {
+		return angle;
 	}
 }

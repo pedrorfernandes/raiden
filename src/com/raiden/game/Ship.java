@@ -37,7 +37,7 @@ public class Ship {
     private ArrayList<Turret> turrets;
     private ArrayList<Bullet> shotsFired;
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 50;
+	private final int RELOAD_DONE = 30;
 	private float reloadTime = RELOAD_DONE;
 	
 	public Ship() {
@@ -49,8 +49,8 @@ public class Ship {
 		
 		turrets = new ArrayList<Turret>();
 		addTurret(90.0);
-		addTurret(90.0);
-		addTurret(90.0);
+		addTurret(90.0+15.0);
+		addTurret(90.0-15.0);
 		
 		shotsFired = new ArrayList<Bullet>();
 	}
