@@ -37,7 +37,7 @@ public class Ship {
     private ArrayList<Turret> turrets;
     private ArrayList<Bullet> shotsFired;
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 30;
+	private final int RELOAD_DONE = 20;
 	private float reloadTime = RELOAD_DONE;
 	
 	public Ship() {
@@ -64,15 +64,16 @@ public class Ship {
 		return true;
 	}
 	
-	public ArrayList<Bullet> shoot() {
+	public boolean shoot() {
 		if (readyToFire) {
 			for (Turret turret: turrets) {
 				shotsFired.add(turret.fire());
 			}
 			readyToFire = false;
 			reloadTime = 0;
+			return true;
 		}
-		return shotsFired;
+		return false;
 	}
 	
 	public ArrayList<Bullet> getShotsFired(){

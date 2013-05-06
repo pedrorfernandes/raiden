@@ -6,7 +6,6 @@ import java.util.List;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.view.MotionEvent;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
@@ -33,8 +32,11 @@ public class GameScreen extends Screen {
     
     private Point dragPoint;
     private boolean shooting = false;
+    private boolean stopedShooting = false;
     
     public static Point screenSize;
+    
+	private int volume = 100;
     
     public GameScreen(Game game) {
         super(game);
@@ -52,6 +54,8 @@ public class GameScreen extends Screen {
         heroTurningRightAnimation.addFrame(Assets.heroRight1, 100);
         heroTurningRightAnimation.addFrame(Assets.heroRight2, 100);
         heroImage = heroAnimation.getImage();
+        
+		Assets.machinegun.setLooping(true);
         
         dragPoint = new Point();
 
@@ -108,6 +112,7 @@ public class GameScreen extends Screen {
 
 			if (event.type == TouchEvent.TOUCH_UP) {
 				shooting = false;
+				stopedShooting = true;
 			}
 			
 			if (event.type == TouchEvent.TOUCH_DRAGGED) {
@@ -129,8 +134,19 @@ public class GameScreen extends Screen {
         
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
-        if (shooting) hero.shoot();
-        
+        if (shooting){
+			if ( !Assets.machinegun.isPlaying() ){
+				Assets.machinegun.play();
+			}
+			hero.shoot();
+        } else if (stopedShooting) {
+        	if (Assets.machinegun.getCurrentPosition() > 8){
+        		Assets.machinegun.seekBegin();
+        		Assets.machinegun.stop();
+        		stopedShooting = false;
+        	}
+        }
+
         if ( hero.isMovingLeft() )
 	        heroImage = heroTurningLeftAnimation.getImage();
         else if ( hero.isMovingRight() )

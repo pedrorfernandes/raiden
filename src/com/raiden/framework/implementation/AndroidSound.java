@@ -6,6 +6,7 @@ import com.raiden.framework.Sound;
 
 public class AndroidSound implements Sound {
     int soundId;
+    int streamId;
     SoundPool soundPool;
 
     public AndroidSound(SoundPool soundPool, int soundId) {
@@ -15,12 +16,16 @@ public class AndroidSound implements Sound {
 
     @Override
     public void play(float volume) {
-        soundPool.play(soundId, volume, volume, 0, 0, 1);
+        streamId = soundPool.play(soundId, volume, volume, 0, 0, 1);
     }
 
     @Override
     public void dispose() {
         soundPool.unload(soundId);
+    }
+    
+    public void stop(){
+    	soundPool.stop(streamId);
     }
 
 }

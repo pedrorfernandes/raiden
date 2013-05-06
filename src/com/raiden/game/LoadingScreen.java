@@ -16,7 +16,8 @@ public class LoadingScreen extends Screen {
     public void update(float deltaTime) {
         Graphics g = game.getGraphics();
         Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
-        Assets.click = game.getAudio().createSound("explode.wav");
+        Assets.explosion = game.getAudio().createSound("explode.wav");
+        Assets.machinegun = game.getAudio().createMusic("machinegun.wav");
         Assets.hero1 = g.newImage("hero1.png", ImageFormat.ARGB4444);
         Assets.hero2 = g.newImage("hero2.png", ImageFormat.ARGB4444);
         Assets.heroLeft1 = g.newImage("heroLeft1.png", ImageFormat.ARGB4444);
