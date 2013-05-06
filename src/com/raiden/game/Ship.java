@@ -1,20 +1,23 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import android.graphics.Point;
+
 public class Ship {
 
 	// ship speed
-	private int moveSpeed = 10;
+	private int moveSpeed = 15;
 	
 	// image sprite half size
-	private int halfSizeX = 78;
-	private int halfSizeY = 63;
+	public final int halfSizeX = Assets.hero1.getWidth() / 2;
+	public final int halfSizeY = Assets.hero1.getHeight() / 2;
 
 	// initial starting point
-	private int centerX = GameScreen.screenSize.x / 2;
-	private int centerY = GameScreen.screenSize.y - halfSizeY * 6;
+	public int centerX = GameScreen.screenSize.x / 2;
+	public int centerY = GameScreen.screenSize.y - halfSizeY * 6;
 	
-	private boolean readyToFire = true;
-
 	// position to move next
 	private int newX = centerX;
 	private int newY = centerY;
@@ -25,11 +28,58 @@ public class Ship {
 	private int maxX = GameScreen.screenSize.x - 1;
 	private int maxY = GameScreen.screenSize.y - 1;
 	
+	// to know when the ship is actually turning or not
     final int LOW_THRESHOLD = 0;
-    final int HIGH_THRESHOLD = 7;
+    final int HIGH_THRESHOLD = 8;
     private int turningThreshold = HIGH_THRESHOLD;
+    
+    private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
+    private ArrayList<Turret> turrets;
+    private ArrayList<Bullet> shotsFired;
+	private boolean readyToFire = true;
+	private final int RELOAD_DONE = 50;
+	private float reloadTime = RELOAD_DONE;
+	
+	public Ship() {
+		// fill the empty turret positions
+		emptyTurretPositions = new ArrayList<Point>();
+		emptyTurretPositions.add(new Point( 0, -halfSizeY));
+		emptyTurretPositions.add(new Point(-25, -halfSizeY));
+		emptyTurretPositions.add(new Point( 25, -halfSizeY));
+		
+		turrets = new ArrayList<Turret>();
+		addTurret(90.0);
+		addTurret(90.0);
+		addTurret(90.0);
+		
+		shotsFired = new ArrayList<Bullet>();
+	}
+	
+	public boolean addTurret(double firingAngle){
+		if (emptyTurretPositions.size() == 0)
+			return false;
+		
+		turrets.add(new Turret(this, emptyTurretPositions.get(0), firingAngle));
+		emptyTurretPositions.remove(0);
+		return true;
+	}
+	
+	public ArrayList<Bullet> shoot() {
+		if (readyToFire) {
+			for (Turret turret: turrets) {
+				shotsFired.add(turret.fire());
+			}
+			readyToFire = false;
+			reloadTime = 0;
+		}
+		return shotsFired;
+	}
+	
+	public ArrayList<Bullet> getShotsFired(){
+		return shotsFired;
+	}
 
-	public void update() {
+	public void update(float deltaTime) {
 		if (newX < centerX) {
 			if ( (centerX - newX) < moveSpeed)
 				centerX -= (centerX - newX);
@@ -55,6 +105,23 @@ public class Ship {
 			else
 				centerY += moveSpeed;
 		}
+		
+		if ( centerX == newX && centerY == newY && turningThreshold < HIGH_THRESHOLD )
+			turningThreshold += 2;
+		
+		ListIterator<Bullet> bulletItr = shotsFired.listIterator();
+		while(bulletItr.hasNext()){
+			if ( ! bulletItr.next().isVisible() )
+				bulletItr.remove();
+		}
+		
+		if (reloadTime >= RELOAD_DONE){
+			readyToFire = true;
+		}
+		
+		if (!readyToFire){
+			reloadTime += deltaTime;
+		}
 	}
 	
 	public void move(int x, int y){
@@ -71,15 +138,15 @@ public class Ship {
 	}
 	
 	public int getX(){
-		return centerX-halfSizeX;
+		return centerX;
 	}
 	
 	public int getY(){
-		return centerY-halfSizeY;
+		return centerY;
 	}
 	
 	public boolean isMoving(){
-		return(centerX == newX && centerY == newY);
+		return (centerX == newX && centerY == newY);
 	}
 	
 	public boolean isMovingLeft(){
@@ -87,7 +154,7 @@ public class Ship {
 			turningThreshold = LOW_THRESHOLD;
 			return true;
 		}
-		turningThreshold = HIGH_THRESHOLD;
+
 		return false;
 	}
 	
@@ -96,7 +163,6 @@ public class Ship {
 			turningThreshold = LOW_THRESHOLD;
 			return true;
 		}
-		turningThreshold = HIGH_THRESHOLD;
 		return false;
 	}
 }

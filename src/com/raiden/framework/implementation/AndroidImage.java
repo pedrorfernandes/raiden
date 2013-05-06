@@ -8,10 +8,14 @@ import com.raiden.framework.Graphics.ImageFormat;
 public class AndroidImage implements Image {
     Bitmap bitmap;
     ImageFormat format;
+    public int halfWidth;
+    public int halfHeight;
     
     public AndroidImage(Bitmap bitmap, ImageFormat format) {
         this.bitmap = bitmap;
         this.format = format;
+        this.halfWidth = getWidth() / 2;
+        this.halfHeight = getHeight() / 2;
     }
 
     @Override
@@ -32,5 +36,15 @@ public class AndroidImage implements Image {
     @Override
     public void dispose() {
         bitmap.recycle();
-    }      
+    }
+    
+    @Override
+    public int getHalfWidth(){
+    	return halfWidth;
+    }
+    
+    @Override
+    public int getHalfHeight(){
+    	return halfHeight;
+    }
 }

@@ -7,5 +7,7 @@ public interface Image {
     public int getHeight();
     public ImageFormat getFormat();
     public void dispose();
+    public int getHalfWidth();
+    public int getHalfHeight();
 }
  

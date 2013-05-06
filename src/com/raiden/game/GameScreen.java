@@ -1,5 +1,6 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
@@ -102,6 +103,7 @@ public class GameScreen extends Screen {
             if (event.type == MotionEvent.ACTION_DOWN) {
             	dragPoint.x = event.x;
             	dragPoint.y = event.y;
+            	hero.shoot();
 			}
 
 			if (event.type == MotionEvent.ACTION_UP) {
@@ -111,6 +113,7 @@ public class GameScreen extends Screen {
 			if (event.type == MotionEvent.ACTION_MOVE) {
 				hero.move(event.x - dragPoint.x, event.y - dragPoint.y);
 				dragPoint.x = event.x; dragPoint.y = event.y;
+				hero.shoot();
 			}
             
         }
@@ -121,16 +124,21 @@ public class GameScreen extends Screen {
             state = GameState.GameOver;
         }
         
-        
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
         if ( hero.isMovingLeft() )
 	        heroImage = heroTurningLeftAnimation.getImage();
         else if ( hero.isMovingRight() )
 	        heroImage = heroTurningRightAnimation.getImage();
-        else
+        else 
 	        heroImage = heroAnimation.getImage();
-        hero.update();
+
+        hero.update(deltaTime);
+        
+        ArrayList<Bullet> heroShots = hero.getShotsFired();
+        for (int i = 0; i < heroShots.size(); i++) {
+			heroShots.get(i).update();
+		}
 
         animate();
     }
@@ -167,11 +175,21 @@ public class GameScreen extends Screen {
 
         // First draw the game elements.
 
-        // Example:
-        // g.drawImage(Assets.background, 0, 0);
         g.clearScreen(0);
         
-        g.drawImage(heroImage, hero.getX(), hero.getY());
+        // hero drawing
+        g.drawImage(heroImage,
+        		    hero.getX()-heroImage.getHalfWidth(), 
+        		    hero.getY()-heroImage.getHalfHeight());
+        
+        // hero shots drawing
+        ArrayList<Bullet> heroShots = hero.getShotsFired();
+        for (int i = 0; i < heroShots.size(); i++) {
+			Bullet bullet = heroShots.get(i);
+			g.drawImage(Assets.heroBullet1, 
+					    bullet.getX()-Assets.heroBullet1.getHalfWidth(), 
+					    bullet.getY()-Assets.heroBullet1.getHalfHeight());
+		}
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)

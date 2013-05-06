@@ -41,8 +41,8 @@ public abstract class AndroidGame extends Activity implements Game {
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         size = new Point();
         // getWindowManager().getDefaultDisplay().getSize(size); // API level 13 only
-        size.x = getWindowManager().getDefaultDisplay().getWidth();
-        size.y = getWindowManager().getDefaultDisplay().getHeight();
+        size.x = 800;//getWindowManager().getDefaultDisplay().getWidth();
+        size.y = 1280;//getWindowManager().getDefaultDisplay().getHeight();
         
         int frameBufferWidth = isPortrait ? size.x : size.y;
         int frameBufferHeight = isPortrait ? size.y : size.x;
@@ -50,8 +50,8 @@ public abstract class AndroidGame extends Activity implements Game {
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
         
-        float scaleX = (float) frameBufferWidth / size.x;
-        float scaleY = (float) frameBufferHeight / size.y;
+        float scaleX = (float) frameBufferWidth / getWindowManager().getDefaultDisplay().getWidth();
+        float scaleY = (float) frameBufferHeight / getWindowManager().getDefaultDisplay().getHeight();
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
