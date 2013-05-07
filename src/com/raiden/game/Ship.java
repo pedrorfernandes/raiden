@@ -23,10 +23,10 @@ public class Ship {
 	private int newY = centerY;
 	
 	// box which the player can move in
-	private int minX = 0;
-	private int minY = 0;
-	private int maxX = GameScreen.screenSize.x - 1;
-	private int maxY = GameScreen.screenSize.y - 1;
+	private static int minX = 0;
+	private static int minY = 0;
+	private static int maxX = GameScreen.screenSize.x - 1;
+	private static int maxY = GameScreen.screenSize.y - 1;
 	
 	// to know when the ship is actually turning or not
     final int LOW_THRESHOLD = 0;

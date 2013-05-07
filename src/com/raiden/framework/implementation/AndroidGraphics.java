@@ -145,13 +145,13 @@ public class AndroidGraphics implements Graphics {
 		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
 	}
 	
-	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle){
+	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle){
 		if (matrix == null){
 			matrix = new Matrix();
 		}
 		matrix.reset();
 		matrix.setTranslate(x, y);
-		matrix.postRotate(90.0f - angle, x+width/2, y+height/2);
+		matrix.postRotate(startingAngle - angle, x+width/2, y+height/2);
 		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
 	}
 

@@ -12,5 +12,6 @@ public class Assets {
     public static Image hero1, hero2, 
                         heroLeft1, heroLeft2, 
                         heroRight1, heroRight2,
-                        heroBullet1;
+                        heroBullet1,
+                        enemy1;
 }

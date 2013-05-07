@@ -22,7 +22,7 @@ public interface Graphics {
     
 	public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
 	
-	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle);
+	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle);
 
     void drawString(String text, int x, int y, Paint paint);
 

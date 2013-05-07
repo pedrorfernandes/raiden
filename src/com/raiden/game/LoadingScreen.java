@@ -25,6 +25,7 @@ public class LoadingScreen extends Screen {
         Assets.heroRight1 = g.newImage("heroRight1.png", ImageFormat.ARGB4444);
         Assets.heroRight2 = g.newImage("heroRight2.png", ImageFormat.ARGB4444);
         Assets.heroBullet1 = g.newImage("heroBullet1.png", ImageFormat.ARGB4444);
+        Assets.enemy1 = g.newImage("enemy1.png", ImageFormat.ARGB4444);
 
         game.setScreen(new MainMenuScreen(game));
 

@@ -41,6 +41,12 @@ public class GameScreen extends Screen {
 	private int volume = 100;
     private static final int FIRST_SHOT_FIRED = 8;
     
+    private ArrayList<Enemy> enemies;
+    private Image enemyImage;
+    
+    private static final float ENEMY_ANGLE = 270.0f;
+    private static final float HERO_ANGLE = 90.0f;
+    
     public GameScreen(Game game) {
         super(game);
         screenSize = game.getSize();
@@ -57,6 +63,11 @@ public class GameScreen extends Screen {
         heroTurningRightAnimation.addFrame(Assets.heroRight1, 100);
         heroTurningRightAnimation.addFrame(Assets.heroRight2, 100);
         heroImage = heroAnimation.getImage();
+        
+        enemyImage = Assets.enemy1;
+        enemies = new ArrayList<Enemy>();
+        enemies.add(new Enemy(200, 0, 270.0f));
+        enemies.add(new Enemy(500, 0, 225.0f));
         
 		Assets.machinegun.setLooping(true);
         
@@ -171,6 +182,12 @@ public class GameScreen extends Screen {
 			heroShots.get(i).update();
 		}
 
+        // update the enemies
+        for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).update();
+			//if (enemies.get(i).isOutOfRange() )
+		}
+        
         animate();
     }
 
@@ -227,9 +244,29 @@ public class GameScreen extends Screen {
 					    bullet.getY()-Assets.heroBullet1.getHalfHeight(),
 					    Assets.heroBullet1.getWidth(),
 					    Assets.heroBullet1.getHeight(), 
-					    bullet.getAngle());
+					    bullet.getAngle(),
+					    HERO_ANGLE);
 			}
 		}
+        
+        // enemies drawing
+        for (int i = 0; i < enemies.size(); i++) {
+        	Enemy enemy = enemies.get(i);
+			if (enemy.getAngle() == 270.0f){
+				g.drawImage(enemyImage, 
+						enemy.getX()-enemyImage.getHalfWidth(), 
+						enemy.getY()-enemyImage.getHalfHeight());
+			} else {
+				g.drawRotatedImage(enemyImage, 
+						enemy.getX()-enemyImage.getHalfWidth(), 
+						enemy.getY()-enemyImage.getHalfHeight(),
+						enemyImage.getWidth(),
+						enemyImage.getHeight(), 
+					    enemy.getAngle(),
+					    ENEMY_ANGLE);
+			}
+		}
+        
 
         // Secondly, draw the UI above the game elements.
         if (state == GameState.Ready)
