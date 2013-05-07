@@ -2,6 +2,8 @@ package com.raiden.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Random;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -41,11 +43,14 @@ public class GameScreen extends Screen {
 	private int volume = 100;
     private static final int FIRST_SHOT_FIRED = 8;
     
-    private ArrayList<Enemy> enemies;
+    public static ArrayList<Enemy> enemies;
     private Image enemyImage;
     
     private static final float ENEMY_ANGLE = 270.0f;
     private static final float HERO_ANGLE = 90.0f;
+    
+    private Random random = new Random();
+    private int counter = 0;
     
     public GameScreen(Game game) {
         super(game);
@@ -113,6 +118,14 @@ public class GameScreen extends Screen {
     }
 
     private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {        
+    	
+    	counter += deltaTime;
+    	if (counter > 100){
+    		enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
+    		enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
+    		enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
+    		counter = 0;
+    	}
     	
         // All touch input is handled here
         int len = touchEvents.size();
@@ -182,10 +195,13 @@ public class GameScreen extends Screen {
 			heroShots.get(i).update();
 		}
 
-        // update the enemies
-        for (int i = 0; i < enemies.size(); i++) {
-			enemies.get(i).update();
-			//if (enemies.get(i).isOutOfRange() )
+        // update the enemies  
+        ListIterator<Enemy> enemyItr = enemies.listIterator();
+		while( enemyItr.hasNext() ){
+			Enemy enemy = enemyItr.next();
+			enemy.update();
+			if ( enemy.isOutOfRange() || !enemy.alive )
+				enemyItr.remove();
 		}
         
         animate();

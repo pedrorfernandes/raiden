@@ -5,9 +5,9 @@ import android.graphics.Point;
 public class Turret {
 	Ship ship;
 	Point position;
-	double angle;
+	float angle;
 	
-	public Turret(Ship ship, Point position, double angle) {
+	public Turret(Ship ship, Point position, float angle) {
 		this.ship = ship;
 		this.position = position;
 		this.angle = angle;

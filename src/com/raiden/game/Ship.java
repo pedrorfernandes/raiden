@@ -5,7 +5,7 @@ import java.util.ListIterator;
 
 import android.graphics.Point;
 
-public class Ship {
+public class Ship extends Collidable {
 
 	// ship speed
 	private int moveSpeed = 15;
@@ -35,12 +35,17 @@ public class Ship {
     
     private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
     private ArrayList<Turret> turrets;
-    private ArrayList<Bullet> shotsFired;
+    public static ArrayList<Bullet> shotsFired;
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 20;
 	private float reloadTime = RELOAD_DONE;
 	
 	public Ship() {
+		
+		this.hitX = centerX;
+		this.hitY = centerY;
+		this.radius = 15;
+		
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point( 0, -halfSizeY));
@@ -49,14 +54,14 @@ public class Ship {
 		
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
-		addTurret(90.0);
-		addTurret(90.0+15.0);
-		addTurret(90.0-15.0);
+		addTurret(90.0f);
+		addTurret(90.0f+15.0f);
+		addTurret(90.0f-15.0f);
 		
 		shotsFired = new ArrayList<Bullet>();
 	}
 	
-	public boolean addTurret(double firingAngle){
+	public boolean addTurret(float firingAngle){
 		if (emptyTurretPositions.size() == 0)
 			return false;
 		
@@ -175,5 +180,27 @@ public class Ship {
 			return true;
 		}
 		return false;
+	}
+
+	public void accept(Collidable other) {
+		other.visit(this);
+	}
+	
+	@Override
+	public void visit(Ship ship) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visit(Bullet bullet) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visit(Enemy enemy) {
+		// TODO Auto-generated method stub
+		
 	}
 }

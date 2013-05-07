@@ -1,10 +1,9 @@
 package com.raiden.game;
 
-public class Bullet {
+public class Bullet extends Collidable {
 	private int x, y, speed;
 	private boolean visible;
 	private float angle;
-	private int radius;
 	
 	private static int minX = 0;
 	private static int minY = 0;
@@ -15,11 +14,16 @@ public class Bullet {
 	private int moveY;
 	
 	public Bullet(int x, int y, double angle) {
+		
+		this.hitX = x;
+		this.hitY = y;
+		this.radius = 30;
+
+		
 		this.x = x;
 		this.y = y;
 		this.angle = (float)angle;
-		this.speed = 15;
-		this.radius = 5;
+		this.speed = 15;		
 		this.visible = true;
 		double radians = Math.toRadians(angle);
 		this.moveX = (int)(speed * Math.cos(radians));
@@ -30,14 +34,11 @@ public class Bullet {
 		
 		x += moveX;
 		y += moveY;
+		hitX = x;
+		hitY = y;
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;
-
-		if (visible){
-			//checkCollision();
-		}
-		
 	}
 	
 	public boolean isVisible(){
@@ -54,5 +55,27 @@ public class Bullet {
 	
 	public float getAngle() {
 		return angle;
+	}
+	
+	public void accept(Collidable other) {
+		other.visit(this);
+	}
+	
+	@Override
+	public void visit(Ship ship) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visit(Bullet bullet) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void visit(Enemy enemy) {
+		enemy.health -= 20;
+		
 	}
 }
