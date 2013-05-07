@@ -47,6 +47,7 @@ public class Ship {
 		emptyTurretPositions.add(new Point(-25, -halfSizeY));
 		emptyTurretPositions.add(new Point( 25, -halfSizeY));
 		
+		// create the starting turrets
 		turrets = new ArrayList<Turret>();
 		addTurret(90.0);
 		addTurret(90.0+15.0);
@@ -81,6 +82,7 @@ public class Ship {
 	}
 
 	public void update(float deltaTime) {
+		// update ship X position
 		if (newX < centerX) {
 			if ( (centerX - newX) < moveSpeed)
 				centerX -= (centerX - newX);
@@ -94,6 +96,7 @@ public class Ship {
 				centerX += moveSpeed;
 		}
 		
+		// update ship Y position
 		if (newY < centerY) {
 			if ( (centerY - newY) < moveSpeed)
 				centerY -= (centerY - newY);
@@ -107,19 +110,23 @@ public class Ship {
 				centerY += moveSpeed;
 		}
 		
+		// control the turning threshold to check if the ship will turn again later
 		if ( centerX == newX && centerY == newY && turningThreshold < HIGH_THRESHOLD )
 			turningThreshold += 2;
 		
+		// remove the bullets that are no longer in the screen
 		ListIterator<Bullet> bulletItr = shotsFired.listIterator();
 		while(bulletItr.hasNext()){
 			if ( ! bulletItr.next().isVisible() )
 				bulletItr.remove();
 		}
 		
+		// check if reload time is done
 		if (reloadTime >= RELOAD_DONE){
 			readyToFire = true;
 		}
 		
+		// reload weapons
 		if (!readyToFire){
 			reloadTime += deltaTime;
 		}
@@ -128,6 +135,9 @@ public class Ship {
 	public void move(int x, int y){
 		newX += x;
 		newY += y;
+		
+		// check to see if ship is
+		// not out of bounds
 		if (newX < minX)
 			newX = minX;
 		if (newY < minY)

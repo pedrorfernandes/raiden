@@ -28,11 +28,13 @@ public class GameScreen extends Screen {
     
     private static Ship hero;
     private Image heroImage;
-    private Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
+    private Animation heroAnimation, 
+                      heroTurningLeftAnimation, 
+                      heroTurningRightAnimation;
     
     private Point dragPoint;
     private boolean shooting = false;
-    private boolean stopedShooting = false;
+    private boolean stoppedShooting = true;
     
     public static Point screenSize;
     
@@ -113,7 +115,9 @@ public class GameScreen extends Screen {
 
 			if (event.type == TouchEvent.TOUCH_UP) {
 				shooting = false;
-				stopedShooting = true;
+				// the hero isn't shooting anymore
+				// but the gun sound hasn't stopped yet
+				stoppedShooting = false;
 			}
 			
 			if (event.type == TouchEvent.TOUCH_DRAGGED) {
@@ -135,19 +139,23 @@ public class GameScreen extends Screen {
         
         // 3. Call individual update() methods here.
         // This is where all the game updates happen.
+        
+        // check if the hero is shooting
+        // and control the machine gun sound
         if (shooting){
 			if ( !Assets.machinegun.isPlaying() ){
 				Assets.machinegun.play();
 			}
 			hero.shoot();
-        } else if (stopedShooting) {
+        } else if (!stoppedShooting) {
         	if (Assets.machinegun.getCurrentPosition() > FIRST_SHOT_FIRED){
         		Assets.machinegun.seekBegin();
         		Assets.machinegun.stop();
-        		stopedShooting = false;
+        		stoppedShooting = true;
         	}
         }
 
+        // check if the hero is turning and switch to the correct image
         if ( hero.isMovingLeft() )
 	        heroImage = heroTurningLeftAnimation.getImage();
         else if ( hero.isMovingRight() )
@@ -157,6 +165,7 @@ public class GameScreen extends Screen {
 
         hero.update(deltaTime);
         
+        // update the hero's bullets
         ArrayList<Bullet> heroShots = hero.getShotsFired();
         for (int i = 0; i < heroShots.size(); i++) {
 			heroShots.get(i).update();
