@@ -2,7 +2,7 @@ package com.raiden.game;
 
 public class Bullet extends Collidable {
 	private int x, y, speed;
-	private boolean visible;
+	public boolean visible, hit;
 	private float angle;
 	
 	private static int minX = 0;
@@ -12,6 +12,8 @@ public class Bullet extends Collidable {
 	
 	private int moveX;
 	private int moveY;
+	
+	private int damage;
 	
 	public Bullet(int x, int y, double angle) {
 		
@@ -28,9 +30,13 @@ public class Bullet extends Collidable {
 		double radians = Math.toRadians(angle);
 		this.moveX = (int)(speed * Math.cos(radians));
 		this.moveY = (int)(speed * Math.sin(-radians));
+		this.damage = 20;
+		this.hit = false;
 	}
 	
 	public void update(){
+		
+		if (!visible) return;
 		
 		x += moveX;
 		y += moveY;
@@ -75,7 +81,8 @@ public class Bullet extends Collidable {
 
 	@Override
 	public void visit(Enemy enemy) {
-		enemy.health -= 20;
-		
+		enemy.health -= damage;
+		this.visible = false;
+		this.hit = true;
 	}
 }

@@ -40,7 +40,7 @@ public class Enemy extends Collidable {
 		this.moveX = (int)(speed * Math.cos(radians));
 		this.moveY = (int)(speed * Math.sin(-radians));
 		
-		this.health = 20;
+		this.health = 40;
 		this.alive = true;
 	}
 	

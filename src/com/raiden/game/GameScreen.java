@@ -8,12 +8,14 @@ import java.util.Random;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.media.SoundPool;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
+import com.raiden.framework.Sound;
 
 public class GameScreen extends Screen {
 	enum GameState {
@@ -34,21 +36,31 @@ public class GameScreen extends Screen {
                       heroTurningLeftAnimation, 
                       heroTurningRightAnimation;
     
+    // touch and input variables
     private Point dragPoint;
     private boolean shooting = false;
     private boolean stoppedShooting = true;
     
     public static Point screenSize;
     
+    // sound variables
 	private int volume = 100;
     private static final int FIRST_SHOT_FIRED = 8;
+    private static ArrayList<Sound> hitSounds;
+    private static int currentHitSound = 0;
+    private static ArrayList<Sound> explosionSounds;
+    private static int currentExplosionSound = 0;
     
+    public static ArrayList<Explosion> explosions;
+    
+    // enemy variables
     public static ArrayList<Enemy> enemies;
     private Image enemyImage;
     
     private static final float ENEMY_ANGLE = 270.0f;
     private static final float HERO_ANGLE = 90.0f;
     
+    // random enemy spawn variables
     private Random random = new Random();
     private int counter = 0;
     
@@ -71,11 +83,25 @@ public class GameScreen extends Screen {
         
         enemyImage = Assets.enemy1;
         enemies = new ArrayList<Enemy>();
-        enemies.add(new Enemy(200, 0, 270.0f));
+        enemies.add(new Enemy(200, 0, 295.0f));
         enemies.add(new Enemy(500, 0, 225.0f));
         
 		Assets.machinegun.setLooping(true);
-        
+		hitSounds = new ArrayList<Sound>();
+		hitSounds.add(Assets.hit1); hitSounds.add(Assets.hit2); 
+		hitSounds.add(Assets.hit3); hitSounds.add(Assets.hit4); 
+		hitSounds.add(Assets.hit5); 
+		
+		explosionSounds = new ArrayList<Sound>();
+		explosionSounds.add(Assets.explosionSound1); explosionSounds.add(Assets.explosionSound2);
+		explosionSounds.add(Assets.explosionSound3); explosionSounds.add(Assets.explosionSound4);
+		explosionSounds.add(Assets.explosionSound5); explosionSounds.add(Assets.explosionSound6);
+		explosionSounds.add(Assets.explosionSound7); explosionSounds.add(Assets.explosionSound8);
+		explosionSounds.add(Assets.explosionSound9); explosionSounds.add(Assets.explosionSound10);
+		explosionSounds.add(Assets.explosionSound11);
+
+		explosions = new ArrayList<Explosion>();
+
         dragPoint = new Point();
 
         // Defining a paint object
@@ -187,21 +213,36 @@ public class GameScreen extends Screen {
         else 
 	        heroImage = heroAnimation.getImage();
 
-        hero.update(deltaTime);
-        
         // update the hero's bullets
         ArrayList<Bullet> heroShots = hero.getShotsFired();
         for (int i = 0; i < heroShots.size(); i++) {
 			heroShots.get(i).update();
+			if ( heroShots.get(i).hit ){
+				hitSounds.get(currentHitSound).play(volume);
+				currentHitSound++;
+				if (currentHitSound >= hitSounds.size() )
+					currentHitSound = 0;
+			}
 		}
+        
+        hero.update(deltaTime);
 
         // update the enemies  
         ListIterator<Enemy> enemyItr = enemies.listIterator();
 		while( enemyItr.hasNext() ){
 			Enemy enemy = enemyItr.next();
 			enemy.update();
-			if ( enemy.isOutOfRange() || !enemy.alive )
+			if ( enemy.isOutOfRange() )
 				enemyItr.remove();
+			if ( !enemy.alive ){
+				enemyItr.remove();
+				// play an explosion
+				explosionSounds.get(currentExplosionSound).play(volume);
+				currentExplosionSound++;
+				if (currentExplosionSound >= explosionSounds.size() )
+					currentExplosionSound = 0;
+				explosions.add(new Explosion());
+			}
 		}
         
         animate();
@@ -230,7 +271,6 @@ public class GameScreen extends Screen {
                 }
             }
         }
-
     }
 
     @Override
