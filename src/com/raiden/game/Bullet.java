@@ -63,8 +63,8 @@ public class Bullet extends Collidable {
 	
 	@Override
 	public void visit(Ship ship) {
-		// TODO Auto-generated method stub
-		
+		this.visible = false;
+		this.hit = true;
 	}
 
 	@Override

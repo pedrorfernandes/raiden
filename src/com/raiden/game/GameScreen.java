@@ -30,7 +30,7 @@ public class GameScreen extends Screen {
 	int livesLeft = 1;
 	Paint paint;
 
-	private static Ship hero;
+	public static Ship hero;
 	private Image heroImage;
 	private Animation heroAnimation, 
 	heroTurningLeftAnimation, 
@@ -61,8 +61,8 @@ public class GameScreen extends Screen {
 	public static ArrayList<Enemy> enemies;
 	private Image enemyImage;
 
-	private static final float ENEMY_ANGLE = 270.0f;
-	private static final float HERO_ANGLE = 90.0f;
+	private static final float ANGLE_DOWN = 270.0f;
+	private static final float ANGLE_UP = 90.0f;
 
 	// constants for animation
 	private static final int EXPLOSION_DURATION = 3;
@@ -192,9 +192,9 @@ public class GameScreen extends Screen {
 
 		counter += deltaTime;
 		if (counter > 100){
-			enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
-			enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
-			enemies.add(new Enemy(random.nextInt(800), 0, ENEMY_ANGLE));
+			enemies.add(new Enemy(random.nextInt(800), 0, ANGLE_DOWN));
+			enemies.add(new Enemy(random.nextInt(800), 0, ANGLE_DOWN));
+			enemies.add(new Enemy(random.nextInt(800), 0, ANGLE_DOWN));
 			counter = 0;
 		}
 
@@ -278,7 +278,7 @@ public class GameScreen extends Screen {
 		enemyItr = enemies.listIterator();
 		while( enemyItr.hasNext() ){
 			enemy = enemyItr.next();
-			enemy.update();
+			enemy.update(deltaTime);
 			if ( enemy.outOfRange )
 				enemyItr.remove();
 			if ( !enemy.alive ){
@@ -292,6 +292,17 @@ public class GameScreen extends Screen {
 				enemyItr.remove();
 			}
 		}
+		
+		// update the enemy bullets
+		for (int i = 0; i < Enemy.shotsFired.size(); i++) {
+			bullet = Enemy.shotsFired.get(i);
+			bullet.update();
+			if ( bullet.hit ){
+				Assets.heroHit.play(volume);
+				setExplosion(bullet.x, bullet.y, SMALL_EXPLOSION);
+			}
+		}
+		Enemy.removeBulletsOffscreen();
 
 		animate();
 	}
@@ -340,7 +351,7 @@ public class GameScreen extends Screen {
 		length = Ship.shotsFired.size();
 		for (int i = 0; i < length; i++) {
 			Bullet bullet = Ship.shotsFired.get(i);
-			if (bullet.angle == HERO_ANGLE){
+			if (bullet.angle == ANGLE_UP){
 				g.drawImage(Assets.heroBullet1, 
 						bullet.x-Assets.heroBullet1.getHalfWidth(), 
 						bullet.y-Assets.heroBullet1.getHalfHeight());
@@ -351,7 +362,7 @@ public class GameScreen extends Screen {
 						Assets.heroBullet1.getWidth(),
 						Assets.heroBullet1.getHeight(), 
 						bullet.angle,
-						HERO_ANGLE);
+						ANGLE_UP);
 			}
 			if (HITBOXES_VISIBLE)
 				g.drawCircle(bullet.x, bullet.y, bullet.radius, hitboxColor);
@@ -361,7 +372,7 @@ public class GameScreen extends Screen {
 		length = enemies.size();
 		for (int i = 0; i < length; i++) {
 			Enemy enemy = enemies.get(i);
-			if (enemy.angle == ENEMY_ANGLE){
+			if (enemy.angle == ANGLE_DOWN){
 				g.drawImage(enemyImage, 
 						enemy.x-enemyImage.getHalfWidth(), 
 						enemy.y-enemyImage.getHalfHeight());
@@ -372,10 +383,31 @@ public class GameScreen extends Screen {
 						enemyImage.getWidth(),
 						enemyImage.getHeight(), 
 						enemy.angle,
-						ENEMY_ANGLE);
+						ANGLE_DOWN);
 			}
 			if (HITBOXES_VISIBLE)
 				g.drawCircle(enemy.x, enemy.y, enemy.radius, hitboxColor);
+		}
+		
+		// enemy bullets drawing
+		length = Enemy.shotsFired.size();
+		for (int i = 0; i < length; i++) {
+			Bullet bullet = Enemy.shotsFired.get(i);
+			if (bullet.angle == ANGLE_UP){
+				g.drawImage(Assets.enemyBullet1, 
+						bullet.x-Assets.enemyBullet1.getHalfWidth(), 
+						bullet.y-Assets.enemyBullet1.getHalfHeight());
+			} else {
+				g.drawRotatedImage(Assets.enemyBullet1, 
+						bullet.x-Assets.enemyBullet1.getHalfWidth(), 
+						bullet.y-Assets.enemyBullet1.getHalfHeight(),
+						Assets.enemyBullet1.getWidth(),
+						Assets.enemyBullet1.getHeight(), 
+						bullet.angle,
+						ANGLE_UP);
+			}
+			if (HITBOXES_VISIBLE)
+				g.drawCircle(bullet.x, bullet.y, bullet.radius, hitboxColor);
 		}
 
 		// explosions drawing

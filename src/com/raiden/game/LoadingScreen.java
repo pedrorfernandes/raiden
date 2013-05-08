@@ -34,6 +34,7 @@ public class LoadingScreen extends Screen {
         Assets.hit3 = game.getAudio().createSound("hit3.wav");
         Assets.hit4 = game.getAudio().createSound("hit4.wav");
         Assets.hit5 = game.getAudio().createSound("hit5.wav");
+        Assets.heroHit = game.getAudio().createSound("heroHit.wav");
 
         
         Assets.hero1 = g.newImage("hero1.png", ImageFormat.ARGB4444);
@@ -53,6 +54,7 @@ public class LoadingScreen extends Screen {
 
         
         Assets.enemy1 = g.newImage("enemy1.png", ImageFormat.ARGB4444);
+        Assets.enemyBullet1 = g.newImage("enemyBullet1.png", ImageFormat.ARGB4444);
 
         game.setScreen(new MainMenuScreen(game));
 

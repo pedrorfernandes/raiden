@@ -32,7 +32,8 @@ public class Ship extends Collidable {
     
     private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
     private ArrayList<Turret> turrets;
-    public static ArrayList<Bullet> shotsFired;
+    public static ArrayList<Bullet> shotsFired = new ArrayList<Bullet>();
+    ListIterator<Bullet> bulletItr;
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 20;
 	private float reloadTime = RELOAD_DONE;
@@ -57,8 +58,6 @@ public class Ship extends Collidable {
 		addTurret(90.0f);
 		addTurret(90.0f+15.0f);
 		addTurret(90.0f-15.0f);
-		
-		shotsFired = new ArrayList<Bullet>();
 	}
 	
 	public boolean addTurret(float firingAngle){
@@ -120,10 +119,14 @@ public class Ship extends Collidable {
 			turningThreshold += 2;
 		
 		// remove the bullets that are no longer in the screen
-		ListIterator<Bullet> bulletItr = shotsFired.listIterator();
+		bulletItr = shotsFired.listIterator();
 		while(bulletItr.hasNext()){
 			if ( ! bulletItr.next().isVisible() )
 				bulletItr.remove();
+		}
+		
+		for (Bullet bullet : Enemy.shotsFired) {
+			this.checkCollision(bullet);
 		}
 		
 		// check if reload time is done

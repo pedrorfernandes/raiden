@@ -18,6 +18,7 @@ public class Turret {
 		this.ship = ship;
 		this.position = position;
 		this.target = target;
+		this.angle = 270.0f;
 	}
 	
 	public Bullet fire(){
@@ -25,7 +26,8 @@ public class Turret {
 			return new Bullet(ship.x + position.x, 
                               ship.y + position.y, angle);
 		} else {
-			return null;
+			return new Bullet(ship.x + position.x, 
+                    ship.y + position.y, angle);
 		}
 	}
 	

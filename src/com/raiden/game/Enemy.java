@@ -1,6 +1,7 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import android.graphics.Point;
 
@@ -26,11 +27,14 @@ public class Enemy extends Collidable {
 	
 	public int health;
 	
+	private static Ship target = GameScreen.hero;
+	
     private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
     private ArrayList<Turret> turrets;
-    public static ArrayList<Bullet> shotsFired;
+    public static ArrayList<Bullet> shotsFired = new ArrayList<Bullet>();
+    static ListIterator<Bullet> bulletItr;
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 20;
+	private final int RELOAD_DONE = 40;
 	private float reloadTime = RELOAD_DONE;
 	
 	public Enemy(int x, int y, double angle) {
@@ -51,13 +55,34 @@ public class Enemy extends Collidable {
 		this.alive = true;
 		
 		emptyTurretPositions = new ArrayList<Point>();
-		emptyTurretPositions.add(new Point(x, y));
+		emptyTurretPositions.add(new Point(0, 0));
 		
 		turrets = new ArrayList<Turret>();
-
+		addTurret(0.0f);
 	}
 	
-	public void update(){
+	public boolean addTurret(float firingAngle){
+		if (emptyTurretPositions.size() == 0)
+			return false;
+		
+		turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
+		emptyTurretPositions.remove(0);
+		return true;
+	}
+	
+	public boolean shoot() {
+		if (readyToFire) {
+			for (Turret turret: turrets) {
+				shotsFired.add(turret.fire());
+			}
+			readyToFire = false;
+			reloadTime = 0;
+			return true;
+		}
+		return false;
+	}
+	
+	public void update(float deltaTime){
 		
 		if (health < 0) alive = false;
 		
@@ -80,6 +105,26 @@ public class Enemy extends Collidable {
 			this.checkCollision(bullet);
 		}
 		
+		// check if reload time is done
+		if (reloadTime >= RELOAD_DONE){
+			readyToFire = true;
+		}
+		
+		// reload weapons
+		if (!readyToFire){
+			reloadTime += deltaTime;
+		} else {
+			shoot();
+		}
+	}
+	
+	public static void removeBulletsOffscreen(){
+		// remove the bullets that are no longer in the screen
+		bulletItr = shotsFired.listIterator();
+		while(bulletItr.hasNext()){
+			if ( ! bulletItr.next().isVisible() )
+				bulletItr.remove();
+		}
 	}
 	
 	public void turn(float degrees){
