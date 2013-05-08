@@ -106,8 +106,6 @@ public class AndroidGraphics implements Graphics {
 	@Override
 	public void drawString(String text, int x, int y, Paint paint){
 		canvas.drawText(text, x, y, paint);
-
-
 	}
 
 	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
@@ -115,7 +113,6 @@ public class AndroidGraphics implements Graphics {
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
 		srcRect.bottom = srcY + srcHeight;
-
 
 		dstRect.left = x;
 		dstRect.top = y;
@@ -140,8 +137,18 @@ public class AndroidGraphics implements Graphics {
 		dstRect.top = y;
 		dstRect.right = x + width;
 		dstRect.bottom = y + height;
-
+		
 		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+	}
+	
+	public void drawScaledImage(Image image, int x, int y, int pivotX, int pivotY, float scale){
+		if (matrix == null){
+			matrix = new Matrix();
+		}
+		matrix.reset();
+		matrix.setTranslate(x, y);
+		matrix.postScale(scale, scale, pivotX, pivotY);
+		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
 	}
 	
 	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle){
@@ -152,6 +159,10 @@ public class AndroidGraphics implements Graphics {
 		matrix.setTranslate(x, y);
 		matrix.postRotate(startingAngle - angle, x+width/2, y+height/2);
 		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+	}
+	
+	public void drawCircle(int x, int y, int radius, Paint paint){
+		canvas.drawCircle(x, y, radius, paint);
 	}
 
 	@Override

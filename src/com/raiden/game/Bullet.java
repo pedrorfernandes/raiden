@@ -1,9 +1,9 @@
 package com.raiden.game;
 
 public class Bullet extends Collidable {
-	private int x, y, speed;
+	private int speed;
 	public boolean visible, hit;
-	private float angle;
+	public float angle;
 	
 	private static int minX = 0;
 	private static int minY = 0;
@@ -17,11 +17,7 @@ public class Bullet extends Collidable {
 	
 	public Bullet(int x, int y, double angle) {
 		
-		this.hitX = x;
-		this.hitY = y;
-		this.radius = 30;
-
-		
+		this.radius = 10;
 		this.x = x;
 		this.y = y;
 		this.angle = (float)angle;
@@ -40,8 +36,6 @@ public class Bullet extends Collidable {
 		
 		x += moveX;
 		y += moveY;
-		hitX = x;
-		hitY = y;
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;

@@ -1,10 +1,13 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
+
+import android.graphics.Point;
+
 public class Enemy extends Collidable {
-	private int x, y, speed;
-	private boolean visible, outOfRange;
-	public boolean alive;
-	private float angle;
+	private int speed;
+	public boolean visible, outOfRange, alive;
+	public float angle;
 	private double radians;
 	
 	private static int minX = 0;
@@ -23,17 +26,21 @@ public class Enemy extends Collidable {
 	
 	public int health;
 	
+    private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
+    private ArrayList<Turret> turrets;
+    public static ArrayList<Bullet> shotsFired;
+	private boolean readyToFire = true;
+	private final int RELOAD_DONE = 20;
+	private float reloadTime = RELOAD_DONE;
+	
 	public Enemy(int x, int y, double angle) {
 		
-		this.hitX = x;
-		this.hitY = y;
-		this.radius = 70;
+		this.radius = 55;
 		
 		this.x = x;
 		this.y = y;
 		this.angle = (float)angle;
 		this.speed = 7;
-		this.radius = 5;
 		this.visible = true;
 		this.outOfRange = false;
 		this.radians = Math.toRadians(angle);
@@ -42,6 +49,12 @@ public class Enemy extends Collidable {
 		
 		this.health = 40;
 		this.alive = true;
+		
+		emptyTurretPositions = new ArrayList<Point>();
+		emptyTurretPositions.add(new Point(x, y));
+		
+		turrets = new ArrayList<Turret>();
+
 	}
 	
 	public void update(){
@@ -53,8 +66,6 @@ public class Enemy extends Collidable {
 		
 		x += moveX;
 		y += moveY;
-		hitX = x;
-		hitY = y;
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;

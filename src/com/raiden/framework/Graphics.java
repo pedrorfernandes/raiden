@@ -22,9 +22,13 @@ public interface Graphics {
     
 	public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight);
 	
+	public void drawScaledImage(Image image, int x, int y, int pivotX, int pivotY, float scale);
+	
 	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle);
 
     void drawString(String text, int x, int y, Paint paint);
+    
+	public void drawCircle(int x, int y, int radius, Paint paint);
 
     public int getWidth();
 

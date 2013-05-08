@@ -7,22 +7,38 @@ import com.raiden.framework.Image;
 public class Explosion {
 
 	private static ArrayList<AnimFrame> frames = new ArrayList<AnimFrame>();
+	
 	private int currentFrame;
 	private long animTime;
-	private long totalDuration;
-	public boolean ended;
+	private static long totalDuration = 0;
 
+	public boolean active;
+	public int x, y;
+	public float scale;
+	
 	public Explosion() {
-		totalDuration = 0;
-		ended = false;
+		
+		//totalDuration = 0;
+		active = false;
 
 		synchronized (this) {
 			animTime = 0;
 			currentFrame = 0;
 		}
 	}
+	
+	public void set(int x, int y, float scale){
+		synchronized (this) {
+			animTime = 0;
+			currentFrame = 0;
+		}
+		this.x = x;
+		this.y = y;
+		this.scale = scale;
+		active = true;
+	}
 
-	public synchronized void addFrame(Image image, long duration) {
+	public static synchronized void addFrame(Image image, long duration) {
 		totalDuration += duration;
 		frames.add(new AnimFrame(image, totalDuration));
 	}
@@ -33,10 +49,10 @@ public class Explosion {
 			if (animTime >= totalDuration) {
 				//animTime = animTime % totalDuration;
 				//currentFrame = 0;
-				ended = true;
+				active = false;
 			}
 
-			while (animTime > getFrame(currentFrame).endTime) {
+			while (animTime > getFrame(currentFrame).endTime && active) {
 				currentFrame++;
 			}
 		}
@@ -54,7 +70,7 @@ public class Explosion {
 		return (AnimFrame) frames.get(i);
 	}
 
-	private class AnimFrame {
+	private static class AnimFrame {
 
 		Image image;
 		long endTime;

@@ -11,16 +11,13 @@ public class Ship extends Collidable {
 	private int moveSpeed = 15;
 	
 	// image sprite half size
+	// TODO fix these, they should be the radius
 	public final int halfSizeX = Assets.hero1.getWidth() / 2;
 	public final int halfSizeY = Assets.hero1.getHeight() / 2;
-
-	// initial starting point
-	public int centerX = GameScreen.screenSize.x / 2;
-	public int centerY = GameScreen.screenSize.y - halfSizeY * 6;
 	
 	// position to move next
-	private int newX = centerX;
-	private int newY = centerY;
+	private int newX = x;
+	private int newY = y;
 	
 	// box which the player can move in
 	private static int minX = 0;
@@ -42,13 +39,16 @@ public class Ship extends Collidable {
 	
 	public Ship() {
 		
-		this.hitX = centerX;
-		this.hitY = centerY;
-		this.radius = 15;
+		// initial starting point
+		x = GameScreen.screenSize.x / 2;
+		y = GameScreen.screenSize.y - halfSizeY * 6;
+		newX = x;
+		newY = y;
+		this.radius = 50;
 		
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
-		emptyTurretPositions.add(new Point( 0, -halfSizeY));
+		emptyTurretPositions.add(new Point(  0, -halfSizeY));
 		emptyTurretPositions.add(new Point(-25, -halfSizeY));
 		emptyTurretPositions.add(new Point( 25, -halfSizeY));
 		
@@ -88,35 +88,35 @@ public class Ship extends Collidable {
 
 	public void update(float deltaTime) {
 		// update ship X position
-		if (newX < centerX) {
-			if ( (centerX - newX) < moveSpeed)
-				centerX -= (centerX - newX);
+		if (newX < x) {
+			if ( (x - newX) < moveSpeed)
+				x -= (x - newX);
 			else
-				centerX -= moveSpeed;
+				x -= moveSpeed;
 		} 
-		else if (newX > centerX){
-			if ( (newX - centerX) < moveSpeed)
-				centerX += (newX - centerX);
+		else if (newX > x){
+			if ( (newX - x) < moveSpeed)
+				x += (newX - x);
 			else
-				centerX += moveSpeed;
+				x += moveSpeed;
 		}
 		
 		// update ship Y position
-		if (newY < centerY) {
-			if ( (centerY - newY) < moveSpeed)
-				centerY -= (centerY - newY);
+		if (newY < y) {
+			if ( (y - newY) < moveSpeed)
+				y -= (y - newY);
 			else
-				centerY -= moveSpeed;
+				y -= moveSpeed;
 		} 
-		else if (newY > centerY) {
-			if ( (newY - centerY) < moveSpeed)
-				centerY += (newY - centerY);
+		else if (newY > y) {
+			if ( (newY - y) < moveSpeed)
+				y += (newY - y);
 			else
-				centerY += moveSpeed;
+				y += moveSpeed;
 		}
 		
 		// control the turning threshold to check if the ship will turn again later
-		if ( centerX == newX && centerY == newY && turningThreshold < HIGH_THRESHOLD )
+		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
 			turningThreshold += 2;
 		
 		// remove the bullets that are no longer in the screen
@@ -154,19 +154,19 @@ public class Ship extends Collidable {
 	}
 	
 	public int getX(){
-		return centerX;
+		return x;
 	}
 	
 	public int getY(){
-		return centerY;
+		return y;
 	}
 	
 	public boolean isMoving(){
-		return (centerX == newX && centerY == newY);
+		return (x == newX && y == newY);
 	}
 	
 	public boolean isMovingLeft(){
-		if ( (newX - centerX) < 0 && Math.abs(newX - centerX) > turningThreshold ){
+		if ( (newX - x) < 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
 			return true;
 		}
@@ -175,7 +175,7 @@ public class Ship extends Collidable {
 	}
 	
 	public boolean isMovingRight(){
-		if ( (newX - centerX) > 0 && Math.abs(newX - centerX) > turningThreshold ){
+		if ( (newX - x) > 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
 			return true;
 		}
