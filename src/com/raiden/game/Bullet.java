@@ -15,15 +15,29 @@ public class Bullet extends Collidable {
 	
 	private int damage;
 	
-	public Bullet(int x, int y, double angle) {
+	public Bullet(int x, int y, float angle) {
 		
 		this.radius = 10;
 		this.x = x;
 		this.y = y;
-		this.angle = (float)angle;
+		this.angle = angle;
 		this.speed = 15;		
 		this.visible = true;
 		double radians = Math.toRadians(angle);
+		this.moveX = (int)(speed * Math.cos(radians));
+		this.moveY = (int)(speed * Math.sin(-radians));
+		this.damage = 20;
+		this.hit = false;
+	}
+	
+	public Bullet(int x, int y, double radians) {
+		
+		this.radius = 10;
+		this.x = x;
+		this.y = y;
+		this.angle = (float)Math.toDegrees(radians);
+		this.speed = 15;		
+		this.visible = true;
 		this.moveX = (int)(speed * Math.cos(radians));
 		this.moveY = (int)(speed * Math.sin(-radians));
 		this.damage = 20;

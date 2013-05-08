@@ -7,6 +7,7 @@ public class Turret {
 	Collidable target;
 	Point position;
 	float angle;
+	double radians;
 	
 	public Turret(Collidable ship, Point position, float angle) {
 		this.ship = ship;
@@ -18,7 +19,6 @@ public class Turret {
 		this.ship = ship;
 		this.position = position;
 		this.target = target;
-		this.angle = 270.0f;
 	}
 	
 	public Bullet fire(){
@@ -26,8 +26,13 @@ public class Turret {
 			return new Bullet(ship.x + position.x, 
                               ship.y + position.y, angle);
 		} else {
+			// calculate the angle between two points
+			int deltaX = target.x - ship.x;
+			int deltaY = ship.y - target.y;
+			radians = Math.atan2(deltaY, deltaX);
+			
 			return new Bullet(ship.x + position.x, 
-                    ship.y + position.y, angle);
+                    ship.y + position.y, radians);
 		}
 	}
 	
