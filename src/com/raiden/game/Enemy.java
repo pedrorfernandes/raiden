@@ -30,8 +30,8 @@ public class Enemy extends Collidable {
 	
     private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
     private ArrayList<Turret> turrets;
-    public static ArrayList<Bullet> shots = new ArrayList<Bullet>();
 	private static final int MAX_BULLETS = 60;
+    public static Bullet[] shots = new Bullet[MAX_BULLETS];
 	
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 500;
@@ -45,7 +45,7 @@ public class Enemy extends Collidable {
 	{
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
-			shots.add(new Bullet());
+			shots[i] = new Bullet();
 		}
 	}
 	
@@ -117,9 +117,9 @@ public class Enemy extends Collidable {
 			}
 		}
 		
-		length = Ship.shots.size();
+		length = Ship.shots.length;
 		for (int i = 0; i < length; i++) {
-			bullet = Ship.shots.get(i);
+			bullet = Ship.shots[i];
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}

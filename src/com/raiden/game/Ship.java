@@ -31,8 +31,8 @@ public class Ship extends Collidable {
 
 	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
 	private ArrayList<Turret> turrets;
-	public static ArrayList<Bullet> shots = new ArrayList<Bullet>();
 	private static final int MAX_BULLETS = 30;
+	public static Bullet[] shots = new Bullet[MAX_BULLETS];
 	
 	//ListIterator<Bullet> bulletItr;
 	private boolean readyToFire = true;
@@ -47,7 +47,7 @@ public class Ship extends Collidable {
 	{
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
-			shots.add(new Bullet());
+			shots[i] = new Bullet();
 		}
 	}
 
@@ -94,9 +94,11 @@ public class Ship extends Collidable {
 		return false;
 	}
 
+	/*
 	public ArrayList<Bullet> getShotsFired(){
 		return shots;
 	}
+	*/
 
 	public void update(float deltaTime) {
 		// update ship X position
@@ -131,9 +133,9 @@ public class Ship extends Collidable {
 		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
 			turningThreshold += 2;
 		
-		length = Enemy.shots.size();
+		length = Enemy.shots.length;
 		for (int i = 0; i < length; i++) {
-			bullet = Enemy.shots.get(i);
+			bullet = Enemy.shots[i];
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
