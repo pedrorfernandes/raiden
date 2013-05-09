@@ -40,6 +40,8 @@ public class GameScreen extends Screen {
 	private boolean shooting = false;
 	private boolean stoppedShooting = true;
 
+	// screen size and scaling variables
+    public static float scaleX, scaleY;
 	public static Point screenSize;
 
 	// sound variables
@@ -87,6 +89,9 @@ public class GameScreen extends Screen {
 
 	public GameScreen(Game game) {
 		super(game);
+		
+        scaleX = game.getScaleX();
+        scaleY = game.getScaleY();
 		screenSize = game.getSize();
 
 		// Initialize game objects here
@@ -109,7 +114,7 @@ public class GameScreen extends Screen {
 		}
 		
 		spawnEnemy(200, 200, 295.0f);
-		spawnEnemy(500, 500, 225.0f);
+		spawnEnemy(100, 100, 225.0f);
 
 		Assets.machinegun.setLooping(true);
 		hitSounds = new ArrayList<Sound>();
@@ -209,9 +214,9 @@ public class GameScreen extends Screen {
 		if (counter > 960*1){
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
-			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
-			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
+			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
+			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
+			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
 			counter = 0;
 		}
 

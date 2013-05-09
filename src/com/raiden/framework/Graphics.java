@@ -7,7 +7,7 @@ public interface Graphics {
         ARGB8888, ARGB4444, RGB565
     }
 
-    public Image newImage(String fileName, ImageFormat format);
+    public Image newImage(String fileName, ImageFormat format, float scaleX, float scaleY);
 
     public void clearScreen(int color);
 
@@ -15,8 +15,7 @@ public interface Graphics {
 
     public void drawRect(int x, int y, int width, int height, int color);
 
-    public void drawImage(Image image, int x, int y, int srcX, int srcY,
-            int srcWidth, int srcHeight);
+    public void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight);
 
     public void drawImage(Image Image, int x, int y);
     
@@ -26,10 +25,10 @@ public interface Graphics {
 	
 	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle);
 
-    void drawString(String text, int x, int y, Paint paint);
+    public void drawString(String text, int x, int y, Paint paint);
     
 	public void drawCircle(int x, int y, int radius, Paint paint);
-
+	
     public int getWidth();
 
     public int getHeight();

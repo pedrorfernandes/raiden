@@ -19,4 +19,9 @@ public interface Game {
     public Screen getInitScreen();
     
     public Point getSize();
+    
+    public float getScaleX();
+
+    public float getScaleY();
+
 }

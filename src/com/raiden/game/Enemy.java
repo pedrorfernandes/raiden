@@ -50,8 +50,8 @@ public class Enemy extends Collidable {
 	}
 	
 	public Enemy() {
-		this.radius = 55;
-		this.speed = 7;
+		this.radius =(int) (55 * GameScreen.scaleX);
+		this.speed = (int) (7 * GameScreen.scaleX);
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
@@ -70,8 +70,8 @@ public class Enemy extends Collidable {
 		this.visible = true;
 		this.outOfRange = false;
 		this.radians = Math.toRadians(angle);
-		this.moveX = (int)(speed * Math.cos(radians));
-		this.moveY = (int)(speed * Math.sin(-radians));
+		this.moveX = (int) (speed * Math.cos(radians));
+		this.moveY = (int) (speed * Math.sin(-radians));
 		this.alive = true;
 		this.health = 60;
 	}

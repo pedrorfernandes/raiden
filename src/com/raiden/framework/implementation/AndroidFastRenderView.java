@@ -67,7 +67,8 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 
 			canvas = holder.lockCanvas();
 			canvas.getClipBounds(dstRect);
-			canvas.drawBitmap(framebuffer, null, dstRect, null);
+			//canvas.drawBitmap(framebuffer, null, dstRect, null);
+			canvas.drawBitmap(framebuffer, 0, 0, null);
 			frames++;
 			// count the fps
 			currentTime = System.currentTimeMillis();

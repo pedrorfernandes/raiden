@@ -7,7 +7,7 @@ import android.graphics.Point;
 public class Ship extends Collidable {
 
 	// ship speed
-	private int speed = 15;
+	private int speed = (int) (15 * GameScreen.scaleX);
 
 	// image sprite half size
 	// TODO fix these, they should be the radius
@@ -26,7 +26,7 @@ public class Ship extends Collidable {
 
 	// to know when the ship is actually turning or not
 	final int LOW_THRESHOLD = 0;
-	final int HIGH_THRESHOLD = 8;
+	final int HIGH_THRESHOLD = (int) (8 * GameScreen.scaleX);
 	private int turningThreshold = HIGH_THRESHOLD;
 
 	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
@@ -58,7 +58,7 @@ public class Ship extends Collidable {
 		y = GameScreen.screenSize.y - halfSizeY * 6;
 		newX = x;
 		newY = y;
-		this.radius = 50;
+		this.radius = (int)(40 * GameScreen.scaleX);
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();

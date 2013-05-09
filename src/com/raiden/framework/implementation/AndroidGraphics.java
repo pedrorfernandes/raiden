@@ -34,7 +34,7 @@ public class AndroidGraphics implements Graphics {
 	}
 
 	@Override
-	public Image newImage(String fileName, ImageFormat format) {
+	public Image newImage(String fileName, ImageFormat format, float scaleX, float scaleY) {
 		Config config = null;
 		if (format == ImageFormat.RGB565)
 			config = Config.RGB_565;
@@ -65,6 +65,16 @@ public class AndroidGraphics implements Graphics {
 				} catch (IOException e) {
 				}
 			}
+		}
+		
+		if (scaleX != 1.0f || scaleY != 1.0f){
+			int sizeX = bitmap.getWidth();
+			int scaledX = (int)(sizeX * scaleX);
+			
+			int sizeY = bitmap.getHeight();
+			int scaledY = (int)(sizeY * scaleY);
+			
+			bitmap = Bitmap.createScaledBitmap(bitmap, scaledX, scaledY, true);
 		}
 
 		if (bitmap.getConfig() == Config.RGB_565)

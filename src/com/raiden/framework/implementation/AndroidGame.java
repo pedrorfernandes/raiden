@@ -29,6 +29,7 @@ public abstract class AndroidGame extends Activity implements Game {
     WakeLock wakeLock;
     
     Point size;
+    private float scaleX, scaleY;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,14 +51,15 @@ public abstract class AndroidGame extends Activity implements Game {
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
         
-        float scaleX = (float) frameBufferWidth / getWindowManager().getDefaultDisplay().getWidth();
-        float scaleY = (float) frameBufferHeight / getWindowManager().getDefaultDisplay().getHeight();
+        scaleX = (float) frameBufferWidth / 720;
+        scaleY = (float) frameBufferHeight / 1280;
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
         graphics = new AndroidGraphics(getAssets(), frameBuffer);
         fileIO = new AndroidFileIO(this);
         audio = new AndroidAudio(this);
-        input = new AndroidInput(this, renderView, scaleX, scaleY);
+        //input = new AndroidInput(this, renderView, scaleX, scaleY);
+        input = new AndroidInput(this, renderView, 1.0f, 1.0f);
         screen = getInitScreen();
         setContentView(renderView);
         
@@ -123,5 +125,13 @@ public abstract class AndroidGame extends Activity implements Game {
     
     public Point getSize() {
     	return size;
+    }
+    
+    public float getScaleX(){
+    	return scaleX;
+    }
+    
+    public float getScaleY(){
+    	return scaleY;
     }
 }
