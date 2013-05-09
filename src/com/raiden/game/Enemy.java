@@ -1,7 +1,6 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 import android.graphics.Point;
 
@@ -31,34 +30,50 @@ public class Enemy extends Collidable {
 	
     private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
     private ArrayList<Turret> turrets;
-    public static ArrayList<Bullet> shotsFired = new ArrayList<Bullet>();
-    static ListIterator<Bullet> bulletItr;
+    public static ArrayList<Bullet> shots = new ArrayList<Bullet>();
+	private static final int MAX_BULLETS = 60;
+	
+	// iterating variables
+	private static Bullet bullet;
+	private static int length;
+    
+	static
+	{
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			shots.add(new Bullet());
+		}
+	}
+    
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 40;
 	private float reloadTime = RELOAD_DONE;
 	
-	public Enemy(int x, int y, double angle) {
-		
+	public Enemy() {
 		this.radius = 55;
-		
-		this.x = x;
-		this.y = y;
-		this.angle = (float)angle;
 		this.speed = 7;
-		this.visible = true;
-		this.outOfRange = false;
-		this.radians = Math.toRadians(angle);
-		this.moveX = (int)(speed * Math.cos(radians));
-		this.moveY = (int)(speed * Math.sin(-radians));
-		
-		this.health = 40;
-		this.alive = true;
+		this.visible = false;
+		this.outOfRange = true;
+		this.alive = false;
 		
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
 		
 		turrets = new ArrayList<Turret>();
 		addTurret(0.0f);
+	}
+	
+	public void spawn(int x, int y, float angle) {
+		this.x = x;
+		this.y = y;
+		this.angle = (float)angle;
+		this.visible = true;
+		this.outOfRange = false;
+		this.radians = Math.toRadians(angle);
+		this.moveX = (int)(speed * Math.cos(radians));
+		this.moveY = (int)(speed * Math.sin(-radians));
+		this.alive = true;
+		this.health = 40;
 	}
 	
 	public boolean addTurret(float firingAngle){
@@ -73,7 +88,7 @@ public class Enemy extends Collidable {
 	public boolean shoot() {
 		if (readyToFire) {
 			for (Turret turret: turrets) {
-				shotsFired.add(turret.fire());
+				turret.fire(shots);
 			}
 			readyToFire = false;
 			reloadTime = 0;
@@ -84,9 +99,8 @@ public class Enemy extends Collidable {
 	
 	public void update(float deltaTime){
 		
-		if (health < 0) alive = false;
+		if (health <= 0) alive = false;
 		
-		// out of range enemies must be destroyed
 		if (outOfRange || !alive) return;
 		
 		x += moveX;
@@ -96,13 +110,18 @@ public class Enemy extends Collidable {
 			visible = false;
 
 		if ( !visible ){
-			// if the enemy is out of bounds, it must be removed from the memory
-			if (x < outMinX || y < outMinY || x > outMaxX || y > outMaxY)
+			// if the enemy is out of bounds, it isn't coming back to the screen
+			if (x < outMinX || y < outMinY || x > outMaxX || y > outMaxY){
 				outOfRange = true;
+				return;
+			}
 		}
 		
-		for (Bullet bullet : Ship.shotsFired) {
-			this.checkCollision(bullet);
+		length = Ship.shots.size();
+		for (int i = 0; i < length; i++) {
+			bullet = Ship.shots.get(i);
+			if (bullet.visible)
+				this.checkCollision(bullet);
 		}
 		
 		// check if reload time is done
@@ -118,13 +137,16 @@ public class Enemy extends Collidable {
 		}
 	}
 	
-	public static void removeBulletsOffscreen(){
-		// remove the bullets that are no longer in the screen
-		bulletItr = shotsFired.listIterator();
-		while(bulletItr.hasNext()){
-			if ( ! bulletItr.next().isVisible() )
-				bulletItr.remove();
+	public boolean hasDied(){
+		if (!this.alive && this.visible){
+			this.visible = false;
+			return true;
 		}
+		return false;
+	}
+	
+	public boolean isInGame(){
+		return (alive && !outOfRange);
 	}
 	
 	public void turn(float degrees){

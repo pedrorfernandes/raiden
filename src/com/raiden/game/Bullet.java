@@ -15,13 +15,17 @@ public class Bullet extends Collidable {
 	
 	private int damage;
 	
-	public Bullet(int x, int y, float angle) {
-		
+	public Bullet(){
 		this.radius = 10;
+		this.speed = 15;		
+		this.damage = 20;
+		this.visible = false;
+	}
+	
+	public void fire(int x, int y, float angle) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
-		this.speed = 15;		
 		this.visible = true;
 		double radians = Math.toRadians(angle);
 		this.moveX = (int)(speed * Math.cos(radians));
@@ -30,17 +34,13 @@ public class Bullet extends Collidable {
 		this.hit = false;
 	}
 	
-	public Bullet(int x, int y, double radians) {
-		
-		this.radius = 10;
+	public void fire(int x, int y, double radians) {
 		this.x = x;
 		this.y = y;
 		this.angle = (float)Math.toDegrees(radians);
-		this.speed = 15;		
 		this.visible = true;
 		this.moveX = (int)(speed * Math.cos(radians));
 		this.moveY = (int)(speed * Math.sin(-radians));
-		this.damage = 20;
 		this.hit = false;
 	}
 	
@@ -73,6 +73,14 @@ public class Bullet extends Collidable {
 	
 	public void accept(Collidable other) {
 		other.visit(this);
+	}
+	
+	public boolean checkHit(){
+		if (this.hit){
+			this.hit = false;
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

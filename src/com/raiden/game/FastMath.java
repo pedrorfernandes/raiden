@@ -36,17 +36,17 @@ public class FastMath {
 	    * ATAN2
 	    */
 
-	   public static final float atan2Deg(int y, int x)
+	   public static final float atan2Deg(float y, float x)
 	   {
 	      return atan2(y, x) * DEG;
 	   }
 
-	   public static final float atan2DegStrict(int y, int x)
+	   public static final float atan2DegStrict(float y, float x)
 	   {
 	      return (float) Math.atan2(y, x) * DEG;
 	   }
 
-	   public static final float atan2(int y, int x)
+	   public static final float atan2(float y, float x)
 	   {
 	      float add, mul;
 
