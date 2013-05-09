@@ -33,6 +33,10 @@ public class Enemy extends Collidable {
     public static ArrayList<Bullet> shots = new ArrayList<Bullet>();
 	private static final int MAX_BULLETS = 60;
 	
+	private boolean readyToFire = true;
+	private final int RELOAD_DONE = 500;
+	private float reloadTime = RELOAD_DONE;
+	
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
@@ -44,10 +48,6 @@ public class Enemy extends Collidable {
 			shots.add(new Bullet());
 		}
 	}
-    
-	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 40;
-	private float reloadTime = RELOAD_DONE;
 	
 	public Enemy() {
 		this.radius = 55;
@@ -73,7 +73,7 @@ public class Enemy extends Collidable {
 		this.moveX = (int)(speed * Math.cos(radians));
 		this.moveY = (int)(speed * Math.sin(-radians));
 		this.alive = true;
-		this.health = 40;
+		this.health = 60;
 	}
 	
 	public boolean addTurret(float firingAngle){
@@ -123,6 +123,7 @@ public class Enemy extends Collidable {
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
+		
 		
 		// check if reload time is done
 		if (reloadTime >= RELOAD_DONE){

@@ -207,10 +207,12 @@ public class GameScreen extends Screen {
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {  
 
 		counter += deltaTime;
-		if (counter > 100){
-			spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			//spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
+		if (counter > 960*1){
+			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
+			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
+			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
+			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
+			spawnEnemy(random.nextInt(800), 0, ANGLE_DOWN);
 			counter = 0;
 		}
 

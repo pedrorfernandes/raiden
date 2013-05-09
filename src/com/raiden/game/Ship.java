@@ -7,7 +7,7 @@ import android.graphics.Point;
 public class Ship extends Collidable {
 
 	// ship speed
-	private int moveSpeed = 15;
+	private int speed = 15;
 
 	// image sprite half size
 	// TODO fix these, they should be the radius
@@ -34,6 +34,11 @@ public class Ship extends Collidable {
 	public static ArrayList<Bullet> shots = new ArrayList<Bullet>();
 	private static final int MAX_BULLETS = 30;
 	
+	//ListIterator<Bullet> bulletItr;
+	private boolean readyToFire = true;
+	private final int RELOAD_DONE = 200;
+	private float reloadTime = RELOAD_DONE;
+	
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
@@ -45,11 +50,6 @@ public class Ship extends Collidable {
 			shots.add(new Bullet());
 		}
 	}
-
-	//ListIterator<Bullet> bulletItr;
-	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 20;
-	private float reloadTime = RELOAD_DONE;
 
 	public Ship() {
 
@@ -101,30 +101,30 @@ public class Ship extends Collidable {
 	public void update(float deltaTime) {
 		// update ship X position
 		if (newX < x) {
-			if ( (x - newX) < moveSpeed)
+			if ( (x - newX) < speed)
 				x -= (x - newX);
 			else
-				x -= moveSpeed;
+				x -= speed;
 		} 
 		else if (newX > x){
-			if ( (newX - x) < moveSpeed)
+			if ( (newX - x) < speed)
 				x += (newX - x);
 			else
-				x += moveSpeed;
+				x += speed;
 		}
 
 		// update ship Y position
 		if (newY < y) {
-			if ( (y - newY) < moveSpeed)
+			if ( (y - newY) < speed)
 				y -= (y - newY);
 			else
-				y -= moveSpeed;
+				y -= speed;
 		} 
 		else if (newY > y) {
-			if ( (newY - y) < moveSpeed)
+			if ( (newY - y) < speed)
 				y += (newY - y);
 			else
-				y += moveSpeed;
+				y += speed;
 		}
 
 		// control the turning threshold to check if the ship will turn again later
