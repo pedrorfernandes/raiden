@@ -298,7 +298,6 @@ public class GameScreen extends Screen {
 		hero.update(deltaTime);
 
 		// update the enemies  
-		//enemyItr = enemies.listIterator();
 		length = enemies.length;
 		for (int i = 0; i < length; i++) {
 			enemy = enemies[i];
@@ -313,21 +312,6 @@ public class GameScreen extends Screen {
 
 			}
 		}
-		/*
-		while( enemyItr.hasNext() ){
-			enemy = enemyItr.next();
-			enemy.update(deltaTime);
-			if ( enemy.hasDied() ){
-				// play an explosion
-				explosionSounds.get(currentExplosionSound).play(volume);
-				currentExplosionSound++;
-				if (currentExplosionSound >= explosionSounds.size() )
-					currentExplosionSound = 0;
-				setExplosion(enemy.x, enemy.y, BIG_EXPLOSION);
-
-			}
-		}
-		*/
 		
 		// update the enemy bullets
 		for (int i = 0; i < Enemy.shots.length; i++) {
