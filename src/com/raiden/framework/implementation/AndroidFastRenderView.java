@@ -26,7 +26,7 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 	private static long lastTime;
 	private static int frames = 0, fps;
 	private static Paint fpsPaint;
-
+	
 	public AndroidFastRenderView(AndroidGame game, Bitmap framebuffer) {
 		super(game);
 		this.game = game;
@@ -36,7 +36,6 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 		fpsPaint = new Paint();
 		fpsPaint.setColor(Color.WHITE);
 		fpsPaint.setTextSize(50);
-
 	}
 
 	public void resume() { 
@@ -78,8 +77,7 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 				frames = 0;
 				lastTime = currentTime;
 			}
-			
-			canvas.drawText(Long.toString(fps), 30, 50, fpsPaint);
+			canvas.drawText(Integer.toString(fps), 30, 50, fpsPaint);
 			
 			holder.unlockCanvasAndPost(canvas);
 		}

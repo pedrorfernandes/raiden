@@ -67,7 +67,7 @@ public class GameScreen extends Screen {
 	private static final float ANGLE_UP = 90.0f;
 
 	// constants for animation
-	private static final int EXPLOSION_DURATION = 3;
+	private static final int EXPLOSION_DURATION = 5;
 	private static final int HERO_ANIMATION_DURATION = 10;
 	private static final int ANIMATION_UPDATE = 1;
 	
@@ -340,7 +340,6 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		animate();
 	}
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
@@ -467,6 +466,8 @@ public class GameScreen extends Screen {
                             explosion.scale);
 			}
 		}
+		
+		animate(deltaTime);
 
 		// Secondly, draw the UI above the game elements.
 		if (state == GameState.Ready)
@@ -480,7 +481,7 @@ public class GameScreen extends Screen {
 
 	}
 
-	private void animate() {
+	private void animate(float deltaTime) {
 		heroAnimation.update(ANIMATION_UPDATE);
 		heroTurningLeftAnimation.update(ANIMATION_UPDATE);
 		heroTurningRightAnimation.update(ANIMATION_UPDATE);

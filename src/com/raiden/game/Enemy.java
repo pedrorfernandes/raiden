@@ -51,7 +51,7 @@ public class Enemy extends Collidable {
 	
 	public Enemy() {
 		this.radius =(int) (55 * GameScreen.scaleX);
-		this.speed = (int) (7 * GameScreen.scaleX);
+		this.speed = (int) Math.ceil(6 * GameScreen.scaleX);
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
@@ -73,7 +73,7 @@ public class Enemy extends Collidable {
 		this.moveX = (int) (speed * Math.cos(radians));
 		this.moveY = (int) (speed * Math.sin(-radians));
 		this.alive = true;
-		this.health = 60;
+		this.health = 4;
 	}
 	
 	public boolean addTurret(float firingAngle){
@@ -99,7 +99,7 @@ public class Enemy extends Collidable {
 	
 	public void update(float deltaTime){
 		
-		if (health <= 0) alive = false;
+		if (health < 1) alive = false;
 		
 		if (outOfRange || !alive) return;
 		

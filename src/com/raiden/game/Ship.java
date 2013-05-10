@@ -7,7 +7,7 @@ import android.graphics.Point;
 public class Ship extends Collidable {
 
 	// ship speed
-	private int speed = (int) (15 * GameScreen.scaleX);
+	private int speed = (int) Math.ceil(15 * GameScreen.scaleX);
 
 	// image sprite half size
 	// TODO fix these, they should be the radius

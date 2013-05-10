@@ -17,8 +17,8 @@ public class Bullet extends Collidable {
 	
 	public Bullet(){
 		this.radius = (int) (10 * GameScreen.scaleX);
-		this.speed  = (int) (15 * GameScreen.scaleY);		
-		this.damage = 20;
+		this.speed  = (int) Math.ceil(15 * GameScreen.scaleY);		
+		this.damage = 1;
 		this.visible = false;
 	}
 	
@@ -30,7 +30,6 @@ public class Bullet extends Collidable {
 		double radians = Math.toRadians(angle);
 		this.moveX = (int) (speed * Math.cos(radians));
 		this.moveY = (int) (speed * Math.sin(-radians));
-		this.damage = 20;
 		this.hit = false;
 	}
 	
