@@ -9,60 +9,60 @@ public class Enemy extends Collidable {
 	public boolean visible, outOfRange, alive;
 	public float angle;
 	private double radians;
-	
+
 	private static int minX = 0;
 	private static int minY = 0;
 	private static int maxX = GameScreen.screenSize.x - 1;
 	private static int maxY = GameScreen.screenSize.y - 1;
-	
+
 	private static final int BOUNDS = 100;
 	private static int outMinX = - BOUNDS;
 	private static int outMinY = - BOUNDS;
 	private static int outMaxX = GameScreen.screenSize.x + BOUNDS;
 	private static int outMaxY = GameScreen.screenSize.y + BOUNDS;
-	
+
 	private int moveX;
 	private int moveY;
-	
+
 	public int health;
-	
+
 	private static Ship target = GameScreen.hero;
-	
-    private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
-    private ArrayList<Turret> turrets;
-	private static final int MAX_BULLETS = 60;
-    public static Bullet[] shots = new Bullet[MAX_BULLETS];
-	
+
+	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
+	private ArrayList<Turret> turrets;
+	private static final int MAX_BULLETS = 10;
+	public Bullet[] shots = new Bullet[MAX_BULLETS];
+
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 500;
+	private final int RELOAD_DONE = 700;
 	private float reloadTime = RELOAD_DONE;
-	
+
+	private static final int IMPACT_INTERVAL = 500;
+	private int impactTimer = IMPACT_INTERVAL;
+
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
-    
-	static
-	{
-		for (int i = 0; i < MAX_BULLETS; i++)
-		{
-			shots[i] = new Bullet();
-		}
-	}
-	
+
 	public Enemy() {
 		this.radius =(int) (55 * GameScreen.scaleX);
 		this.speed = (int) Math.ceil(6 * GameScreen.scaleX);
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
-		
+
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
-		
+
 		turrets = new ArrayList<Turret>();
 		addTurret(0.0f);
+		
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			shots[i] = new Bullet();
+		}
 	}
-	
+
 	public void spawn(int x, int y, float angle) {
 		this.x = x;
 		this.y = y;
@@ -74,17 +74,18 @@ public class Enemy extends Collidable {
 		this.moveY = (int) (speed * Math.sin(-radians));
 		this.alive = true;
 		this.health = 4;
+		this.impactTimer = IMPACT_INTERVAL;
 	}
-	
+
 	public boolean addTurret(float firingAngle){
 		if (emptyTurretPositions.size() == 0)
 			return false;
-		
+
 		turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
 		emptyTurretPositions.remove(0);
 		return true;
 	}
-	
+
 	public boolean shoot() {
 		if (readyToFire) {
 			for (Turret turret: turrets) {
@@ -96,13 +97,13 @@ public class Enemy extends Collidable {
 		}
 		return false;
 	}
-	
+
 	public void update(float deltaTime){
-		
+
 		if (health < 1) alive = false;
-		
+
 		if (outOfRange || !alive) return;
-		
+
 		x += moveX;
 		y += moveY;
 
@@ -123,21 +124,23 @@ public class Enemy extends Collidable {
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
-		
-		
+
 		// check if reload time is done
 		if (reloadTime >= RELOAD_DONE){
 			readyToFire = true;
 		}
-		
+
 		// reload weapons
 		if (!readyToFire){
 			reloadTime += deltaTime;
 		} else {
 			shoot();
 		}
+
+		if (impactTimer < IMPACT_INTERVAL)
+			impactTimer += deltaTime;
 	}
-	
+
 	public boolean hasDied(){
 		if (!this.alive && this.visible){
 			this.visible = false;
@@ -145,54 +148,58 @@ public class Enemy extends Collidable {
 		}
 		return false;
 	}
-	
+
 	public boolean isInGame(){
 		return (alive && !outOfRange);
 	}
-	
+
 	public void turn(float degrees){
 		// this will turn the ship
 	}
-	
+
 	public boolean isVisible(){
 		return visible;
 	}
-	
+
 	public boolean isOutOfRange(){
 		return outOfRange;
 	}
-	
+
 	public int getX(){
 		return x;
 	}
-	
+
 	public int getY(){
 		return y;
 	}
-	
+
 	public float getAngle() {
 		return angle;
 	}
-	
+
 	public void accept(Collidable other) {
 		other.visit(this);
 	}
-	
+
 	@Override
 	public void visit(Ship ship) {
-		// TODO Auto-generated method stub
-		
+		if (impactTimer == IMPACT_INTERVAL){
+			int midPointX = (this.x + ship.x) / 2;
+			int midPointY = (this.y + ship.y) / 2;
+			ship.addEnemyImpact(midPointX, midPointY);
+			impactTimer = 0;
+		}
 	}
 
 	@Override
 	public void visit(Bullet bullet) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void visit(Enemy enemy) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

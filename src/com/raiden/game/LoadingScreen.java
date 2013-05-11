@@ -40,7 +40,7 @@ public class LoadingScreen extends Screen {
         Assets.hit4 = game.getAudio().createSound("hit4.wav");
         Assets.hit5 = game.getAudio().createSound("hit5.wav");
         Assets.heroHit = game.getAudio().createSound("heroHit.wav");
-
+        Assets.heroCollisionSound = game.getAudio().createSound("heroCollision.wav");
         
         Assets.hero1 = g.newImage("hero1.png", ImageFormat.ARGB4444, scaleX, scaleY);
         Assets.hero2 = g.newImage("hero2.png", ImageFormat.ARGB4444, scaleX, scaleY);
@@ -49,6 +49,10 @@ public class LoadingScreen extends Screen {
         Assets.heroRight1 = g.newImage("heroRight1.png", ImageFormat.ARGB4444, scaleX, scaleY);
         Assets.heroRight2 = g.newImage("heroRight2.png", ImageFormat.ARGB4444, scaleX, scaleY);
         Assets.heroBullet1 = g.newImage("heroBullet1.png", ImageFormat.ARGB4444, scaleX, scaleY);
+        
+        Assets.heroCollision1 = g.newImage("heroCollision1.png", ImageFormat.ARGB4444, scaleX, scaleY);
+        Assets.heroCollision2 = g.newImage("heroCollision2.png", ImageFormat.ARGB4444, scaleX, scaleY);
+        Assets.heroCollision3 = g.newImage("heroCollision3.png", ImageFormat.ARGB4444, scaleX, scaleY);
         
         Assets.explosion1 = g.newImage("explosion1.png", ImageFormat.ARGB4444, scaleX, scaleY);
         Assets.explosion2 = g.newImage("explosion2.png", ImageFormat.ARGB4444, scaleX, scaleY);

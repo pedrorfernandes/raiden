@@ -34,12 +34,15 @@ public class Ship extends Collidable {
 	private static final int MAX_BULLETS = 30;
 	public static Bullet[] shots = new Bullet[MAX_BULLETS];
 	
+	private ArrayList<Point> enemyImpacts = new ArrayList<Point>();
+	
 	//ListIterator<Bullet> bulletItr;
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 200;
 	private float reloadTime = RELOAD_DONE;
 	
 	// iterating variables
+	private static Enemy enemy;
 	private static Bullet bullet;
 	private static int length;
 
@@ -133,11 +136,18 @@ public class Ship extends Collidable {
 		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
 			turningThreshold += 2;
 		
-		length = Enemy.shots.length;
+		// check collision with enemies and their bullets
+		length = GameScreen.enemies.length;
 		for (int i = 0; i < length; i++) {
-			bullet = Enemy.shots[i];
-			if (bullet.visible)
-				this.checkCollision(bullet);
+			enemy = GameScreen.enemies[i];
+			if ( enemy.isInGame() ){
+				this.checkCollision(enemy);
+			}
+			for (int j = 0; j < enemy.shots.length; j++) {
+				bullet = enemy.shots[j];
+				if (bullet.visible)
+					this.checkCollision(bullet);
+			}
 		}
 
 		// check if reload time is done
@@ -194,6 +204,16 @@ public class Ship extends Collidable {
 			return true;
 		}
 		return false;
+	}
+	
+	public ArrayList<Point> getEnemyImpacts(){
+		ArrayList<Point> impacts = new ArrayList<Point>(enemyImpacts);
+		enemyImpacts.clear();
+		return impacts;
+	}
+	
+	public void addEnemyImpact(int x, int y){
+		enemyImpacts.add(new Point(x,y));
 	}
 	
 	public void accept(Collidable other) {

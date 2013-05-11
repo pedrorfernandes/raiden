@@ -9,6 +9,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.raiden.animation.Animation;
+import com.raiden.animation.Collision;
+import com.raiden.animation.Explosion;
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
@@ -52,11 +55,12 @@ public class GameScreen extends Screen {
 	private static ArrayList<Sound> explosionSounds;
 	private static int currentExplosionSound = 0;
 
-	public static ArrayList<Explosion> explosions;
-	private static final int NUMBER_OF_EXPLOSIONS = 20;
-	private static final float BIG_EXPLOSION = 1.5f;
-	private static final float NORMAL_EXPLOSION = 1.0f;
-	private static final float SMALL_EXPLOSION = 0.4f;
+	private static ArrayList<Animation> specialEffects;
+	private static final float BIG_EFFECT = 1.5f;
+	private static final float NORMAL_EFFECT = 1.0f;
+	private static final float SMALL_EFFECT = 0.4f;
+	
+	public ArrayList<Point> heroImpacts;
 
 	// enemy variables
 	private Image enemyImage;
@@ -67,7 +71,6 @@ public class GameScreen extends Screen {
 	private static final float ANGLE_UP = 90.0f;
 
 	// constants for animation
-	private static final int EXPLOSION_DURATION = 5;
 	private static final int HERO_ANIMATION_DURATION = 10;
 	private static final int ANIMATION_UPDATE = 1;
 	
@@ -84,7 +87,7 @@ public class GameScreen extends Screen {
 	Bullet bullet;
 	Enemy enemy;
 	Image image;
-	Explosion explosion;
+	Animation specialEffect;
 	ListIterator<Enemy> enemyItr;
 
 	public GameScreen(Game game) {
@@ -130,18 +133,7 @@ public class GameScreen extends Screen {
 		explosionSounds.add(Assets.explosionSound9); explosionSounds.add(Assets.explosionSound10);
 		explosionSounds.add(Assets.explosionSound11);
 
-		explosions = new ArrayList<Explosion>();
-		Explosion.addFrame(Assets.explosion1, EXPLOSION_DURATION);
-		Explosion.addFrame(Assets.explosion2, EXPLOSION_DURATION);
-		Explosion.addFrame(Assets.explosion3, EXPLOSION_DURATION);
-		Explosion.addFrame(Assets.explosion4, EXPLOSION_DURATION);
-		Explosion.addFrame(Assets.explosion5, EXPLOSION_DURATION);
-		Explosion.addFrame(Assets.explosion6, EXPLOSION_DURATION);
-
-		// create a number of explosions
-		for (int i = 0; i < NUMBER_OF_EXPLOSIONS; i++) {
-			explosions.add(new Explosion());
-		}
+		specialEffects = new ArrayList<Animation>();
 
 		dragPoint = new Point();
 
@@ -163,16 +155,6 @@ public class GameScreen extends Screen {
 			enemy = enemies[i];
 			if ( !enemy.isInGame() ){
 				enemy.spawn(x, y, angle);
-				return;
-			}
-		}
-	}
-
-	public void setExplosion(int x, int y, float scale){
-		length = explosions.size();
-		for (int i = 0; i < length; i++) {
-			if (!explosions.get(i).active){
-				explosions.get(i).set(x, y, scale);
 				return;
 			}
 		}
@@ -284,18 +266,26 @@ public class GameScreen extends Screen {
 		//length = Ship.shotsFired.size();
 		for (int i = 0; i < Ship.shots.length; i++) {
 			bullet = Ship.shots[i];
-			//if (!bullet.visible) continue;
 			bullet.update();
 			if ( bullet.checkHit() ){
 				hitSounds.get(currentHitSound).play(volume);
 				currentHitSound++;
 				if (currentHitSound >= hitSounds.size() )
 					currentHitSound = 0;
-				setExplosion(bullet.x, bullet.y, SMALL_EXPLOSION);
+				specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));
 			}
 		}
 
 		hero.update(deltaTime);
+		
+		// check hero collisions with enemies
+		heroImpacts = hero.getEnemyImpacts();
+		length = heroImpacts.size();
+		for (int i = 0; i < length; i++) {
+			Point impact = heroImpacts.get(i);
+			Assets.heroCollisionSound.play(volume);
+			specialEffects.add(new Collision(impact.x, impact.y, NORMAL_EFFECT, 0, hero.radius/10));
+		}
 
 		// update the enemies  
 		length = enemies.length;
@@ -308,19 +298,17 @@ public class GameScreen extends Screen {
 				currentExplosionSound++;
 				if (currentExplosionSound >= explosionSounds.size() )
 					currentExplosionSound = 0;
-				setExplosion(enemy.x, enemy.y, BIG_EXPLOSION);
-
+				specialEffects.add(new Explosion(enemy.x, enemy.y, BIG_EFFECT));
 			}
-		}
-		
-		// update the enemy bullets
-		for (int i = 0; i < Enemy.shots.length; i++) {
-			bullet = Enemy.shots[i];
-			//if (!bullet.visible) continue;
-			bullet.update();
-			if ( bullet.checkHit()  ){
-				Assets.heroHit.play(volume);
-				setExplosion(bullet.x, bullet.y, SMALL_EXPLOSION);
+			
+			// update the enemy bullets
+			for (int j = 0; j < enemy.shots.length; j++) {
+				bullet = enemy.shots[j];
+				bullet.update();
+				if ( bullet.checkHit()  ){
+					Assets.heroHit.play(volume);
+					specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));
+				}
 			}
 		}
 
@@ -392,6 +380,29 @@ public class GameScreen extends Screen {
 		length = enemies.length;
 		for (int i = 0; i < length; i++) {
 			Enemy enemy = enemies[i];
+			
+			// enemy bullets drawing
+			for (int j = 0; j < enemy.shots.length; j++) {
+				Bullet bullet = enemy.shots[j];
+				if (!bullet.visible) continue;
+				if (bullet.angle == ANGLE_UP){
+					g.drawImage(Assets.enemyBullet1, 
+							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
+							bullet.y-Assets.enemyBullet1.getHalfHeight());
+				} else {
+					g.drawRotatedImage(Assets.enemyBullet1, 
+							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
+							bullet.y-Assets.enemyBullet1.getHalfHeight(),
+							Assets.enemyBullet1.getWidth(),
+							Assets.enemyBullet1.getHeight(), 
+							bullet.angle,
+							ANGLE_UP);
+				}
+				if (HITBOXES_VISIBLE)
+					g.drawCircle(bullet.x, bullet.y, bullet.radius, hitboxColor);
+			}
+			
+			// draw the enemy
 			if (!enemy.visible) continue;
 			if (enemy.angle == ANGLE_DOWN){
 				g.drawImage(enemyImage, 
@@ -409,45 +420,25 @@ public class GameScreen extends Screen {
 			if (HITBOXES_VISIBLE)
 				g.drawCircle(enemy.x, enemy.y, enemy.radius, hitboxColor);
 		}
-		
-		// enemy bullets drawing
-		length = Enemy.shots.length;
-		for (int i = 0; i < length; i++) {
-			Bullet bullet = Enemy.shots[i];
-			if (!bullet.visible) continue;
-			if (bullet.angle == ANGLE_UP){
-				g.drawImage(Assets.enemyBullet1, 
-						bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-						bullet.y-Assets.enemyBullet1.getHalfHeight());
-			} else {
-				g.drawRotatedImage(Assets.enemyBullet1, 
-						bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-						bullet.y-Assets.enemyBullet1.getHalfHeight(),
-						Assets.enemyBullet1.getWidth(),
-						Assets.enemyBullet1.getHeight(), 
-						bullet.angle,
-						ANGLE_UP);
-			}
-			if (HITBOXES_VISIBLE)
-				g.drawCircle(bullet.x, bullet.y, bullet.radius, hitboxColor);
-		}
 
-		// explosions drawing
-		length = explosions.size();
-		for (int i = 0; i < length; i++) {
-			explosion = explosions.get(i);
-			if (!explosion.active) continue;
-			image = explosion.getImage();
-			if (explosion.scale == NORMAL_EXPLOSION){
-				g.drawImage(image, explosion.x - image.getHalfWidth(), 
-                                   explosion.y - image.getHalfHeight());
+		// special effects drawing
+		for (int i = 0; i < specialEffects.size(); i++) {
+			specialEffect = specialEffects.get(i);
+			if (!specialEffect.active){
+				specialEffects.remove(i);
+				i--;
+			}
+			image = specialEffect.getImage();
+			if (specialEffect.scale == NORMAL_EFFECT){
+				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
+						           specialEffect.y - image.getHalfHeight());
 			} else {
 				g.drawScaledImage(image, 
-                            explosion.x - image.getHalfWidth(), 
-                            explosion.y - image.getHalfHeight(),
-                            explosion.x,
-                            explosion.y,
-                            explosion.scale);
+						specialEffect.x - image.getHalfWidth(), 
+						specialEffect.y - image.getHalfHeight(),
+						specialEffect.x,
+						specialEffect.y,
+						specialEffect.scale);
 			}
 		}
 		
@@ -469,11 +460,11 @@ public class GameScreen extends Screen {
 		heroAnimation.update(ANIMATION_UPDATE);
 		heroTurningLeftAnimation.update(ANIMATION_UPDATE);
 		heroTurningRightAnimation.update(ANIMATION_UPDATE);
-		length = explosions.size();
+		length = specialEffects.size();
 		for (int i = 0; i < length; i++) {
-			explosion = explosions.get(i);
-			if (explosion.active)
-				explosion.update(ANIMATION_UPDATE);
+			specialEffect = specialEffects.get(i);
+			if (specialEffect.active)
+				specialEffect.update(ANIMATION_UPDATE);
 		}
 
 	}
