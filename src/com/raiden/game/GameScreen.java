@@ -101,7 +101,7 @@ public class GameScreen extends Screen {
 
 		// Initialize game objects here
 		hero = new Ship();
-		Ship.setTargets(enemies);
+		hero.setTargets(enemies);
 		
 		heroAnimation = new Animation();
 		heroAnimation.addFrame(Assets.hero1, HERO_ANIMATION_DURATION);

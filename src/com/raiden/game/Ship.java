@@ -22,7 +22,7 @@ public class Ship extends Collidable {
 	private static final int MAX_BULLETS = 30;
 	public Bullet[] shots = new Bullet[MAX_BULLETS];
 	
-	private static Enemy[] enemies;
+	private Enemy[] enemies;
 	
 	private ArrayList<Point> enemyImpacts = new ArrayList<Point>();
 	
@@ -35,8 +35,8 @@ public class Ship extends Collidable {
 	private static Bullet bullet;
 	private static int length;
 	
-	public static void setTargets(Enemy[] enemies){
-		Ship.enemies = enemies;
+	public void setTargets(Enemy[] enemies){
+		this.enemies = enemies;
 	}
 
 	public Ship() {

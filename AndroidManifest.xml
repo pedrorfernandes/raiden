@@ -19,7 +19,7 @@
         <activity
            android:name=".Raiden"
            android:configChanges="keyboard|keyboardHidden|orientation"
-           android:label="SampleGame"
+           android:label="Raiden"
            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,5 +28,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
