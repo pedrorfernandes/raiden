@@ -5,38 +5,27 @@ import java.util.ArrayList;
 import android.graphics.Point;
 
 public class Ship extends Collidable {
-
-	// ship speed
-	private int speed = (int) Math.ceil(15 * GameScreen.scaleX);
-
-	// image sprite half size
-	// TODO fix these, they should be the radius
-	public final int halfSizeX = Assets.hero1.getWidth() / 2;
-	public final int halfSizeY = Assets.hero1.getHeight() / 2;
-
+	private static final int RADIUS = 30;
+	private static final int SPEED = 15;
+	
 	// position to move next
-	private int newX = x;
-	private int newY = y;
-
-	// box which the player can move in
-	private static int minX = 0;
-	private static int minY = 0;
-	private static int maxX = GameScreen.screenSize.x - 1;
-	private static int maxY = GameScreen.screenSize.y - 1;
+	private int newX;
+	private int newY;
 
 	// to know when the ship is actually turning or not
 	final int LOW_THRESHOLD = 0;
-	final int HIGH_THRESHOLD = (int) (8 * GameScreen.scaleX);
+	final int HIGH_THRESHOLD = (int) (8 * scaleX);
 	private int turningThreshold = HIGH_THRESHOLD;
 
 	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
 	private ArrayList<Turret> turrets;
 	private static final int MAX_BULLETS = 30;
-	public static Bullet[] shots = new Bullet[MAX_BULLETS];
+	public Bullet[] shots = new Bullet[MAX_BULLETS];
+	
+	private static Enemy[] enemies;
 	
 	private ArrayList<Point> enemyImpacts = new ArrayList<Point>();
 	
-	//ListIterator<Bullet> bulletItr;
 	private boolean readyToFire = true;
 	private final int RELOAD_DONE = 200;
 	private float reloadTime = RELOAD_DONE;
@@ -45,23 +34,27 @@ public class Ship extends Collidable {
 	private static Enemy enemy;
 	private static Bullet bullet;
 	private static int length;
+	
+	public static void setTargets(Enemy[] enemies){
+		Ship.enemies = enemies;
+	}
 
-	static
-	{
+	public Ship() {
+		radius = (int)(RADIUS * scaleX);
+		int halfSizeY = (int)(radius * 2);
+		
+		// initial starting point
+		x = maxX / 2;
+		y = maxY - halfSizeY * 6;
+		newX = x;
+		newY = y;
+		
+		speed = (int) Math.ceil(SPEED * scaleX);
+		
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			shots[i] = new Bullet();
 		}
-	}
-
-	public Ship() {
-
-		// initial starting point
-		x = GameScreen.screenSize.x / 2;
-		y = GameScreen.screenSize.y - halfSizeY * 6;
-		newX = x;
-		newY = y;
-		this.radius = (int)(40 * GameScreen.scaleX);
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
@@ -97,11 +90,9 @@ public class Ship extends Collidable {
 		return false;
 	}
 
-	/*
-	public ArrayList<Bullet> getShotsFired(){
+	public Bullet[] getShotsFired(){
 		return shots;
 	}
-	*/
 
 	public void update(float deltaTime) {
 		// update ship X position
@@ -137,9 +128,9 @@ public class Ship extends Collidable {
 			turningThreshold += 2;
 		
 		// check collision with enemies and their bullets
-		length = GameScreen.enemies.length;
+		length = enemies.length;
 		for (int i = 0; i < length; i++) {
-			enemy = GameScreen.enemies[i];
+			enemy = enemies[i];
 			if ( enemy.isInGame() ){
 				this.checkCollision(enemy);
 			}

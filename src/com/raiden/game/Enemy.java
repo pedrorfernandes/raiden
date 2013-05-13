@@ -5,28 +5,27 @@ import java.util.ArrayList;
 import android.graphics.Point;
 
 public class Enemy extends Collidable {
-	private int speed;
+	private static final int RADIUS = 50;
+	private static final int SPEED = 6;
+	
 	public boolean visible, outOfRange, alive;
 	public float angle;
 	private double radians;
-
-	private static int minX = 0;
-	private static int minY = 0;
-	private static int maxX = GameScreen.screenSize.x - 1;
-	private static int maxY = GameScreen.screenSize.y - 1;
-
-	private static final int BOUNDS = 100;
-	private static int outMinX = - BOUNDS;
-	private static int outMinY = - BOUNDS;
-	private static int outMaxX = GameScreen.screenSize.x + BOUNDS;
-	private static int outMaxY = GameScreen.screenSize.y + BOUNDS;
+	
+	private static Point bounds;
+	
+	private static final int OFFSCREEN_LIMIT = 100;
+	private static int outMinX = - OFFSCREEN_LIMIT;
+	private static int outMinY = - OFFSCREEN_LIMIT;
+	private static int outMaxX;
+	private static int outMaxY;
 
 	private int moveX;
 	private int moveY;
 
 	public int health;
 
-	private static Ship target = GameScreen.hero;
+	private static Ship target;
 
 	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
 	private ArrayList<Turret> turrets;
@@ -43,10 +42,23 @@ public class Enemy extends Collidable {
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
+	
+	public static void setBounds(Point screenSize){
+		bounds = screenSize;
+		
+		maxX = bounds.x - 1;
+		maxY = bounds.y - 1;
+		outMaxX = bounds.x + OFFSCREEN_LIMIT;
+		outMaxY = bounds.y + OFFSCREEN_LIMIT;
+	}
+	
+	public static void setTarget(Ship target){
+		Enemy.target = target;
+	}
 
 	public Enemy() {
-		this.radius =(int) (55 * GameScreen.scaleX);
-		this.speed = (int) Math.ceil(6 * GameScreen.scaleX);
+		this.radius =(int) (RADIUS * scaleX);
+		this.speed = (int) Math.ceil(SPEED * scaleX);
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
@@ -118,9 +130,9 @@ public class Enemy extends Collidable {
 			}
 		}
 		
-		length = Ship.shots.length;
+		length = target.shots.length;
 		for (int i = 0; i < length; i++) {
-			bullet = Ship.shots[i];
+			bullet = target.shots[i];
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}

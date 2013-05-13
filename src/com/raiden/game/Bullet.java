@@ -1,14 +1,11 @@
 package com.raiden.game;
 
 public class Bullet extends Collidable {
-	private int speed;
+	private static final int RADIUS = 10;
+	private static final int SPEED = 15;
+	
 	public boolean visible, hit;
 	public float angle;
-	
-	private static int minX = 0;
-	private static int minY = 0;
-	private static int maxX = GameScreen.screenSize.x - 1;
-	private static int maxY = GameScreen.screenSize.y - 1;
 	
 	private int moveX;
 	private int moveY;
@@ -16,8 +13,8 @@ public class Bullet extends Collidable {
 	private int damage;
 	
 	public Bullet(){
-		this.radius = (int) (10 * GameScreen.scaleX);
-		this.speed  = (int) Math.ceil(15 * GameScreen.scaleY);		
+		this.radius = (int) (RADIUS * scaleX);
+		this.speed  = (int) Math.ceil(SPEED * scaleY);		
 		this.damage = 1;
 		this.visible = false;
 	}

@@ -96,9 +96,13 @@ public class GameScreen extends Screen {
         scaleX = game.getScaleX();
         scaleY = game.getScaleY();
 		screenSize = game.getSize();
+		Collidable.setBounds(screenSize);
+		Collidable.setScale(scaleX, scaleY);
 
 		// Initialize game objects here
 		hero = new Ship();
+		Ship.setTargets(enemies);
+		
 		heroAnimation = new Animation();
 		heroAnimation.addFrame(Assets.hero1, HERO_ANIMATION_DURATION);
 		heroAnimation.addFrame(Assets.hero2, HERO_ANIMATION_DURATION);
@@ -111,6 +115,8 @@ public class GameScreen extends Screen {
 		heroImage = heroAnimation.getImage();
 
 		enemyImage = Assets.enemy1;
+		
+		Enemy.setTarget(hero);
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemies[i] = new Enemy();
@@ -264,8 +270,8 @@ public class GameScreen extends Screen {
 
 		// update the hero's bullets
 		//length = Ship.shotsFired.size();
-		for (int i = 0; i < Ship.shots.length; i++) {
-			bullet = Ship.shots[i];
+		for (int i = 0; i < hero.shots.length; i++) {
+			bullet = hero.shots[i];
 			bullet.update();
 			if ( bullet.checkHit() ){
 				hitSounds.get(currentHitSound).play(volume);
@@ -305,7 +311,7 @@ public class GameScreen extends Screen {
 			for (int j = 0; j < enemy.shots.length; j++) {
 				bullet = enemy.shots[j];
 				bullet.update();
-				if ( bullet.checkHit()  ){
+				if ( bullet.checkHit() ){
 					Assets.heroHit.play(volume);
 					specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));
 				}
@@ -355,9 +361,9 @@ public class GameScreen extends Screen {
 			g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
 
 		// hero shots drawing
-		length = Ship.shots.length;
+		length = hero.shots.length;
 		for (int i = 0; i < length; i++) {
-			Bullet bullet = Ship.shots[i];
+			Bullet bullet = hero.shots[i];
 			if (!bullet.visible) continue;
 			if (bullet.angle == ANGLE_UP){
 				g.drawImage(Assets.heroBullet1, 

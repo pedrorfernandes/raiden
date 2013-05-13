@@ -1,9 +1,36 @@
 package com.raiden.game;
 
+import android.graphics.Point;
+
 public abstract class Collidable implements Visitor {
 	public int x;
 	public int y;
 	public int radius;
+	
+	// box which every object can move in
+	protected static int minX;
+	protected static int minY;
+	protected static int maxX;
+	protected static int maxY;
+	
+	protected static float scaleX;
+	protected static float scaleY;
+	
+	protected int speed;
+	
+	private static Point bounds;
+	
+	public static void setBounds(Point screenSize){
+		bounds = screenSize;
+		minX = 0; minY = 0;
+		maxX = bounds.x - 1;
+		maxY = bounds.y - 1;
+	}
+	
+	public static void setScale(float x, float y){
+		scaleX = x;
+		scaleY = y;
+	}
 	
 	public void checkCollision(Collidable c){
 	    int dx = c.x - this.x;
