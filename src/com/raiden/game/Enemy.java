@@ -137,14 +137,13 @@ public class Enemy extends Collidable {
 				this.checkCollision(bullet);
 		}
 
-		// check if reload time is done
-		if (reloadTime >= RELOAD_DONE){
-			readyToFire = true;
-		}
-
 		// reload weapons
 		if (!readyToFire){
 			reloadTime += deltaTime;
+			// check if reload time is done
+			if (reloadTime >= RELOAD_DONE){
+				readyToFire = true;
+			}
 		} else {
 			shoot();
 		}
@@ -175,14 +174,6 @@ public class Enemy extends Collidable {
 
 	public boolean isOutOfRange(){
 		return outOfRange;
-	}
-
-	public int getX(){
-		return x;
-	}
-
-	public int getY(){
-		return y;
 	}
 
 	public float getAngle() {

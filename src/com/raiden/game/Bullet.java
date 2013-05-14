@@ -55,14 +55,6 @@ public class Bullet extends Collidable {
 		return visible;
 	}
 	
-	public int getX(){
-		return x;
-	}
-	
-	public int getY(){
-		return y;
-	}
-	
 	public float getAngle() {
 		return angle;
 	}

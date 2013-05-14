@@ -6,6 +6,7 @@ public abstract class Collidable implements Visitor {
 	public int x;
 	public int y;
 	public int radius;
+	protected int speed;
 	
 	// box which every object can move in
 	protected static int minX;
@@ -15,9 +16,7 @@ public abstract class Collidable implements Visitor {
 	
 	protected static float scaleX;
 	protected static float scaleY;
-	
-	protected int speed;
-	
+		
 	private static Point bounds;
 	
 	public static void setBounds(Point screenSize){
@@ -44,4 +43,20 @@ public abstract class Collidable implements Visitor {
 	}
 
 	public abstract void accept(Collidable other);
+	
+	public int getX(){
+		return x;
+	}
+
+	public int getY(){
+		return y;
+	}
+	
+	public int getRadius(){
+		return radius;
+	}
+	
+	public int getSpeed(){
+		return speed;
+	}
 }

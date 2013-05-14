@@ -27,7 +27,7 @@ public class Ship extends Collidable {
 	private ArrayList<Point> enemyImpacts = new ArrayList<Point>();
 	
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 200;
+	public final int RELOAD_DONE = 200;
 	private float reloadTime = RELOAD_DONE;
 	
 	// iterating variables
@@ -58,15 +58,16 @@ public class Ship extends Collidable {
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
+		emptyTurretPositions.add(new Point(-(int)(36*scaleX), -halfSizeY));
+		emptyTurretPositions.add(new Point( (int)(36*scaleX), -halfSizeY));
 		emptyTurretPositions.add(new Point(  0, -halfSizeY));
-		emptyTurretPositions.add(new Point(-25, -halfSizeY));
-		emptyTurretPositions.add(new Point( 25, -halfSizeY));
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
 		addTurret(90.0f);
-		addTurret(90.0f+15.0f);
-		addTurret(90.0f-15.0f);
+		addTurret(90.0f);
+		//addTurret(90.0f+15.0f);
+		//addTurret(90.0f-15.0f);
 	}
 
 	public boolean addTurret(float firingAngle){
@@ -141,14 +142,13 @@ public class Ship extends Collidable {
 			}
 		}
 
-		// check if reload time is done
-		if (reloadTime >= RELOAD_DONE){
-			readyToFire = true;
-		}
-
 		// reload weapons
 		if (!readyToFire){
 			reloadTime += deltaTime;
+			// check if reload time is done
+			if (reloadTime >= RELOAD_DONE){
+				readyToFire = true;
+			}
 		}
 	}
 
@@ -166,14 +166,6 @@ public class Ship extends Collidable {
 			newX = maxX;
 		if (newY > maxY)
 			newY = maxY;
-	}
-
-	public int getX(){
-		return x;
-	}
-
-	public int getY(){
-		return y;
 	}
 
 	public boolean isMoving(){

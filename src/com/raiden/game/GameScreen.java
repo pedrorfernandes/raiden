@@ -351,7 +351,7 @@ public class GameScreen extends Screen {
 
 		// First draw the game elements.
 
-		g.clearScreen(0);
+		g.clearScreen(Color.rgb(58, 86, 104));
 		
 		// hero drawing
 		g.drawImage(heroImage,
