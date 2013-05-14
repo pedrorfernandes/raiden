@@ -23,7 +23,7 @@ public class Enemy extends Collidable {
 	private int moveX;
 	private int moveY;
 
-	public int health;
+	public int armor;
 
 	private static Ship target;
 
@@ -85,7 +85,7 @@ public class Enemy extends Collidable {
 		this.moveX = (int) (speed * Math.cos(radians));
 		this.moveY = (int) (speed * Math.sin(-radians));
 		this.alive = true;
-		this.health = 4;
+		this.armor = 4;
 		this.impactTimer = IMPACT_INTERVAL;
 	}
 
@@ -112,7 +112,7 @@ public class Enemy extends Collidable {
 
 	public void update(float deltaTime){
 
-		if (health < 1) alive = false;
+		if (armor < 1) alive = false;
 
 		if (outOfRange || !alive) return;
 

@@ -1,13 +1,16 @@
 package com.raiden.game;
 
+import java.util.Random;
+
 import android.graphics.Point;
 
 public class Turret {
-	Collidable ship;
-	Collidable target;
-	Point position;
-	float angle;
-	double radians;
+	private Collidable ship;
+	private Collidable target;
+	private Point position;
+	private float angle;
+	private double radians;
+	public static Random random = new Random();
 
 	public Turret(Collidable ship, Point position, float angle) {
 		this.ship = ship;

@@ -93,7 +93,7 @@ public class Bullet extends Collidable {
 
 	@Override
 	public void visit(Enemy enemy) {
-		enemy.health -= damage;
+		enemy.armor -= damage;
 		this.visible = false;
 		this.hit = true;
 	}
