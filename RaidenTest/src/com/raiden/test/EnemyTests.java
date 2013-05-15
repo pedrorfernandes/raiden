@@ -36,12 +36,39 @@ public class EnemyTests extends AndroidTestCase {
 		assertEquals(100, x);
 		assertEquals(100, y);
 		
+		// check if he moves down
 		speed = 5;
 		enemy.setSpeed(speed);
 		enemy.update(TIMESLICE);
 		x = enemy.getX(); y = enemy.getY();
 		assertEquals(100, x);
 		assertEquals(100 + speed, y);
+		
+		// change direction left
+		float angle = 180.0f;
+		enemy.setDirection(angle);
+		enemy.update(TIMESLICE);
+		x = enemy.getX(); y = enemy.getY();
+		assertEquals(100-speed, x);
+		assertEquals(100+speed, y);
+		
+		// check if he goes off the screen
+		for (int i = 0; i < 19; i++) {
+			enemy.update(TIMESLICE);
+		}
+		x = enemy.getX(); y = enemy.getY();
+		assertEquals(100-20*speed, x);
+		assertEquals(100+speed, y);
+		assertTrue(enemy.isVisible());
+		enemy.update(TIMESLICE);
+		assertTrue(!enemy.isVisible());
+		
+		// check if enemy goes off bounds
+		assertTrue(!enemy.isOutOfRange());
+		while (enemy.getX() >= -(Enemy.OFFSCREEN_LIMIT) ) {
+			enemy.update(TIMESLICE);
+		}
+		assertTrue(enemy.isOutOfRange());
 		
 	}
 	

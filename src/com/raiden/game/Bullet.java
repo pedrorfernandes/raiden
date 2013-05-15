@@ -24,19 +24,19 @@ public class Bullet extends Collidable {
 		this.y = y;
 		this.angle = angle;
 		this.visible = true;
-		double radians = Math.toRadians(angle);
-		this.moveX = (int) (speed * Math.cos(radians));
-		this.moveY = (int) (speed * Math.sin(-radians));
+		float radians = (float) Math.toRadians(angle);
+		this.moveX = (int) (speed * FastMath.cos(radians));
+		this.moveY = (int) (speed * FastMath.sin(-radians));
 		this.hit = false;
 	}
 	
 	public void fire(int x, int y, double radians) {
 		this.x = x;
 		this.y = y;
-		this.angle = (float)Math.toDegrees(radians);
+		this.angle = (float) Math.toDegrees(radians);
 		this.visible = true;
-		this.moveX = (int)(speed * Math.cos(radians));
-		this.moveY = (int)(speed * Math.sin(-radians));
+		this.moveX = (int) (speed * FastMath.cos((float)radians));
+		this.moveY = (int) (speed * FastMath.sin((float)-radians));
 		this.hit = false;
 	}
 	

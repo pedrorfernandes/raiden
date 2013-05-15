@@ -10,15 +10,9 @@ public class Enemy extends Collidable {
 	
 	public boolean visible, outOfRange, alive;
 	public float angle;
-	private double radians;
+	private float radians;
 	
 	private static Point bounds;
-	
-	private static final int OFFSCREEN_LIMIT = 100;
-	private static int outMinX = - OFFSCREEN_LIMIT;
-	private static int outMinY = - OFFSCREEN_LIMIT;
-	private static int outMaxX;
-	private static int outMaxY;
 
 	private int moveX;
 	private int moveY;
@@ -42,15 +36,6 @@ public class Enemy extends Collidable {
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
-	
-	public static void setBounds(Point screenSize){
-		bounds = screenSize;
-		
-		maxX = bounds.x - 1;
-		maxY = bounds.y - 1;
-		outMaxX = bounds.x + OFFSCREEN_LIMIT;
-		outMaxY = bounds.y + OFFSCREEN_LIMIT;
-	}
 	
 	public void setTarget(Ship target){
 		this.target = target;
@@ -83,12 +68,12 @@ public class Enemy extends Collidable {
 	public void spawn(int x, int y, float angle) {
 		this.x = x;
 		this.y = y;
-		this.angle = (float)angle;
+		this.angle = angle;
 		this.visible = true;
 		this.outOfRange = false;
-		this.radians = Math.toRadians(angle);
-		this.moveX = (int) (speed * Math.cos(radians));
-		this.moveY = (int) (speed * Math.sin(-radians));
+		this.radians = (float) Math.toRadians(angle);
+		this.moveX = (int) (speed * FastMath.cos(radians));
+		this.moveY = (int) (speed * FastMath.sin(-radians));
 		this.alive = true;
 		this.armor = 4;
 		this.impactTimer = IMPACT_INTERVAL;
@@ -126,7 +111,8 @@ public class Enemy extends Collidable {
 
 	public void update(float deltaTime){
 
-		if (armor < 1) alive = false;
+		if (armor < 1) 
+			alive = false;
 
 		if (outOfRange || !alive) return;
 
@@ -226,7 +212,14 @@ public class Enemy extends Collidable {
 	@Override
 	public void setSpeed(int speed){
 		this.speed = speed;
-		this.moveX = (int) (speed * Math.cos(radians));
-		this.moveY = (int) (speed * Math.sin(-radians));
+		this.moveX = (int) (speed * FastMath.cos(radians));
+		this.moveY = (int) (speed * FastMath.sin(-radians));
+	}
+	
+	public void setDirection(float angle){
+		this.angle = angle;
+		this.radians = (float) Math.toRadians(angle);
+		this.moveX = (int) (speed * FastMath.cos(radians));
+		this.moveY = (int) (speed * FastMath.sin(-radians));
 	}
 }

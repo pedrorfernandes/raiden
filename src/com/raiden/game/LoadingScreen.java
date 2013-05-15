@@ -67,6 +67,8 @@ public class LoadingScreen extends Screen {
         
         // initialize static arrays
         FastMath.atan2(0.5f, 0.5f);
+        FastMath.cos((float)Math.PI / 3);
+        FastMath.sin((float)Math.PI / 3);
 
         game.setScreen(new MainMenuScreen(game));
 

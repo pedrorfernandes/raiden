@@ -14,6 +14,12 @@ public abstract class Collidable implements Visitor {
 	protected static int maxX;
 	protected static int maxY;
 	
+	public static final int OFFSCREEN_LIMIT = 100;
+	protected static int outMinX = - OFFSCREEN_LIMIT;
+	protected static int outMinY = - OFFSCREEN_LIMIT;
+	protected static int outMaxX;
+	protected static int outMaxY;
+	
 	protected static float scaleX;
 	protected static float scaleY;
 		
@@ -24,6 +30,8 @@ public abstract class Collidable implements Visitor {
 		minX = 0; minY = 0;
 		maxX = bounds.x - 1;
 		maxY = bounds.y - 1;
+		outMaxX = bounds.x + OFFSCREEN_LIMIT;
+		outMaxY = bounds.y + OFFSCREEN_LIMIT;
 	}
 	
 	public static void setScale(float x, float y){
