@@ -50,4 +50,7 @@ public class Turret {
 		}
 	}
 
+	public void setTarget(Collidable target){
+		this.target = target;
+	}
 }

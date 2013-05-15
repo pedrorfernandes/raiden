@@ -25,7 +25,7 @@ public class Enemy extends Collidable {
 
 	public int armor;
 
-	private static Ship target;
+	private Ship target;
 
 	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
 	private ArrayList<Turret> turrets;
@@ -52,16 +52,21 @@ public class Enemy extends Collidable {
 		outMaxY = bounds.y + OFFSCREEN_LIMIT;
 	}
 	
-	public static void setTarget(Ship target){
-		Enemy.target = target;
+	public void setTarget(Ship target){
+		this.target = target;
+		for (Turret turret: turrets) {
+			turret.setTarget(target);
+		}
 	}
 
-	public Enemy() {
+	public Enemy(Ship target) {
 		this.radius =(int) (RADIUS * scaleX);
 		this.speed = (int) Math.ceil(SPEED * scaleX);
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
+		
+		this.target = target;
 
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
@@ -88,12 +93,21 @@ public class Enemy extends Collidable {
 		this.armor = 4;
 		this.impactTimer = IMPACT_INTERVAL;
 	}
+	
+	public void spawn(int x, int y, float angle, int speed) {
+		setSpeed(speed);
+		spawn(x, y, angle);
+	}
 
 	public boolean addTurret(float firingAngle){
 		if (emptyTurretPositions.size() == 0)
 			return false;
 
-		turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
+		if (target == null)
+			// just fire downwards
+			turrets.add(new Turret(this, emptyTurretPositions.get(0), 0.0f));
+		else
+			turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
 		emptyTurretPositions.remove(0);
 		return true;
 	}
@@ -130,7 +144,10 @@ public class Enemy extends Collidable {
 			}
 		}
 		
-		length = target.shots.length;
+		if (target != null)
+			length = target.shots.length;
+		else 
+			length = 0;
 		for (int i = 0; i < length; i++) {
 			bullet = target.shots[i];
 			if (bullet.visible)
@@ -144,7 +161,7 @@ public class Enemy extends Collidable {
 			if (reloadTime >= RELOAD_DONE){
 				readyToFire = true;
 			}
-		} else {
+		} else if (target != null) {
 			shoot();
 		}
 
@@ -204,5 +221,12 @@ public class Enemy extends Collidable {
 	public void visit(Enemy enemy) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void setSpeed(int speed){
+		this.speed = speed;
+		this.moveX = (int) (speed * Math.cos(radians));
+		this.moveY = (int) (speed * Math.sin(-radians));
 	}
 }

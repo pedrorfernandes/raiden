@@ -116,10 +116,9 @@ public class GameScreen extends Screen {
 
 		enemyImage = Assets.enemy1;
 		
-		Enemy.setTarget(hero);
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
-			enemies[i] = new Enemy();
+			enemies[i] = new Enemy(hero);
 		}
 		
 		spawnEnemy(200, 200, 295.0f);
