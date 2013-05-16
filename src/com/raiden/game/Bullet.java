@@ -9,13 +9,11 @@ public class Bullet extends Collidable {
 	
 	private int moveX;
 	private int moveY;
-	
-	private int damage;
-	
+		
 	public Bullet(){
 		this.radius = (int) (RADIUS * scaleX);
 		this.speed  = (int) Math.ceil(SPEED * scaleY);		
-		this.damage = 1;
+		this.collisionDamage = 1;
 		this.visible = false;
 	}
 	
@@ -73,6 +71,7 @@ public class Bullet extends Collidable {
 	
 	@Override
 	public void visit(Ship ship) {
+		ship.takeDamage(collisionDamage);
 		this.visible = false;
 		this.hit = true;
 	}
@@ -85,7 +84,7 @@ public class Bullet extends Collidable {
 
 	@Override
 	public void visit(Enemy enemy) {
-		enemy.takeDamage(damage);
+		enemy.takeDamage(collisionDamage);
 		this.visible = false;
 		this.hit = true;
 	}

@@ -25,6 +25,9 @@ public abstract class Collidable implements Visitor {
 		
 	private static Point bounds;
 	
+	private static final int DEFAULT_DAMAGE = 1;
+	protected int collisionDamage = DEFAULT_DAMAGE;
+	
 	public static void setBounds(Point screenSize){
 		bounds = screenSize;
 		minX = 0; minY = 0;
@@ -70,5 +73,13 @@ public abstract class Collidable implements Visitor {
 	
 	public void setSpeed(int speed){
 		this.speed = speed;
+	}
+	
+	public void setCollisionDamage(int damage){
+		this.collisionDamage = damage;
+	}
+	
+	public int getCollisionDamage(){
+		return collisionDamage;
 	}
 }

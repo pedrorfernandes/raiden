@@ -25,6 +25,7 @@ public class Enemy extends Collidable {
 	private static final int MAX_BULLETS = 10;
 	public Bullet[] shots = new Bullet[MAX_BULLETS];
 
+	public boolean autofire;
 	private boolean readyToFire = true;
 	private int reloadDone = 700;
 	private float reloadTime = reloadDone;
@@ -53,7 +54,7 @@ public class Enemy extends Collidable {
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
-		
+		this.autofire = true;
 		this.target = target;
 
 		emptyTurretPositions = new ArrayList<Point>();
@@ -150,7 +151,7 @@ public class Enemy extends Collidable {
 			if (reloadTime >= reloadDone){
 				readyToFire = true;
 			}
-		} else if (target != null) {
+		} else if (target != null && autofire) {
 			shoot();
 		}
 
@@ -199,6 +200,8 @@ public class Enemy extends Collidable {
 		if (impactTimer == IMPACT_INTERVAL){
 			int midPointX = (this.x + ship.x) / 2;
 			int midPointY = (this.y + ship.y) / 2;
+			ship.takeDamage(collisionDamage);
+			this.takeDamage(ship.getCollisionDamage());
 			ship.addEnemyImpact(midPointX, midPointY);
 			impactTimer = 0;
 		}
@@ -247,5 +250,9 @@ public class Enemy extends Collidable {
 		if (armor < 1){
 			alive = false;
 		}
+	}
+	
+	public void setAutoFire(boolean autofire){
+		this.autofire = autofire;
 	}
 }

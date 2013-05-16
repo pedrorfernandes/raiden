@@ -122,7 +122,6 @@ public class EnemyTests extends AndroidTestCase {
 		 * and being destroyed in the process
 		 * */
 		Ship target = new Ship();
-		target.setArmor(100); // target won't die
 		target.moveTo(100, 500);
 		while (target.getX() != 100 || target.getY() != 500) {
 			target.update(TIMESLICE);
@@ -131,12 +130,14 @@ public class EnemyTests extends AndroidTestCase {
 		Enemy enemy = new Enemy(target);
 		int speed = 0;
 		enemy.spawn(100, 100, 270.0f, speed);
-		enemy.setArmor(4);
+		enemy.setArmor(8);
+		enemy.setAutoFire(false);
 		
 		target.shoot();
 		Bullet shotFired1 = target.getShotsFired()[0];
 		Bullet shotFired2 = target.getShotsFired()[1];
-		assertTrue(shotFired1.isVisible() && shotFired1.isVisible());
+		assertTrue(shotFired1.isVisible() && shotFired2.isVisible());
+		shotFired1.setCollisionDamage(2); shotFired2.setCollisionDamage(2);
 		
 		int currentTime = 0;
 		while (shotFired1.isVisible()){
@@ -147,8 +148,8 @@ public class EnemyTests extends AndroidTestCase {
 			shotFired2.update(TIMESLICE);
 		}
 		
-		// enemy takes 2 bullets and had 4 armor
-		assertEquals(2, enemy.getArmor());
+		// enemy takes 2 bullets and had 8 armor
+		assertEquals(4, enemy.getArmor());
 		assertTrue(enemy.isAlive());
 		assertTrue(!shotFired1.isVisible());
 		assertTrue(!shotFired2.isVisible());
