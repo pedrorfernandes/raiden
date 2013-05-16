@@ -271,7 +271,7 @@ public class GameScreen extends Screen {
 		//length = Ship.shotsFired.size();
 		for (int i = 0; i < hero.shots.length; i++) {
 			bullet = hero.shots[i];
-			bullet.update();
+			bullet.update(deltaTime);
 			if ( bullet.checkHit() ){
 				hitSounds.get(currentHitSound).play(volume);
 				currentHitSound++;
@@ -309,7 +309,7 @@ public class GameScreen extends Screen {
 			// update the enemy bullets
 			for (int j = 0; j < enemy.shots.length; j++) {
 				bullet = enemy.shots[j];
-				bullet.update();
+				bullet.update(deltaTime);
 				if ( bullet.checkHit() ){
 					Assets.heroHit.play(volume);
 					specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));

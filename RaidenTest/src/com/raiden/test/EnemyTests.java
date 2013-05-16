@@ -1,7 +1,9 @@
 package com.raiden.test;
 
+import com.raiden.game.Bullet;
 import com.raiden.game.Collidable;
 import com.raiden.game.Enemy;
+import com.raiden.game.Ship;
 
 import android.graphics.Point;
 import android.test.AndroidTestCase;
@@ -76,12 +78,101 @@ public class EnemyTests extends AndroidTestCase {
 		/* This is going to test enemy shooting and
 		 * bullet trajectories
 		 */
+		
+		// create a target and an enemy for that target
+		Ship target = new Ship();
+		target.moveTo(200, 100);
+		while (target.getX() != 200 || target.getY() != 100) {
+			target.update(TIMESLICE);
+		}
+		
+		Enemy enemy = new Enemy(target);
+		int speed = 0;
+		enemy.spawn(100, 100, 270.0f, speed);
+		enemy.shoot();
+		Bullet[] bullets = enemy.getShotsFired();
+		Bullet shotFired = bullets[0];
+		
+		assertTrue(shotFired.isVisible());
+		assertEquals(0.0f, shotFired.getAngle());
+		
+		// move target to check a new firing angle
+		target.moveTo(200, 200);
+		while (target.getX() != 200 || target.getY() != 200) {
+			target.update(TIMESLICE);
+		}
+		
+		// check if reload time is working
+		enemy.shoot();
+		shotFired = bullets[1];
+		assertTrue(!shotFired.isVisible());
+		for (int timer = 0; timer < enemy.getTimeToReload(); timer += TIMESLICE) {
+			enemy.update(TIMESLICE);
+			assertTrue(!shotFired.isVisible());
+		}
+		// test automatic shooting through update()
+		enemy.update(TIMESLICE);
+		assertTrue(shotFired.isVisible());
+		assertEquals(-45.0f, shotFired.getAngle());
+		
 	}
 	
 	public void testDamageAndDestruction() {
 		/* This should test enemy ship receiving damage
 		 * and being destroyed in the process
 		 * */
+		Ship target = new Ship();
+		target.setArmor(100); // target won't die
+		target.moveTo(100, 500);
+		while (target.getX() != 100 || target.getY() != 500) {
+			target.update(TIMESLICE);
+		}
+		
+		Enemy enemy = new Enemy(target);
+		int speed = 0;
+		enemy.spawn(100, 100, 270.0f, speed);
+		enemy.setArmor(4);
+		
+		target.shoot();
+		Bullet shotFired1 = target.getShotsFired()[0];
+		Bullet shotFired2 = target.getShotsFired()[1];
+		assertTrue(shotFired1.isVisible() && shotFired1.isVisible());
+		
+		int currentTime = 0;
+		while (shotFired1.isVisible()){
+			currentTime += TIMESLICE;
+			enemy.update(TIMESLICE);
+			target.update(TIMESLICE);
+			shotFired1.update(TIMESLICE);
+			shotFired2.update(TIMESLICE);
+		}
+		
+		// enemy takes 2 bullets and had 4 armor
+		assertEquals(2, enemy.getArmor());
+		assertTrue(enemy.isAlive());
+		assertTrue(!shotFired1.isVisible());
+		assertTrue(!shotFired2.isVisible());
+
+		
+		// wait for enemy reload
+		while (currentTime < target.getTimeToReload()){
+			target.update(TIMESLICE);
+		}
+		
+		target.shoot();
+		while (shotFired1.isVisible()){
+			currentTime += TIMESLICE;
+			enemy.update(TIMESLICE);
+			target.update(TIMESLICE);
+			shotFired1.update(TIMESLICE);
+			shotFired2.update(TIMESLICE);
+		}
+		
+		// enemy died
+		assertEquals(0, enemy.getArmor());
+		assertTrue(!enemy.isAlive());
+		assertTrue(!shotFired1.isVisible());
+		assertTrue(!shotFired2.isVisible());
 	}
 	
 }

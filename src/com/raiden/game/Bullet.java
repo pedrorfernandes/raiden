@@ -40,7 +40,7 @@ public class Bullet extends Collidable {
 		this.hit = false;
 	}
 	
-	public void update(){
+	public void update(float deltaTime){
 		
 		if (!visible) return;
 		
@@ -85,7 +85,7 @@ public class Bullet extends Collidable {
 
 	@Override
 	public void visit(Enemy enemy) {
-		enemy.armor -= damage;
+		enemy.takeDamage(damage);
 		this.visible = false;
 		this.hit = true;
 	}

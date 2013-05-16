@@ -27,13 +27,17 @@ public class Ship extends Collidable {
 	private ArrayList<Point> enemyImpacts = new ArrayList<Point>();
 	
 	private boolean readyToFire = true;
-	public final int RELOAD_DONE = 200;
-	private float reloadTime = RELOAD_DONE;
+	private int reloadDone = 200;
+	private float reloadTime = reloadDone;
 	
 	// iterating variables
 	private static Enemy enemy;
 	private static Bullet bullet;
 	private static int length;
+	
+	private boolean alive;
+	
+	public int armor;
 	
 	public void setTargets(Enemy[] enemies){
 		this.enemies = enemies;
@@ -49,6 +53,7 @@ public class Ship extends Collidable {
 		newX = x;
 		newY = y;
 		
+		alive = true;
 		speed = (int) Math.ceil(SPEED * scaleX);
 		
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -60,7 +65,7 @@ public class Ship extends Collidable {
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(-(int)(36*scaleX), -halfSizeY));
 		emptyTurretPositions.add(new Point( (int)(36*scaleX), -halfSizeY));
-		emptyTurretPositions.add(new Point(  0, -halfSizeY));
+		emptyTurretPositions.add(new Point(  0              , -halfSizeY));
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
@@ -129,7 +134,10 @@ public class Ship extends Collidable {
 			turningThreshold += 2;
 		
 		// check collision with enemies and their bullets
-		length = enemies.length;
+		if (enemies != null)
+			length = enemies.length;
+		else
+			length = 0;
 		for (int i = 0; i < length; i++) {
 			enemy = enemies[i];
 			if ( enemy.isInGame() ){
@@ -146,7 +154,7 @@ public class Ship extends Collidable {
 		if (!readyToFire){
 			reloadTime += deltaTime;
 			// check if reload time is done
-			if (reloadTime >= RELOAD_DONE){
+			if (reloadTime >= reloadDone){
 				readyToFire = true;
 			}
 		}
@@ -202,6 +210,10 @@ public class Ship extends Collidable {
 	public void accept(Collidable other) {
 		other.visit(this);
 	}
+	
+	public void moveTo(int x, int y){
+		this.move(x - this.x, y - this.y);
+	}
 
 	@Override
 	public void visit(Ship ship) {
@@ -219,5 +231,28 @@ public class Ship extends Collidable {
 	public void visit(Enemy enemy) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public int getTimeToReload(){
+		return reloadDone;
+	}
+	
+	public void setArmor(int armor){
+		this.armor = armor;
+	}
+	
+	public int getArmor(){
+		return armor;
+	}
+	
+	public void takeDamage(int damage){
+		armor -= damage;
+		if (armor < 1){
+			alive = false;
+		}
+	}
+	
+	public boolean isAlive(){
+		return alive;
 	}
 }

@@ -127,13 +127,13 @@ public class PlayerTests extends AndroidTestCase {
 		}
 		
 		int reloadTime = 0;
-		while (reloadTime < hero.RELOAD_DONE){
+		while (reloadTime < hero.getTimeToReload()){
 			reloadTime += TIMESLICE;
 			hero.update(TIMESLICE);
 		}
 		
 		hero.shoot();
-		// check if now the hero shot 2 additional bullets
+		// check if now the hero fired 2 additional bullets
 		for (i = 0; i < 4; i++) {
 			Bullet bullet = hero.getShotsFired()[i];
 			assertTrue(bullet.visible);
@@ -166,7 +166,7 @@ public class PlayerTests extends AndroidTestCase {
 		
 		int posX, posY, lastX, lastY;
 		posX = bullet.getX(); posY = bullet.getY();
-		bullet.update();
+		bullet.update(TIMESLICE);
 		lastX = bullet.getX(); lastY = bullet.getY();
 		assertEquals(posX-bullet.getSpeed() , lastX);
 		assertEquals(posY, lastY);

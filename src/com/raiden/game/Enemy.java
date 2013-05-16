@@ -7,17 +7,16 @@ import android.graphics.Point;
 public class Enemy extends Collidable {
 	private static final int RADIUS = 50;
 	private static final int SPEED = 6;
+	private static final int ARMOR = 4;
 	
 	public boolean visible, outOfRange, alive;
 	public float angle;
 	private float radians;
 	
-	private static Point bounds;
-
 	private int moveX;
 	private int moveY;
 
-	public int armor;
+	private int armor;
 
 	private Ship target;
 
@@ -27,8 +26,8 @@ public class Enemy extends Collidable {
 	public Bullet[] shots = new Bullet[MAX_BULLETS];
 
 	private boolean readyToFire = true;
-	private final int RELOAD_DONE = 700;
-	private float reloadTime = RELOAD_DONE;
+	private int reloadDone = 700;
+	private float reloadTime = reloadDone;
 
 	private static final int IMPACT_INTERVAL = 500;
 	private int impactTimer = IMPACT_INTERVAL;
@@ -42,6 +41,10 @@ public class Enemy extends Collidable {
 		for (Turret turret: turrets) {
 			turret.setTarget(target);
 		}
+	}
+	
+	public Bullet[] getShotsFired(){
+		return shots;
 	}
 
 	public Enemy(Ship target) {
@@ -75,7 +78,7 @@ public class Enemy extends Collidable {
 		this.moveX = (int) (speed * FastMath.cos(radians));
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 		this.alive = true;
-		this.armor = 4;
+		this.armor = ARMOR;
 		this.impactTimer = IMPACT_INTERVAL;
 	}
 	
@@ -144,7 +147,7 @@ public class Enemy extends Collidable {
 		if (!readyToFire){
 			reloadTime += deltaTime;
 			// check if reload time is done
-			if (reloadTime >= RELOAD_DONE){
+			if (reloadTime >= reloadDone){
 				readyToFire = true;
 			}
 		} else if (target != null) {
@@ -177,6 +180,10 @@ public class Enemy extends Collidable {
 
 	public boolean isOutOfRange(){
 		return outOfRange;
+	}
+	
+	public boolean isAlive(){
+		return alive;
 	}
 
 	public float getAngle() {
@@ -221,5 +228,24 @@ public class Enemy extends Collidable {
 		this.radians = (float) Math.toRadians(angle);
 		this.moveX = (int) (speed * FastMath.cos(radians));
 		this.moveY = (int) (speed * FastMath.sin(-radians));
+	}
+	
+	public int getTimeToReload(){
+		return reloadDone;
+	}
+	
+	public void setArmor(int armor){
+		this.armor = armor;
+	}
+	
+	public int getArmor(){
+		return armor;
+	}
+	
+	public void takeDamage(int damage){
+		armor -= damage;
+		if (armor < 1){
+			alive = false;
+		}
 	}
 }
