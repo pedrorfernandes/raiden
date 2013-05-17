@@ -255,4 +255,8 @@ public class Enemy extends Collidable {
 	public void setAutoFire(boolean autofire){
 		this.autofire = autofire;
 	}
+	
+	public boolean isReadyToFire(){
+		return readyToFire;
+	}
 }

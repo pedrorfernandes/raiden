@@ -172,12 +172,56 @@ public class PlayerTests extends AndroidTestCase {
 		assertEquals(posY, lastY);
 	}
 	
-	public void testPowerUps() {
-		/* This should test possible powerups the player ship catches */
-	}
-	
 	public void testDamageAndDestruction() {
 		/* This should test player ship receiving damage and being destroyed in the process */
+		Ship hero = new Ship();
+		hero.moveTo(600, 600);
+		while (hero.getX() != 600 || hero.getY() != 600) {
+			hero.update(TIMESLICE);
+		}
+		hero.setArmor(10);
+		
+		Enemy[] enemies = new Enemy[1];
+		Enemy enemy = new Enemy(hero);
+		enemies[0] = enemy;
+		int speed = 5;
+		enemy.spawn(200, 200, 0.0f, speed);
+		enemy.setAutoFire(false);
+		hero.setTargets(enemies);
+
+		// the enemy will fire at the hero
+		enemy.shoot();
+		Bullet shotFired = enemy.getShotsFired()[0];
+		shotFired.setCollisionDamage(5);
+		
+		assertEquals(10, hero.getArmor());
+		
+		while (shotFired.isVisible()){
+			enemy.update(TIMESLICE);
+			hero.update(TIMESLICE);
+			shotFired.update(TIMESLICE);
+		}
+		
+		assertEquals(5, hero.getArmor());
+		assertTrue(hero.isAlive());
+		
+		while (!enemy.isReadyToFire()){
+			enemy.update(TIMESLICE);
+		}
+		
+		enemy.shoot();
+		shotFired = enemy.getShotsFired()[0];
+		shotFired.setCollisionDamage(5);
+				
+		while (shotFired.isVisible()){
+			enemy.update(TIMESLICE);
+			hero.update(TIMESLICE);
+			shotFired.update(TIMESLICE);
+		}
+		
+		assertEquals(0, hero.getArmor());
+		assertTrue(!hero.isAlive());
+		
 	}
 	
 }
