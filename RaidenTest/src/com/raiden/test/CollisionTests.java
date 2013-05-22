@@ -3,7 +3,7 @@ package com.raiden.test;
 import com.raiden.game.Bullet;
 import com.raiden.game.Collidable;
 import com.raiden.game.Enemy;
-import com.raiden.game.Ship;
+import com.raiden.game.Hero;
 
 import android.graphics.Point;
 import android.test.AndroidTestCase;
@@ -24,7 +24,7 @@ public class CollisionTests extends AndroidTestCase {
 		/* This is going to test collisions of an enemy ship with the player ship.
 		 * It should check if the enemy receives damage as well as the player.
 		 */
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		hero.moveTo(100, 100);
 		while (hero.getX() != 100 || hero.getY() != 100) {
 			hero.update(TIMESLICE);
@@ -61,7 +61,7 @@ public class CollisionTests extends AndroidTestCase {
 		 * It should check if the player receives damage from those bullets.
 		 */
 		
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		hero.moveTo(300, 300);
 		while (hero.getX() != 300 || hero.getY() != 300) {
 			hero.update(TIMESLICE);
@@ -97,7 +97,7 @@ public class CollisionTests extends AndroidTestCase {
 		 * It should check if the enemy receives damage from those bullets.
 		 */
 		
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		hero.moveTo(200, 600);
 		while (hero.getX() != 200 || hero.getY() != 600) {
 			hero.update(TIMESLICE);

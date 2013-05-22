@@ -4,34 +4,22 @@ import java.util.ArrayList;
 
 import android.graphics.Point;
 
-public class Enemy extends Collidable {
+public class Enemy extends Ship {
 	private static final int RADIUS = 50;
 	private static final int SPEED = 6;
 	private static final int ARMOR = 4;
 	
-	public boolean visible, outOfRange, alive;
+	public boolean visible, outOfRange;
 	public float angle;
 	private float radians;
 	
 	private int moveX;
 	private int moveY;
 
-	private int armor;
-
-	private Ship target;
-
-	private ArrayList<Point> emptyTurretPositions; // positions relative to centerX
-	private ArrayList<Turret> turrets;
 	private static final int MAX_BULLETS = 10;
-	public Bullet[] shots = new Bullet[MAX_BULLETS];
 
+	private static final int RELOAD_DONE = 700;
 	public boolean autofire;
-	private boolean readyToFire = true;
-	private int reloadDone = 700;
-	private float reloadTime = reloadDone;
-
-	private static final int IMPACT_INTERVAL = 500;
-	private int impactTimer = IMPACT_INTERVAL;
 
 	// iterating variables
 	private static Bullet bullet;
@@ -43,10 +31,6 @@ public class Enemy extends Collidable {
 			turret.setTarget(target);
 		}
 	}
-	
-	public Bullet[] getShotsFired(){
-		return shots;
-	}
 
 	public Enemy(Ship target) {
 		this.radius =(int) (RADIUS * scaleX);
@@ -57,11 +41,17 @@ public class Enemy extends Collidable {
 		this.autofire = true;
 		this.target = target;
 
+		readyToFire = true;
+		reloadDone = RELOAD_DONE;
+		reloadTime = reloadDone;
+
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
 
 		turrets = new ArrayList<Turret>();
 		addTurret(0.0f);
+		
+		shots = new Bullet[MAX_BULLETS];
 		
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
@@ -86,31 +76,6 @@ public class Enemy extends Collidable {
 	public void spawn(int x, int y, float angle, int speed) {
 		setSpeed(speed);
 		spawn(x, y, angle);
-	}
-
-	public boolean addTurret(float firingAngle){
-		if (emptyTurretPositions.size() == 0)
-			return false;
-
-		if (target == null)
-			// just fire downwards
-			turrets.add(new Turret(this, emptyTurretPositions.get(0), 0.0f));
-		else
-			turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
-		emptyTurretPositions.remove(0);
-		return true;
-	}
-
-	public boolean shoot() {
-		if (readyToFire) {
-			for (Turret turret: turrets) {
-				turret.fire(shots);
-			}
-			readyToFire = false;
-			reloadTime = 0;
-			return true;
-		}
-		return false;
 	}
 
 	public void update(float deltaTime){
@@ -143,15 +108,10 @@ public class Enemy extends Collidable {
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
+		
+		reload(deltaTime);
 
-		// reload weapons
-		if (!readyToFire){
-			reloadTime += deltaTime;
-			// check if reload time is done
-			if (reloadTime >= reloadDone){
-				readyToFire = true;
-			}
-		} else if (target != null && autofire) {
+		if (target != null && autofire) {
 			shoot();
 		}
 
@@ -190,34 +150,6 @@ public class Enemy extends Collidable {
 	public float getAngle() {
 		return angle;
 	}
-
-	public void accept(Collidable other) {
-		other.visit(this);
-	}
-
-	@Override
-	public void visit(Ship ship) {
-		if (impactTimer == IMPACT_INTERVAL){
-			int midPointX = (this.x + ship.x) / 2;
-			int midPointY = (this.y + ship.y) / 2;
-			ship.takeDamage(collisionDamage);
-			this.takeDamage(ship.getCollisionDamage());
-			ship.addEnemyImpact(midPointX, midPointY);
-			impactTimer = 0;
-		}
-	}
-
-	@Override
-	public void visit(Bullet bullet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void visit(Enemy enemy) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	@Override
 	public void setSpeed(int speed){
@@ -233,30 +165,7 @@ public class Enemy extends Collidable {
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 	}
 	
-	public int getTimeToReload(){
-		return reloadDone;
-	}
-	
-	public void setArmor(int armor){
-		this.armor = armor;
-	}
-	
-	public int getArmor(){
-		return armor;
-	}
-	
-	public void takeDamage(int damage){
-		armor -= damage;
-		if (armor < 1){
-			alive = false;
-		}
-	}
-	
 	public void setAutoFire(boolean autofire){
 		this.autofire = autofire;
-	}
-	
-	public boolean isReadyToFire(){
-		return readyToFire;
 	}
 }

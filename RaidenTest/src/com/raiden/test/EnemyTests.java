@@ -3,7 +3,7 @@ package com.raiden.test;
 import com.raiden.game.Bullet;
 import com.raiden.game.Collidable;
 import com.raiden.game.Enemy;
-import com.raiden.game.Ship;
+import com.raiden.game.Hero;
 
 import android.graphics.Point;
 import android.test.AndroidTestCase;
@@ -80,7 +80,7 @@ public class EnemyTests extends AndroidTestCase {
 		 */
 		
 		// create a target and an enemy for that target
-		Ship target = new Ship();
+		Hero target = new Hero();
 		target.moveTo(200, 100);
 		while (target.getX() != 200 || target.getY() != 100) {
 			target.update(TIMESLICE);
@@ -106,7 +106,7 @@ public class EnemyTests extends AndroidTestCase {
 		enemy.shoot();
 		shotFired = bullets[1];
 		assertTrue(!shotFired.isVisible());
-		for (int timer = 0; timer < enemy.getTimeToReload(); timer += TIMESLICE) {
+		for (float timer = TIMESLICE; timer < enemy.getTimeToReload(); timer += TIMESLICE) {
 			enemy.update(TIMESLICE);
 			assertTrue(!shotFired.isVisible());
 		}
@@ -121,7 +121,7 @@ public class EnemyTests extends AndroidTestCase {
 		/* This should test enemy ship receiving damage
 		 * and being destroyed in the process
 		 * */
-		Ship target = new Ship();
+		Hero target = new Hero();
 		target.moveTo(100, 500);
 		while (target.getX() != 100 || target.getY() != 500) {
 			target.update(TIMESLICE);
@@ -157,6 +157,7 @@ public class EnemyTests extends AndroidTestCase {
 		
 		// wait for enemy reload
 		while (currentTime < target.getTimeToReload()){
+			currentTime += TIMESLICE;
 			target.update(TIMESLICE);
 		}
 		

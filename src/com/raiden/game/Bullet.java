@@ -81,11 +81,4 @@ public class Bullet extends Collidable {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void visit(Enemy enemy) {
-		enemy.takeDamage(collisionDamage);
-		this.visible = false;
-		this.hit = true;
-	}
 }

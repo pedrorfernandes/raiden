@@ -3,7 +3,7 @@ package com.raiden.test;
 import com.raiden.game.Bullet;
 import com.raiden.game.Collidable;
 import com.raiden.game.Enemy;
-import com.raiden.game.Ship;
+import com.raiden.game.Hero;
 
 import android.graphics.Point;
 import android.test.AndroidTestCase;
@@ -22,7 +22,7 @@ public class PlayerTests extends AndroidTestCase {
 
 	public void testMovement() {
 		//This is going to test if the ship moves correctly
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		
@@ -49,7 +49,7 @@ public class PlayerTests extends AndroidTestCase {
 	
 	public void testBoundaries() {
 		//This is going to test if the ship does not go out of bounds
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		
@@ -96,7 +96,7 @@ public class PlayerTests extends AndroidTestCase {
 		/* This is going to test if the player ship shoots correctly
 		 * Should test shooting intervals
 		 */
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		hero.shoot();
@@ -147,7 +147,7 @@ public class PlayerTests extends AndroidTestCase {
 	
 	public void testTurrets() {
 		/* This is going to test turret placement and bullet shoot trajectories */
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		
@@ -174,7 +174,7 @@ public class PlayerTests extends AndroidTestCase {
 	
 	public void testDamageAndDestruction() {
 		/* This should test player ship receiving damage and being destroyed in the process */
-		Ship hero = new Ship();
+		Hero hero = new Hero();
 		hero.moveTo(600, 600);
 		while (hero.getX() != 600 || hero.getY() != 600) {
 			hero.update(TIMESLICE);

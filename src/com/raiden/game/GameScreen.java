@@ -32,7 +32,7 @@ public class GameScreen extends Screen {
 	int livesLeft = 1;
 	Paint paint;
 
-	public static Ship hero;
+	public static Hero hero;
 	private Image heroImage;
 	private Animation heroAnimation, 
 	heroTurningLeftAnimation, 
@@ -100,7 +100,7 @@ public class GameScreen extends Screen {
 		Collidable.setScale(scaleX, scaleY);
 
 		// Initialize game objects here
-		hero = new Ship();
+		hero = new Hero();
 		hero.setTargets(enemies);
 		
 		heroAnimation = new Animation();
@@ -284,7 +284,7 @@ public class GameScreen extends Screen {
 		hero.update(deltaTime);
 		
 		// check hero collisions with enemies
-		heroImpacts = hero.getEnemyImpacts();
+		heroImpacts = hero.getImpacts();
 		length = heroImpacts.size();
 		for (int i = 0; i < length; i++) {
 			Point impact = heroImpacts.get(i);
