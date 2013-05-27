@@ -26,11 +26,12 @@ public class AndroidGraphics implements Graphics {
 	Rect dstRect = new Rect();
 	Matrix matrix;
 
-	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer) {
+	public AndroidGraphics(AssetManager assets, Bitmap frameBuffer, float scaleX, float scaleY) {
 		this.assets = assets;
 		this.frameBuffer = frameBuffer;
 		this.canvas = new Canvas(frameBuffer);
 		this.paint = new Paint();
+		canvas.scale(scaleX, scaleY);
 	}
 
 	@Override
@@ -85,6 +86,11 @@ public class AndroidGraphics implements Graphics {
 			format = ImageFormat.ARGB8888;
 
 		return new AndroidImage(bitmap, format);
+	}
+	
+	@Override
+	public Image newImage(String fileName, ImageFormat format) {
+		return newImage(fileName, format, 1.0f, 1.0f);
 	}
 
 	@Override

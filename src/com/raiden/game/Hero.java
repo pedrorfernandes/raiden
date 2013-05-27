@@ -14,7 +14,7 @@ public class Hero extends Ship {
 
 	// to know when the ship is actually turning or not
 	final int LOW_THRESHOLD = 0;
-	final int HIGH_THRESHOLD = (int) (8 * scaleX);
+	final int HIGH_THRESHOLD = 8;
 	private int turningThreshold = HIGH_THRESHOLD;
 
 	private static final int MAX_BULLETS = 30;
@@ -33,8 +33,8 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
-		radius = (int)(RADIUS * scaleX);
-		int halfSizeY = (int)(radius * 2);
+		radius = RADIUS;
+		int halfSizeY = (radius * 2);
 		
 		// initial starting point
 		x = maxX / 2;
@@ -43,7 +43,7 @@ public class Hero extends Ship {
 		newY = y;
 		
 		alive = true;
-		speed = (int) Math.ceil(SPEED * scaleX);
+		speed = SPEED;
 		
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
@@ -60,9 +60,9 @@ public class Hero extends Ship {
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
-		emptyTurretPositions.add(new Point(-(int)(36*scaleX), -halfSizeY));
-		emptyTurretPositions.add(new Point( (int)(36*scaleX), -halfSizeY));
-		emptyTurretPositions.add(new Point(  0              , -halfSizeY));
+		emptyTurretPositions.add(new Point(-36, -halfSizeY));
+		emptyTurretPositions.add(new Point( 36, -halfSizeY));
+		emptyTurretPositions.add(new Point(  0, -halfSizeY));
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();

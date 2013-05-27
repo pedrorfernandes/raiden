@@ -10,14 +10,11 @@ import android.test.AndroidTestCase;
 
 public class PlayerTests extends AndroidTestCase {
 	
-	private static float scaleX = 1.0f;
-	private static float scaleY = 1.0f;
 	private static Point screenSize = new Point(720, 1280);
 	private static final float TIMESLICE = 16;
 
 	static {
 		Collidable.setBounds(screenSize);
-		Collidable.setScale(scaleX, scaleY);
 	}
 
 	public void testMovement() {

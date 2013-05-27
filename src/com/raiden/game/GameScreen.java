@@ -43,8 +43,7 @@ public class GameScreen extends Screen {
 	private boolean shooting = false;
 	private boolean stoppedShooting = true;
 
-	// screen size and scaling variables
-    public static float scaleX, scaleY;
+	// screen size variables
 	public static Point screenSize;
 
 	// sound variables
@@ -93,11 +92,8 @@ public class GameScreen extends Screen {
 	public GameScreen(Game game) {
 		super(game);
 		
-        scaleX = game.getScaleX();
-        scaleY = game.getScaleY();
 		screenSize = game.getSize();
 		Collidable.setBounds(screenSize);
-		Collidable.setScale(scaleX, scaleY);
 
 		// Initialize game objects here
 		hero = new Hero();
@@ -201,9 +197,9 @@ public class GameScreen extends Screen {
 		if (counter > 960*1){
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
-			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
-			spawnEnemy(random.nextInt((int)(800*scaleX)), 0, ANGLE_DOWN);
+			spawnEnemy(100, 0, ANGLE_DOWN);
+			spawnEnemy(450, 0, ANGLE_DOWN);
+			spawnEnemy(700, 0, ANGLE_DOWN);
 			counter = 0;
 		}
 

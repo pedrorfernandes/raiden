@@ -27,8 +27,10 @@ public abstract class AndroidGame extends Activity implements Game {
     FileIO fileIO;
     Screen screen;
     WakeLock wakeLock;
+    private final static int GAMESIZE_X = 800;
+    private final static int GAMESIZE_Y = 1280;
     
-    Point size;
+    Point screenSize, gameSize;
     private float scaleX, scaleY;
 
 	@Override
@@ -40,22 +42,24 @@ public abstract class AndroidGame extends Activity implements Game {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        size = new Point();
-        // getWindowManager().getDefaultDisplay().getSize(size); // API level 13 only
-        size.x = getWindowManager().getDefaultDisplay().getWidth();
-        size.y = getWindowManager().getDefaultDisplay().getHeight();
         
-        int frameBufferWidth = isPortrait ? size.x : size.y;
-        int frameBufferHeight = isPortrait ? size.y : size.x;
-
+        screenSize = new Point();
+        // getWindowManager().getDefaultDisplay().getSize(size); // API level 13 only
+        screenSize.x = getWindowManager().getDefaultDisplay().getWidth();
+        screenSize.y = getWindowManager().getDefaultDisplay().getHeight();
+        gameSize = new Point(GAMESIZE_X, GAMESIZE_Y);
+        
+        int frameBufferWidth = isPortrait ? screenSize.x : screenSize.y;
+        int frameBufferHeight = isPortrait ? screenSize.y : screenSize.x;
+        
         Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,
                 frameBufferHeight, Config.RGB_565);
         
-        scaleX = (float) frameBufferWidth / 720;
-        scaleY = (float) frameBufferHeight / 1280;
+        scaleX = (float) screenSize.x / GAMESIZE_X;
+        scaleY = (float) screenSize.y / GAMESIZE_Y;
 
         renderView = new AndroidFastRenderView(this, frameBuffer);
-        graphics = new AndroidGraphics(getAssets(), frameBuffer);
+        graphics = new AndroidGraphics(getAssets(), frameBuffer, scaleX, scaleY);
         fileIO = new AndroidFileIO(this);
         audio = new AndroidAudio(this);
         //input = new AndroidInput(this, renderView, scaleX, scaleY);
@@ -124,7 +128,7 @@ public abstract class AndroidGame extends Activity implements Game {
     }
     
     public Point getSize() {
-    	return size;
+    	return gameSize;
     }
     
     public float getScaleX(){

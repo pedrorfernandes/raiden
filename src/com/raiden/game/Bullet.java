@@ -11,8 +11,8 @@ public class Bullet extends Collidable {
 	private int moveY;
 		
 	public Bullet(){
-		this.radius = (int) (RADIUS * scaleX);
-		this.speed  = (int) Math.ceil(SPEED * scaleY);		
+		this.radius = RADIUS;
+		this.speed  = SPEED;		
 		this.collisionDamage = 1;
 		this.visible = false;
 	}

@@ -33,8 +33,8 @@ public class Enemy extends Ship {
 	}
 
 	public Enemy(Ship target) {
-		this.radius =(int) (RADIUS * scaleX);
-		this.speed = (int) Math.ceil(SPEED * scaleX);
+		this.radius = RADIUS;
+		this.speed = SPEED;
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;

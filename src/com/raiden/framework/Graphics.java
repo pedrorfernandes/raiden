@@ -8,6 +8,8 @@ public interface Graphics {
     }
 
     public Image newImage(String fileName, ImageFormat format, float scaleX, float scaleY);
+    
+    public Image newImage(String fileName, ImageFormat format);
 
     public void clearScreen(int color);
 
