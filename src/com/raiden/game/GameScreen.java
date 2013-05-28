@@ -31,9 +31,7 @@ public class GameScreen extends Screen {
 
 	public static Hero hero;
 	private Image heroImage;
-	private Animation heroAnimation, 
-	heroTurningLeftAnimation, 
-	heroTurningRightAnimation;
+	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
 
 	// touch and input variables
 	private Point dragPoint;
@@ -42,10 +40,11 @@ public class GameScreen extends Screen {
 	public static Point screenSize;
 	
 	private static SoundController soundController;
+	private static AnimationController animationController;
+	private static EffectsController effectsController;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
-	private static EffectsController effectsController;
 	
 	// enemy variables
 	private Image enemyImage;
@@ -56,7 +55,6 @@ public class GameScreen extends Screen {
 	private static final float ANGLE_UP = 90.0f;
 
 	// constants for animation
-	private static final int HERO_ANIMATION_DURATION = 10;
 	private static final int ANIMATION_UPDATE = 1;
 	
 	// debug variables
@@ -85,23 +83,20 @@ public class GameScreen extends Screen {
 		hero = new Hero();
 		hero.setTargets(enemies);
 		
-		heroAnimation = new Animation();
-		heroAnimation.addFrame(Assets.hero1, HERO_ANIMATION_DURATION);
-		heroAnimation.addFrame(Assets.hero2, HERO_ANIMATION_DURATION);
-		heroTurningLeftAnimation = new Animation();
-		heroTurningLeftAnimation.addFrame(Assets.heroLeft1, HERO_ANIMATION_DURATION);
-		heroTurningLeftAnimation.addFrame(Assets.heroLeft2, HERO_ANIMATION_DURATION);
-		heroTurningRightAnimation = new Animation();
-		heroTurningRightAnimation.addFrame(Assets.heroRight1, HERO_ANIMATION_DURATION);
-		heroTurningRightAnimation.addFrame(Assets.heroRight2, HERO_ANIMATION_DURATION);
+		heroAnimation = Assets.getHeroAnimation();
+		heroTurningLeftAnimation = Assets.getHeroTurningLeftAnimation();
+		heroTurningRightAnimation = Assets.getHeroTurningRightAnimation();
+		
 		heroImage = heroAnimation.getImage();
 		
 		// observers
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
+		animationController = new AnimationController(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
+		hero.addObserver(animationController);
 
 		enemyImage = Assets.enemy1;
 		
@@ -222,14 +217,6 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 
-		// check if the hero is turning and switch to the correct image
-		if ( hero.isMovingLeft() )
-			heroImage = heroTurningLeftAnimation.getImage();
-		else if ( hero.isMovingRight() )
-			heroImage = heroTurningRightAnimation.getImage();
-		else 
-			heroImage = heroAnimation.getImage();
-
 		// update the hero's bullets
 		//length = Ship.shotsFired.size();
 		for (int i = 0; i < hero.shots.length; i++) {
@@ -287,6 +274,8 @@ public class GameScreen extends Screen {
 		g.clearScreen(Color.rgb(58, 86, 104));
 		
 		// hero drawing
+		heroImage = animationController.getCurrenAnimation().getImage();
+		
 		g.drawImage(heroImage,
 				hero.x - heroImage.getHalfWidth(), 
 				hero.y - heroImage.getHalfHeight());

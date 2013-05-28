@@ -1,10 +1,15 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
+
+import com.raiden.animation.Animation;
 import com.raiden.framework.Image;
 import com.raiden.framework.Music;
 import com.raiden.framework.Sound;
 
 public class Assets {
+	
+	private static final int HERO_ANIMATION_DURATION = 10;
     
     public static Image menu;
     public static Sound explosionSound1, explosionSound2, explosionSound3,
@@ -23,4 +28,59 @@ public class Assets {
                         explosion1, explosion2, explosion3,
                         explosion4, explosion5, explosion6,
                         heroCollision1, heroCollision2, heroCollision3;
+            
+    public static Animation getHeroTurningLeftAnimation(){
+		Animation heroTurningLeftAnimation = new Animation();
+		heroTurningLeftAnimation.addFrame(heroLeft1, HERO_ANIMATION_DURATION);
+		heroTurningLeftAnimation.addFrame(heroLeft2, HERO_ANIMATION_DURATION);
+		return heroTurningLeftAnimation;
+    }
+    
+    public static Animation getHeroTurningRightAnimation(){
+		Animation heroTurningRightAnimation = new Animation();
+		heroTurningRightAnimation.addFrame(heroRight1, HERO_ANIMATION_DURATION);
+		heroTurningRightAnimation.addFrame(heroRight2, HERO_ANIMATION_DURATION);
+		return heroTurningRightAnimation;
+    }
+    
+    public static Animation getHeroAnimation(){
+		Animation heroAnimation = new Animation();
+		heroAnimation.addFrame(hero1, HERO_ANIMATION_DURATION);
+		heroAnimation.addFrame(hero2, HERO_ANIMATION_DURATION);
+		return heroAnimation;
+    }
+    
+    public static ArrayList<Sound> getExplosionSounds(){
+    	ArrayList<Sound> explosionSounds = new ArrayList<Sound>();
+		explosionSounds.add(explosionSound1); explosionSounds.add(explosionSound2);
+		explosionSounds.add(explosionSound3); explosionSounds.add(explosionSound4);
+		explosionSounds.add(explosionSound5); explosionSounds.add(explosionSound6);
+		explosionSounds.add(explosionSound7); explosionSounds.add(explosionSound8);
+		explosionSounds.add(explosionSound9); explosionSounds.add(explosionSound10);
+		explosionSounds.add(explosionSound11);
+		return explosionSounds;
+    }
+    
+    public static ArrayList<Sound> getHitSounds(){
+    	ArrayList<Sound> hitSounds = new ArrayList<Sound>();
+		hitSounds.add(hit1); hitSounds.add(hit2); 
+		hitSounds.add(hit3); hitSounds.add(hit4); 
+		hitSounds.add(hit5); 
+		return hitSounds;
+    }
+    
+    public static ArrayList<Image> getExplosionImages(){
+    	ArrayList<Image> explosionImages = new ArrayList<Image>();
+    	explosionImages.add(explosion1); explosionImages.add(explosion2); 
+    	explosionImages.add(explosion3); explosionImages.add(explosion4); 
+    	explosionImages.add(explosion5); explosionImages.add(explosion6);
+    	return explosionImages;
+    }
+    
+    public static ArrayList<Image> getCollisionImages(){
+    	ArrayList<Image> collisionImages = new ArrayList<Image>();
+    	collisionImages.add(heroCollision1); collisionImages.add(heroCollision2);
+    	collisionImages.add(heroCollision3);
+    	return collisionImages;
+    }
 }

@@ -7,7 +7,7 @@ import android.graphics.Point;
 public class Ship extends Collidable {
 
 	protected int armor;
-	protected boolean alive;
+	protected boolean alive, visible;
 	
 	// empty turrets -> positions relative to centerX
 	protected ArrayList<Point> emptyTurretPositions;
@@ -59,7 +59,7 @@ public class Ship extends Collidable {
 	public void takeDamage(Collidable collidable){
 		armor -= collidable.collisionDamage;
 		if (armor < 1){
-			alive = false;
+			alive = false; visible = false;
 			notifyObservers(Event.Explosion);
 		}
 	}
@@ -126,6 +126,10 @@ public class Ship extends Collidable {
 	
 	public void setAutoFire(boolean autofire){
 		this.autofire = autofire;
+	}
+	
+	public boolean isVisible(){
+		return visible;
 	}
 
 }

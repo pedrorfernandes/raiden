@@ -46,6 +46,7 @@ public class Hero extends Ship {
 		
 		alive = true;
 		speed = SPEED;
+		visible = true;
 		
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
@@ -124,6 +125,8 @@ public class Hero extends Ship {
 
 		reload(deltaTime);
 		
+		checkTurning();
+		
 		if (autofire) shoot();
 	}
 
@@ -147,21 +150,16 @@ public class Hero extends Ship {
 		return (x == newX && y == newY);
 	}
 
-	public boolean isMovingLeft(){
+	public void checkTurning(){
 		if ( (newX - x) < 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isMovingRight(){
-		if ( (newX - x) > 0 && Math.abs(newX - x) > turningThreshold ){
+			notifyObservers(Event.TurnLeft);
+		} else if ( (newX - x) > 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
-			return true;
+			notifyObservers(Event.TurnRight);
+		} else {
+			notifyObservers(Event.StopTurning);
 		}
-		return false;
 	}
 	
 	public void moveTo(int x, int y){

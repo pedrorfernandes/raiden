@@ -35,7 +35,11 @@ public class LoadingScreen extends Screen {
         Assets.explosionSound9 = game.getAudio().createSound("explosion9.wav");
         Assets.explosionSound10 = game.getAudio().createSound("explosion10.wav");
         Assets.explosionSound11 = game.getAudio().createSound("explosion11.wav");
+        
         Assets.machinegun = game.getAudio().createMusic("machinegun.wav");
+        Assets.machinegun.setLooping(true);
+        Assets.machinegun.setVolume(1.0f);
+        
         Assets.hit1 = game.getAudio().createSound("hit1.wav");
         Assets.hit2 = game.getAudio().createSound("hit2.wav");
         Assets.hit3 = game.getAudio().createSound("hit3.wav");

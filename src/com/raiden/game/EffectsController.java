@@ -14,9 +14,9 @@ public class EffectsController implements Observer {
 	}
 	
 	public void update(int x, int y, Event event){
-		Animation animation = event.getAnimation(x, y);
-		if (animation != null)
-			gameScreen.addSpecialEffect(animation);
+		Animation specialEffect = event.getSpecialEffect(x, y);
+		if (specialEffect != null)
+			gameScreen.addSpecialEffect(specialEffect);
 	}
 
 }

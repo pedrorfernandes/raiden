@@ -9,7 +9,7 @@ public class Enemy extends Ship {
 	private static final int SPEED = 6;
 	private static final int ARMOR = 4;
 	
-	public boolean visible, outOfRange;
+	public boolean outOfRange;
 	public float angle;
 	private float radians;
 	
@@ -18,7 +18,7 @@ public class Enemy extends Ship {
 
 	private static final int MAX_BULLETS = 10;
 
-	private static final int RELOAD_DONE = 700;
+	private static final int RELOAD_DONE = 1400;
 
 	// iterating variables
 	private static Bullet bullet;
@@ -104,12 +104,7 @@ public class Enemy extends Ship {
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
-		
-		if (!this.alive && this.visible){
-			this.visible = false;
-		}
-		
-		
+
 		reload(deltaTime);
 
 		if (target != null && autofire) {
@@ -126,10 +121,6 @@ public class Enemy extends Ship {
 
 	public void turn(float degrees){
 		// this will turn the ship
-	}
-
-	public boolean isVisible(){
-		return visible;
 	}
 
 	public boolean isOutOfRange(){
