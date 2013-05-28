@@ -61,17 +61,9 @@ public class Bullet extends Collidable {
 		other.visit(this);
 	}
 	
-	public boolean checkHit(){
-		if (this.hit){
-			this.hit = false;
-			return true;
-		}
-		return false;
-	}
-	
 	@Override
 	public void visit(Ship ship) {
-		ship.takeDamage(collisionDamage);
+		ship.takeDamage(this);
 		this.visible = false;
 		this.hit = true;
 	}

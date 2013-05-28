@@ -33,7 +33,9 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
+		armor = 9001; // http://bit.ly/jxMrWX
 		radius = RADIUS;
+		
 		int halfSizeY = (radius * 2);
 		
 		// initial starting point
@@ -48,9 +50,7 @@ public class Hero extends Ship {
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
 		reloadTime = reloadDone;
-		
-		impacts = new ArrayList<Point>();
-		
+				
 		shots = new Bullet[MAX_BULLETS];
 		
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -123,6 +123,8 @@ public class Hero extends Ship {
 		}
 
 		reload(deltaTime);
+		
+		if (autofire) shoot();
 	}
 
 	public void move(int x, int y){
@@ -164,5 +166,21 @@ public class Hero extends Ship {
 	
 	public void moveTo(int x, int y){
 		this.move(x - this.x, y - this.y);
+	}
+	
+	@Override
+	public void takeDamage(Collidable collidable){
+		notifyObservers(collidable, Event.HeroHit);
+		super.takeDamage(collidable);
+	}
+	
+	@Override
+	public void setAutoFire(boolean autofire){
+		if (autofire == true)
+			notifyObservers(Event.StartFiring);
+		else {
+			notifyObservers(Event.StopFiring);
+		}
+		super.setAutoFire(autofire);
 	}
 }

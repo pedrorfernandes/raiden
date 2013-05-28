@@ -1,8 +1,10 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
+
 import android.graphics.Point;
 
-public abstract class Collidable implements Visitor {
+public abstract class Collidable implements Visitor, Observable {
 	public int x;
 	public int y;
 	public int radius;
@@ -24,6 +26,8 @@ public abstract class Collidable implements Visitor {
 	
 	private static final int DEFAULT_DAMAGE = 1;
 	protected int collisionDamage = DEFAULT_DAMAGE;
+	
+	protected ArrayList<Observer> observers = new ArrayList<Observer>();
 	
 	public static void setBounds(Point screenSize){
 		bounds = screenSize;
@@ -73,5 +77,31 @@ public abstract class Collidable implements Visitor {
 	
 	public int getCollisionDamage(){
 		return collisionDamage;
+	}
+	
+	public void notifyObservers(Event event){
+		for (Observer observer : observers) {
+			observer.update(this, event);
+		}
+	}
+	
+	public void addObserver(Observer observer){
+		this.observers.add(observer);
+	}
+	
+	public void removeObserver(Observer observer){
+		this.observers.remove(observer);
+	}
+	
+	public void notifyObservers(Collidable collidable, Event event){
+		for (Observer observer : observers) {
+			observer.update(collidable, event);
+		}
+	}
+	
+	public void notifyObservers(int x, int y, Event event){
+		for (Observer observer : observers) {
+			observer.update(x, y, event);
+		}
 	}
 }

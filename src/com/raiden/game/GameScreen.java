@@ -10,14 +10,11 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 import com.raiden.animation.Animation;
-import com.raiden.animation.Collision;
-import com.raiden.animation.Explosion;
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
-import com.raiden.framework.Sound;
 
 public class GameScreen extends Screen {
 	enum GameState {
@@ -40,27 +37,16 @@ public class GameScreen extends Screen {
 
 	// touch and input variables
 	private Point dragPoint;
-	private boolean shooting = false;
-	private boolean stoppedShooting = true;
 
 	// screen size variables
 	public static Point screenSize;
-
-	// sound variables
-	private int volume = 100;
-	private static final int FIRST_SHOT_FIRED = 8;
-	private static ArrayList<Sound> hitSounds;
-	private static int currentHitSound = 0;
-	private static ArrayList<Sound> explosionSounds;
-	private static int currentExplosionSound = 0;
+	
+	private static SoundController soundController;
 
 	private static ArrayList<Animation> specialEffects;
-	private static final float BIG_EFFECT = 1.5f;
-	private static final float NORMAL_EFFECT = 1.0f;
-	private static final float SMALL_EFFECT = 0.4f;
+	private static final float NORMAL_SCALE = 1.0f;
+	private static EffectsController effectsController;
 	
-	public ArrayList<Point> heroImpacts;
-
 	// enemy variables
 	private Image enemyImage;
 	private static final int MAX_ENEMIES = 20;
@@ -109,30 +95,25 @@ public class GameScreen extends Screen {
 		heroTurningRightAnimation.addFrame(Assets.heroRight1, HERO_ANIMATION_DURATION);
 		heroTurningRightAnimation.addFrame(Assets.heroRight2, HERO_ANIMATION_DURATION);
 		heroImage = heroAnimation.getImage();
+		
+		// observers
+		effectsController = new EffectsController(this);
+		soundController = new SoundController(this);
+
+		hero.addObserver(effectsController);
+		hero.addObserver(soundController);
 
 		enemyImage = Assets.enemy1;
 		
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemies[i] = new Enemy(hero);
+			enemies[i].addObserver(effectsController);
+			enemies[i].addObserver(soundController);
 		}
 		
 		spawnEnemy(200, 200, 295.0f);
 		spawnEnemy(100, 100, 225.0f);
-
-		Assets.machinegun.setLooping(true);
-		hitSounds = new ArrayList<Sound>();
-		hitSounds.add(Assets.hit1); hitSounds.add(Assets.hit2); 
-		hitSounds.add(Assets.hit3); hitSounds.add(Assets.hit4); 
-		hitSounds.add(Assets.hit5); 
-
-		explosionSounds = new ArrayList<Sound>();
-		explosionSounds.add(Assets.explosionSound1); explosionSounds.add(Assets.explosionSound2);
-		explosionSounds.add(Assets.explosionSound3); explosionSounds.add(Assets.explosionSound4);
-		explosionSounds.add(Assets.explosionSound5); explosionSounds.add(Assets.explosionSound6);
-		explosionSounds.add(Assets.explosionSound7); explosionSounds.add(Assets.explosionSound8);
-		explosionSounds.add(Assets.explosionSound9); explosionSounds.add(Assets.explosionSound10);
-		explosionSounds.add(Assets.explosionSound11);
 
 		specialEffects = new ArrayList<Animation>();
 
@@ -159,6 +140,10 @@ public class GameScreen extends Screen {
 				return;
 			}
 		}
+	}
+	
+	public void addSpecialEffect(Animation specialEffect){
+		specialEffects.add(specialEffect);
 	}
 
 	@Override
@@ -210,14 +195,11 @@ public class GameScreen extends Screen {
 			if (event.type == TouchEvent.TOUCH_DOWN) {
 				dragPoint.x = event.x;
 				dragPoint.y = event.y;
-				shooting = true;
+				hero.setAutoFire(true);
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
-				shooting = false;
-				// the hero isn't shooting anymore
-				// but the gun sound hasn't stopped yet
-				stoppedShooting = false;
+				hero.setAutoFire(false);
 			}
 
 			if (event.type == TouchEvent.TOUCH_DRAGGED) {
@@ -240,21 +222,6 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 
-		// check if the hero is shooting
-		// and control the machine gun sound
-		if (shooting){
-			if ( !Assets.machinegun.isPlaying() ){
-				Assets.machinegun.play();
-			}
-			hero.shoot();
-		} else if (!stoppedShooting) {
-			if (Assets.machinegun.getCurrentPosition() > FIRST_SHOT_FIRED){
-				Assets.machinegun.seekBegin();
-				Assets.machinegun.stop();
-				stoppedShooting = true;
-			}
-		}
-
 		// check if the hero is turning and switch to the correct image
 		if ( hero.isMovingLeft() )
 			heroImage = heroTurningLeftAnimation.getImage();
@@ -268,48 +235,19 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < hero.shots.length; i++) {
 			bullet = hero.shots[i];
 			bullet.update(deltaTime);
-			if ( bullet.checkHit() ){
-				hitSounds.get(currentHitSound).play(volume);
-				currentHitSound++;
-				if (currentHitSound >= hitSounds.size() )
-					currentHitSound = 0;
-				specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));
-			}
 		}
 
 		hero.update(deltaTime);
-		
-		// check hero collisions with enemies
-		heroImpacts = hero.getImpacts();
-		length = heroImpacts.size();
-		for (int i = 0; i < length; i++) {
-			Point impact = heroImpacts.get(i);
-			Assets.heroCollisionSound.play(volume);
-			specialEffects.add(new Collision(impact.x, impact.y, NORMAL_EFFECT, 0, hero.radius/10));
-		}
 
 		// update the enemies  
 		length = enemies.length;
 		for (int i = 0; i < length; i++) {
 			enemy = enemies[i];
 			enemy.update(deltaTime);
-			if ( enemy.hasDied() ){
-				// play an explosion
-				explosionSounds.get(currentExplosionSound).play(volume);
-				currentExplosionSound++;
-				if (currentExplosionSound >= explosionSounds.size() )
-					currentExplosionSound = 0;
-				specialEffects.add(new Explosion(enemy.x, enemy.y, BIG_EFFECT));
-			}
-			
 			// update the enemy bullets
 			for (int j = 0; j < enemy.shots.length; j++) {
 				bullet = enemy.shots[j];
 				bullet.update(deltaTime);
-				if ( bullet.checkHit() ){
-					Assets.heroHit.play(volume);
-					specialEffects.add(new Explosion(bullet.x, bullet.y, SMALL_EFFECT));
-				}
 			}
 		}
 
@@ -425,12 +363,13 @@ public class GameScreen extends Screen {
 		// special effects drawing
 		for (int i = 0; i < specialEffects.size(); i++) {
 			specialEffect = specialEffects.get(i);
+			if (specialEffect == null) continue;
 			if (!specialEffect.active){
 				specialEffects.remove(i);
 				i--;
 			}
 			image = specialEffect.getImage();
-			if (specialEffect.scale == NORMAL_EFFECT){
+			if (specialEffect.scale == NORMAL_SCALE){
 				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
 						           specialEffect.y - image.getHalfHeight());
 			} else {

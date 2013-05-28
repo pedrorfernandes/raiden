@@ -19,7 +19,6 @@ public class Enemy extends Ship {
 	private static final int MAX_BULLETS = 10;
 
 	private static final int RELOAD_DONE = 700;
-	public boolean autofire;
 
 	// iterating variables
 	private static Bullet bullet;
@@ -80,11 +79,8 @@ public class Enemy extends Ship {
 
 	public void update(float deltaTime){
 
-		if (armor < 1) 
-			alive = false;
-
 		if (outOfRange || !alive) return;
-
+		
 		x += moveX;
 		y += moveY;
 
@@ -109,6 +105,11 @@ public class Enemy extends Ship {
 				this.checkCollision(bullet);
 		}
 		
+		if (!this.alive && this.visible){
+			this.visible = false;
+		}
+		
+		
 		reload(deltaTime);
 
 		if (target != null && autofire) {
@@ -117,14 +118,6 @@ public class Enemy extends Ship {
 
 		if (impactTimer < IMPACT_INTERVAL)
 			impactTimer += deltaTime;
-	}
-
-	public boolean hasDied(){
-		if (!this.alive && this.visible){
-			this.visible = false;
-			return true;
-		}
-		return false;
 	}
 
 	public boolean isInGame(){
@@ -165,7 +158,9 @@ public class Enemy extends Ship {
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 	}
 	
-	public void setAutoFire(boolean autofire){
-		this.autofire = autofire;
+	@Override
+	public void takeDamage(Collidable collidable){
+		notifyObservers(collidable, Event.EnemyHit);
+		super.takeDamage(collidable);
 	}
 }
