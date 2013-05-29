@@ -19,7 +19,7 @@ public class AndroidFastRenderView extends SurfaceView implements Runnable {
 	private static long simulationTime;
 	private static long startTime;
 	private static long realTime;
-	private static final float updateInterval = 16.0f;
+	public static final float updateInterval = 16.0f;
 	
 	// for frame counting
 	private static long currentTime;

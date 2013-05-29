@@ -1,5 +1,6 @@
 package com.raiden.framework;
 
+import android.content.res.AssetManager;
 import android.graphics.Point;
 
 public interface Game {
@@ -23,5 +24,9 @@ public interface Game {
     public float getScaleX();
 
     public float getScaleY();
+    
+    public boolean moveTaskToBack(boolean nonRoot);
+    
+    public AssetManager getAssets();
 
 }

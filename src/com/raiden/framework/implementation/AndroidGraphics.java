@@ -123,6 +123,32 @@ public class AndroidGraphics implements Graphics {
 	public void drawString(String text, int x, int y, Paint paint){
 		canvas.drawText(text, x, y, paint);
 	}
+	
+	public void drawRotatedString(String text, int x, int y, float angle, Paint paint) {
+		canvas.save(); 
+
+		Rect bounds = new Rect();
+		
+		//we need to get the width of the text. meastureText() is the most accurate way.
+		//then we add that to the text start x point to get the x coordinate for the text center.
+		float px = x + ( paint.measureText(text) / 2.0f );
+		
+		//next we need to get the height of the text. Keep in mind that upper case letters have a bigger height
+		//than lower case letters, besides, some letters (like y) have parts that extend below line.
+		//Therefore, just pick a letter that represents a good height for a bounding box around the text. "P" works, for example.
+		//Do the same as before to get the y coord, but in this case subtract instead of adding.
+		paint.getTextBounds("P", 0, 1, bounds);
+		float py = y - ( (float) bounds.height() / 2.0f );
+		
+		//make the rotation.
+        canvas.rotate(angle, px, py); 
+
+        //draw the text with the matrix applied. 
+        canvas.drawText(text, x, y, paint);
+
+        //restore the old matrix. 
+        canvas.restore(); 
+	}
 
 	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		srcRect.left = srcX;

@@ -6,7 +6,7 @@ import com.raiden.framework.Sound;
 
 public class Assets {
     
-    public static Image menu;
+    public static Image splash, menu, helpMenu;
     public static Sound explosionSound1, explosionSound2, explosionSound3,
                         explosionSound4, explosionSound5, explosionSound6,
                         explosionSound7, explosionSound8, explosionSound9,

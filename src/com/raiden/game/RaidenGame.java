@@ -6,7 +6,7 @@ import com.raiden.framework.implementation.AndroidGame;
 public class RaidenGame extends AndroidGame {
     @Override
     public Screen getInitScreen() {
-        return new LoadingScreen(this); 
+        return new SplashLoadingScreen(this); 
     }
     
     @Override
