@@ -7,7 +7,7 @@ import android.graphics.Point;
 public class Ship extends Collidable {
 
 	protected int armor;
-	protected boolean alive;
+	protected boolean alive, visible;
 	
 	// empty turrets -> positions relative to centerX
 	protected ArrayList<Point> emptyTurretPositions;
@@ -20,19 +20,20 @@ public class Ship extends Collidable {
 
 	protected Ship target = null;
 
-	protected ArrayList<Point> impacts;
 	protected static final int IMPACT_INTERVAL = 500;
 	protected int impactTimer = IMPACT_INTERVAL;
+	
+	protected boolean autofire;
 
 	@Override
 	public void visit(Ship ship) {
 		if (impactTimer == IMPACT_INTERVAL){
 			int midPointX = (this.x + ship.x) / 2;
 			int midPointY = (this.y + ship.y) / 2;
-			ship.takeDamage(collisionDamage);
-			this.takeDamage(ship.getCollisionDamage());
-			ship.addImpact(midPointX, midPointY);
+			ship.takeDamage(this);
+			this.takeDamage(ship);
 			impactTimer = 0;
+			notifyObservers(midPointX, midPointY, Event.Collision);
 		}
 	}
 
@@ -55,10 +56,11 @@ public class Ship extends Collidable {
 		return armor;
 	}
 
-	public void takeDamage(int damage){
-		armor -= damage;
+	public void takeDamage(Collidable collidable){
+		armor -= collidable.collisionDamage;
 		if (armor < 1){
-			alive = false;
+			alive = false; visible = false;
+			notifyObservers(Event.Explosion);
 		}
 	}
 
@@ -102,16 +104,6 @@ public class Ship extends Collidable {
 	public boolean isAlive(){
 		return alive;
 	}
-
-	public ArrayList<Point> getImpacts(){
-		ArrayList<Point> impactsCopy = new ArrayList<Point>(impacts);
-		impacts.clear();
-		return impactsCopy;
-	}
-
-	public void addImpact(int x, int y){
-		impacts.add(new Point(x,y));
-	}
 	
 	protected void reload(float deltaTime){
 		if (!readyToFire){
@@ -122,6 +114,22 @@ public class Ship extends Collidable {
 		if (reloadTime >= reloadDone){
 			readyToFire = true;
 		}
+	}
+	
+	@Override
+	public void addObserver(Observer observer){
+		this.observers.add(observer);
+		for (Bullet bullet : shots) {
+			bullet.addObserver(observer);
+		}
+	}
+	
+	public void setAutoFire(boolean autofire){
+		this.autofire = autofire;
+	}
+	
+	public boolean isVisible(){
+		return visible;
 	}
 
 }

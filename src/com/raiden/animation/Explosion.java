@@ -3,6 +3,7 @@ package com.raiden.animation;
 import java.util.ArrayList;
 
 import com.raiden.game.Assets;
+import com.raiden.framework.Image;
 
 public class Explosion extends Animation {
 	
@@ -29,18 +30,11 @@ public class Explosion extends Animation {
 	static {
 		explosionFrames = new ArrayList<AnimFrame>();
 		explosionDuration = 0;
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion1, explosionDuration));
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion2, explosionDuration));
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion3, explosionDuration));
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion4, explosionDuration));
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion5, explosionDuration));
-		explosionDuration += EXPLOSION_DURATION;
-		explosionFrames.add(new AnimFrame(Assets.explosion6, explosionDuration));
+		ArrayList<Image> explosionImages = Assets.getExplosionImages();
+		for (Image image : explosionImages) {
+			explosionDuration += EXPLOSION_DURATION;
+			explosionFrames.add(new AnimFrame(image, explosionDuration));
+		}
 	}
 	
 }

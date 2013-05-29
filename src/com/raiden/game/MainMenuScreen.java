@@ -59,15 +59,14 @@ public class MainMenuScreen extends Screen {
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
-				Log.d("touch", Float.toString(event.x / game.getScaleX()) + ", " + Float.toString(event.y / game.getScaleY()) );
-
-				if (playButton.hitbox.contains( (int) (event.x / game.getScaleX()), (int) (event.y / game.getScaleY()) )) {
+				
+				if (playButton.hitbox.contains(event.x, event.y)) {
 					//START GAME
 					bgPainted = false;
 					game.setScreen(new GameScreen(game));               
 				}
 				
-				if (helpButton.hitbox.contains( (int) (event.x / game.getScaleX()), (int) (event.y / game.getScaleY()) )) {
+				if (helpButton.hitbox.contains(event.x, event.y)) {
 					//HELP SCREEN
 					bgPainted = false;
 					game.setScreen(helpButton.nextScreen);               

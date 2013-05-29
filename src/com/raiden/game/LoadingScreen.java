@@ -15,15 +15,13 @@ public class LoadingScreen extends Screen {
 		super(game);
 	}
 
-
 	@Override
 	public void update(float deltaTime) {
-		
-		
+
 		while(!splashPainted) {
 			return;
 		}
-		
+
 		Graphics g = game.getGraphics();
 
 		// this will be used to scale all images
@@ -46,7 +44,11 @@ public class LoadingScreen extends Screen {
 		Assets.explosionSound9 = game.getAudio().createSound("explosion9.wav");
 		Assets.explosionSound10 = game.getAudio().createSound("explosion10.wav");
 		Assets.explosionSound11 = game.getAudio().createSound("explosion11.wav");
+
 		Assets.machinegun = game.getAudio().createMusic("machinegun.wav");
+		Assets.machinegun.setLooping(true);
+		Assets.machinegun.setVolume(1.0f);
+
 		Assets.hit1 = game.getAudio().createSound("hit1.wav");
 		Assets.hit2 = game.getAudio().createSound("hit2.wav");
 		Assets.hit3 = game.getAudio().createSound("hit3.wav");
@@ -73,8 +75,7 @@ public class LoadingScreen extends Screen {
 		Assets.explosion4 = g.newImage("explosion4.png", ImageFormat.ARGB4444);
 		Assets.explosion5 = g.newImage("explosion5.png", ImageFormat.ARGB4444);
 		Assets.explosion6 = g.newImage("explosion6.png", ImageFormat.ARGB4444);
-
-
+		
 		Assets.enemy1 = g.newImage("enemy1.png", ImageFormat.ARGB4444);
 		Assets.enemyBullet1 = g.newImage("enemyBullet1.png", ImageFormat.ARGB4444);
 
@@ -85,7 +86,6 @@ public class LoadingScreen extends Screen {
 
 		game.setScreen(new MainMenuScreen(game));
 	}
-
 
 	@Override
 	public void paint(float deltaTime) {

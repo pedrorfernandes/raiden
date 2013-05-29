@@ -3,6 +3,7 @@ package com.raiden.animation;
 import java.util.ArrayList;
 
 import com.raiden.game.Assets;
+import com.raiden.framework.Image;
 
 public class Collision extends Animation {
 	
@@ -31,11 +32,10 @@ public class Collision extends Animation {
 	static {
 		collisionFrames = new ArrayList<AnimFrame>();
 		collisionDuration = 0;
-		collisionDuration += COLLISION_DURATION;
-		collisionFrames.add(new AnimFrame(Assets.heroCollision1, collisionDuration));
-		collisionDuration += COLLISION_DURATION;
-		collisionFrames.add(new AnimFrame(Assets.heroCollision2, collisionDuration));
-		collisionDuration += COLLISION_DURATION;
-		collisionFrames.add(new AnimFrame(Assets.heroCollision3, collisionDuration));
+		ArrayList<Image> collisionImages = Assets.getCollisionImages();
+		for (Image image : collisionImages) {
+			collisionDuration += COLLISION_DURATION;
+			collisionFrames.add(new AnimFrame(image, collisionDuration));
+		}
 	}
 }

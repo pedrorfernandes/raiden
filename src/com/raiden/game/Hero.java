@@ -33,7 +33,9 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
+		armor = 9001; // http://bit.ly/jxMrWX
 		radius = RADIUS;
+		
 		int halfSizeY = (radius * 2);
 		
 		// initial starting point
@@ -44,13 +46,12 @@ public class Hero extends Ship {
 		
 		alive = true;
 		speed = SPEED;
+		visible = true;
 		
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
 		reloadTime = reloadDone;
-		
-		impacts = new ArrayList<Point>();
-		
+				
 		shots = new Bullet[MAX_BULLETS];
 		
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -123,6 +124,10 @@ public class Hero extends Ship {
 		}
 
 		reload(deltaTime);
+		
+		checkTurning();
+		
+		if (autofire) shoot();
 	}
 
 	public void move(int x, int y){
@@ -145,24 +150,35 @@ public class Hero extends Ship {
 		return (x == newX && y == newY);
 	}
 
-	public boolean isMovingLeft(){
+	public void checkTurning(){
 		if ( (newX - x) < 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isMovingRight(){
-		if ( (newX - x) > 0 && Math.abs(newX - x) > turningThreshold ){
+			notifyObservers(Event.TurnLeft);
+		} else if ( (newX - x) > 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
-			return true;
+			notifyObservers(Event.TurnRight);
+		} else {
+			notifyObservers(Event.StopTurning);
 		}
-		return false;
 	}
 	
 	public void moveTo(int x, int y){
 		this.move(x - this.x, y - this.y);
+	}
+	
+	@Override
+	public void takeDamage(Collidable collidable){
+		notifyObservers(collidable, Event.HeroHit);
+		super.takeDamage(collidable);
+	}
+	
+	@Override
+	public void setAutoFire(boolean autofire){
+		if (autofire == true)
+			notifyObservers(Event.StartFiring);
+		else {
+			notifyObservers(Event.StopFiring);
+		}
+		super.setAutoFire(autofire);
 	}
 }

@@ -9,7 +9,7 @@ public class Enemy extends Ship {
 	private static final int SPEED = 6;
 	private static final int ARMOR = 4;
 	
-	public boolean visible, outOfRange;
+	public boolean outOfRange;
 	public float angle;
 	private float radians;
 	
@@ -18,8 +18,7 @@ public class Enemy extends Ship {
 
 	private static final int MAX_BULLETS = 10;
 
-	private static final int RELOAD_DONE = 700;
-	public boolean autofire;
+	private static final int RELOAD_DONE = 1400;
 
 	// iterating variables
 	private static Bullet bullet;
@@ -80,11 +79,8 @@ public class Enemy extends Ship {
 
 	public void update(float deltaTime){
 
-		if (armor < 1) 
-			alive = false;
-
 		if (outOfRange || !alive) return;
-
+		
 		x += moveX;
 		y += moveY;
 
@@ -108,7 +104,7 @@ public class Enemy extends Ship {
 			if (bullet.visible)
 				this.checkCollision(bullet);
 		}
-		
+
 		reload(deltaTime);
 
 		if (target != null && autofire) {
@@ -119,24 +115,12 @@ public class Enemy extends Ship {
 			impactTimer += deltaTime;
 	}
 
-	public boolean hasDied(){
-		if (!this.alive && this.visible){
-			this.visible = false;
-			return true;
-		}
-		return false;
-	}
-
 	public boolean isInGame(){
 		return (alive && !outOfRange);
 	}
 
 	public void turn(float degrees){
 		// this will turn the ship
-	}
-
-	public boolean isVisible(){
-		return visible;
 	}
 
 	public boolean isOutOfRange(){
@@ -165,7 +149,9 @@ public class Enemy extends Ship {
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 	}
 	
-	public void setAutoFire(boolean autofire){
-		this.autofire = autofire;
+	@Override
+	public void takeDamage(Collidable collidable){
+		notifyObservers(collidable, Event.EnemyHit);
+		super.takeDamage(collidable);
 	}
 }
