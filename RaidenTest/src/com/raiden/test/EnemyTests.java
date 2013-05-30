@@ -45,7 +45,7 @@ public class EnemyTests extends AndroidTestCase {
 		
 		// change direction left
 		float angle = 180.0f;
-		enemy.setDirection(angle);
+		enemy.setAngle(angle);
 		enemy.update(TIMESLICE);
 		x = enemy.getX(); y = enemy.getY();
 		assertEquals(100-speed, x);

@@ -101,10 +101,6 @@ public class Hero extends Ship {
 			else
 				y += speed;
 		}
-
-		// control the turning threshold to check if the ship will turn again later
-		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
-			turningThreshold += 2;
 		
 		// check collision with enemies and their bullets
 		if (enemies != null)
@@ -151,6 +147,10 @@ public class Hero extends Ship {
 	}
 
 	public void checkTurning(){
+		// control the turning threshold to check if the ship will turn again later
+		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
+			turningThreshold += 2;
+		
 		if ( (newX - x) < 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
 			notifyObservers(Event.TurnLeft);
@@ -180,5 +180,16 @@ public class Hero extends Ship {
 			notifyObservers(Event.StopFiring);
 		}
 		super.setAutoFire(autofire);
+	}
+	
+	public boolean checkIfDestroyed(){
+		if (armor < 1){
+			alive = false; visible = false;
+			notifyObservers(Event.Explosion);
+			// possibly respawn hero
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

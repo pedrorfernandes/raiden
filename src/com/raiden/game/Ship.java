@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import android.graphics.Point;
 
-public class Ship extends Collidable {
+public abstract class Ship extends Collidable {
 
 	protected int armor;
 	protected boolean alive, visible;
@@ -55,13 +55,12 @@ public class Ship extends Collidable {
 	public int getArmor(){
 		return armor;
 	}
+	
+	public abstract boolean checkIfDestroyed();
 
 	public void takeDamage(Collidable collidable){
 		armor -= collidable.collisionDamage;
-		if (armor < 1){
-			alive = false; visible = false;
-			notifyObservers(Event.Explosion);
-		}
+		this.checkIfDestroyed();
 	}
 
 	public Bullet[] getShotsFired(){

@@ -175,6 +175,12 @@ public class AndroidGraphics implements Graphics {
 		matrix.setTranslate(x, y);
 		matrix.postRotate(startingAngle - angle, x+width/2, y+height/2);
 		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+		/*
+		canvas.save();
+		canvas.rotate(startingAngle - angle, x + (width / 2), y + (height / 2));
+		canvas.drawBitmap(((AndroidImage) image).bitmap, x, y, null);
+		canvas.restore();
+		*/
 	}
 	
 	public void drawCircle(int x, int y, int radius, Paint paint){

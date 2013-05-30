@@ -10,7 +10,7 @@ public class Enemy extends Ship {
 	private static final int ARMOR = 4;
 	
 	public boolean outOfRange;
-	public float angle;
+	public float angle, nextAngle;
 	private float radians;
 	
 	private int moveX;
@@ -19,6 +19,10 @@ public class Enemy extends Ship {
 	private static final int MAX_BULLETS = 10;
 
 	private static final int RELOAD_DONE = 1400;
+	
+	public static int turnSpeed = 2;
+	
+	private FlightPattern flightPattern;
 
 	// iterating variables
 	private static Bullet bullet;
@@ -61,7 +65,7 @@ public class Enemy extends Ship {
 	public void spawn(int x, int y, float angle) {
 		this.x = x;
 		this.y = y;
-		this.angle = angle;
+		this.angle = angle; this.nextAngle = angle;
 		this.visible = true;
 		this.outOfRange = false;
 		this.radians = (float) Math.toRadians(angle);
@@ -86,11 +90,14 @@ public class Enemy extends Ship {
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;
+		else
+			visible = true;
 
 		if ( !visible ){
 			// if the enemy is out of bounds, it isn't coming back to the screen
 			if (x < outMinX || y < outMinY || x > outMaxX || y > outMaxY){
 				outOfRange = true;
+				flightPattern = null;
 				return;
 			}
 		}
@@ -106,6 +113,13 @@ public class Enemy extends Ship {
 		}
 
 		reload(deltaTime);
+		
+		if (Float.compare(angle, nextAngle) != 0 && flightPattern != null){
+			adjustAngle(flightPattern.getCurrentDirection());
+		} else if (flightPattern != null) {
+			flightPattern.update(deltaTime);
+			nextAngle = flightPattern.getCurrentAngle();
+		}
 
 		if (target != null && autofire) {
 			shoot();
@@ -119,8 +133,8 @@ public class Enemy extends Ship {
 		return (alive && !outOfRange);
 	}
 
-	public void turn(float degrees){
-		// this will turn the ship
+	public void setFlightPattern(FlightPattern flightPattern){
+		this.flightPattern = flightPattern;
 	}
 
 	public boolean isOutOfRange(){
@@ -142,16 +156,48 @@ public class Enemy extends Ship {
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 	}
 	
-	public void setDirection(float angle){
+	public void setAngle(float angle){
+		if (Float.compare(this.angle, angle) == 0) return;
 		this.angle = angle;
+		
+		if (this.angle > 360.0f)
+			this.angle -= 360.0f;
+		else if (this.angle < 0.0f)
+			this.angle += 360.0f;
+		
 		this.radians = (float) Math.toRadians(angle);
 		this.moveX = (int) (speed * FastMath.cos(radians));
 		this.moveY = (int) (speed * FastMath.sin(-radians));
+	}
+	
+	public void setNextAngle(float angle){
+		this.nextAngle = angle;
+	}
+	
+	public void adjustAngle(Direction direction){
+		if (Float.compare(angle, nextAngle) != 0){
+			float turningAngle =  Math.abs(this.angle - nextAngle);
+			if ( turningAngle > turnSpeed){
+				setAngle(direction.turn(this.angle,turnSpeed));
+			} else {
+				setAngle(direction.turn(this.angle, turningAngle));
+			}
+		}
 	}
 	
 	@Override
 	public void takeDamage(Collidable collidable){
 		notifyObservers(collidable, Event.EnemyHit);
 		super.takeDamage(collidable);
+	}
+	
+	public boolean checkIfDestroyed(){
+		if (armor < 1){
+			alive = false; visible = false; flightPattern = null;
+			notifyObservers(Event.Explosion);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

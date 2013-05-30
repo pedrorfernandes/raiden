@@ -1,6 +1,7 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
@@ -107,8 +108,24 @@ public class GameScreen extends Screen {
 			enemies[i].addObserver(soundController);
 		}
 		
-		spawnEnemy(200, 200, 295.0f);
-		spawnEnemy(100, 100, 225.0f);
+		// TODO this is a flight pattern example, must be removed !!
+		ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
+		ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
+		for (int i = 0; i < x.size(); i++) {
+			FlightPattern pattern = new FlightPattern();
+			pattern.addMovement(  0, 800, Direction.Right);
+			pattern.addMovement(270,  16, Direction.Right);
+			pattern.addMovement(180,  16, Direction.Right);
+			pattern.addMovement( 90,  16, Direction.Right);
+			pattern.addMovement(  0, 300, Direction.Right);
+			pattern.addMovement(270,  16, Direction.Right);
+			pattern.addMovement(180,  16, Direction.Right);
+			pattern.addMovement( 90,  16, Direction.Right);
+			pattern.addMovement(  0, 800, Direction.Right);
+			enemy = spawnEnemy(x.get(i), y.get(i), 0.0f);
+			enemy.setFlightPattern(pattern);
+		}
+		
 
 		specialEffects = new ArrayList<Animation>();
 
@@ -126,15 +143,16 @@ public class GameScreen extends Screen {
 
 	}
 	
-	public void spawnEnemy(int x, int y, float angle){
+	public Enemy spawnEnemy(int x, int y, float angle){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemy = enemies[i];
 			if ( !enemy.isInGame() ){
 				enemy.spawn(x, y, angle);
-				return;
+				return enemy;
 			}
 		}
+		return null;
 	}
 	
 	public void addSpecialEffect(Animation specialEffect){
@@ -173,7 +191,7 @@ public class GameScreen extends Screen {
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {  
 
-		counter += deltaTime;
+		//counter += deltaTime;
 		if (counter > 960*1){
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
 			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
@@ -237,7 +255,7 @@ public class GameScreen extends Screen {
 				bullet.update(deltaTime);
 			}
 		}
-
+		
 	}
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
@@ -353,10 +371,13 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < specialEffects.size(); i++) {
 			specialEffect = specialEffects.get(i);
 			if (specialEffect == null) continue;
+			
+			// clean up special effects
 			if (!specialEffect.active){
 				specialEffects.remove(i);
 				i--;
 			}
+			
 			image = specialEffect.getImage();
 			if (specialEffect.scale == NORMAL_SCALE){
 				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
