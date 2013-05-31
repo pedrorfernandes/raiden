@@ -2,13 +2,11 @@ package com.raiden.game;
 
 import java.util.ArrayList;
 
+import com.raiden.framework.Image;
+
 import android.graphics.Point;
 
 public class Enemy extends Ship {
-	private static final int RADIUS = 50;
-	private static final int SPEED = 6;
-	private static final int ARMOR = 4;
-	
 	public boolean outOfRange;
 	public float angle, nextAngle;
 	private float radians;
@@ -17,16 +15,36 @@ public class Enemy extends Ship {
 	private int moveY;
 
 	private static final int MAX_BULLETS = 10;
-
-	private static final int RELOAD_DONE = 1400;
 	
-	public static int turnSpeed = 2;
+	private int turnSpeed;
 	
 	private FlightPattern flightPattern;
-
+	
+	public Type type;
+	
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
+	
+	public static enum Type{
+		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy, Assets.enemy1),
+		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2);
+		
+		public int speed, turnSpeed, armor, radius, reloadDone;
+		public Image image;
+		public Bullet.Type bulletType;
+		
+		Type(int speed, int turnSpeed, int armor, 
+				int radius, int reloadDone, Bullet.Type bulletType, Image image){
+			this.speed = speed;
+			this.turnSpeed = turnSpeed;
+			this.armor = armor;
+			this.radius = radius;
+			this.reloadDone = reloadDone;
+			this.bulletType = bulletType;
+			this.image = image;
+		}
+	}
 	
 	public void setTarget(Ship target){
 		this.target = target;
@@ -36,23 +54,18 @@ public class Enemy extends Ship {
 	}
 
 	public Enemy(Ship target) {
-		this.radius = RADIUS;
-		this.speed = SPEED;
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
 		this.autofire = true;
 		this.target = target;
-
-		readyToFire = true;
-		reloadDone = RELOAD_DONE;
-		reloadTime = reloadDone;
+		this.type = Type.Normal;
 
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
 
 		turrets = new ArrayList<Turret>();
-		addTurret(0.0f);
+		addTurret(0.0f, this.type.bulletType);
 		
 		shots = new Bullet[MAX_BULLETS];
 		
@@ -61,24 +74,34 @@ public class Enemy extends Ship {
 			shots[i] = new Bullet();
 		}
 	}
+	
+	public void setType(Type type){
+		this.type = type;
+		this.speed = type.speed;
+		this.turnSpeed = type.turnSpeed;
+		this.armor = type.armor;
+		this.radius = type.radius;
+		this.reloadDone = type.reloadDone;
+		for (Turret turret : turrets) {
+			turret.setBulletType(this.type.bulletType);
+		}
+	}
 
-	public void spawn(int x, int y, float angle) {
+	public void spawn(int x, int y, float angle, Type type, FlightPattern flightPattern) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle; this.nextAngle = angle;
 		this.visible = true;
 		this.outOfRange = false;
+		this.setType(type);
 		this.radians = (float) Math.toRadians(angle);
 		this.moveX = (int) (speed * FastMath.cos(radians));
 		this.moveY = (int) (speed * FastMath.sin(-radians));
 		this.alive = true;
-		this.armor = ARMOR;
 		this.impactTimer = IMPACT_INTERVAL;
-	}
-	
-	public void spawn(int x, int y, float angle, int speed) {
-		setSpeed(speed);
-		spawn(x, y, angle);
+		this.reloadTime = reloadDone;
+		this.readyToFire = true;
+		this.flightPattern = new FlightPattern(flightPattern);
 	}
 
 	public void update(float deltaTime){

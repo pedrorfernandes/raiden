@@ -14,14 +14,21 @@ public class FlightPattern {
 	public FlightPattern() {
 		loop = true;
 		active = true;
-		
+
 		movements = new ArrayList<Movement>();
 		totalDuration = 0;
 
-		synchronized (this) {
-			currentTime = 0;
-			currentAngle = 0;
-		}
+		currentTime = 0;
+		currentAngle = 0;
+	}
+	
+	public FlightPattern(FlightPattern flightPattern) {
+		loop = flightPattern.loop;
+		active = true;
+		movements = new ArrayList<Movement>(flightPattern.movements);
+		totalDuration = flightPattern.totalDuration;
+		currentTime = 0;
+		currentAngle = 0;
 	}
 
 	public void addMovement(int angle, int duration, Direction turnDirection) {

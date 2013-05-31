@@ -33,6 +33,7 @@ public class GameScreen extends Screen {
 	public static Hero hero;
 	private Image heroImage;
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
+	private Image bulletImage;
 
 	// touch and input variables
 	private Point dragPoint;
@@ -98,8 +99,6 @@ public class GameScreen extends Screen {
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
-
-		enemyImage = Assets.enemy1;
 		
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -107,26 +106,7 @@ public class GameScreen extends Screen {
 			enemies[i].addObserver(effectsController);
 			enemies[i].addObserver(soundController);
 		}
-		
-		// TODO this is a flight pattern example, must be removed !!
-		ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
-		ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
-		for (int i = 0; i < x.size(); i++) {
-			FlightPattern pattern = new FlightPattern();
-			pattern.addMovement(  0, 800, Direction.Right);
-			pattern.addMovement(270,  16, Direction.Right);
-			pattern.addMovement(180,  16, Direction.Right);
-			pattern.addMovement( 90,  16, Direction.Right);
-			pattern.addMovement(  0, 300, Direction.Right);
-			pattern.addMovement(270,  16, Direction.Right);
-			pattern.addMovement(180,  16, Direction.Right);
-			pattern.addMovement( 90,  16, Direction.Right);
-			pattern.addMovement(  0, 800, Direction.Right);
-			enemy = spawnEnemy(x.get(i), y.get(i), 0.0f);
-			enemy.setFlightPattern(pattern);
-		}
-		
-
+	
 		specialEffects = new ArrayList<Animation>();
 
 		dragPoint = new Point();
@@ -143,12 +123,12 @@ public class GameScreen extends Screen {
 
 	}
 	
-	public Enemy spawnEnemy(int x, int y, float angle){
+	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemy = enemies[i];
 			if ( !enemy.isInGame() ){
-				enemy.spawn(x, y, angle);
+				enemy.spawn(x, y, angle, type, flightPattern);
 				return enemy;
 			}
 		}
@@ -191,14 +171,27 @@ public class GameScreen extends Screen {
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {  
 
-		//counter += deltaTime;
+		counter += deltaTime;
 		if (counter > 960*1){
-			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			spawnEnemy(100, 0, ANGLE_DOWN);
-			spawnEnemy(450, 0, ANGLE_DOWN);
-			spawnEnemy(700, 0, ANGLE_DOWN);
 			counter = 0;
+			// TODO this is a flight pattern example, must be removed !!
+			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0));//,0,0,0,0));
+			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200));//,300,400,500,600));
+			for (int i = 0; i < x.size()-1; i++) {
+				FlightPattern pattern = new FlightPattern();
+				pattern.addMovement(  0, 800, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 300, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 800, Direction.Right);
+				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern);
+				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern);
+				if (enemy == null) continue;
+			}
 		}
 
 		// All touch input is handled here
@@ -305,16 +298,17 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < length; i++) {
 			Bullet bullet = hero.shots[i];
 			if (!bullet.visible) continue;
+			bulletImage = bullet.type.image;
 			if (bullet.angle == ANGLE_UP){
-				g.drawImage(Assets.heroBullet1, 
-						bullet.x-Assets.heroBullet1.getHalfWidth(), 
-						bullet.y-Assets.heroBullet1.getHalfHeight());
+				g.drawImage(bulletImage,
+						bullet.x-bulletImage.getHalfWidth(), 
+						bullet.y-bulletImage.getHalfHeight());
 			} else {
-				g.drawRotatedImage(Assets.heroBullet1, 
-						bullet.x-Assets.heroBullet1.getHalfWidth(), 
-						bullet.y-Assets.heroBullet1.getHalfHeight(),
-						Assets.heroBullet1.getWidth(),
-						Assets.heroBullet1.getHeight(), 
+				g.drawRotatedImage(bulletImage, 
+						bullet.x-bulletImage.getHalfWidth(), 
+						bullet.y-bulletImage.getHalfHeight(),
+						bulletImage.getWidth(),
+						bulletImage.getHeight(), 
 						bullet.angle,
 						ANGLE_UP);
 			}
@@ -331,16 +325,17 @@ public class GameScreen extends Screen {
 			for (int j = 0; j < enemy.shots.length; j++) {
 				Bullet bullet = enemy.shots[j];
 				if (!bullet.visible) continue;
+				bulletImage = bullet.type.image;
 				if (bullet.angle == ANGLE_UP){
-					g.drawImage(Assets.enemyBullet1, 
-							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-							bullet.y-Assets.enemyBullet1.getHalfHeight());
+					g.drawImage(bulletImage, 
+							bullet.x-bulletImage.getHalfWidth(), 
+							bullet.y-bulletImage.getHalfHeight());
 				} else {
-					g.drawRotatedImage(Assets.enemyBullet1, 
-							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-							bullet.y-Assets.enemyBullet1.getHalfHeight(),
-							Assets.enemyBullet1.getWidth(),
-							Assets.enemyBullet1.getHeight(), 
+					g.drawRotatedImage(bulletImage, 
+							bullet.x-bulletImage.getHalfWidth(), 
+							bullet.y-bulletImage.getHalfHeight(),
+							bulletImage.getWidth(),
+							bulletImage.getHeight(),
 							bullet.angle,
 							ANGLE_UP);
 				}
@@ -350,6 +345,7 @@ public class GameScreen extends Screen {
 			
 			// draw the enemy
 			if (!enemy.visible) continue;
+			enemyImage = enemy.type.image;
 			if (enemy.angle == ANGLE_DOWN){
 				g.drawImage(enemyImage, 
 						enemy.x-enemyImage.getHalfWidth(), 

@@ -67,8 +67,8 @@ public class Hero extends Ship {
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
-		addTurret(90.0f);
-		addTurret(90.0f);
+		addTurret(90.0f, Bullet.Type.Hero);
+		addTurret(90.0f, Bullet.Type.Hero);
 		//addTurret(90.0f+15.0f);
 		//addTurret(90.0f-15.0f);
 	}

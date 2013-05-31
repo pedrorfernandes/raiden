@@ -23,8 +23,8 @@ public class Assets {
                         heroLeft1, heroLeft2, 
                         heroRight1, heroRight2,
                         heroBullet1,
-                        enemyBullet1,
-                        enemy1,
+                        enemyBullet1, enemyBullet2,
+                        enemy1, enemy2,
                         explosion1, explosion2, explosion3,
                         explosion4, explosion5, explosion6,
                         heroCollision1, heroCollision2, heroCollision3;
