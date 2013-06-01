@@ -34,7 +34,8 @@ public class CollisionTests extends AndroidTestCase {
 		Enemy enemy = new Enemy(hero);
 		enemies[0] = enemy;
 		int speed = 5;
-		enemy.spawn(500, 100, 180.0f, speed);
+		enemy.spawn(500, 100, 180.0f, Enemy.Type.Normal, null);
+		enemy.setSpeed(speed);
 		enemy.setArmor(10);
 		enemy.setAutoFire(false);
 		enemy.setCollisionDamage(5);
@@ -69,7 +70,8 @@ public class CollisionTests extends AndroidTestCase {
 		Enemy enemy = new Enemy(hero);
 		enemies[0] = enemy;
 		int speed = 5;
-		enemy.spawn(200, 200, 0.0f, speed);
+		enemy.spawn(200, 200, 0.0f, Enemy.Type.Normal, null);
+		enemy.setSpeed(speed);
 		enemy.setAutoFire(false);
 		hero.setTargets(enemies);
 
@@ -104,7 +106,8 @@ public class CollisionTests extends AndroidTestCase {
 		Enemy enemy = new Enemy(hero);
 		enemies[0] = enemy;
 		int speed = 0;
-		enemy.spawn(200, 200, 0.0f, speed);
+		enemy.spawn(200, 200, 0.0f, Enemy.Type.Normal, null);
+		enemy.setSpeed(speed);
 		enemy.setAutoFire(false);
 		enemy.setArmor(10);
 		

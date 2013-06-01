@@ -148,7 +148,7 @@ public class PlayerTests extends AndroidTestCase {
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		
-		hero.addTurret(180.0f);
+		hero.addTurret(180.0f, Bullet.Type.Hero);
 		hero.shoot();
 		// the first two bullets always start at 90.0f
 		int i;
@@ -181,8 +181,9 @@ public class PlayerTests extends AndroidTestCase {
 		Enemy[] enemies = new Enemy[1];
 		Enemy enemy = new Enemy(hero);
 		enemies[0] = enemy;
-		int speed = 5;
-		enemy.spawn(200, 200, 0.0f, speed);
+		int speed = 0;
+		enemy.spawn(200, 200, 0.0f, Enemy.Type.Normal, null);
+		enemy.setSpeed(speed);
 		enemy.setAutoFire(false);
 		hero.setTargets(enemies);
 
@@ -202,8 +203,9 @@ public class PlayerTests extends AndroidTestCase {
 		assertEquals(5, hero.getArmor());
 		assertTrue(hero.isAlive());
 		
-		while (!enemy.isReadyToFire()){
+		while (!enemy.isReadyToFire() || shotFired.visible){
 			enemy.update(TIMESLICE);
+			shotFired.update(TIMESLICE);
 		}
 		
 		enemy.shoot();

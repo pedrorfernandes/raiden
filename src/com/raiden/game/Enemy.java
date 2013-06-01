@@ -101,7 +101,8 @@ public class Enemy extends Ship {
 		this.impactTimer = IMPACT_INTERVAL;
 		this.reloadTime = reloadDone;
 		this.readyToFire = true;
-		this.flightPattern = new FlightPattern(flightPattern);
+		if (flightPattern != null)
+			this.flightPattern = new FlightPattern(flightPattern);
 	}
 
 	public void update(float deltaTime){
