@@ -1,0 +1,56 @@
+{
+    "flight patterns":
+    [
+        {   
+            "id" : 1,
+            "movements":
+            [
+                {
+                    "angle": 0,
+                    "duration": 800,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 270,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 180,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                        {
+                    "angle": 90,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 0,
+                    "duration": 300,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 270,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 180,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 90,
+                    "duration": 16,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 0,
+                    "duration": 300,
+                    "direction": "Right"
+                }
+            ]
+        }
+    ]
+}

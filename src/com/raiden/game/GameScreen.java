@@ -34,6 +34,8 @@ public class GameScreen extends Screen {
 	private Image heroImage;
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
 	private Image bulletImage;
+	
+	private Level level;
 
 	// touch and input variables
 	private Point dragPoint;
@@ -108,6 +110,8 @@ public class GameScreen extends Screen {
 		}
 	
 		specialEffects = new ArrayList<Animation>();
+		
+		level = new Level(this, RaidenGame.level1);
 
 		dragPoint = new Point();
 
@@ -169,30 +173,7 @@ public class GameScreen extends Screen {
 			state = GameState.Running;
 	}
 
-	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {  
-
-		counter += deltaTime;
-		if (counter > 960*1){
-			counter = 0;
-			// TODO this is a flight pattern example, must be removed !!
-			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0));//,0,0,0,0));
-			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200));//,300,400,500,600));
-			for (int i = 0; i < x.size()-1; i++) {
-				FlightPattern pattern = new FlightPattern();
-				pattern.addMovement(  0, 800, Direction.Right);
-				pattern.addMovement(270,  16, Direction.Right);
-				pattern.addMovement(180,  16, Direction.Right);
-				pattern.addMovement( 90,  16, Direction.Right);
-				pattern.addMovement(  0, 300, Direction.Right);
-				pattern.addMovement(270,  16, Direction.Right);
-				pattern.addMovement(180,  16, Direction.Right);
-				pattern.addMovement( 90,  16, Direction.Right);
-				pattern.addMovement(  0, 800, Direction.Right);
-				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern);
-				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern);
-				if (enemy == null) continue;
-			}
-		}
+	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
 		// All touch input is handled here
 		length = touchEvents.size();
@@ -227,6 +208,8 @@ public class GameScreen extends Screen {
 
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
+		
+		level.update(deltaTime);
 
 		// update the hero's bullets
 		//length = Ship.shotsFired.size();

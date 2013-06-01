@@ -27,15 +27,25 @@ public class Enemy extends Ship {
 	private static int length;
 	
 	public static enum Type{
-		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy, Assets.enemy1),
-		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2);
+		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy, Assets.enemy1, "Normal"),
+		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
 		
 		public int speed, turnSpeed, armor, radius, reloadDone;
 		public Image image;
 		public Bullet.Type bulletType;
+		public String id;
+		
+		public static Type getType(String id){
+			Type[] types = Enemy.Type.values();
+			for (Type type : types){
+				if ( type.id.equals(id) )
+					return type;
+			}
+			return null;
+		}
 		
 		Type(int speed, int turnSpeed, int armor, 
-				int radius, int reloadDone, Bullet.Type bulletType, Image image){
+				int radius, int reloadDone, Bullet.Type bulletType, Image image, String id){
 			this.speed = speed;
 			this.turnSpeed = turnSpeed;
 			this.armor = armor;
@@ -43,6 +53,7 @@ public class Enemy extends Ship {
 			this.reloadDone = reloadDone;
 			this.bulletType = bulletType;
 			this.image = image;
+			this.id = id;
 		}
 	}
 	

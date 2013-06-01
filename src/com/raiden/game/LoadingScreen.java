@@ -79,6 +79,8 @@ public class LoadingScreen extends Screen {
         FastMath.cos((float)Math.PI / 3);
         FastMath.sin((float)Math.PI / 3);
         
+        Level.loadFlightPatterns();
+        
         game.setScreen(new MainMenuScreen(game));
 
     }

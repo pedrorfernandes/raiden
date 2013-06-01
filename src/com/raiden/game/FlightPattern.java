@@ -3,13 +3,13 @@ package com.raiden.game;
 import java.util.ArrayList;
 
 public class FlightPattern {
-	protected ArrayList<Movement> movements;
-	protected int currentAngle;
-	protected int currentTime;
-	protected int totalDuration;
+	private ArrayList<Movement> movements;
+	private int currentMovement;
+	private int currentTime;
+	private int totalDuration;
 	
-	protected boolean loop;
-	public boolean active;
+	private boolean loop;
+	private boolean active;
 
 	public FlightPattern() {
 		loop = true;
@@ -19,7 +19,7 @@ public class FlightPattern {
 		totalDuration = 0;
 
 		currentTime = 0;
-		currentAngle = 0;
+		currentMovement = 0;
 	}
 	
 	public FlightPattern(FlightPattern flightPattern) {
@@ -28,7 +28,7 @@ public class FlightPattern {
 		movements = new ArrayList<Movement>(flightPattern.movements);
 		totalDuration = flightPattern.totalDuration;
 		currentTime = 0;
-		currentAngle = 0;
+		currentMovement = 0;
 	}
 
 	public void addMovement(int angle, int duration, Direction turnDirection) {
@@ -48,15 +48,15 @@ public class FlightPattern {
 			if (currentTime >= totalDuration) {
 				if (loop){
 					currentTime = currentTime % totalDuration;
-					currentAngle = 0;
+					currentMovement = 0;
 				} else {
 					active = false;
 				}
 
 			}
 
-			while (currentTime > getMovement(currentAngle).endTime && active) {
-				currentAngle++;
+			while (currentTime > getMovement(currentMovement).endTime && active) {
+				currentMovement++;
 			}
 		}
 	}
@@ -65,7 +65,7 @@ public class FlightPattern {
 		if (movements.size() == 0) {
 			return 0;
 		} else {
-			return getMovement(currentAngle).angle;
+			return getMovement(currentMovement).angle;
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class FlightPattern {
 		if (movements.size() == 0) {
 			return null;
 		} else {
-			return getMovement(currentAngle).turnDirection;
+			return getMovement(currentMovement).turnDirection;
 		}
 	}
 
@@ -87,10 +87,10 @@ public class FlightPattern {
 		int endTime;
 		Direction turnDirection;
 
-		public Movement(int angle, int endTime, Direction nextTurn) {
+		public Movement(int angle, int endTime, Direction turnDirection) {
 			this.angle = angle;
 			this.endTime = endTime;
-			this.turnDirection = nextTurn;
+			this.turnDirection = turnDirection;
 		}
 	}
 }
