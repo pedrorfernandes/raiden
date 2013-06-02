@@ -88,7 +88,7 @@ public class Enemy extends Ship {
 	
 	public void setType(Type type){
 		this.type = type;
-		this.speed = type.speed;
+		this.setSpeed(type.speed);
 		this.turnSpeed = type.turnSpeed;
 		this.armor = type.armor;
 		this.radius = type.radius;
@@ -104,10 +104,8 @@ public class Enemy extends Ship {
 		this.angle = angle; this.nextAngle = angle;
 		this.visible = true;
 		this.outOfRange = false;
-		this.setType(type);
 		this.radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.setType(type);
 		this.alive = true;
 		this.impactTimer = IMPACT_INTERVAL;
 		this.reloadTime = reloadDone;
@@ -187,8 +185,8 @@ public class Enemy extends Ship {
 	@Override
 	public void setSpeed(int speed){
 		this.speed = speed;
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.moveX = Math.round(speed * FastMath.cos( radians));
+		this.moveY = Math.round(speed * FastMath.sin(-radians));
 	}
 	
 	public void setAngle(float angle){
@@ -201,8 +199,7 @@ public class Enemy extends Ship {
 			this.angle += 360.0f;
 		
 		this.radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.setSpeed(this.speed);
 	}
 	
 	public void setNextAngle(float angle){

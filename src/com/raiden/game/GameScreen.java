@@ -175,6 +175,32 @@ public class GameScreen extends Screen {
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
+		/*
+		counter += deltaTime;
+		if (counter > 960*1){
+			counter = 0;
+			// TODO this is a flight pattern example, must be removed !!
+			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
+			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
+			for (int i = 0; i < x.size()-1; i++) {
+				FlightPattern pattern = new FlightPattern();
+				pattern.addMovement(  0, 800, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 300, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 800, Direction.Right);
+				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern);
+				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern);
+				if (enemy == null) continue;
+			}
+		}
+		*/
+
+		
 		// All touch input is handled here
 		length = touchEvents.size();
 		for (int i = 0; i < length; i++) {

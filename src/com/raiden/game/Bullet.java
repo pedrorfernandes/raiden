@@ -53,8 +53,8 @@ public class Bullet extends Collidable {
 		this.visible = true;
 		this.setType(type);
 		float radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.moveX = Math.round(speed * FastMath.cos( radians));
+		this.moveY = Math.round(speed * FastMath.sin(-radians));
 		this.hit = false;
 	}
 
