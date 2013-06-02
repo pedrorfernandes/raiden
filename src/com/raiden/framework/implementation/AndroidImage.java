@@ -5,15 +5,13 @@ import android.graphics.Bitmap;
 import com.raiden.framework.Image;
 import com.raiden.framework.Graphics.ImageFormat;
 
-public class AndroidImage implements Image {
-    Bitmap bitmap;
-    ImageFormat format;
-    public int halfWidth;
-    public int halfHeight;
+public class AndroidImage extends Image {
     
     public AndroidImage(Bitmap bitmap, ImageFormat format) {
         this.bitmap = bitmap;
         this.format = format;
+        this.width = getWidth();
+        this.height = getHeight();
         this.halfWidth = getWidth() / 2;
         this.halfHeight = getHeight() / 2;
     }

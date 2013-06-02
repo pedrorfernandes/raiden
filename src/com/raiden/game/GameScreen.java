@@ -271,8 +271,8 @@ public class GameScreen extends Screen {
 		heroImage = animationController.getCurrenAnimation().getImage();
 		
 		g.drawImage(heroImage,
-				hero.x - heroImage.getHalfWidth(), 
-				hero.y - heroImage.getHalfHeight());
+				hero.x - heroImage.halfWidth, 
+				hero.y - heroImage.halfHeight);
 		if (HITBOXES_VISIBLE) 
 			g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
 
@@ -284,14 +284,14 @@ public class GameScreen extends Screen {
 			bulletImage = bullet.type.image;
 			if (bullet.angle == ANGLE_UP){
 				g.drawImage(bulletImage,
-						bullet.x-bulletImage.getHalfWidth(), 
-						bullet.y-bulletImage.getHalfHeight());
+						bullet.x-bulletImage.halfWidth, 
+						bullet.y-bulletImage.halfHeight);
 			} else {
 				g.drawRotatedImage(bulletImage, 
-						bullet.x-bulletImage.getHalfWidth(), 
-						bullet.y-bulletImage.getHalfHeight(),
-						bulletImage.getWidth(),
-						bulletImage.getHeight(), 
+						bullet.x-bulletImage.halfWidth, 
+						bullet.y-bulletImage.halfHeight,
+						bulletImage.width,
+						bulletImage.height, 
 						bullet.angle,
 						ANGLE_UP);
 			}
@@ -311,14 +311,14 @@ public class GameScreen extends Screen {
 				bulletImage = bullet.type.image;
 				if (bullet.angle == ANGLE_UP){
 					g.drawImage(bulletImage, 
-							bullet.x-bulletImage.getHalfWidth(), 
-							bullet.y-bulletImage.getHalfHeight());
+							bullet.x-bulletImage.halfWidth, 
+							bullet.y-bulletImage.halfHeight);
 				} else {
 					g.drawRotatedImage(bulletImage, 
-							bullet.x-bulletImage.getHalfWidth(), 
-							bullet.y-bulletImage.getHalfHeight(),
-							bulletImage.getWidth(),
-							bulletImage.getHeight(),
+							bullet.x-bulletImage.halfWidth, 
+							bullet.y-bulletImage.halfHeight,
+							bulletImage.width,
+							bulletImage.height,
 							bullet.angle,
 							ANGLE_UP);
 				}
@@ -331,14 +331,14 @@ public class GameScreen extends Screen {
 			enemyImage = enemy.type.image;
 			if (enemy.angle == ANGLE_DOWN){
 				g.drawImage(enemyImage, 
-						enemy.x-enemyImage.getHalfWidth(), 
-						enemy.y-enemyImage.getHalfHeight());
+						enemy.x-enemyImage.halfWidth, 
+						enemy.y-enemyImage.halfHeight);
 			} else {
 				g.drawRotatedImage(enemyImage, 
-						enemy.x-enemyImage.getHalfWidth(), 
-						enemy.y-enemyImage.getHalfHeight(),
-						enemyImage.getWidth(),
-						enemyImage.getHeight(), 
+						enemy.x-enemyImage.halfWidth, 
+						enemy.y-enemyImage.halfHeight,
+						enemyImage.width,
+						enemyImage.height, 
 						enemy.angle,
 						ANGLE_DOWN);
 			}
@@ -359,12 +359,12 @@ public class GameScreen extends Screen {
 			
 			image = specialEffect.getImage();
 			if (specialEffect.scale == NORMAL_SCALE){
-				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
-						           specialEffect.y - image.getHalfHeight());
+				g.drawImage(image, specialEffect.x - image.halfWidth, 
+						           specialEffect.y - image.halfHeight);
 			} else {
 				g.drawScaledImage(image, 
-						specialEffect.x - image.getHalfWidth(), 
-						specialEffect.y - image.getHalfHeight(),
+						specialEffect.x - image.halfWidth, 
+						specialEffect.y - image.halfHeight,
 						specialEffect.x,
 						specialEffect.y,
 						specialEffect.scale);

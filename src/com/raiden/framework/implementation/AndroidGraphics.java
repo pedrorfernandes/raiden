@@ -124,7 +124,7 @@ public class AndroidGraphics implements Graphics {
 		canvas.drawText(text, x, y, paint);
 	}
 
-	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
+	public void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		srcRect.left = srcX;
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
@@ -135,7 +135,7 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + srcWidth;
 		dstRect.bottom = y + srcHeight;
 
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		canvas.drawBitmap(image.bitmap, srcRect, dstRect, null);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class AndroidGraphics implements Graphics {
 		canvas.drawBitmap(((AndroidImage)Image).bitmap, x, y, null);
 	}
 
-	public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
+	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
 		srcRect.left = srcX;
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
@@ -154,7 +154,7 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + width;
 		dstRect.bottom = y + height;
 		
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		canvas.drawBitmap(image.bitmap, srcRect, dstRect, null);
 	}
 	
 	public void drawScaledImage(Image image, int x, int y, int pivotX, int pivotY, float scale){
@@ -164,7 +164,7 @@ public class AndroidGraphics implements Graphics {
 		matrix.reset();
 		matrix.setTranslate(x, y);
 		matrix.postScale(scale, scale, pivotX, pivotY);
-		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+		canvas.drawBitmap(image.bitmap, matrix, null);
 	}
 	
 	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle){
@@ -174,11 +174,11 @@ public class AndroidGraphics implements Graphics {
 		matrix.reset();
 		matrix.setTranslate(x, y);
 		matrix.postRotate(startingAngle - angle, x+width/2, y+height/2);
-		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+		canvas.drawBitmap(image.bitmap, matrix, null);
 		/*
 		canvas.save();
 		canvas.rotate(startingAngle - angle, x + (width / 2), y + (height / 2));
-		canvas.drawBitmap(((AndroidImage) image).bitmap, x, y, null);
+		canvas.drawBitmap(image.bitmap, x, y, null);
 		canvas.restore();
 		*/
 	}
