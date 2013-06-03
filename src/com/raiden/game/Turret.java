@@ -60,4 +60,8 @@ public class Turret {
 	public void setBulletType(Bullet.Type bulletType){
 		this.bulletType = bulletType;
 	}
+	
+	public void setAngle(float angle){
+		this.angle = angle;
+	}
 }

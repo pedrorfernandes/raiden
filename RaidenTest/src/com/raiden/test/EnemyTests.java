@@ -26,7 +26,7 @@ public class EnemyTests extends AndroidTestCase {
 		// and will move down the screen
 		Enemy enemy = new Enemy(null);
 		int speed = 0;
-		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null);
+		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null, null);
 		enemy.setSpeed(speed);
 		
 		// check if the enemy stands still
@@ -86,7 +86,7 @@ public class EnemyTests extends AndroidTestCase {
 		
 		Enemy enemy = new Enemy(target);
 		int speed = 0;
-		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null);
+		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null, null);
 		enemy.setSpeed(speed);
 		enemy.shoot();
 		Bullet[] bullets = enemy.getShotsFired();
@@ -128,7 +128,7 @@ public class EnemyTests extends AndroidTestCase {
 		
 		Enemy enemy = new Enemy(target);
 		int speed = 0;
-		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null);
+		enemy.spawn(100, 100, 270.0f, Enemy.Type.Normal, null, null);
 		enemy.setSpeed(speed);
 		enemy.setArmor(8);
 		enemy.setAutoFire(false);

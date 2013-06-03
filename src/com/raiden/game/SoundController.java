@@ -17,7 +17,6 @@ public class SoundController implements Observer {
 		Sound sound = event.getSound();
 		if ( sound != null )
 			sound.play(volume);
-
 	}
 	
 	public void update(int x, int y, Event event){

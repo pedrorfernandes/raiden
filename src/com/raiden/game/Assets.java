@@ -17,7 +17,8 @@ public class Assets {
                         explosionSound7, explosionSound8, explosionSound9,
                         explosionSound10, explosionSound11,
                         hit1, hit2, hit3, hit4, hit5,
-                        heroHit, heroCollisionSound;
+                        heroHit, heroCollisionSound,
+                        powerUpSound1, powerUpSound2, powerUpSound3;
     public static Music machinegun;
     public static Image hero1, hero2, 
                         heroLeft1, heroLeft2, 
@@ -28,7 +29,8 @@ public class Assets {
                         explosion1, explosion2, explosion3,
                         explosion4, explosion5, explosion6,
                         heroCollision1, heroCollision2, heroCollision3,
-                        powerUp1;
+                        powerUp1, powerUp2, powerUp3,
+                        screenCrack;
             
     public static Animation getHeroTurningLeftAnimation(){
 		Animation heroTurningLeftAnimation = new Animation();

@@ -77,7 +77,14 @@ public class LoadingScreen extends Screen {
         Assets.enemyBullet2 = g.newImage("enemyBullet2.png", ImageFormat.ARGB8888);
         
         Assets.powerUp1 = g.newImage("powerUp1.png", ImageFormat.ARGB8888);
-        
+        Assets.powerUpSound1 = game.getAudio().createSound("powerUpSound1.wav");
+        Assets.powerUp2 = g.newImage("powerUp2.png", ImageFormat.ARGB8888);
+        Assets.powerUpSound2 = game.getAudio().createSound("powerUpSound2.wav");
+        Assets.powerUp3 = g.newImage("powerUp3.png", ImageFormat.ARGB8888);
+        Assets.powerUpSound3 = game.getAudio().createSound("powerUpSound3.wav");
+
+        Assets.screenCrack = g.newImage("screenCrack1.png", ImageFormat.ARGB8888);
+
         // initialize static arrays
         FastMath.atan2(0.5f, 0.5f);
         FastMath.cos((float)Math.PI / 3);

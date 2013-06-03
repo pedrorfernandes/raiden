@@ -17,10 +17,10 @@ public class Hero extends Ship {
 	final int HIGH_THRESHOLD = 8;
 	private int turningThreshold = HIGH_THRESHOLD;
 
-	private static final int MAX_BULLETS = 30;
+	private static final int MAX_BULLETS = 60;
 	
 	private static final int RELOAD_DONE = 200;
-	
+		
 	private Enemy[] enemies;
 	private PowerUp[] powerUps;
 		
@@ -57,6 +57,8 @@ public class Hero extends Ship {
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
 		reloadTime = reloadDone;
+		
+		bulletType = Bullet.Type.Hero;
 				
 		shots = new Bullet[MAX_BULLETS];
 		
@@ -67,16 +69,20 @@ public class Hero extends Ship {
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
-		emptyTurretPositions.add(new Point(-36, -halfSizeY));
-		emptyTurretPositions.add(new Point( 36, -halfSizeY));
-		emptyTurretPositions.add(new Point(  0, -halfSizeY));
+		emptyTurretPositions.add(new Point(   0, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point( -36, -halfSizeY));
+		emptyTurretPositions.add(new Point(  36, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point( -72, -halfSizeY));
+		emptyTurretPositions.add(new Point(  72, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point(-108, -halfSizeY));
+		emptyTurretPositions.add(new Point( 108, -halfSizeY));
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
-		addTurret(90.0f, Bullet.Type.Hero);
-		addTurret(90.0f, Bullet.Type.Hero);
-		//addTurret(90.0f+15.0f);
-		//addTurret(90.0f-15.0f);
+		addTurret(90.0f, bulletType);
 	}
 
 	public void update(float deltaTime) {

@@ -60,7 +60,7 @@ public class GameScreen extends Screen {
 	private static final float ANGLE_UP = 90.0f;
 	
 	// power up variables
-	private static final int MAX_POWER_UPS = 5;
+	private static final int MAX_POWER_UPS = 15;
 	private static PowerUp[] powerUps = new PowerUp[MAX_POWER_UPS];
 
 	// constants for animation
@@ -204,9 +204,11 @@ public class GameScreen extends Screen {
 		counter += deltaTime;
 		if (counter > 960*1){
 			counter = 0;
-			
-			//spawnPowerUp(200, 0, PowerUp.Type.HeavyBullets);
 			/*
+			spawnPowerUp(100, 0, PowerUp.Type.HeavyBullets);
+			spawnPowerUp(400, 0, PowerUp.Type.Machinegun);
+			spawnPowerUp(600, 0, PowerUp.Type.ScatterShot);
+			*/
 			// TODO this is a flight pattern example, must be removed !!
 			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
 			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
@@ -225,7 +227,6 @@ public class GameScreen extends Screen {
 				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern, null);
 				if (enemy == null) continue;
 			}
-			*/
 			
 		}
 

@@ -98,6 +98,7 @@ public class Enemy extends Ship {
 		this.type = type;
 		this.setSpeed(type.speed);
 		this.turnSpeed = type.turnSpeed;
+		this.bulletType = type.bulletType;
 		this.armor = type.armor;
 		this.radius = type.radius;
 		this.reloadDone = type.reloadDone;

@@ -3,6 +3,7 @@ package com.raiden.game;
 import java.util.ArrayList;
 
 import com.raiden.framework.Image;
+import com.raiden.framework.Sound;
 
 public class PowerUp extends Collidable {
 
@@ -11,24 +12,64 @@ public class PowerUp extends Collidable {
 	private int moveX, moveY;
 	
 	public enum Type {		
-		HeavyBullets(6, Assets.powerUp1, "HeavyBullets"){
+		HeavyBullets (6, Assets.powerUp1, Assets.powerUpSound1, "HeavyBullets")
+		{
 			@Override
 			public void powerUp(Ship ship){
 				ArrayList<Turret> turrets = ship.getTurrets();
 				for (Turret turret : turrets) {
 					turret.setBulletType(Bullet.Type.HeroHeavy);
+					this.notifyPowerUp(ship);
 				}
+			}
+		},
+		
+		Machinegun (6, Assets.powerUp2, Assets.powerUpSound2, "Machinegun")
+		{
+			@Override
+			public void powerUp(Ship ship){
+				ArrayList<Turret> turrets = ship.getTurrets();
+				for (Turret turret : turrets) {
+					turret.setAngle(90.0f);
+				}
+				ship.addTurret(90.0f);
+				ship.addTurret(90.0f);
+				this.notifyPowerUp(ship);
+			}
+		},
+		
+		ScatterShot (6, Assets.powerUp3, Assets.powerUpSound3, "ScatterShot")
+		{
+			@Override
+			public void powerUp(Ship ship){
+				ArrayList<Turret> turrets = ship.getTurrets();
+				float scatterAngle = 5.0f;
+				int numberOfTurrets = turrets.size();
+				for (int i = 1; i < numberOfTurrets-1; i += 2) {
+					turrets.get(  i).setAngle(90.0f + scatterAngle);
+					turrets.get(i+1).setAngle(90.0f - scatterAngle);
+					scatterAngle += scatterAngle;
+				}
+				
+				this.notifyPowerUp(ship);
 			}
 		};
 
 		public int speed;
 		public Image image;
+		public Sound sound;
 		public String id;
 		
-		Type(int speed, Image image, String id){
+		Type(int speed, Image image, Sound sound, String id){
 			this.speed = speed;
 			this.image = image;
+			this.sound = sound;
 			this.id = id;
+		}
+		
+		public void notifyPowerUp(Ship ship){
+			Event.PowerUp.setPowerUpType(this);
+			ship.notifyObservers(Event.PowerUp);
 		}
 		
 		public static Type getType(String id){
@@ -81,7 +122,7 @@ public class PowerUp extends Collidable {
 	
 	@Override
 	public void visit(Ship ship) {
-		type.powerUp(ship);
+		this.type.powerUp(ship);
 		this.visible = false;
 	}
 

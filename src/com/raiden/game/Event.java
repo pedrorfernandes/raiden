@@ -93,10 +93,19 @@ public enum Event {
 		}
 	},
 	
-	StopFiring{
+	StopFiring
+	{
 		@Override
 		public Music getMusic(){
 			return Assets.machinegun;
+		}
+	},
+	
+	PowerUp
+	{
+		@Override
+		public Sound getSound(){
+			return powerUpType.sound;
 		}
 	};
 
@@ -112,6 +121,16 @@ public enum Event {
 	private static ArrayList<Sound> hitSounds;
 	private static int currentHitSound, currentExplosionSound;
 	private static ArrayList<Sound> explosionSounds;
+		
+	public PowerUp.Type powerUpType;
+	
+	private Event(){
+		powerUpType = null;
+	}
+	
+	public void setPowerUpType(PowerUp.Type powerUpType){
+		this.powerUpType = powerUpType;
+	}
 	
 	public static void initializeSounds(){
 		hitSounds = Assets.getHitSounds();
@@ -141,7 +160,7 @@ public enum Event {
 	public Music getMusic(){
 		return null;
 	}
-	
+		
 	private static Sound getExplosionSound(){
 		if (currentExplosionSound >= explosionSounds.size() )
 			currentExplosionSound = 0;

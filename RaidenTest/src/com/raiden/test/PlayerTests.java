@@ -182,7 +182,7 @@ public class PlayerTests extends AndroidTestCase {
 		Enemy enemy = new Enemy(hero);
 		enemies[0] = enemy;
 		int speed = 0;
-		enemy.spawn(200, 200, 0.0f, Enemy.Type.Normal, null);
+		enemy.spawn(200, 200, 0.0f, Enemy.Type.Normal, null, null);
 		enemy.setSpeed(speed);
 		enemy.setAutoFire(false);
 		hero.setTargets(enemies);

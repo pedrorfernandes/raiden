@@ -8,7 +8,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 1,
-            "drop": "HeavyBullets"
+            "drop": "Machinegun"
         },
         {
             "time": 1000,
@@ -17,7 +17,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 1,
-            "drop": "HeavyBullets"
+            "drop": "Machinegun"
         },
         {
             "time": 1000,

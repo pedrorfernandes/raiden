@@ -25,6 +25,8 @@ public abstract class Ship extends Collidable {
 	
 	protected boolean autofire;
 	
+	public Bullet.Type bulletType;
+	
 	@Override
 	public void visit(Ship ship) {
 		if (impactTimer == IMPACT_INTERVAL){
@@ -95,6 +97,10 @@ public abstract class Ship extends Collidable {
 			turrets.add(new Turret(this, emptyTurretPositions.get(0), target, bulletType));
 		emptyTurretPositions.remove(0);
 		return true;
+	}
+	
+	public boolean addTurret(float firingAngle){
+		return addTurret(firingAngle, this.bulletType);
 	}
 
 	public int getTimeToReload(){
