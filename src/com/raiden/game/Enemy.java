@@ -21,13 +21,14 @@ public class Enemy extends Ship {
 	private FlightPattern flightPattern;
 	
 	public Type type;
+	public PowerUp.Type powerUpTypeDrop;
 	
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
 	
 	public static enum Type{
-		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy, Assets.enemy1, "Normal"),
+		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy,      Assets.enemy1, "Normal"),
 		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
 		
 		public int speed, turnSpeed, armor, radius, reloadDone;
@@ -36,7 +37,7 @@ public class Enemy extends Ship {
 		public String id;
 		
 		public static Type getType(String id){
-			Type[] types = Enemy.Type.values();
+			Type[] types = Type.values();
 			for (Type type : types){
 				if ( type.id.equals(id) )
 					return type;
@@ -54,6 +55,13 @@ public class Enemy extends Ship {
 			this.bulletType = bulletType;
 			this.image = image;
 			this.id = id;
+		}
+	}
+	
+	public void dropPowerUp(){
+		if (this.powerUpTypeDrop != null) {
+			gameScreen.spawnPowerUp(this.x, this.y, powerUpTypeDrop);
+			powerUpTypeDrop = null;
 		}
 	}
 	
@@ -98,7 +106,7 @@ public class Enemy extends Ship {
 		}
 	}
 
-	public void spawn(int x, int y, float angle, Type type, FlightPattern flightPattern) {
+	public void spawn(int x, int y, float angle, Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle; this.nextAngle = angle;
@@ -110,6 +118,7 @@ public class Enemy extends Ship {
 		this.impactTimer = IMPACT_INTERVAL;
 		this.reloadTime = reloadDone;
 		this.readyToFire = true;
+		this.powerUpTypeDrop = PowerUpDrop;
 		if (flightPattern != null)
 			this.flightPattern = new FlightPattern(flightPattern);
 	}
@@ -227,6 +236,7 @@ public class Enemy extends Ship {
 		if (armor < 1){
 			alive = false; visible = false; flightPattern = null;
 			notifyObservers(Event.Explosion);
+			dropPowerUp();
 			return true;
 		} else {
 			return false;

@@ -46,6 +46,7 @@ public class GameScreen extends Screen {
 	private static SoundController soundController;
 	private static AnimationController animationController;
 	private static EffectsController effectsController;
+	private static MusicController musicController;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -57,6 +58,10 @@ public class GameScreen extends Screen {
 
 	private static final float ANGLE_DOWN = 270.0f;
 	private static final float ANGLE_UP = 90.0f;
+	
+	// power up variables
+	private static final int MAX_POWER_UPS = 5;
+	private static PowerUp[] powerUps = new PowerUp[MAX_POWER_UPS];
 
 	// constants for animation
 	private static final int ANIMATION_UPDATE = 1;
@@ -70,22 +75,24 @@ public class GameScreen extends Screen {
 	private int counter = 0;
 
 	// iterating variables
-	private int length;
-	Bullet bullet;
-	Enemy enemy;
-	Image image;
-	Animation specialEffect;
-	ListIterator<Enemy> enemyItr;
+	private static int length;
+	private static Bullet bullet;
+	private static Enemy enemy;
+	private static Image image;
+	private static PowerUp powerUp;
+	private static Animation specialEffect;
 
 	public GameScreen(Game game) {
 		super(game);
 		
 		screenSize = game.getSize();
 		Collidable.setBounds(screenSize);
+		Collidable.setGameScreen(this);
 
 		// Initialize game objects here
 		hero = new Hero();
 		hero.setTargets(enemies);
+		hero.setPowerUps(powerUps);
 		
 		heroAnimation = Assets.getHeroAnimation();
 		heroTurningLeftAnimation = Assets.getHeroTurningLeftAnimation();
@@ -97,16 +104,22 @@ public class GameScreen extends Screen {
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
 		animationController = new AnimationController(this);
+		musicController = new MusicController(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
+		hero.addObserver(musicController);
 		
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemies[i] = new Enemy(hero);
 			enemies[i].addObserver(effectsController);
 			enemies[i].addObserver(soundController);
+		}
+		
+		for (int i = 0; i < MAX_POWER_UPS; i++) {
+			powerUps[i] = new PowerUp();
 		}
 	
 		specialEffects = new ArrayList<Animation>();
@@ -127,13 +140,25 @@ public class GameScreen extends Screen {
 
 	}
 	
-	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern){
+	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemy = enemies[i];
 			if ( !enemy.isInGame() ){
-				enemy.spawn(x, y, angle, type, flightPattern);
+				enemy.spawn(x, y, angle, type, flightPattern, PowerUpDrop);
 				return enemy;
+			}
+		}
+		return null;
+	}
+	
+	public PowerUp spawnPowerUp(int x, int y, PowerUp.Type type){
+		for (int i = 0; i < MAX_POWER_UPS; i++)
+		{
+			powerUp = powerUps[i];
+			if ( !powerUp.isVisible() ){
+				powerUp.spawn(x, y, type);
+				return powerUp;
 			}
 		}
 		return null;
@@ -175,10 +200,13 @@ public class GameScreen extends Screen {
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
-		/*
+		
 		counter += deltaTime;
 		if (counter > 960*1){
 			counter = 0;
+			
+			//spawnPowerUp(200, 0, PowerUp.Type.HeavyBullets);
+			/*
 			// TODO this is a flight pattern example, must be removed !!
 			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
 			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
@@ -193,12 +221,13 @@ public class GameScreen extends Screen {
 				pattern.addMovement(180,  16, Direction.Right);
 				pattern.addMovement( 90,  16, Direction.Right);
 				pattern.addMovement(  0, 800, Direction.Right);
-				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern);
-				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern);
+				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern, null);
+				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern, null);
 				if (enemy == null) continue;
 			}
+			*/
+			
 		}
-		*/
 
 		
 		// All touch input is handled here
@@ -256,6 +285,13 @@ public class GameScreen extends Screen {
 				bullet = enemy.shots[j];
 				bullet.update(deltaTime);
 			}
+		}
+		
+		// update power ups
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			powerUp.update(deltaTime);
 		}
 		
 	}
@@ -395,6 +431,16 @@ public class GameScreen extends Screen {
 						specialEffect.y,
 						specialEffect.scale);
 			}
+		}
+		
+		// power ups drawing
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			if (!powerUp.visible) continue;
+			image = powerUp.type.image;
+			g.drawImage(image, powerUp.x - image.halfWidth, 
+                               powerUp.y - image.halfHeight);
 		}
 		
 		animate(deltaTime);

@@ -37,8 +37,8 @@ public class Level {
 		Level.flightPatterns = flightPatterns;
 	}
 	
-	public void addSpawn(int time, int x, int y, float angle, Enemy.Type enemyType, int flightPatternNumber){
-		Spawn spawn = new Spawn(time, x, y, angle, enemyType, flightPatterns.get(flightPatternNumber));
+	public void addSpawn(int time, int x, int y, float angle, Enemy.Type enemyType, int flightPatternNumber, PowerUp.Type powerUpDrop){
+		Spawn spawn = new Spawn(time, x, y, angle, enemyType, flightPatterns.get(flightPatternNumber), powerUpDrop);
 		spawns.add(spawn);
 	}
 	
@@ -47,7 +47,7 @@ public class Level {
 			currentTime += (int)deltaTime;
 			spawn = spawns.get(currentSpawn);
 			while (currentTime >= spawn.time){
-				gameScreen.spawnEnemy(spawn.x, spawn.y, spawn.angle, spawn.enemyType, spawn.flightPattern);
+				gameScreen.spawnEnemy(spawn.x, spawn.y, spawn.angle, spawn.enemyType, spawn.flightPattern, spawn.powerUpDrop);
 				currentSpawn++;
 				if (currentSpawn >= spawns.size() ) return;
 				spawn = spawns.get(currentSpawn);
@@ -82,7 +82,8 @@ public class Level {
 		}
 	}
 	
-	private static final String SPAWNS = "spawns", TIME = "time", X = "x", Y = "y", TYPE = "type", PATTERN = "pattern";
+	private static final String SPAWNS = "spawns", TIME = "time", 
+			X = "x", Y = "y", TYPE = "type", PATTERN = "pattern", POWERUP = "drop";
 	
 	public void loadSpawns(String level){
 		try {
@@ -97,7 +98,8 @@ public class Level {
 				float angle = (float)spawn.getDouble(ANGLE);
 				Enemy.Type enemyType = Enemy.Type.getType(spawn.getString(TYPE));
 				int flightPatternNumber = spawn.getInt(PATTERN);
-				addSpawn(time, x, y, angle, enemyType, flightPatternNumber);
+				PowerUp.Type powerUpType = PowerUp.Type.getType(spawn.getString(POWERUP));
+				addSpawn(time, x, y, angle, enemyType, flightPatternNumber, powerUpType);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -110,14 +112,16 @@ public class Level {
 		public float angle;
 		public Enemy.Type enemyType;
 		public FlightPattern flightPattern;
+		public PowerUp.Type powerUpDrop;
 		
-		public Spawn(int time, int x, int y, float angle, Enemy.Type enemyType, FlightPattern flightPattern) {
+		public Spawn(int time, int x, int y, float angle, Enemy.Type enemyType, FlightPattern flightPattern, PowerUp.Type powerUpDrop) {
 			this.time = time;
 			this.x = x;
 			this.y = y;
 			this.angle = angle;
 			this.enemyType = enemyType;
 			this.flightPattern = flightPattern;
+			this.powerUpDrop = powerUpDrop;
 		}
 	}
 }

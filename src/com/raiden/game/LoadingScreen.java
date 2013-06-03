@@ -54,7 +54,9 @@ public class LoadingScreen extends Screen {
         Assets.heroLeft2 = g.newImage("heroLeft2.png", ImageFormat.ARGB8888);
         Assets.heroRight1 = g.newImage("heroRight1.png", ImageFormat.ARGB8888);
         Assets.heroRight2 = g.newImage("heroRight2.png", ImageFormat.ARGB8888);
+        
         Assets.heroBullet1 = g.newImage("heroBullet1.png", ImageFormat.ARGB8888);
+        Assets.heroBullet2 = g.newImage("heroBullet2.png", ImageFormat.ARGB8888);
         
         Assets.heroCollision1 = g.newImage("heroCollision1.png", ImageFormat.ARGB8888);
         Assets.heroCollision2 = g.newImage("heroCollision2.png", ImageFormat.ARGB8888);
@@ -73,6 +75,8 @@ public class LoadingScreen extends Screen {
 
         Assets.enemyBullet1 = g.newImage("enemyBullet1.png", ImageFormat.ARGB8888);
         Assets.enemyBullet2 = g.newImage("enemyBullet2.png", ImageFormat.ARGB8888);
+        
+        Assets.powerUp1 = g.newImage("powerUp1.png", ImageFormat.ARGB8888);
         
         // initialize static arrays
         FastMath.atan2(0.5f, 0.5f);

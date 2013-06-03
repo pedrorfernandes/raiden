@@ -42,6 +42,11 @@ public abstract class Ship extends Collidable {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void visit(PowerUp powerUp) {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void accept(Collidable other) {
@@ -129,6 +134,10 @@ public abstract class Ship extends Collidable {
 	
 	public boolean isVisible(){
 		return visible;
+	}
+	
+	public ArrayList<Turret> getTurrets(){
+		return turrets;
 	}
 
 }

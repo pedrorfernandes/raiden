@@ -7,7 +7,8 @@
             "y": 100,
             "angle": 0.0,
             "type": "Normal",
-            "pattern": 1
+            "pattern": 1,
+            "drop": "HeavyBullets"
         },
         {
             "time": 1000,
@@ -15,7 +16,8 @@
             "y": 200,
             "angle": 0.0,
             "type": "Normal",
-            "pattern": 1
+            "pattern": 1,
+            "drop": "HeavyBullets"
         },
         {
             "time": 1000,
@@ -23,7 +25,8 @@
             "y": 300,
             "angle": 0.0,
             "type": "Normal",
-            "pattern": 1
+            "pattern": 1,
+            "drop": "HeavyBullets"
         },
         {
             "time": 3000,
@@ -31,7 +34,8 @@
             "y": 100,
             "angle": 0.0,
             "type": "Fast",
-            "pattern": 0
+            "pattern": 0,
+            "drop": null
         },
         {
             "time": 3000,
@@ -39,7 +43,8 @@
             "y": 300,
             "angle": 0.0,
             "type": "Fast",
-            "pattern": 0
+            "pattern": 0,
+            "drop": null
         }
     ]
 }

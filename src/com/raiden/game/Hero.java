@@ -22,14 +22,20 @@ public class Hero extends Ship {
 	private static final int RELOAD_DONE = 200;
 	
 	private Enemy[] enemies;
+	private PowerUp[] powerUps;
 		
 	// iterating variables
 	private static Enemy enemy;
 	private static Bullet bullet;
+	private static PowerUp powerUp;
 	private static int length;
 	
 	public void setTargets(Enemy[] enemies){
 		this.enemies = enemies;
+	}
+	
+	public void setPowerUps(PowerUp[] powerUps){
+		this.powerUps = powerUps;
 	}
 
 	public Hero() {
@@ -117,6 +123,13 @@ public class Hero extends Ship {
 				if (bullet.visible)
 					this.checkCollision(bullet);
 			}
+		}
+		
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			if (powerUp.visible)
+				this.checkCollision(powerUp);
 		}
 
 		reload(deltaTime);

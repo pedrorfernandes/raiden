@@ -22,12 +22,13 @@ public class Assets {
     public static Image hero1, hero2, 
                         heroLeft1, heroLeft2, 
                         heroRight1, heroRight2,
-                        heroBullet1,
+                        heroBullet1, heroBullet2,
                         enemyBullet1, enemyBullet2,
                         enemy1, enemy2,
                         explosion1, explosion2, explosion3,
                         explosion4, explosion5, explosion6,
-                        heroCollision1, heroCollision2, heroCollision3;
+                        heroCollision1, heroCollision2, heroCollision3,
+                        powerUp1;
             
     public static Animation getHeroTurningLeftAnimation(){
 		Animation heroTurningLeftAnimation = new Animation();

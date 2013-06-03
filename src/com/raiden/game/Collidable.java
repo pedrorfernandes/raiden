@@ -16,7 +16,7 @@ public abstract class Collidable implements Visitor, Observable {
 	protected static int maxX;
 	protected static int maxY;
 	
-	public static final int OFFSCREEN_LIMIT = 100;
+	public static final int OFFSCREEN_LIMIT = 400;
 	protected static int outMinX = - OFFSCREEN_LIMIT;
 	protected static int outMinY = - OFFSCREEN_LIMIT;
 	protected static int outMaxX;
@@ -28,6 +28,12 @@ public abstract class Collidable implements Visitor, Observable {
 	protected int collisionDamage = DEFAULT_DAMAGE;
 	
 	protected ArrayList<Observer> observers = new ArrayList<Observer>();
+	
+	protected static GameScreen gameScreen;
+	
+	public static void setGameScreen(GameScreen gameScreen){
+		Collidable.gameScreen = gameScreen;
+	}
 	
 	public static void setBounds(Point screenSize){
 		bounds = screenSize;
