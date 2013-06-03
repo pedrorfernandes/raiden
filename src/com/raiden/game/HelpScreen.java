@@ -7,7 +7,7 @@ import com.raiden.framework.Screen;
 public class HelpScreen extends Screen {
 	
 	private Screen previousScreen;
-	boolean bgPainted = false;
+	private boolean bgPainted = false;
 
 	public HelpScreen(Game game) {
 		super(game);

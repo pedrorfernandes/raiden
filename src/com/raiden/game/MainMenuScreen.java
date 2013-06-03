@@ -2,10 +2,8 @@ package com.raiden.game;
 
 import java.util.List;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
@@ -30,23 +28,23 @@ public class MainMenuScreen extends Screen {
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
 		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 		
-		playButton = new ScreenButton(ScreenButton.MAIN_MENU_PLAY_X, ScreenButton.MAIN_MENU_PLAY_Y,
+		playButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y,
 				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Play",
-				ScreenButton.MAIN_MENU_PLAY_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_PLAY_Y + ScreenButton.MAIN_MENU_STR_YDIST,
-				p, new GameScreen(game));
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_STR_YDIST,
+				p, new GameScreen(game), false);
 		
-		settingsButton = new ScreenButton(ScreenButton.MAIN_MENU_PLAY_X, ScreenButton.MAIN_MENU_PLAY_Y + ScreenButton.DIST_BETWEEN_BUTTONS,
+		settingsButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Settings",
-				ScreenButton.MAIN_MENU_PLAY_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_PLAY_Y + ScreenButton.DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
-				p, new GameScreen(game));
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
+				p, new SettingsScreen(game, this), false);
 		
-		helpButton = new ScreenButton(ScreenButton.MAIN_MENU_PLAY_X, ScreenButton.MAIN_MENU_PLAY_Y + 2*ScreenButton.DIST_BETWEEN_BUTTONS,
+		helpButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + 2*ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Help",
-				ScreenButton.MAIN_MENU_PLAY_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_PLAY_Y + 2*ScreenButton.DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
-				p, new HelpScreen(game, this));
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
+				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + 2*ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
+				p, new HelpScreen(game, this), false);
 	}
 
 
@@ -63,7 +61,13 @@ public class MainMenuScreen extends Screen {
 				if (playButton.hitbox.contains(event.x, event.y)) {
 					//START GAME
 					bgPainted = false;
-					game.setScreen(new GameScreen(game));               
+					game.setScreen(playButton.nextScreen);               
+				}
+				
+				if (settingsButton.hitbox.contains(event.x, event.y)) {
+					//SETTINGS SCREEN
+					bgPainted = false;
+					game.setScreen(settingsButton.nextScreen);
 				}
 				
 				if (helpButton.hitbox.contains(event.x, event.y)) {
@@ -78,14 +82,14 @@ public class MainMenuScreen extends Screen {
 	}
 
 
-	private boolean inBounds(TouchEvent event, int x, int y, int width,
+	/*private boolean inBounds(TouchEvent event, int x, int y, int width,
 			int height) {
 		if (event.x > x && event.x < x + width - 1 && event.y > y
 				&& event.y < y + height - 1)
 			return true;
 		else
 			return false;
-	}
+	}*/
 
 
 	@Override
