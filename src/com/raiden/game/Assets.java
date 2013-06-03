@@ -11,7 +11,7 @@ public class Assets {
 	
 	private static final int HERO_ANIMATION_DURATION = 10;
     
-    public static Image splash, menu, helpMenu, settingsMenu;
+    public static Image splash, menu, helpMenu, settingsMenu, pauseButtonImg, pauseMenu;
     public static Sound explosionSound1, explosionSound2, explosionSound3,
                         explosionSound4, explosionSound5, explosionSound6,
                         explosionSound7, explosionSound8, explosionSound9,

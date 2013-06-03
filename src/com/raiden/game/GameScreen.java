@@ -17,6 +17,7 @@ import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class GameScreen extends Screen {
+
 	enum GameState {
 		Ready, Running, Paused, GameOver
 	}
@@ -25,6 +26,10 @@ public class GameScreen extends Screen {
 
 	// Variable Setup
 	// You would create game objects here.
+
+	private boolean showPauseButton = true;
+	private ScreenButton pauseButton;
+	private boolean pauseScreenReady = false;
 
 	int livesLeft = 1;
 	Paint paint;
@@ -38,14 +43,14 @@ public class GameScreen extends Screen {
 
 	// screen size variables
 	public static Point screenSize;
-	
+
 	private static SoundController soundController;
 	private static AnimationController animationController;
 	private static EffectsController effectsController;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
-	
+
 	// enemy variables
 	private Image enemyImage;
 	private static final int MAX_ENEMIES = 20;
@@ -56,7 +61,7 @@ public class GameScreen extends Screen {
 
 	// constants for animation
 	private static final int ANIMATION_UPDATE = 1;
-	
+
 	// debug variables
 	private static boolean HITBOXES_VISIBLE = false;
 	private static Paint hitboxColor;
@@ -73,22 +78,33 @@ public class GameScreen extends Screen {
 	Animation specialEffect;
 	ListIterator<Enemy> enemyItr;
 
+	public final static int PAUSE_BUTTON_SIDE = 75;
+
+	public final static int PAUSE_BUTTON_Y = 25;
+
+	public final static int PAUSE_BUTTON_X = 700;
+
 	public GameScreen(Game game) {
 		super(game);
-		
+
 		screenSize = game.getSize();
 		Collidable.setBounds(screenSize);
 
 		// Initialize game objects here
+
+		pauseButton = new ScreenButton(GameScreen.PAUSE_BUTTON_X, GameScreen.PAUSE_BUTTON_Y,
+				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE, new PauseScreen(game, this), true);
+
+
 		hero = new Hero();
 		hero.setTargets(enemies);
-		
+
 		heroAnimation = Assets.getHeroAnimation();
 		heroTurningLeftAnimation = Assets.getHeroTurningLeftAnimation();
 		heroTurningRightAnimation = Assets.getHeroTurningRightAnimation();
-		
+
 		heroImage = heroAnimation.getImage();
-		
+
 		// observers
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
@@ -99,14 +115,14 @@ public class GameScreen extends Screen {
 		hero.addObserver(animationController);
 
 		enemyImage = Assets.enemy1;
-		
+
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemies[i] = new Enemy(hero);
 			enemies[i].addObserver(effectsController);
 			enemies[i].addObserver(soundController);
 		}
-		
+
 		spawnEnemy(200, 200, 295.0f);
 		spawnEnemy(100, 100, 225.0f);
 
@@ -120,12 +136,12 @@ public class GameScreen extends Screen {
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setAntiAlias(true);
 		paint.setColor(Color.WHITE);
-		
+
 		hitboxColor = new Paint();
 		hitboxColor.setColor(Color.MAGENTA);
 
 	}
-	
+
 	public void spawnEnemy(int x, int y, float angle){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -136,7 +152,7 @@ public class GameScreen extends Screen {
 			}
 		}
 	}
-	
+
 	public void addSpecialEffect(Animation specialEffect){
 		specialEffects.add(specialEffect);
 	}
@@ -171,7 +187,7 @@ public class GameScreen extends Screen {
 			state = GameState.Running;
 	}
 
-	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {  
+	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) { 
 
 		counter += deltaTime;
 		if (counter > 960*1){
@@ -188,12 +204,22 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < length; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_DOWN) {
+
+				if (pauseButton.hitbox.contains(event.x, event.y) && showPauseButton) {
+					//Pause menu
+					pause();
+				}
+				else {
+					showPauseButton = false;
+				}
+
 				dragPoint.x = event.x;
 				dragPoint.y = event.y;
 				hero.setAutoFire(true);
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
+				showPauseButton = true;
 				hero.setAutoFire(false);
 			}
 
@@ -241,12 +267,15 @@ public class GameScreen extends Screen {
 	}
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
-		int len = touchEvents.size();
+		/*int len = touchEvents.size();
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 
 			}
+		}*/
+		if(pauseScreenReady) {
+			game.setScreen(pauseButton.nextScreen);
 		}
 	}
 
@@ -272,10 +301,10 @@ public class GameScreen extends Screen {
 		// First draw the game elements.
 
 		g.clearScreen(Color.rgb(58, 86, 104));
-		
+
 		// hero drawing
 		heroImage = animationController.getCurrenAnimation().getImage();
-		
+
 		g.drawImage(heroImage,
 				hero.x - heroImage.getHalfWidth(), 
 				hero.y - heroImage.getHalfHeight());
@@ -308,7 +337,7 @@ public class GameScreen extends Screen {
 		length = enemies.length;
 		for (int i = 0; i < length; i++) {
 			Enemy enemy = enemies[i];
-			
+
 			// enemy bullets drawing
 			for (int j = 0; j < enemy.shots.length; j++) {
 				Bullet bullet = enemy.shots[j];
@@ -329,7 +358,7 @@ public class GameScreen extends Screen {
 				if (HITBOXES_VISIBLE)
 					g.drawCircle(bullet.x, bullet.y, bullet.radius, hitboxColor);
 			}
-			
+
 			// draw the enemy
 			if (!enemy.visible) continue;
 			if (enemy.angle == ANGLE_DOWN){
@@ -360,7 +389,7 @@ public class GameScreen extends Screen {
 			image = specialEffect.getImage();
 			if (specialEffect.scale == NORMAL_SCALE){
 				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
-						           specialEffect.y - image.getHalfHeight());
+						specialEffect.y - image.getHalfHeight());
 			} else {
 				g.drawScaledImage(image, 
 						specialEffect.x - image.getHalfWidth(), 
@@ -370,7 +399,7 @@ public class GameScreen extends Screen {
 						specialEffect.scale);
 			}
 		}
-		
+
 		animate(deltaTime);
 
 		// Secondly, draw the UI above the game elements.
@@ -420,13 +449,16 @@ public class GameScreen extends Screen {
 	private void drawRunningUI() {
 		Graphics g = game.getGraphics();
 
+		if(showPauseButton) {
+			g.drawImage(Assets.pauseButtonImg, pauseButton.x, pauseButton.y);
+		}
 	}
 
 	private void drawPausedUI() {
 		Graphics g = game.getGraphics();
 		// Darken the entire screen so you can display the Paused screen.
 		g.drawARGB(155, 0, 0, 0);
-
+		pauseScreenReady = true;
 	}
 
 	private void drawGameOverUI() {
@@ -440,13 +472,14 @@ public class GameScreen extends Screen {
 	public void pause() {
 		if (state == GameState.Running)
 			state = GameState.Paused;
-
 	}
 
 	@Override
 	public void resume() {
-		if (state == GameState.Paused)
+		if (state == GameState.Paused) {
 			state = GameState.Running;
+			pauseScreenReady = false;
+		}
 	}
 
 	@Override

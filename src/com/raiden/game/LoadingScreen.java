@@ -33,6 +33,8 @@ public class LoadingScreen extends Screen {
 		Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
 		Assets.helpMenu = g.newImage("helpMenu.png", ImageFormat.RGB565);
 		Assets.settingsMenu = g.newImage("settingsMenu.png", ImageFormat.RGB565);
+		Assets.pauseButtonImg = g.newImage("pauseButton.png", ImageFormat.ARGB8888);
+		Assets.pauseMenu = g.newImage("pauseScreen.png", ImageFormat.ARGB8888);
 
 		Assets.explosionSound1 = game.getAudio().createSound("explosion1.wav");
 		Assets.explosionSound2 = game.getAudio().createSound("explosion2.wav");

@@ -16,34 +16,49 @@ public class MainMenuScreen extends Screen {
 	ScreenButton playButton;
 	ScreenButton settingsButton;
 	ScreenButton helpButton;
+	
+	//Button related constants
+	public final static int MENU_BUTTONS_FONT_SIZE = 90;
+	public final static int SETTINGS_MENU_STR_YDIST = 96;
+	public final static int SETTINGS_MENU_STR_XDIST = 380;
+	public final static int MAIN_MENU_STR_YDIST = 117;
+	public final static int MAIN_MENU_STR_XDIST = 450;
+	public final static int BUTTON_WIDTH = 800;
+	public final static int BUTTON_HEIGHT = 160;
+	public final static int SETTINGS_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 195;
+	public final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
+	public final static int SETTINGS_MENU_FIRST_BUTTON_Y = 750;
+	public final static int SETTINGS_MENU_FIRST_BUTTON_X = 0;
+	public final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
+	public final static int MAIN_MENU_FIRST_BUTTON_X = 0;
 
 	public MainMenuScreen(Game game) {
 		super(game);
 		
 		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-		p.setTextSize(ScreenButton.MENU_BUTTONS_FONT_SIZE);
+		p.setTextSize(MainMenuScreen.MENU_BUTTONS_FONT_SIZE);
 		p.setAntiAlias(true);
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
 		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 		
-		playButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y,
-				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Play",
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_STR_YDIST,
+		playButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y,
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Play",
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p, new GameScreen(game), false);
 		
-		settingsButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS,
-				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Settings",
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
+		settingsButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Settings",
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p, new SettingsScreen(game, this), false);
 		
-		helpButton = new ScreenButton(ScreenButton.MAIN_MENU_FIRST_BUTTON_X, ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + 2*ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS,
-				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Help",
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_X + ScreenButton.MAIN_MENU_STR_XDIST,
-				ScreenButton.MAIN_MENU_FIRST_BUTTON_Y + 2*ScreenButton.MAIN_MENU_DIST_BETWEEN_BUTTONS + ScreenButton.MAIN_MENU_STR_YDIST,
+		helpButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Help",
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
+				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p, new HelpScreen(game, this), false);
 	}
 

@@ -22,23 +22,23 @@ public class SettingsScreen extends Screen {
 		super(game);
 
 		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-		p.setTextSize(ScreenButton.MENU_BUTTONS_FONT_SIZE);
+		p.setTextSize(MainMenuScreen.MENU_BUTTONS_FONT_SIZE);
 		p.setAntiAlias(true);
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
 		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 
-		soundButton = new ScreenButton(ScreenButton.SETTINGS_MENU_FIRST_BUTTON_X, ScreenButton.SETTINGS_MENU_FIRST_BUTTON_Y,
-				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Sound: On",
-				ScreenButton.SETTINGS_MENU_FIRST_BUTTON_X + ScreenButton.SETTINGS_MENU_STR_XDIST,
-				ScreenButton.SETTINGS_MENU_FIRST_BUTTON_Y + ScreenButton.SETTINGS_MENU_STR_YDIST,
+		soundButton = new ScreenButton(MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X, MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y,
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Sound: On",
+				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X + MainMenuScreen.SETTINGS_MENU_STR_XDIST,
+				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_STR_YDIST,
 				p, new GameScreen(game), true);
 
-		musicButton = new ScreenButton(ScreenButton.SETTINGS_MENU_FIRST_BUTTON_X, ScreenButton.SETTINGS_MENU_FIRST_BUTTON_Y + ScreenButton.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
-				ScreenButton.BUTTON_WIDTH, ScreenButton.BUTTON_HEIGHT, "Music: On",
-				ScreenButton.SETTINGS_MENU_FIRST_BUTTON_X + ScreenButton.SETTINGS_MENU_STR_XDIST,
-				ScreenButton.SETTINGS_MENU_FIRST_BUTTON_Y + ScreenButton.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + ScreenButton.SETTINGS_MENU_STR_YDIST,
+		musicButton = new ScreenButton(MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X, MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Music: On",
+				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X + MainMenuScreen.SETTINGS_MENU_STR_XDIST,
+				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.SETTINGS_MENU_STR_YDIST,
 				p, new GameScreen(game), true);
 	}
 	
