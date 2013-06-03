@@ -1,6 +1,8 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.raiden.animation.Animation;
 import com.raiden.framework.Image;
@@ -10,16 +12,20 @@ import com.raiden.framework.Sound;
 public class Assets {
 	
 	private static final int HERO_ANIMATION_DURATION = 10;
+	
+	public static float volume = 1.0f;
     
     public static Image menu;
+    
     public static Sound explosionSound1, explosionSound2, explosionSound3,
                         explosionSound4, explosionSound5, explosionSound6,
                         explosionSound7, explosionSound8, explosionSound9,
                         explosionSound10, explosionSound11,
                         hit1, hit2, hit3, hit4, hit5,
                         heroHit, heroCollisionSound,
-                        powerUpSound1, powerUpSound2, powerUpSound3;
-    public static Music machinegun;
+                        powerUpSound1, powerUpSound2, powerUpSound3, powerUpSound4,
+                        heroDown;
+    
     public static Image hero1, hero2, 
                         heroLeft1, heroLeft2, 
                         heroRight1, heroRight2,
@@ -29,9 +35,25 @@ public class Assets {
                         explosion1, explosion2, explosion3,
                         explosion4, explosion5, explosion6,
                         heroCollision1, heroCollision2, heroCollision3,
-                        powerUp1, powerUp2, powerUp3,
+                        powerUp1, powerUp2, powerUp3, powerUp4,
                         screenCrack;
-            
+    
+    public static Music machinegun, gameOverMusic;
+    public static List<Music> musics;
+    
+    public static void setVolume(float volume){
+    	Assets.volume = volume;
+    	getMusics();
+    	for (Music music : musics) {
+			music.setVolume(volume);
+		}
+    }
+    
+    public static List<Music> getMusics(){
+        musics = Arrays.asList(machinegun, gameOverMusic);
+        return musics;
+    }
+    
     public static Animation getHeroTurningLeftAnimation(){
 		Animation heroTurningLeftAnimation = new Animation();
 		heroTurningLeftAnimation.addFrame(heroLeft1, HERO_ANIMATION_DURATION);

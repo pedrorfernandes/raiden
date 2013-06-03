@@ -6,7 +6,7 @@ import android.graphics.Point;
 
 public abstract class Ship extends Collidable {
 
-	protected int armor;
+	protected int armor, maxArmor;
 	protected boolean alive, visible;
 	
 	// empty turrets -> positions relative to centerX
@@ -144,6 +144,10 @@ public abstract class Ship extends Collidable {
 	
 	public ArrayList<Turret> getTurrets(){
 		return turrets;
+	}
+	
+	public void repair(){
+		this.armor = maxArmor;
 	}
 
 }

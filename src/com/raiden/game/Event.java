@@ -85,15 +85,7 @@ public enum Event {
 		}
 	},
 
-	StartFiring
-	{
-		@Override
-		public Music getMusic(){
-			return Assets.machinegun;
-		}
-	},
-	
-	StopFiring
+	Firing
 	{
 		@Override
 		public Music getMusic(){
@@ -106,6 +98,19 @@ public enum Event {
 		@Override
 		public Sound getSound(){
 			return powerUpType.sound;
+		}
+	},
+	
+	GameOver
+	{
+		@Override
+		public Sound getSound(){
+			return Assets.heroDown;
+		}
+		
+		@Override
+		public Music getMusic(){
+			return Assets.gameOverMusic;
 		}
 	};
 

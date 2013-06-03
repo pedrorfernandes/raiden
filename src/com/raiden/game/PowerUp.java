@@ -53,6 +53,15 @@ public class PowerUp extends Collidable {
 				
 				this.notifyPowerUp(ship);
 			}
+		},
+		
+		Repair (6, Assets.powerUp4, Assets.powerUpSound4, "Repair")
+		{
+			@Override
+			public void powerUp(Ship ship){
+				ship.repair();
+				notifyPowerUp(ship);
+			}
 		};
 
 		public int speed;

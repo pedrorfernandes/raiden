@@ -41,12 +41,13 @@ public class GameScreen extends Screen {
 	private Point dragPoint;
 
 	// screen size variables
-	public static Point screenSize;
+	public Point screenSize;
 	
 	private static SoundController soundController;
 	private static AnimationController animationController;
 	private static EffectsController effectsController;
 	private static MusicController musicController;
+	private static ArmorObserver armorObserver;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -105,11 +106,13 @@ public class GameScreen extends Screen {
 		soundController = new SoundController(this);
 		animationController = new AnimationController(this);
 		musicController = new MusicController(this);
+		armorObserver = new ArmorObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
 		hero.addObserver(musicController);
+		hero.addObserver(armorObserver);
 		
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -137,7 +140,6 @@ public class GameScreen extends Screen {
 		
 		hitboxColor = new Paint();
 		hitboxColor.setColor(Color.MAGENTA);
-
 	}
 	
 	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop){
@@ -204,11 +206,11 @@ public class GameScreen extends Screen {
 		counter += deltaTime;
 		if (counter > 960*1){
 			counter = 0;
+			
 			/*
-			spawnPowerUp(100, 0, PowerUp.Type.HeavyBullets);
+			spawnPowerUp(100, 0, PowerUp.Type.Repair);
 			spawnPowerUp(400, 0, PowerUp.Type.Machinegun);
 			spawnPowerUp(600, 0, PowerUp.Type.ScatterShot);
-			*/
 			// TODO this is a flight pattern example, must be removed !!
 			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
 			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
@@ -227,9 +229,9 @@ public class GameScreen extends Screen {
 				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern, null);
 				if (enemy == null) continue;
 			}
+			*/
 			
 		}
-
 		
 		// All touch input is handled here
 		length = touchEvents.size();
@@ -331,13 +333,15 @@ public class GameScreen extends Screen {
 		g.clearScreen(Color.rgb(58, 86, 104));
 		
 		// hero drawing
-		heroImage = animationController.getCurrenAnimation().getImage();
-		
-		g.drawImage(heroImage,
-				hero.x - heroImage.halfWidth, 
-				hero.y - heroImage.halfHeight);
-		if (HITBOXES_VISIBLE) 
-			g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
+		if (hero.visible){
+			heroImage = animationController.getCurrenAnimation().getImage();
+
+			g.drawImage(heroImage,
+					hero.x - heroImage.halfWidth, 
+					hero.y - heroImage.halfHeight);
+			if (HITBOXES_VISIBLE) 
+				g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
+		}
 
 		// hero shots drawing
 		length = hero.shots.length;
@@ -409,6 +413,16 @@ public class GameScreen extends Screen {
 				g.drawCircle(enemy.x, enemy.y, enemy.radius, hitboxColor);
 		}
 
+		// power ups drawing
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			if (!powerUp.visible) continue;
+			image = powerUp.type.image;
+			g.drawImage(image, powerUp.x - image.halfWidth, 
+                               powerUp.y - image.halfHeight);
+		}
+		
 		// special effects drawing
 		for (int i = 0; i < specialEffects.size(); i++) {
 			specialEffect = specialEffects.get(i);
@@ -434,14 +448,11 @@ public class GameScreen extends Screen {
 			}
 		}
 		
-		// power ups drawing
-		length = powerUps.length;
-		for (int i = 0; i < length; i++) {
-			powerUp = powerUps[i];
-			if (!powerUp.visible) continue;
-			image = powerUp.type.image;
-			g.drawImage(image, powerUp.x - image.halfWidth, 
-                               powerUp.y - image.halfHeight);
+		// hero health drawing
+		for (ScreenCrack screenCrack : armorObserver.screenCracks) {
+			image = ScreenCrack.image;
+			g.drawImage(image, screenCrack.x - image.halfWidth,
+                               screenCrack.y - image.halfHeight);
 		}
 		
 		animate(deltaTime);

@@ -6,14 +6,16 @@ public class SoundController implements Observer {
 	GameScreen gameScreen;
 	
 	// sound variables
-	private int volume = 100;
+	private float volume;
 	
 	SoundController(GameScreen gameScreen){
 		this.gameScreen = gameScreen;
 		Event.initializeSounds();
+		volume = Assets.volume;
 	}
 	
 	public void update(Collidable c, Event event){
+		volume = Assets.volume;
 		Sound sound = event.getSound();
 		if ( sound != null )
 			sound.play(volume);

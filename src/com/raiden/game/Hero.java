@@ -39,7 +39,7 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
-		armor = 9001; // http://bit.ly/jxMrWX
+		armor = 10; maxArmor = armor;
 		radius = RADIUS;
 		
 		int halfSizeY = (radius * 2);
@@ -86,6 +86,9 @@ public class Hero extends Ship {
 	}
 
 	public void update(float deltaTime) {
+		
+		if (!this.alive) return;
+		
 		// update ship X position
 		if (newX < x) {
 			if ( (x - newX) < speed)
@@ -193,19 +196,17 @@ public class Hero extends Ship {
 	
 	@Override
 	public void setAutoFire(boolean autofire){
-		if (autofire == true)
-			notifyObservers(Event.StartFiring);
-		else {
-			notifyObservers(Event.StopFiring);
-		}
+		if (!alive) return;
+		notifyObservers(Event.Firing);
 		super.setAutoFire(autofire);
 	}
 	
 	public boolean checkIfDestroyed(){
-		if (armor < 1){
+		if (armor < 1 && alive){
+			if (autofire) setAutoFire(false);
 			alive = false; visible = false;
 			notifyObservers(Event.Explosion);
-			// possibly respawn hero
+			notifyObservers(Event.GameOver);
 			return true;
 		} else {
 			return false;
