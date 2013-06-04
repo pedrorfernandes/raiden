@@ -150,7 +150,7 @@ public class AndroidGraphics implements Graphics {
         canvas.restore(); 
 	}
 
-	public void drawImage(Image Image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
+	public void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		srcRect.left = srcX;
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
@@ -161,7 +161,7 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + srcWidth;
 		dstRect.bottom = y + srcHeight;
 
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		canvas.drawBitmap(image.bitmap, srcRect, dstRect, null);
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class AndroidGraphics implements Graphics {
 		canvas.drawBitmap(((AndroidImage)Image).bitmap, x, y, null);
 	}
 
-	public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
+	public void drawScaledImage(Image image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
 		srcRect.left = srcX;
 		srcRect.top = srcY;
 		srcRect.right = srcX + srcWidth;
@@ -180,7 +180,7 @@ public class AndroidGraphics implements Graphics {
 		dstRect.right = x + width;
 		dstRect.bottom = y + height;
 		
-		canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
+		canvas.drawBitmap(image.bitmap, srcRect, dstRect, null);
 	}
 	
 	public void drawScaledImage(Image image, int x, int y, int pivotX, int pivotY, float scale){
@@ -190,7 +190,7 @@ public class AndroidGraphics implements Graphics {
 		matrix.reset();
 		matrix.setTranslate(x, y);
 		matrix.postScale(scale, scale, pivotX, pivotY);
-		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+		canvas.drawBitmap(image.bitmap, matrix, null);
 	}
 	
 	public void drawRotatedImage(Image image, int x, int y, int width, int height, float angle, float startingAngle){
@@ -200,7 +200,13 @@ public class AndroidGraphics implements Graphics {
 		matrix.reset();
 		matrix.setTranslate(x, y);
 		matrix.postRotate(startingAngle - angle, x+width/2, y+height/2);
-		canvas.drawBitmap(((AndroidImage) image).bitmap, matrix, null);
+		canvas.drawBitmap(image.bitmap, matrix, null);
+		/*
+		canvas.save();
+		canvas.rotate(startingAngle - angle, x + (width / 2), y + (height / 2));
+		canvas.drawBitmap(image.bitmap, x, y, null);
+		canvas.restore();
+		*/
 	}
 	
 	public void drawCircle(int x, int y, int radius, Paint paint){
@@ -215,5 +221,62 @@ public class AndroidGraphics implements Graphics {
 	@Override
 	public int getHeight() {
 		return frameBuffer.getHeight();
+	}
+	
+	// this might be useful if we want to pre cache every rotation
+	private Bitmap rotate(Bitmap src, int Degrees) {
+	    double width = src.getWidth();
+	    double height = src.getHeight();
+
+	    double sine = Math.sin(Degrees);
+	    double cosine = Math.cos(Degrees);
+
+	    double px1 = width * cosine;
+	    double px2 = width * cosine - height * sine;
+	    double px3 = -height * sine;
+	    double py1 = height * cosine;
+	    double py2 = height * cosine + width * sine;
+	    double py3 = width * sine;
+
+	    int minx = (int) Math.min(0, Math.min(px1, Math.min(px2, px3)));
+	    int miny = (int) Math.min(0, Math.min(py1, Math.min(py2, py3)));
+	    int maxx = (int) Math.max(px1, Math.max(px2, px3));
+	    int maxy = (int) Math.max(py1, Math.max(py2, py3));
+
+	    int dw = Math.abs(maxx) - minx;
+	    int dh = Math.abs(maxy) - miny;
+
+	    int w = 2;
+	    int h = 2;
+	    while (w < dw)
+	        w *= 2;
+
+	    while (h < dh)
+	        h *= 2;
+
+	    int xoff = 0;
+	    int yoff = 0;
+
+	    if (w > dw)
+	        xoff = (int)((w - dw) / 2.0F + 0.5F);
+	    if (h > dh)
+	        yoff = (int)((h - dh) / 2.0F + 0.5F);
+
+	    Bitmap map = Bitmap.createBitmap(w, h, Config.ARGB_8888);
+	    map.eraseColor(0x00000000);
+
+	    for (int x = 0; x < dw; x++) {
+	        for (int y = 0; y < dh; y++) {
+	            int sx = (int) ((x + minx) * cosine + (y + miny) * sine);
+	            int sy = (int) ((y + miny) * cosine - (x + minx) * sine);
+
+	            if (sx < 0 || sx >= width || sy < 0 || sy >= height)
+	                continue;
+
+	            map.setPixel(x + xoff, y + yoff, src.getPixel(sx, sy));
+	        }
+	    }
+
+	    return map;
 	}
 }

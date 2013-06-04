@@ -18,17 +18,16 @@ public class MainMenuScreen extends Screen {
 	ScreenButton helpButton;
 	
 	//Button related constants
-	public final static int MENU_BUTTONS_FONT_SIZE = 90;
-	public final static int SETTINGS_MENU_STR_YDIST = 96;
-	public final static int SETTINGS_MENU_STR_XDIST = 380;
-	public final static int MAIN_MENU_STR_YDIST = 117;
-	public final static int MAIN_MENU_STR_XDIST = 450;
 	public final static int BUTTON_WIDTH = 800;
 	public final static int BUTTON_HEIGHT = 160;
-	public final static int SETTINGS_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 195;
+	
+	public final static int MENU_BUTTONS_FONT_SIZE = 90;
+	
+	public final static int MAIN_MENU_STR_YDIST = 117;
+	public final static int MAIN_MENU_STR_XDIST = 450;
+	
 	public final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
-	public final static int SETTINGS_MENU_FIRST_BUTTON_Y = 750;
-	public final static int SETTINGS_MENU_FIRST_BUTTON_X = 0;
+	
 	public final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
 	public final static int MAIN_MENU_FIRST_BUTTON_X = 0;
 
@@ -47,19 +46,19 @@ public class MainMenuScreen extends Screen {
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Play",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, new GameScreen(game), false);
+				p, false);
 		
 		settingsButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Settings",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, new SettingsScreen(game, this), false);
+				p, false);
 		
 		helpButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Help",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, new HelpScreen(game, this), false);
+				p, false);
 	}
 
 
@@ -76,18 +75,21 @@ public class MainMenuScreen extends Screen {
 				if (playButton.hitbox.contains(event.x, event.y)) {
 					//START GAME
 					bgPainted = false;
+					playButton.setNextScreen(new GameScreen(game));
 					game.setScreen(playButton.nextScreen);               
 				}
 				
 				if (settingsButton.hitbox.contains(event.x, event.y)) {
 					//SETTINGS SCREEN
 					bgPainted = false;
+					settingsButton.setNextScreen(new SettingsScreen(game, this));
 					game.setScreen(settingsButton.nextScreen);
 				}
 				
 				if (helpButton.hitbox.contains(event.x, event.y)) {
 					//HELP SCREEN
 					bgPainted = false;
+					helpButton.setNextScreen(new HelpScreen(game, this));
 					game.setScreen(helpButton.nextScreen);               
 				}
 
@@ -95,16 +97,6 @@ public class MainMenuScreen extends Screen {
 			}
 		}
 	}
-
-
-	/*private boolean inBounds(TouchEvent event, int x, int y, int width,
-			int height) {
-		if (event.x > x && event.x < x + width - 1 && event.y > y
-				&& event.y < y + height - 1)
-			return true;
-		else
-			return false;
-	}*/
 
 
 	@Override

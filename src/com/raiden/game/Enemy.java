@@ -2,27 +2,68 @@ package com.raiden.game;
 
 import java.util.ArrayList;
 
+import com.raiden.framework.Image;
+
 import android.graphics.Point;
 
 public class Enemy extends Ship {
-	private static final int RADIUS = 50;
-	private static final int SPEED = 6;
-	private static final int ARMOR = 4;
-	
 	public boolean outOfRange;
-	public float angle;
+	public float angle, nextAngle;
 	private float radians;
 	
 	private int moveX;
 	private int moveY;
 
 	private static final int MAX_BULLETS = 10;
-
-	private static final int RELOAD_DONE = 1400;
-
+	
+	private int turnSpeed;
+	
+	private FlightPattern flightPattern;
+	
+	public Type type;
+	public PowerUp.Type powerUpTypeDrop;
+	
 	// iterating variables
 	private static Bullet bullet;
 	private static int length;
+	
+	public static enum Type{
+		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy,      Assets.enemy1, "Normal"),
+		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
+		
+		public int speed, turnSpeed, armor, radius, reloadDone;
+		public Image image;
+		public Bullet.Type bulletType;
+		public String id;
+		
+		public static Type getType(String id){
+			Type[] types = Type.values();
+			for (Type type : types){
+				if ( type.id.equals(id) )
+					return type;
+			}
+			return null;
+		}
+		
+		Type(int speed, int turnSpeed, int armor, 
+				int radius, int reloadDone, Bullet.Type bulletType, Image image, String id){
+			this.speed = speed;
+			this.turnSpeed = turnSpeed;
+			this.armor = armor;
+			this.radius = radius;
+			this.reloadDone = reloadDone;
+			this.bulletType = bulletType;
+			this.image = image;
+			this.id = id;
+		}
+	}
+	
+	public void dropPowerUp(){
+		if (this.powerUpTypeDrop != null) {
+			gameScreen.spawnPowerUp(this.x, this.y, powerUpTypeDrop);
+			powerUpTypeDrop = null;
+		}
+	}
 	
 	public void setTarget(Ship target){
 		this.target = target;
@@ -32,23 +73,18 @@ public class Enemy extends Ship {
 	}
 
 	public Enemy(Ship target) {
-		this.radius = RADIUS;
-		this.speed = SPEED;
 		this.visible = false;
 		this.outOfRange = true;
 		this.alive = false;
 		this.autofire = true;
 		this.target = target;
-
-		readyToFire = true;
-		reloadDone = RELOAD_DONE;
-		reloadTime = reloadDone;
+		this.type = Type.Normal;
 
 		emptyTurretPositions = new ArrayList<Point>();
 		emptyTurretPositions.add(new Point(0, 0));
 
 		turrets = new ArrayList<Turret>();
-		addTurret(0.0f);
+		addTurret(0.0f, this.type.bulletType);
 		
 		shots = new Bullet[MAX_BULLETS];
 		
@@ -57,24 +93,35 @@ public class Enemy extends Ship {
 			shots[i] = new Bullet();
 		}
 	}
+	
+	public void setType(Type type){
+		this.type = type;
+		this.setSpeed(type.speed);
+		this.turnSpeed = type.turnSpeed;
+		this.bulletType = type.bulletType;
+		this.armor = type.armor;
+		this.radius = type.radius;
+		this.reloadDone = type.reloadDone;
+		for (Turret turret : turrets) {
+			turret.setBulletType(this.type.bulletType);
+		}
+	}
 
-	public void spawn(int x, int y, float angle) {
+	public void spawn(int x, int y, float angle, Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop) {
 		this.x = x;
 		this.y = y;
-		this.angle = angle;
+		this.angle = angle; this.nextAngle = angle;
 		this.visible = true;
 		this.outOfRange = false;
 		this.radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.setType(type);
 		this.alive = true;
-		this.armor = ARMOR;
 		this.impactTimer = IMPACT_INTERVAL;
-	}
-	
-	public void spawn(int x, int y, float angle, int speed) {
-		setSpeed(speed);
-		spawn(x, y, angle);
+		this.reloadTime = reloadDone;
+		this.readyToFire = true;
+		this.powerUpTypeDrop = PowerUpDrop;
+		if (flightPattern != null)
+			this.flightPattern = new FlightPattern(flightPattern);
 	}
 
 	public void update(float deltaTime){
@@ -86,11 +133,14 @@ public class Enemy extends Ship {
 
 		if (x < minX || y < minY || x > maxX || y > maxY)
 			visible = false;
+		else
+			visible = true;
 
 		if ( !visible ){
 			// if the enemy is out of bounds, it isn't coming back to the screen
 			if (x < outMinX || y < outMinY || x > outMaxX || y > outMaxY){
 				outOfRange = true;
+				flightPattern = null;
 				return;
 			}
 		}
@@ -106,6 +156,13 @@ public class Enemy extends Ship {
 		}
 
 		reload(deltaTime);
+		
+		if (Float.compare(angle, nextAngle) != 0 && flightPattern != null){
+			adjustAngle(flightPattern.getCurrentDirection());
+		} else if (flightPattern != null) {
+			flightPattern.update(deltaTime);
+			nextAngle = flightPattern.getCurrentAngle();
+		}
 
 		if (target != null && autofire) {
 			shoot();
@@ -119,8 +176,8 @@ public class Enemy extends Ship {
 		return (alive && !outOfRange);
 	}
 
-	public void turn(float degrees){
-		// this will turn the ship
+	public void setFlightPattern(FlightPattern flightPattern){
+		this.flightPattern = flightPattern;
 	}
 
 	public boolean isOutOfRange(){
@@ -138,20 +195,52 @@ public class Enemy extends Ship {
 	@Override
 	public void setSpeed(int speed){
 		this.speed = speed;
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.moveX = Math.round(speed * FastMath.cos( radians));
+		this.moveY = Math.round(speed * FastMath.sin(-radians));
 	}
 	
-	public void setDirection(float angle){
+	public void setAngle(float angle){
+		if (Float.compare(this.angle, angle) == 0) return;
 		this.angle = angle;
+		
+		if (this.angle > 360.0f)
+			this.angle -= 360.0f;
+		else if (this.angle < 0.0f)
+			this.angle += 360.0f;
+		
 		this.radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.setSpeed(this.speed);
+	}
+	
+	public void setNextAngle(float angle){
+		this.nextAngle = angle;
+	}
+	
+	public void adjustAngle(Direction direction){
+		if (Float.compare(angle, nextAngle) != 0){
+			float turningAngle =  Math.abs(this.angle - nextAngle);
+			if ( turningAngle > turnSpeed){
+				setAngle(direction.turn(this.angle,turnSpeed));
+			} else {
+				setAngle(direction.turn(this.angle, turningAngle));
+			}
+		}
 	}
 	
 	@Override
 	public void takeDamage(Collidable collidable){
 		notifyObservers(collidable, Event.EnemyHit);
 		super.takeDamage(collidable);
+	}
+	
+	public boolean checkIfDestroyed(){
+		if (armor < 1){
+			alive = false; visible = false; flightPattern = null;
+			notifyObservers(Event.Explosion);
+			dropPowerUp();
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

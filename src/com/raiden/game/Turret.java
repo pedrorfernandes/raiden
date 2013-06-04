@@ -1,27 +1,27 @@
 package com.raiden.game;
 
-import java.util.Random;
-
 import android.graphics.Point;
 
 public class Turret {
-	private Collidable ship;
+	private Ship ship;
 	private Collidable target;
 	private Point position;
 	private float angle;
 	private double radians;
-	public static Random random = new Random();
+	public Bullet.Type bulletType;
 
-	public Turret(Collidable ship, Point position, float angle) {
+	public Turret(Ship ship, Point position, float angle, Bullet.Type bulletType) {
 		this.ship = ship;
 		this.position = position;
 		this.angle = angle;
+		this.bulletType = bulletType;
 	}
 
-	public Turret(Collidable ship, Point position, Collidable target) {
+	public Turret(Ship ship, Point position, Collidable target, Bullet.Type bulletType) {
 		this.ship = ship;
 		this.position = position;
 		this.target = target;
+		this.bulletType = bulletType;
 	}
 
 	public void fire(Bullet[] bullets){
@@ -30,7 +30,8 @@ public class Turret {
 			for (int i = 0; i < length; i++) {
 				if ( !bullets[i].visible ){
 					bullets[i].fire(ship.x + position.x, 
-                                        ship.y + position.y, angle);
+                                    ship.y + position.y,
+                                    angle, bulletType);
 					return;
 				}
 			}
@@ -42,8 +43,10 @@ public class Turret {
 					int deltaX = target.x - ship.x;
 					int deltaY = ship.y - target.y;
 					radians = FastMath.atan2(deltaY, deltaX);
+					angle = (float) Math.toDegrees(radians);
 					bullets[i].fire(ship.x + position.x, 
-                                        ship.y + position.y, radians);
+                                    ship.y + position.y, 
+                                    angle, bulletType);
 					return;
 				}
 			}
@@ -52,5 +55,13 @@ public class Turret {
 
 	public void setTarget(Collidable target){
 		this.target = target;
+	}
+	
+	public void setBulletType(Bullet.Type bulletType){
+		this.bulletType = bulletType;
+	}
+	
+	public void setAngle(float angle){
+		this.angle = angle;
 	}
 }

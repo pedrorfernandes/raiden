@@ -17,23 +17,29 @@ public class Hero extends Ship {
 	final int HIGH_THRESHOLD = 8;
 	private int turningThreshold = HIGH_THRESHOLD;
 
-	private static final int MAX_BULLETS = 30;
+	private static final int MAX_BULLETS = 60;
 	
 	private static final int RELOAD_DONE = 200;
-	
+		
 	private Enemy[] enemies;
+	private PowerUp[] powerUps;
 		
 	// iterating variables
 	private static Enemy enemy;
 	private static Bullet bullet;
+	private static PowerUp powerUp;
 	private static int length;
 	
 	public void setTargets(Enemy[] enemies){
 		this.enemies = enemies;
 	}
+	
+	public void setPowerUps(PowerUp[] powerUps){
+		this.powerUps = powerUps;
+	}
 
 	public Hero() {
-		armor = 9001; // http://bit.ly/jxMrWX
+		armor = 10; maxArmor = armor;
 		radius = RADIUS;
 		
 		int halfSizeY = (radius * 2);
@@ -51,6 +57,8 @@ public class Hero extends Ship {
 		readyToFire = true;
 		reloadDone = RELOAD_DONE;
 		reloadTime = reloadDone;
+		
+		bulletType = Bullet.Type.Hero;
 				
 		shots = new Bullet[MAX_BULLETS];
 		
@@ -61,19 +69,26 @@ public class Hero extends Ship {
 
 		// fill the empty turret positions
 		emptyTurretPositions = new ArrayList<Point>();
-		emptyTurretPositions.add(new Point(-36, -halfSizeY));
-		emptyTurretPositions.add(new Point( 36, -halfSizeY));
-		emptyTurretPositions.add(new Point(  0, -halfSizeY));
+		emptyTurretPositions.add(new Point(   0, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point( -36, -halfSizeY));
+		emptyTurretPositions.add(new Point(  36, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point( -72, -halfSizeY));
+		emptyTurretPositions.add(new Point(  72, -halfSizeY));
+		
+		emptyTurretPositions.add(new Point(-108, -halfSizeY));
+		emptyTurretPositions.add(new Point( 108, -halfSizeY));
 
 		// create the starting turrets
 		turrets = new ArrayList<Turret>();
-		addTurret(90.0f);
-		addTurret(90.0f);
-		//addTurret(90.0f+15.0f);
-		//addTurret(90.0f-15.0f);
+		addTurret(90.0f, bulletType);
 	}
 
 	public void update(float deltaTime) {
+		
+		if (!this.alive) return;
+		
 		// update ship X position
 		if (newX < x) {
 			if ( (x - newX) < speed)
@@ -101,10 +116,6 @@ public class Hero extends Ship {
 			else
 				y += speed;
 		}
-
-		// control the turning threshold to check if the ship will turn again later
-		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
-			turningThreshold += 2;
 		
 		// check collision with enemies and their bullets
 		if (enemies != null)
@@ -121,6 +132,13 @@ public class Hero extends Ship {
 				if (bullet.visible)
 					this.checkCollision(bullet);
 			}
+		}
+		
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			if (powerUp.visible)
+				this.checkCollision(powerUp);
 		}
 
 		reload(deltaTime);
@@ -151,6 +169,10 @@ public class Hero extends Ship {
 	}
 
 	public void checkTurning(){
+		// control the turning threshold to check if the ship will turn again later
+		if ( x == newX && y == newY && turningThreshold < HIGH_THRESHOLD )
+			turningThreshold += 2;
+		
 		if ( (newX - x) < 0 && Math.abs(newX - x) > turningThreshold ){
 			turningThreshold = LOW_THRESHOLD;
 			notifyObservers(Event.TurnLeft);
@@ -174,11 +196,20 @@ public class Hero extends Ship {
 	
 	@Override
 	public void setAutoFire(boolean autofire){
-		if (autofire == true)
-			notifyObservers(Event.StartFiring);
-		else {
-			notifyObservers(Event.StopFiring);
-		}
+		if (!alive) return;
+		notifyObservers(Event.Firing);
 		super.setAutoFire(autofire);
+	}
+	
+	public boolean checkIfDestroyed(){
+		if (armor < 1 && alive){
+			if (autofire) setAutoFire(false);
+			alive = false; visible = false;
+			notifyObservers(Event.Explosion);
+			notifyObservers(Event.GameOver);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

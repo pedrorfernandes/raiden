@@ -1,6 +1,7 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
@@ -37,16 +38,21 @@ public class GameScreen extends Screen {
 	public static Hero hero;
 	private Image heroImage;
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
+	private Image bulletImage;
+
+	private Level level;
 
 	// touch and input variables
 	private Point dragPoint;
 
 	// screen size variables
-	public static Point screenSize;
+	public Point screenSize;
 
 	private static SoundController soundController;
 	private static AnimationController animationController;
 	private static EffectsController effectsController;
+	private static MusicController musicController;
+	private static ArmorObserver armorObserver;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -58,6 +64,10 @@ public class GameScreen extends Screen {
 
 	private static final float ANGLE_DOWN = 270.0f;
 	private static final float ANGLE_UP = 90.0f;
+
+	// power up variables
+	private static final int MAX_POWER_UPS = 15;
+	private static PowerUp[] powerUps = new PowerUp[MAX_POWER_UPS];
 
 	// constants for animation
 	private static final int ANIMATION_UPDATE = 1;
@@ -71,12 +81,12 @@ public class GameScreen extends Screen {
 	private int counter = 0;
 
 	// iterating variables
-	private int length;
-	Bullet bullet;
-	Enemy enemy;
-	Image image;
-	Animation specialEffect;
-	ListIterator<Enemy> enemyItr;
+	private static int length;
+	private static Bullet bullet;
+	private static Enemy enemy;
+	private static Image image;
+	private static PowerUp powerUp;
+	private static Animation specialEffect;
 
 	public final static int PAUSE_BUTTON_SIDE = 75;
 
@@ -89,15 +99,17 @@ public class GameScreen extends Screen {
 
 		screenSize = game.getSize();
 		Collidable.setBounds(screenSize);
+		Collidable.setGameScreen(this);
 
 		// Initialize game objects here
 
 		pauseButton = new ScreenButton(GameScreen.PAUSE_BUTTON_X, GameScreen.PAUSE_BUTTON_Y,
-				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE, new PauseScreen(game, this), true);
+				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE, true);
 
 
 		hero = new Hero();
 		hero.setTargets(enemies);
+		hero.setPowerUps(powerUps);
 
 		heroAnimation = Assets.getHeroAnimation();
 		heroTurningLeftAnimation = Assets.getHeroTurningLeftAnimation();
@@ -109,12 +121,14 @@ public class GameScreen extends Screen {
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
 		animationController = new AnimationController(this);
+		musicController = new MusicController(this);
+		armorObserver = new ArmorObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
-
-		enemyImage = Assets.enemy1;
+		hero.addObserver(musicController);
+		hero.addObserver(armorObserver);
 
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -123,10 +137,13 @@ public class GameScreen extends Screen {
 			enemies[i].addObserver(soundController);
 		}
 
-		spawnEnemy(200, 200, 295.0f);
-		spawnEnemy(100, 100, 225.0f);
+		for (int i = 0; i < MAX_POWER_UPS; i++) {
+			powerUps[i] = new PowerUp();
+		}
 
 		specialEffects = new ArrayList<Animation>();
+
+		level = new Level(this, RaidenGame.level1);
 
 		dragPoint = new Point();
 
@@ -139,18 +156,30 @@ public class GameScreen extends Screen {
 
 		hitboxColor = new Paint();
 		hitboxColor.setColor(Color.MAGENTA);
-
 	}
 
-	public void spawnEnemy(int x, int y, float angle){
+	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
 			enemy = enemies[i];
 			if ( !enemy.isInGame() ){
-				enemy.spawn(x, y, angle);
-				return;
+				enemy.spawn(x, y, angle, type, flightPattern, PowerUpDrop);
+				return enemy;
 			}
 		}
+		return null;
+	}
+
+	public PowerUp spawnPowerUp(int x, int y, PowerUp.Type type){
+		for (int i = 0; i < MAX_POWER_UPS; i++)
+		{
+			powerUp = powerUps[i];
+			if ( !powerUp.isVisible() ){
+				powerUp.spawn(x, y, type);
+				return powerUp;
+			}
+		}
+		return null;
 	}
 
 	public void addSpecialEffect(Animation specialEffect){
@@ -187,16 +216,37 @@ public class GameScreen extends Screen {
 			state = GameState.Running;
 	}
 
-	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) { 
+	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
+
 
 		counter += deltaTime;
 		if (counter > 960*1){
-			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			//spawnEnemy(random.nextInt(800), 0, random.nextFloat()*60 + 240);
-			spawnEnemy(100, 0, ANGLE_DOWN);
-			spawnEnemy(450, 0, ANGLE_DOWN);
-			spawnEnemy(700, 0, ANGLE_DOWN);
 			counter = 0;
+
+			/*
+			spawnPowerUp(100, 0, PowerUp.Type.Repair);
+			spawnPowerUp(400, 0, PowerUp.Type.Machinegun);
+			spawnPowerUp(600, 0, PowerUp.Type.ScatterShot);
+			// TODO this is a flight pattern example, must be removed !!
+			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
+			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
+			for (int i = 0; i < x.size()-1; i++) {
+				FlightPattern pattern = new FlightPattern();
+				pattern.addMovement(  0, 800, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 300, Direction.Right);
+				pattern.addMovement(270,  16, Direction.Right);
+				pattern.addMovement(180,  16, Direction.Right);
+				pattern.addMovement( 90,  16, Direction.Right);
+				pattern.addMovement(  0, 800, Direction.Right);
+				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern, null);
+				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern, null);
+				if (enemy == null) continue;
+			}
+			 */
+
 		}
 
 		// All touch input is handled here
@@ -211,11 +261,11 @@ public class GameScreen extends Screen {
 				}
 				else {
 					showPauseButton = false;
-				}
 
-				dragPoint.x = event.x;
-				dragPoint.y = event.y;
-				hero.setAutoFire(true);
+					dragPoint.x = event.x;
+					dragPoint.y = event.y;
+					hero.setAutoFire(true);
+				}
 			}
 
 			if (event.type == TouchEvent.TOUCH_UP) {
@@ -243,6 +293,8 @@ public class GameScreen extends Screen {
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 
+		level.update(deltaTime);
+
 		// update the hero's bullets
 		//length = Ship.shotsFired.size();
 		for (int i = 0; i < hero.shots.length; i++) {
@@ -264,19 +316,19 @@ public class GameScreen extends Screen {
 			}
 		}
 
+		// update power ups
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			powerUp.update(deltaTime);
+		}
+
 	}
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
-		/*int len = touchEvents.size();
-		for (int i = 0; i < len; i++) {
-			TouchEvent event = touchEvents.get(i);
-			if (event.type == TouchEvent.TOUCH_UP) {
-
-			}
-		}*/
-		if(pauseScreenReady) {
+		/*if(pauseScreenReady) {
 			game.setScreen(pauseButton.nextScreen);
-		}
+		}*/
 	}
 
 	private void updateGameOver(List<TouchEvent> touchEvents) {
@@ -303,29 +355,32 @@ public class GameScreen extends Screen {
 		g.clearScreen(Color.rgb(58, 86, 104));
 
 		// hero drawing
-		heroImage = animationController.getCurrenAnimation().getImage();
+		if (hero.visible){
+			heroImage = animationController.getCurrenAnimation().getImage();
 
-		g.drawImage(heroImage,
-				hero.x - heroImage.getHalfWidth(), 
-				hero.y - heroImage.getHalfHeight());
-		if (HITBOXES_VISIBLE) 
-			g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
+			g.drawImage(heroImage,
+					hero.x - heroImage.halfWidth, 
+					hero.y - heroImage.halfHeight);
+			if (HITBOXES_VISIBLE) 
+				g.drawCircle(hero.x, hero.y, hero.radius, hitboxColor);
+		}
 
 		// hero shots drawing
 		length = hero.shots.length;
 		for (int i = 0; i < length; i++) {
 			Bullet bullet = hero.shots[i];
 			if (!bullet.visible) continue;
+			bulletImage = bullet.type.image;
 			if (bullet.angle == ANGLE_UP){
-				g.drawImage(Assets.heroBullet1, 
-						bullet.x-Assets.heroBullet1.getHalfWidth(), 
-						bullet.y-Assets.heroBullet1.getHalfHeight());
+				g.drawImage(bulletImage,
+						bullet.x-bulletImage.halfWidth, 
+						bullet.y-bulletImage.halfHeight);
 			} else {
-				g.drawRotatedImage(Assets.heroBullet1, 
-						bullet.x-Assets.heroBullet1.getHalfWidth(), 
-						bullet.y-Assets.heroBullet1.getHalfHeight(),
-						Assets.heroBullet1.getWidth(),
-						Assets.heroBullet1.getHeight(), 
+				g.drawRotatedImage(bulletImage, 
+						bullet.x-bulletImage.halfWidth, 
+						bullet.y-bulletImage.halfHeight,
+						bulletImage.width,
+						bulletImage.height, 
 						bullet.angle,
 						ANGLE_UP);
 			}
@@ -342,16 +397,17 @@ public class GameScreen extends Screen {
 			for (int j = 0; j < enemy.shots.length; j++) {
 				Bullet bullet = enemy.shots[j];
 				if (!bullet.visible) continue;
+				bulletImage = bullet.type.image;
 				if (bullet.angle == ANGLE_UP){
-					g.drawImage(Assets.enemyBullet1, 
-							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-							bullet.y-Assets.enemyBullet1.getHalfHeight());
+					g.drawImage(bulletImage, 
+							bullet.x-bulletImage.halfWidth, 
+							bullet.y-bulletImage.halfHeight);
 				} else {
-					g.drawRotatedImage(Assets.enemyBullet1, 
-							bullet.x-Assets.enemyBullet1.getHalfWidth(), 
-							bullet.y-Assets.enemyBullet1.getHalfHeight(),
-							Assets.enemyBullet1.getWidth(),
-							Assets.enemyBullet1.getHeight(), 
+					g.drawRotatedImage(bulletImage, 
+							bullet.x-bulletImage.halfWidth, 
+							bullet.y-bulletImage.halfHeight,
+							bulletImage.width,
+							bulletImage.height,
 							bullet.angle,
 							ANGLE_UP);
 				}
@@ -361,16 +417,17 @@ public class GameScreen extends Screen {
 
 			// draw the enemy
 			if (!enemy.visible) continue;
+			enemyImage = enemy.type.image;
 			if (enemy.angle == ANGLE_DOWN){
 				g.drawImage(enemyImage, 
-						enemy.x-enemyImage.getHalfWidth(), 
-						enemy.y-enemyImage.getHalfHeight());
+						enemy.x-enemyImage.halfWidth, 
+						enemy.y-enemyImage.halfHeight);
 			} else {
 				g.drawRotatedImage(enemyImage, 
-						enemy.x-enemyImage.getHalfWidth(), 
-						enemy.y-enemyImage.getHalfHeight(),
-						enemyImage.getWidth(),
-						enemyImage.getHeight(), 
+						enemy.x-enemyImage.halfWidth, 
+						enemy.y-enemyImage.halfHeight,
+						enemyImage.width,
+						enemyImage.height, 
 						enemy.angle,
 						ANGLE_DOWN);
 			}
@@ -378,26 +435,46 @@ public class GameScreen extends Screen {
 				g.drawCircle(enemy.x, enemy.y, enemy.radius, hitboxColor);
 		}
 
+		// power ups drawing
+		length = powerUps.length;
+		for (int i = 0; i < length; i++) {
+			powerUp = powerUps[i];
+			if (!powerUp.visible) continue;
+			image = powerUp.type.image;
+			g.drawImage(image, powerUp.x - image.halfWidth, 
+					powerUp.y - image.halfHeight);
+		}
+
 		// special effects drawing
 		for (int i = 0; i < specialEffects.size(); i++) {
 			specialEffect = specialEffects.get(i);
 			if (specialEffect == null) continue;
+
+			// clean up special effects
 			if (!specialEffect.active){
 				specialEffects.remove(i);
 				i--;
 			}
+
 			image = specialEffect.getImage();
 			if (specialEffect.scale == NORMAL_SCALE){
-				g.drawImage(image, specialEffect.x - image.getHalfWidth(), 
-						specialEffect.y - image.getHalfHeight());
+				g.drawImage(image, specialEffect.x - image.halfWidth, 
+						specialEffect.y - image.halfHeight);
 			} else {
 				g.drawScaledImage(image, 
-						specialEffect.x - image.getHalfWidth(), 
-						specialEffect.y - image.getHalfHeight(),
+						specialEffect.x - image.halfWidth, 
+						specialEffect.y - image.halfHeight,
 						specialEffect.x,
 						specialEffect.y,
 						specialEffect.scale);
 			}
+		}
+
+		// hero health drawing
+		for (ScreenCrack screenCrack : armorObserver.screenCracks) {
+			image = ScreenCrack.image;
+			g.drawImage(image, screenCrack.x - image.halfWidth,
+					screenCrack.y - image.halfHeight);
 		}
 
 		animate(deltaTime);
@@ -458,7 +535,10 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		// Darken the entire screen so you can display the Paused screen.
 		g.drawARGB(155, 0, 0, 0);
-		pauseScreenReady = true;
+		//pauseScreenReady = true;
+		pauseButton.setNextScreen(new PauseScreen(game, this));
+		game.setScreen(pauseButton.nextScreen);
+		
 	}
 
 	private void drawGameOverUI() {
@@ -470,14 +550,17 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void pause() {
-		if (state == GameState.Running)
+		if (state == GameState.Running) {
 			state = GameState.Paused;
+		}
 	}
 
 	@Override
 	public void resume() {
 		if (state == GameState.Paused) {
 			state = GameState.Running;
+			showPauseButton = true;
+			hero.setAutoFire(false);
 			pauseScreenReady = false;
 		}
 	}

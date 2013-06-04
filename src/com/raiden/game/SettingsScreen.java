@@ -11,7 +11,16 @@ import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class SettingsScreen extends Screen {
-
+	
+	//button related constants
+	public final static int SETTINGS_MENU_STR_XDIST = 380;
+	public final static int SETTINGS_MENU_STR_YDIST = 96;
+	
+	public final static int SETTINGS_MENU_FIRST_BUTTON_X = 0;
+	public final static int SETTINGS_MENU_FIRST_BUTTON_Y = 750;
+	
+	public final static int SETTINGS_MENU_DIST_BETWEEN_BUTTONS = MainMenuScreen.BUTTON_HEIGHT + 195;
+	
 	private boolean bgPainted = false;
 	private Screen previousScreen;
 
@@ -29,17 +38,17 @@ public class SettingsScreen extends Screen {
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
 		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 
-		soundButton = new ScreenButton(MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X, MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y,
+		soundButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Sound: On",
-				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X + MainMenuScreen.SETTINGS_MENU_STR_XDIST,
-				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_STR_YDIST,
-				p, new GameScreen(game), true);
+				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
+				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_STR_YDIST,
+				p, true);
 
-		musicButton = new ScreenButton(MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X, MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
+		musicButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Music: On",
-				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_X + MainMenuScreen.SETTINGS_MENU_STR_XDIST,
-				MainMenuScreen.SETTINGS_MENU_FIRST_BUTTON_Y + MainMenuScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.SETTINGS_MENU_STR_YDIST,
-				p, new GameScreen(game), true);
+				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
+				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + SettingsScreen.SETTINGS_MENU_STR_YDIST,
+				p, true);
 	}
 	
 	public SettingsScreen(Game game, Screen previousScreen) {

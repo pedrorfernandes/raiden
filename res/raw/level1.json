@@ -1,0 +1,50 @@
+{
+    "spawns":
+    [
+        {
+            "time": 1000,
+            "x": 0,
+            "y": 100,
+            "angle": 0.0,
+            "type": "Normal",
+            "pattern": 1,
+            "drop": "Machinegun"
+        },
+        {
+            "time": 1000,
+            "x": 0,
+            "y": 200,
+            "angle": 0.0,
+            "type": "Normal",
+            "pattern": 1,
+            "drop": "Machinegun"
+        },
+        {
+            "time": 1000,
+            "x": 0,
+            "y": 300,
+            "angle": 0.0,
+            "type": "Normal",
+            "pattern": 1,
+            "drop": "HeavyBullets"
+        },
+        {
+            "time": 3000,
+            "x": 0,
+            "y": 100,
+            "angle": 0.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 3000,
+            "x": 0,
+            "y": 300,
+            "angle": 0.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": null
+        }
+    ]
+}

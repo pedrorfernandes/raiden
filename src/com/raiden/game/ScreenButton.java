@@ -28,7 +28,7 @@ public class ScreenButton {
 	public Screen nextScreen;
 	
 	
-	public ScreenButton(int x, int y, int width, int height, String label, int labelX, int labelY, Paint paint, Screen nextScreen, boolean toggled) {
+	public ScreenButton(int x, int y, int width, int height, String label, int labelX, int labelY, Paint paint, boolean toggled) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -37,14 +37,13 @@ public class ScreenButton {
 		this.labelX = labelX;
 		this.labelY = labelY;
 		this.paint = paint;
-		this.nextScreen = nextScreen;
 		
 		hitbox = new Rect(x, y, x + width, y + height);
 		
 		this.toggled = toggled;
 	}
 	
-	public ScreenButton(int x, int y, int width, int height, Screen nextScreen, boolean toggled) {
+	public ScreenButton(int x, int y, int width, int height, boolean toggled) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -53,11 +52,14 @@ public class ScreenButton {
 		this.labelX = 0;
 		this.labelY = 0;
 		this.paint = null;
-		this.nextScreen = nextScreen;
 		
 		hitbox = new Rect(x, y, x + width, y + height);
 		
 		this.toggled = toggled;
+	}
+	
+	public void setNextScreen(Screen nextScreen) {
+		this.nextScreen = nextScreen;
 	}
 
 }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import android.graphics.Point;
 
-public class Ship extends Collidable {
+public abstract class Ship extends Collidable {
 
-	protected int armor;
+	protected int armor, maxArmor;
 	protected boolean alive, visible;
 	
 	// empty turrets -> positions relative to centerX
@@ -24,7 +24,9 @@ public class Ship extends Collidable {
 	protected int impactTimer = IMPACT_INTERVAL;
 	
 	protected boolean autofire;
-
+	
+	public Bullet.Type bulletType;
+	
 	@Override
 	public void visit(Ship ship) {
 		if (impactTimer == IMPACT_INTERVAL){
@@ -42,6 +44,11 @@ public class Ship extends Collidable {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void visit(PowerUp powerUp) {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void accept(Collidable other) {
@@ -55,13 +62,12 @@ public class Ship extends Collidable {
 	public int getArmor(){
 		return armor;
 	}
+	
+	public abstract boolean checkIfDestroyed();
 
 	public void takeDamage(Collidable collidable){
 		armor -= collidable.collisionDamage;
-		if (armor < 1){
-			alive = false; visible = false;
-			notifyObservers(Event.Explosion);
-		}
+		this.checkIfDestroyed();
 	}
 
 	public Bullet[] getShotsFired(){
@@ -80,17 +86,21 @@ public class Ship extends Collidable {
 		return false;
 	}
 
-	public boolean addTurret(float firingAngle){
+	public boolean addTurret(float firingAngle, Bullet.Type bulletType){
 		if (emptyTurretPositions.size() == 0)
 			return false;
 
 		if (target == null)
 			// just fire downwards
-			turrets.add(new Turret(this, emptyTurretPositions.get(0), firingAngle));
+			turrets.add(new Turret(this, emptyTurretPositions.get(0), firingAngle, bulletType));
 		else
-			turrets.add(new Turret(this, emptyTurretPositions.get(0), target));
+			turrets.add(new Turret(this, emptyTurretPositions.get(0), target, bulletType));
 		emptyTurretPositions.remove(0);
 		return true;
+	}
+	
+	public boolean addTurret(float firingAngle){
+		return addTurret(firingAngle, this.bulletType);
 	}
 
 	public int getTimeToReload(){
@@ -130,6 +140,14 @@ public class Ship extends Collidable {
 	
 	public boolean isVisible(){
 		return visible;
+	}
+	
+	public ArrayList<Turret> getTurrets(){
+		return turrets;
+	}
+	
+	public void repair(){
+		this.armor = maxArmor;
 	}
 
 }

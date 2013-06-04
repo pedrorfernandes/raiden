@@ -1,5 +1,7 @@
 package com.raiden.game;
 
+import com.raiden.framework.Image;
+
 public class Bullet extends Collidable {
 	private static final int RADIUS = 10;
 	private static final int SPEED = 15;
@@ -9,35 +11,54 @@ public class Bullet extends Collidable {
 	
 	private int moveX;
 	private int moveY;
+	
+	public Type type;
+	
+	public static enum Type{
+		Hero        (15, 1, 10, Assets.heroBullet1),
+		HeroHeavy   (10, 2, 20, Assets.heroBullet2),
+		Enemy       (10, 1, 10, Assets.enemyBullet1),
+		EnemyHeavy  ( 7, 1, 20, Assets.enemyBullet2);
+		
+		public int speed, damage, radius;
+		public Image image;
+		
+		Type(int speed, int damage, int radius, Image image){
+			this.speed = speed;
+			this.damage = damage;
+			this.radius = radius;
+			this.image = image;
+		}
+	}
+	
 		
 	public Bullet(){
 		this.radius = RADIUS;
 		this.speed  = SPEED;		
 		this.collisionDamage = 1;
 		this.visible = false;
+		this.setType(Type.Hero); // initializes the enum
 	}
 	
-	public void fire(int x, int y, float angle) {
+	public void setType(Type type){
+		this.type = type;
+		this.speed = type.speed;
+		this.collisionDamage = type.damage;
+		this.radius = type.radius;
+	}
+	
+	public void fire(int x, int y, float angle, Type type) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
 		this.visible = true;
+		this.setType(type);
 		float radians = (float) Math.toRadians(angle);
-		this.moveX = (int) (speed * FastMath.cos(radians));
-		this.moveY = (int) (speed * FastMath.sin(-radians));
+		this.moveX = Math.round(speed * FastMath.cos( radians));
+		this.moveY = Math.round(speed * FastMath.sin(-radians));
 		this.hit = false;
 	}
-	
-	public void fire(int x, int y, double radians) {
-		this.x = x;
-		this.y = y;
-		this.angle = (float) Math.toDegrees(radians);
-		this.visible = true;
-		this.moveX = (int) (speed * FastMath.cos((float)radians));
-		this.moveY = (int) (speed * FastMath.sin((float)-radians));
-		this.hit = false;
-	}
-	
+
 	public void update(float deltaTime){
 		
 		if (!visible) return;
@@ -72,5 +93,10 @@ public class Bullet extends Collidable {
 	public void visit(Bullet bullet) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void visit(PowerUp powerUp) {
+		// TODO Auto-generated method stub
 	}
 }
