@@ -29,9 +29,9 @@ public class RaidenGame extends AndroidGame {
     	
     	highScores = new ArrayList<Integer>();
     	
-    	Level.loadFlightPatterns(flightPatterns);
-    	
     	levels = getLevels();
+    	
+    	Level.loadFlightPatterns(flightPatterns);
         
     	return new SplashLoadingScreen(this);
     }
