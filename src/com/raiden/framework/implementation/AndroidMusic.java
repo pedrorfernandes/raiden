@@ -106,6 +106,7 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
 
 	@Override
 	public void onCompletion(MediaPlayer player) {
+		/*
 		synchronized (this) {
 			try {
 				mediaPlayer.prepare();
@@ -119,6 +120,7 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
 			}
 			mediaPlayer.seekTo(0);
 		}
+		*/
 	}
 
 	@Override
