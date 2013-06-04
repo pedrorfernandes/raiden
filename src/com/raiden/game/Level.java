@@ -12,6 +12,10 @@ public class Level {
 	private int currentTime, currentSpawn;
 	private GameScreen gameScreen;
 	
+	private int highScore;
+	private String levelContents;
+	private boolean initialized;
+	
 	// iterating variables
 	private static Spawn spawn;
 	
@@ -20,13 +24,19 @@ public class Level {
 		flightPatterns.add(null); // flightPattern 0 means the spawn has no pattern
 	}
 
-	public Level(GameScreen gameScreen, String level) {
-
-		spawns = new ArrayList<Spawn>();
-		
-		currentTime = 0; currentSpawn = 0;
+	public Level(String levelContents, int currentHighScore) {
+		this.levelContents = levelContents;
+		this.highScore = currentHighScore;
+		this.initialized = false;
+	}
+	
+	public void initialize(GameScreen gameScreen){
 		this.gameScreen = gameScreen;
-		loadSpawns(level);
+		currentTime = 0; currentSpawn = 0;
+		if (!this.initialized){
+			spawns = new ArrayList<Spawn>();
+			loadSpawns(levelContents);
+		}
 	}
 
 	public static void addFlightPattern(FlightPattern flightPattern){
@@ -58,10 +68,9 @@ public class Level {
 	private static final String FLIGHT_PATTERNS = "flight patterns", MOVEMENTS = "movements", 
 			ANGLE = "angle", DURATION = "duration", DIRECTION = "direction";
 
-	public static void loadFlightPatterns() {
+	public static void loadFlightPatterns(String fileContents) {
 		try {
-			String contents = RaidenGame.flightPatterns;
-			JSONObject json = new JSONObject(contents);
+			JSONObject json = new JSONObject(fileContents);
 			JSONArray patterns;
 			patterns = json.getJSONArray(FLIGHT_PATTERNS);
 			for (int i = 0; i < patterns.length(); i++) {
@@ -85,9 +94,9 @@ public class Level {
 	private static final String SPAWNS = "spawns", TIME = "time", 
 			X = "x", Y = "y", TYPE = "type", PATTERN = "pattern", POWERUP = "drop";
 	
-	public void loadSpawns(String level){
+	public void loadSpawns(String levelContents){
 		try {
-			JSONObject json = new JSONObject(level);
+			JSONObject json = new JSONObject(levelContents);
 			JSONArray spawns;
 			spawns = json.getJSONArray(SPAWNS);
 			for (int i = 0; i < spawns.length(); i++) {
@@ -104,6 +113,15 @@ public class Level {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public int getHighscore(){
+		return highScore;
+	}
+	
+	public void updateHighscore(int currentScore){
+		if (currentScore > highScore)
+			highScore = currentScore;
 	}
 
 	public class Spawn {

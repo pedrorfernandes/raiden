@@ -18,17 +18,18 @@ import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Input;
 import com.raiden.framework.Screen;
+import com.raiden.game.Level;
 
 public abstract class AndroidGame extends Activity implements Game {
-    AndroidFastRenderView renderView;
-    Graphics graphics;
-    Audio audio;
-    Input input;
-    FileIO fileIO;
-    Screen screen;
-    WakeLock wakeLock;
-    private final static int GAMESIZE_X = 800;
-    private final static int GAMESIZE_Y = 1280;
+    protected AndroidFastRenderView renderView;
+    protected Graphics graphics;
+    protected Audio audio;
+    protected Input input;
+    protected FileIO fileIO;
+    protected Screen screen;
+    protected WakeLock wakeLock;
+    protected final static int GAMESIZE_X = 800;
+    protected final static int GAMESIZE_Y = 1280;
     
     Point screenSize, gameSize;
     private float scaleX, scaleY;
@@ -138,4 +139,8 @@ public abstract class AndroidGame extends Activity implements Game {
     public float getScaleY(){
     	return scaleY;
     }
+    
+    public abstract void saveHighscores();
+    public abstract void loadHighscores();
+    public abstract Level getLevel(int levelNumber);
 }

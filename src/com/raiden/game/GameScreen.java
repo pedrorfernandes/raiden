@@ -1,9 +1,7 @@
 package com.raiden.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
 import android.graphics.Color;
@@ -149,8 +147,10 @@ public class GameScreen extends Screen {
 
 		specialEffects = new ArrayList<Animation>();
 
-		level = new Level(this, RaidenGame.level1);
-
+		// TODO level select
+		level = game.getLevel(2);
+		level.initialize(this);
+		
 		dragPoint = new Point();
 
 		// Defining a paint object
@@ -345,6 +345,11 @@ public class GameScreen extends Screen {
 	private void updatePaused(List<TouchEvent> touchEvents) {
 		if(pauseScreenReady) {
 			pauseButton.setNextScreen(new PauseScreen(game, this));
+			
+			// TODO update highscores in a more convenient place?
+			level.updateHighscore(score);
+			game.saveHighscores();
+			
 			game.setScreen(pauseButton.nextScreen);
 		}
 	}
@@ -357,6 +362,11 @@ public class GameScreen extends Screen {
 				if (event.x > 300 && event.x < 980 && event.y > 100
 						&& event.y < 500) {
 					nullify();
+					
+					// TODO put the save load highscores in the right place
+					game.saveHighscores();
+					game.loadHighscores();
+					
 					game.setScreen(new MainMenuScreen(game));
 					return;
 				}

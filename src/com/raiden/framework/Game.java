@@ -1,5 +1,7 @@
 package com.raiden.framework;
 
+import com.raiden.game.Level;
+
 import android.content.res.AssetManager;
 import android.graphics.Point;
 
@@ -29,4 +31,10 @@ public interface Game {
     
     public AssetManager getAssets();
 
+	public void saveHighscores();
+
+	public void loadHighscores();
+
+	public Level getLevel(int i);
+    
 }
