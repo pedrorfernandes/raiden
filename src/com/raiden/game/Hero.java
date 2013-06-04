@@ -197,6 +197,7 @@ public class Hero extends Ship {
 	@Override
 	public void setAutoFire(boolean autofire){
 		if (!alive) return;
+		if(this.autofire == autofire) return;
 		notifyObservers(Event.Firing);
 		super.setAutoFire(autofire);
 	}

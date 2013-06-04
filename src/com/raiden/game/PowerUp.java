@@ -12,7 +12,7 @@ public class PowerUp extends Collidable {
 	private int moveX, moveY;
 	
 	public enum Type {		
-		HeavyBullets (6, Assets.powerUp1, Assets.powerUpSound1, "HeavyBullets")
+		HeavyBullets (6, 50, Assets.powerUp1, Assets.powerUpSound1, "HeavyBullets")
 		{
 			@Override
 			public void powerUp(Ship ship){
@@ -24,7 +24,7 @@ public class PowerUp extends Collidable {
 			}
 		},
 		
-		Machinegun (6, Assets.powerUp2, Assets.powerUpSound2, "Machinegun")
+		Machinegun (6, 50, Assets.powerUp2, Assets.powerUpSound2, "Machinegun")
 		{
 			@Override
 			public void powerUp(Ship ship){
@@ -38,7 +38,7 @@ public class PowerUp extends Collidable {
 			}
 		},
 		
-		ScatterShot (6, Assets.powerUp3, Assets.powerUpSound3, "ScatterShot")
+		ScatterShot (6, 50, Assets.powerUp3, Assets.powerUpSound3, "ScatterShot")
 		{
 			@Override
 			public void powerUp(Ship ship){
@@ -55,7 +55,7 @@ public class PowerUp extends Collidable {
 			}
 		},
 		
-		Repair (6, Assets.powerUp4, Assets.powerUpSound4, "Repair")
+		Repair (6, 50, Assets.powerUp4, Assets.powerUpSound4, "Repair")
 		{
 			@Override
 			public void powerUp(Ship ship){
@@ -65,12 +65,14 @@ public class PowerUp extends Collidable {
 		};
 
 		public int speed;
+		public int score;
 		public Image image;
 		public Sound sound;
 		public String id;
 		
-		Type(int speed, Image image, Sound sound, String id){
+		Type(int speed, int score, Image image, Sound sound, String id){
 			this.speed = speed;
+			this.score = score;
 			this.image = image;
 			this.sound = sound;
 			this.id = id;
@@ -100,6 +102,7 @@ public class PowerUp extends Collidable {
 	public void spawn(int x, int y, Type type){
 		this.type = type;
 		this.setSpeed(type.speed);
+		this.score = type.score;
 		this.visible = true;
 		this.x = x;
 		this.y = y;
@@ -132,6 +135,7 @@ public class PowerUp extends Collidable {
 	@Override
 	public void visit(Ship ship) {
 		this.type.powerUp(ship);
+		notifyObservers(this, Event.ScoreUp);
 		this.visible = false;
 	}
 

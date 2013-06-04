@@ -112,6 +112,11 @@ public enum Event {
 		public Music getMusic(){
 			return Assets.gameOverMusic;
 		}
+	},
+	
+	ScoreUp
+	{
+		
 	};
 
 	private static final float BIG_EFFECT = 1.5f;

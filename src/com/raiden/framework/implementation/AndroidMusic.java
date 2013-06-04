@@ -94,6 +94,8 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
 	@Override
 	public void stop() {
 		if (this.mediaPlayer.isPlaying() == true){
+			this.mediaPlayer.pause();
+			this.mediaPlayer.seekTo(0);
 			this.mediaPlayer.stop();
 
 			synchronized (this) {
@@ -105,7 +107,17 @@ public class AndroidMusic implements Music, OnCompletionListener, OnSeekComplete
 	@Override
 	public void onCompletion(MediaPlayer player) {
 		synchronized (this) {
-			isPrepared = false;
+			try {
+				mediaPlayer.prepare();
+				isPrepared = true;
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			mediaPlayer.seekTo(0);
 		}
 	}
 

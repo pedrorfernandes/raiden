@@ -72,12 +72,12 @@ public class SettingsScreen extends Screen {
 					if(soundButton.toggled) {
 						soundButton.toggled = false;
 						soundButton.label = "Sound: Off";
-						//TODO Toggle sound
+						Assets.setSoundVolume(0.0f);
 					}
 					else {
 						soundButton.toggled = true;
 						soundButton.label = "Sound: On";
-						//TODO Toggle sound
+						Assets.setSoundVolume(1.0f);
 					}
 				}
 
@@ -87,12 +87,12 @@ public class SettingsScreen extends Screen {
 					if(musicButton.toggled) {
 						musicButton.toggled = false;
 						musicButton.label = "Music: Off";
-						//TODO Toggle music
+						Assets.setMusicVolume(0.0f);
 					}
 					else {
 						musicButton.toggled = true;
 						musicButton.label = "Music: On";
-						//TODO Toggle music
+						Assets.setMusicVolume(1.0f);
 					}
 				}
 

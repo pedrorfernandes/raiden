@@ -9,6 +9,7 @@ public abstract class Collidable implements Visitor, Observable {
 	public int y;
 	public int radius;
 	protected int speed;
+	public int score;
 	
 	// box which every object can move in
 	protected static int minX;

@@ -30,15 +30,27 @@ public class PauseScreen extends Screen {
 
 	public final static int PAUSE_MENU_FIRST_BUTTON_Y = 495;
 	public final static int PAUSE_MENU_FIRST_BUTTON_X = 0;
+	
+	public final static int SCORE_LABEL_FONT_SIZE = 50;
+	public final static int SCORE_FONT_SIZE = 45;
+	
+	public final static int SCORE_LABEL_X = 200;
+	public final static int SCORE_LABEL_Y = 1155;
+	
+	public final static int SCORE_X = 300;
+	public final static int SCORE_Y = 1205;
 
 	private boolean bgPainted = false;
-	private boolean fromSettings = false;
-	private Graphics preSettingsGraphics;
-	private Screen previousScreen;
+	private GameScreen gameScreen;
+	
+	private String pauseLabel = "Pause";
+	private String scoreLabel = "Score: ";
 
 	private ScreenButton continueButton;
 	private ScreenButton quitButton;
-	private ScreenButton settingsButton;
+	
+	private Paint scoreLabelPaint;
+	private Paint scorePaint;
 
 	public PauseScreen(Game game) {
 		super(game);
@@ -50,6 +62,18 @@ public class PauseScreen extends Screen {
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
 		p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
+		
+		scoreLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		scoreLabelPaint.setTextSize(PauseScreen.SCORE_LABEL_FONT_SIZE);
+		scoreLabelPaint.setAntiAlias(true);
+		scoreLabelPaint.setTypeface(face);
+		scoreLabelPaint.setColor(ScreenButton.GAME_FONT_COLOR);
+		
+		scorePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		scorePaint.setTextSize(PauseScreen.SCORE_FONT_SIZE);
+		scorePaint.setAntiAlias(true);
+		scorePaint.setTypeface(face);
+		scorePaint.setColor(ScreenButton.GAME_FONT_COLOR);
 
 		continueButton = new ScreenButton(PauseScreen.PAUSE_MENU_FIRST_BUTTON_X, PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y,
 				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Continue",
@@ -62,17 +86,11 @@ public class PauseScreen extends Screen {
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_RIGHT_STR_XDIST,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS + PauseScreen.PAUSE_MENU_STR_YDIST,
 				p, false);
-
-		settingsButton = new ScreenButton(PauseScreen.PAUSE_MENU_FIRST_BUTTON_X, PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + 2*PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS,
-				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Settings",
-				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_LEFT_STR_XDIST,
-				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + 2*PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS + PauseScreen.PAUSE_MENU_STR_YDIST,
-				p, false);
 	}
 
-	public PauseScreen(Game game, Screen previousScreen) {
+	public PauseScreen(Game game, GameScreen gameScreen) {
 		this(game);
-		this.previousScreen = previousScreen;
+		this.gameScreen = gameScreen;
 	}
 
 	@Override
@@ -88,25 +106,17 @@ public class PauseScreen extends Screen {
 				if (continueButton.hitbox.contains(event.x, event.y)) {
 					//CONTINUE GAME
 					bgPainted = false;
-					continueButton.setNextScreen(previousScreen);
+					continueButton.setNextScreen(gameScreen);
 					game.setScreen(continueButton.nextScreen);               
 				}
 				
 				if (quitButton.hitbox.contains(event.x, event.y)) {
 					//HELP SCREEN
 					bgPainted = false;
+					Assets.stopAllMusic();
 					quitButton.setNextScreen(new MainMenuScreen(game));
 					game.setScreen(quitButton.nextScreen);               
 				}
-				
-				if (settingsButton.hitbox.contains(event.x, event.y)) {
-					//SETTINGS SCREEN
-					bgPainted = false;
-					settingsButton.setNextScreen(new SettingsScreen(game, this));
-					game.setScreen(settingsButton.nextScreen);
-				}
-
-
 			}
 		}
 	}
@@ -116,10 +126,11 @@ public class PauseScreen extends Screen {
 		Graphics g = game.getGraphics();
 		if(!bgPainted) {
 			g.drawImage(Assets.pauseMenu, 0, 0);
-			g.drawRotatedString("Pause", TITLE_X, TITLE_Y, -25, continueButton.paint);
+			g.drawRotatedString(pauseLabel, TITLE_X, TITLE_Y, -25, continueButton.paint);
 			g.drawString(continueButton.label, continueButton.labelX, continueButton.labelY, continueButton.paint);
 			g.drawString(quitButton.label, quitButton.labelX, quitButton.labelY, quitButton.paint);
-			g.drawString(settingsButton.label, settingsButton.labelX, settingsButton.labelY, settingsButton.paint);
+			g.drawString(scoreLabel, SCORE_LABEL_X, SCORE_LABEL_Y, scoreLabelPaint);
+			g.drawString(Integer.toString(gameScreen.score), SCORE_X, SCORE_Y, scorePaint);
 			bgPainted = true;
 		}
 		
@@ -149,7 +160,7 @@ public class PauseScreen extends Screen {
 	public void backButton() {
 		bgPainted = false;
 		game.getInput().getTouchEvents().clear();
-		game.setScreen(previousScreen);
+		game.setScreen(gameScreen);
 	}
 
 }

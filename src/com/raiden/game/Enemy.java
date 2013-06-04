@@ -28,10 +28,10 @@ public class Enemy extends Ship {
 	private static int length;
 	
 	public static enum Type{
-		Normal(6 , 2, 4, 50, 1400, Bullet.Type.Enemy,      Assets.enemy1, "Normal"),
-		Fast  (10, 4, 2, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
+		Normal(6 , 2, 4, 10, 50, 1400, Bullet.Type.Enemy,      Assets.enemy1, "Normal"),
+		Fast  (10, 4, 2, 20, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
 		
-		public int speed, turnSpeed, armor, radius, reloadDone;
+		public int speed, turnSpeed, armor, score, radius, reloadDone;
 		public Image image;
 		public Bullet.Type bulletType;
 		public String id;
@@ -45,11 +45,12 @@ public class Enemy extends Ship {
 			return null;
 		}
 		
-		Type(int speed, int turnSpeed, int armor, 
+		Type(int speed, int turnSpeed, int armor, int score, 
 				int radius, int reloadDone, Bullet.Type bulletType, Image image, String id){
 			this.speed = speed;
 			this.turnSpeed = turnSpeed;
 			this.armor = armor;
+			this.score = score;
 			this.radius = radius;
 			this.reloadDone = reloadDone;
 			this.bulletType = bulletType;
@@ -100,6 +101,7 @@ public class Enemy extends Ship {
 		this.turnSpeed = type.turnSpeed;
 		this.bulletType = type.bulletType;
 		this.armor = type.armor;
+		this.score = type.score;
 		this.radius = type.radius;
 		this.reloadDone = type.reloadDone;
 		for (Turret turret : turrets) {
@@ -237,6 +239,7 @@ public class Enemy extends Ship {
 		if (armor < 1){
 			alive = false; visible = false; flightPattern = null;
 			notifyObservers(Event.Explosion);
+			notifyObservers(this, Event.ScoreUp);
 			dropPowerUp();
 			return true;
 		} else {

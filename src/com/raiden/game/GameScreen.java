@@ -27,6 +27,8 @@ public class GameScreen extends Screen {
 
 	// Variable Setup
 	// You would create game objects here.
+	
+	public int score = 0;
 
 	private boolean showPauseButton = true;
 	private ScreenButton pauseButton;
@@ -53,6 +55,7 @@ public class GameScreen extends Screen {
 	private static EffectsController effectsController;
 	private static MusicController musicController;
 	private static ArmorObserver armorObserver;
+	private static ScoreObserver scoreObserver;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -123,6 +126,7 @@ public class GameScreen extends Screen {
 		animationController = new AnimationController(this);
 		musicController = new MusicController(this);
 		armorObserver = new ArmorObserver(this);
+		scoreObserver = new ScoreObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
@@ -135,10 +139,12 @@ public class GameScreen extends Screen {
 			enemies[i] = new Enemy(hero);
 			enemies[i].addObserver(effectsController);
 			enemies[i].addObserver(soundController);
+			enemies[i].addObserver(scoreObserver);
 		}
 
 		for (int i = 0; i < MAX_POWER_UPS; i++) {
 			powerUps[i] = new PowerUp();
+			powerUps[i].addObserver(scoreObserver);
 		}
 
 		specialEffects = new ArrayList<Animation>();
@@ -248,6 +254,8 @@ public class GameScreen extends Screen {
 			 */
 
 		}
+		
+		boolean goOnPause = false;
 
 		// All touch input is handled here
 		length = touchEvents.size();
@@ -257,7 +265,9 @@ public class GameScreen extends Screen {
 
 				if (pauseButton.hitbox.contains(event.x, event.y) && showPauseButton) {
 					//Pause menu
-					pause();
+					//pause();
+					hero.setAutoFire(false);
+					goOnPause = true;
 				}
 				else {
 					showPauseButton = false;
@@ -284,6 +294,14 @@ public class GameScreen extends Screen {
 
 		}
 
+		updateElements(deltaTime);
+		
+		if(goOnPause)
+			pause();
+
+	}
+
+	private void updateElements(float deltaTime) {
 		// 2. Check miscellaneous events like death:
 
 		if (livesLeft == 0) {
@@ -322,13 +340,13 @@ public class GameScreen extends Screen {
 			powerUp = powerUps[i];
 			powerUp.update(deltaTime);
 		}
-
 	}
 
 	private void updatePaused(List<TouchEvent> touchEvents) {
-		/*if(pauseScreenReady) {
+		if(pauseScreenReady) {
+			pauseButton.setNextScreen(new PauseScreen(game, this));
 			game.setScreen(pauseButton.nextScreen);
-		}*/
+		}
 	}
 
 	private void updateGameOver(List<TouchEvent> touchEvents) {
@@ -535,10 +553,7 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		// Darken the entire screen so you can display the Paused screen.
 		g.drawARGB(155, 0, 0, 0);
-		//pauseScreenReady = true;
-		pauseButton.setNextScreen(new PauseScreen(game, this));
-		game.setScreen(pauseButton.nextScreen);
-		
+		pauseScreenReady = true;
 	}
 
 	private void drawGameOverUI() {
