@@ -25,15 +25,19 @@ public class GameScreen extends Screen {
 
 	// Variable Setup
 	// You would create game objects here.
-	
+
 	public int score = 0;
 
 	private boolean showPauseButton = true;
 	private ScreenButton pauseButton;
 	private boolean pauseScreenReady = false;
-	
+
 	// Delay showing the game over screen for a while
 	private int gameOverScreenCounter = 5000;
+	private String finalScore = "Final Score: ";
+	private boolean highscoreBeaten = false;
+	private String newHighscore = "New highscore: ";
+	private String highscore = "Level highscore: ";
 
 	public int livesLeft = 1;
 	Paint paint;
@@ -154,14 +158,14 @@ public class GameScreen extends Screen {
 		specialEffects = new ArrayList<Animation>();
 
 		// TODO level select
-		level = game.getLevel(2);
+		level = game.getLevel(1);
 		level.initialize(this);
-		
+
 		dragPoint = new Point();
 
 		// Defining a paint object
 		paint = new Paint();
-		paint.setTextSize(30);
+		paint.setTextSize(45);
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.setAntiAlias(true);
 		paint.setColor(Color.WHITE);
@@ -259,7 +263,7 @@ public class GameScreen extends Screen {
 			 */
 
 		}
-		
+
 		boolean goOnPause = false;
 
 		// All touch input is handled here
@@ -300,14 +304,14 @@ public class GameScreen extends Screen {
 		}
 
 		updateElements(deltaTime);
-		
+
 		if(goOnPause)
 			pause();
 
 	}
 
 	private void updateElements(float deltaTime) {
-		
+
 		// 2. Check miscellaneous events like death:
 
 		if(livesLeft == 0) {
@@ -316,6 +320,12 @@ public class GameScreen extends Screen {
 			}
 			else {
 				state = GameState.GameOver;
+				// TODO update highscores in a more convenient place?
+				if(score > level.getHighscore()) {
+					level.updateHighscore(score);
+					game.saveHighscores();
+					highscoreBeaten = true;
+				}
 			}
 		}
 
@@ -356,11 +366,6 @@ public class GameScreen extends Screen {
 	private void updatePaused(List<TouchEvent> touchEvents) {
 		if(pauseScreenReady) {
 			pauseButton.setNextScreen(new PauseScreen(game, this));
-			
-			// TODO update highscores in a more convenient place?
-			level.updateHighscore(score);
-			game.saveHighscores();
-			
 			game.setScreen(pauseButton.nextScreen);
 		}
 	}
@@ -373,11 +378,11 @@ public class GameScreen extends Screen {
 				if (event.x > 300 && event.x < 980 && event.y > 100
 						&& event.y < 500) {
 					nullify();
-					
+
 					// TODO put the save load highscores in the right place
 					game.saveHighscores();
 					game.loadHighscores();
-					
+
 					game.setScreen(new MainMenuScreen(game));
 					return;
 				}
@@ -557,8 +562,8 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString("Tap each side of the screen to move in that direction.",
-				640, 300, paint);
+		g.drawString("Show them what you're made of!",
+				400, 640, paint);
 
 	}
 
@@ -580,7 +585,17 @@ public class GameScreen extends Screen {
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
 		g.drawRect(0, 0, 801, 1281, Color.BLACK);
-		g.drawString("GAME OVER.", 400, 640, paint);
+		g.drawString("GAME OVER", 400, 340, paint);
+		g.drawString(finalScore, 400, 600, paint);
+		g.drawString(Integer.toString(score), 400, 660, paint);
+		
+		if(highscoreBeaten) {
+			g.drawString(newHighscore, 400, 820, paint);
+		}
+		else {
+			g.drawString(highscore, 400, 820, paint);
+		}
+		g.drawString(Integer.toString(level.getHighscore()), 400, 880, paint);
 
 	}
 
