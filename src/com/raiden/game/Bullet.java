@@ -18,7 +18,7 @@ public class Bullet extends Collidable {
 		Hero        (15, 1, 10, Assets.heroBullet1),
 		HeroHeavy   (10, 2, 20, Assets.heroBullet2),
 		Enemy       (10, 1, 10, Assets.enemyBullet1),
-		EnemyHeavy  ( 7, 1, 20, Assets.enemyBullet2);
+		EnemyHeavy  ( 7, 2, 20, Assets.enemyBullet2);
 		
 		public int speed, damage, radius;
 		public Image image;
