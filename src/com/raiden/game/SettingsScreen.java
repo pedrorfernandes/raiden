@@ -66,6 +66,7 @@ public class SettingsScreen extends Screen {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 
+				//TODO Fix dis (button toggling not the very best thing)
 				if (soundButton.hitbox.contains(event.x, event.y)) {
 					// TOGGLE SOUND
 					bgPainted = false;

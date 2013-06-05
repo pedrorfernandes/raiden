@@ -33,9 +33,9 @@ public class GameScreen extends Screen {
 	private boolean pauseScreenReady = false;
 
 	// Delay showing the game over screen for a while
-	private int gameOverScreenCounter = 5000;
+	private int gameOverScreenCounter = 3500;
 	private String finalScore = "Final Score: ";
-	private boolean highscoreBeaten = false;
+	public boolean highscoreBeaten = false;
 	private String newHighscore = "New highscore: ";
 	private String highscore = "Level highscore: ";
 
@@ -47,7 +47,8 @@ public class GameScreen extends Screen {
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
 	private Image bulletImage;
 
-	private Level level;
+	public Level level;
+	public int levelNumber;
 
 	// touch and input variables
 	private Point dragPoint;
@@ -100,9 +101,9 @@ public class GameScreen extends Screen {
 
 	public final static int PAUSE_BUTTON_Y = 25;
 
-	public final static int PAUSE_BUTTON_X = 700;
+	public final static int FIRST_BUTTON_X = 700;
 
-	public GameScreen(Game game) {
+	public GameScreen(Game game, int levelNumber) {
 		super(game);
 
 		screenSize = game.getSize();
@@ -111,9 +112,8 @@ public class GameScreen extends Screen {
 
 		// Initialize game objects here
 
-		pauseButton = new ScreenButton(GameScreen.PAUSE_BUTTON_X, GameScreen.PAUSE_BUTTON_Y,
+		pauseButton = new ScreenButton(GameScreen.FIRST_BUTTON_X, GameScreen.PAUSE_BUTTON_Y,
 				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE, true);
-
 
 		hero = new Hero();
 		hero.setTargets(enemies);
@@ -155,7 +155,8 @@ public class GameScreen extends Screen {
 		specialEffects = new ArrayList<Animation>();
 
 		// TODO level select
-		level = game.getLevel(1);
+		this.levelNumber = levelNumber;
+		level = game.getLevel(levelNumber);
 		level.initialize(this);
 
 		dragPoint = new Point();
@@ -181,6 +182,14 @@ public class GameScreen extends Screen {
 			}
 		}
 		return null;
+	}
+	
+	public boolean enemiesLeft() {
+		for(Enemy enemy : enemies) {
+			if(enemy.isInGame()) return true;
+		}
+		
+		return false;
 	}
 
 	public PowerUp spawnPowerUp(int x, int y, PowerUp.Type type){
@@ -325,6 +334,22 @@ public class GameScreen extends Screen {
 				}
 			}
 		}
+		else if(level.levelOver() && !enemiesLeft()) {
+			if(gameOverScreenCounter > 0) {
+				gameOverScreenCounter -= deltaTime;
+			}
+			else {
+				// TODO update highscores in a more convenient place?
+				if(score > level.getHighscore()) {
+					level.updateHighscore(score);
+					game.saveHighscores();
+					highscoreBeaten = true;
+				}
+				
+				Assets.stopAllMusic();
+				game.setScreen(new LevelOverScreen(game, this));
+			}
+		}
 
 		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
@@ -372,8 +397,9 @@ public class GameScreen extends Screen {
 		for (int i = 0; i < len; i++) {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
-				if (event.x > 300 && event.x < 980 && event.y > 100
-						&& event.y < 500) {
+				if (event.x > 0 && event.x < 800 && event.y > 0 && event.y < 1280) {
+					Assets.stopAllMusic();
+					
 					nullify();
 
 					// TODO put the save load highscores in the right place

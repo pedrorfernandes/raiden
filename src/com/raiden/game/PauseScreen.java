@@ -111,7 +111,6 @@ public class PauseScreen extends Screen {
 				}
 				
 				if (quitButton.hitbox.contains(event.x, event.y)) {
-					//HELP SCREEN
 					bgPainted = false;
 					Assets.stopAllMusic();
 					quitButton.setNextScreen(new MainMenuScreen(game));

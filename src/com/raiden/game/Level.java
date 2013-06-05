@@ -123,6 +123,10 @@ public class Level {
 		if (currentScore > highScore)
 			highScore = currentScore;
 	}
+	
+	public boolean levelOver() {
+		return currentSpawn >= spawns.size();
+	}
 
 	public class Spawn {
 		public int time;
