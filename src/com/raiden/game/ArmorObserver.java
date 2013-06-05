@@ -31,7 +31,7 @@ public class ArmorObserver implements Observer {
 
 	@Override
 	public void update(Collidable c, Event event) {
-		this.update(c.x, c.y, event);		
+		this.update(c.x, c.y, event);
 	}
 
 }

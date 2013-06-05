@@ -31,8 +31,11 @@ public class GameScreen extends Screen {
 	private boolean showPauseButton = true;
 	private ScreenButton pauseButton;
 	private boolean pauseScreenReady = false;
+	
+	// Delay showing the game over screen for a while
+	private int gameOverScreenCounter = 5000;
 
-	int livesLeft = 1;
+	public int livesLeft = 1;
 	Paint paint;
 
 	public static Hero hero;
@@ -54,6 +57,7 @@ public class GameScreen extends Screen {
 	private static MusicController musicController;
 	private static ArmorObserver armorObserver;
 	private static ScoreObserver scoreObserver;
+	private static LifeOverObserver gameOverObserver;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -125,12 +129,14 @@ public class GameScreen extends Screen {
 		musicController = new MusicController(this);
 		armorObserver = new ArmorObserver(this);
 		scoreObserver = new ScoreObserver(this);
+		gameOverObserver = new LifeOverObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
 		hero.addObserver(musicController);
 		hero.addObserver(armorObserver);
+		hero.addObserver(gameOverObserver);
 
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -224,7 +230,6 @@ public class GameScreen extends Screen {
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
 
-
 		counter += deltaTime;
 		if (counter > 960*1){
 			counter = 0;
@@ -302,10 +307,16 @@ public class GameScreen extends Screen {
 	}
 
 	private void updateElements(float deltaTime) {
+		
 		// 2. Check miscellaneous events like death:
 
-		if (livesLeft == 0) {
-			state = GameState.GameOver;
+		if(livesLeft == 0) {
+			if(gameOverScreenCounter > 0) {
+				gameOverScreenCounter -= deltaTime;
+			}
+			else {
+				state = GameState.GameOver;
+			}
 		}
 
 		// 3. Call individual update() methods here.
@@ -568,8 +579,8 @@ public class GameScreen extends Screen {
 
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
-		g.drawRect(0, 0, 1281, 801, Color.BLACK);
-		g.drawString("GAME OVER.", 640, 300, paint);
+		g.drawRect(0, 0, 801, 1281, Color.BLACK);
+		g.drawString("GAME OVER.", 400, 640, paint);
 
 	}
 
