@@ -42,7 +42,7 @@ public class GameScreen extends Screen {
 	public int livesLeft = 1;
 	Paint paint;
 
-	public static Hero hero;
+	public Hero hero;
 	private Image heroImage;
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
 	private Image bulletImage;
@@ -61,7 +61,6 @@ public class GameScreen extends Screen {
 	private static MusicController musicController;
 	private static ArmorObserver armorObserver;
 	private static ScoreObserver scoreObserver;
-	private static LifeOverObserver gameOverObserver;
 
 	private static ArrayList<Animation> specialEffects;
 	private static final float NORMAL_SCALE = 1.0f;
@@ -133,14 +132,12 @@ public class GameScreen extends Screen {
 		musicController = new MusicController(this);
 		armorObserver = new ArmorObserver(this);
 		scoreObserver = new ScoreObserver(this);
-		gameOverObserver = new LifeOverObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
 		hero.addObserver(musicController);
 		hero.addObserver(armorObserver);
-		hero.addObserver(gameOverObserver);
 
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{

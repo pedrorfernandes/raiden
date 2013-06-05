@@ -190,8 +190,8 @@ public class Hero extends Ship {
 	
 	@Override
 	public void takeDamage(Collidable collidable){
-		notifyObservers(collidable, Event.HeroHit);
 		super.takeDamage(collidable);
+		notifyObservers(collidable, Event.HeroHit);
 	}
 	
 	@Override
