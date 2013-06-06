@@ -16,6 +16,7 @@ public class PauseScreen extends Screen {
 	//Button related constants
 	public final static int TITLE_X = 80;
 	public final static int TITLE_Y = 120;
+	public static final int TITLE_ANGLE = -25;
 	
 	public final static int BUTTON_WIDTH = 800;
 	public final static int BUTTON_HEIGHT = 115;
@@ -95,7 +96,6 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();
@@ -125,7 +125,7 @@ public class PauseScreen extends Screen {
 		Graphics g = game.getGraphics();
 		if(!bgPainted) {
 			g.drawImage(Assets.pauseMenu, 0, 0);
-			g.drawRotatedString(pauseLabel, TITLE_X, TITLE_Y, -25, continueButton.paint);
+			g.drawRotatedString(pauseLabel, TITLE_X, TITLE_Y, TITLE_ANGLE, continueButton.paint);
 			g.drawString(continueButton.label, continueButton.labelX, continueButton.labelY, continueButton.paint);
 			g.drawString(quitButton.label, quitButton.labelX, quitButton.labelY, quitButton.paint);
 			g.drawString(scoreLabel, SCORE_LABEL_X, SCORE_LABEL_Y, scoreLabelPaint);

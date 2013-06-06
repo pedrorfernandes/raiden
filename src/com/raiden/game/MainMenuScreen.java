@@ -75,8 +75,7 @@ public class MainMenuScreen extends Screen {
 				if (playButton.hitbox.contains(event.x, event.y)) {
 					//START GAME
 					bgPainted = false;
-					//TODO Pick level
-					playButton.setNextScreen(new GameScreen(game, 1));
+					playButton.setNextScreen(new LevelSelectionScreen(game, this));
 					game.setScreen(playButton.nextScreen);               
 				}
 				
