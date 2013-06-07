@@ -119,6 +119,10 @@ public class Level {
 		return highScore;
 	}
 	
+	public void resetHighscore() {
+		highScore = 0;
+	}
+	
 	public void updateHighscore(int currentScore){
 		if (currentScore > highScore)
 			highScore = currentScore;

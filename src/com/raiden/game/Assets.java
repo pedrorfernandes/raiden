@@ -13,7 +13,8 @@ public class Assets {
 
 	private static final int HERO_ANIMATION_DURATION = 10;
 
-	public static Image splash, menu, helpMenu, settingsMenu, levelSelectionMenu, pauseButtonImg, pauseMenu, levelOverMenu;
+	public static Image splash, menu, refreshButtonImg, popupImg, helpMenu,
+	settingsMenu, levelSelectionMenu, pauseButtonImg, pauseMenu, levelOverMenu;
 
 	public static float volume = 1.0f;
 
