@@ -4,11 +4,9 @@ import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Graphics.ImageFormat;
-import com.raiden.framework.implementation.AndroidFastRenderView;
-import com.raiden.framework.implementation.AndroidFileIO;
-
 
 public class LoadingScreen extends Screen {
+	private static final float MUSIC_VOLUME = 0.85f;
 	private boolean splashPainted = false;
 
 	public LoadingScreen(Game game) {
@@ -54,7 +52,7 @@ public class LoadingScreen extends Screen {
 
 		Assets.machinegun = game.getAudio().createMusic("machinegun.wav");
 		Assets.machinegun.setLooping(true);
-		Assets.machinegun.setVolume(1.0f);
+		Assets.machinegun.setVolume(MUSIC_VOLUME);
 
 		Assets.hit1 = game.getAudio().createSound("hit1.wav");
 		Assets.hit2 = game.getAudio().createSound("hit2.wav");
@@ -102,10 +100,29 @@ public class LoadingScreen extends Screen {
 
 		Assets.heroDown = game.getAudio().createSound("heroDown.wav");
 		Assets.gameOverMusic = game.getAudio().createMusic("gameOver.mp3");
-		Assets.gameOverMusic.setVolume(1.0f);
+		Assets.gameOverMusic.setVolume(MUSIC_VOLUME);
 
 		Assets.screenCrack = g.newImage("screenCrack.png", ImageFormat.ARGB8888);
-
+		
+		Assets.background = g.newImage("background.png", ImageFormat.RGB565, 1.25f, 1.25f);
+		Assets.cloud = g.newImage("cloud.png", ImageFormat.ARGB8888);
+		
+		Assets.missionStartSound = game.getAudio().createSound("missionStart.wav");
+		
+		Assets.missionMusic = game.getAudio().createMusic("missionMusic.mp3");
+		Assets.missionMusic.setLooping(true);
+		Assets.missionMusic.setVolume(MUSIC_VOLUME);
+		
+		Assets.menuMusic = game.getAudio().createMusic("menuMusic.mp3");
+		Assets.menuMusic.setLooping(true);
+		Assets.menuMusic.setVolume(MUSIC_VOLUME);
+		
+		Assets.missionVictory = game.getAudio().createMusic("missionVictory.mp3");
+		Assets.missionVictory.setLooping(true);
+		Assets.missionVictory.setVolume(MUSIC_VOLUME);
+		
+		Assets.missionVictorySound = game.getAudio().createSound("missionVictorySound.wav");
+		
 		// initialize static arrays
 		FastMath.atan2(0.5f, 0.5f);
 		FastMath.cos((float)Math.PI / 3);

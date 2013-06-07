@@ -34,6 +34,8 @@ public class MainMenuScreen extends Screen {
 	public MainMenuScreen(Game game) {
 		super(game);
 		
+		game.getMusicController().play(Assets.menuMusic);
+		
 		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 		p.setTextSize(MainMenuScreen.MENU_BUTTONS_FONT_SIZE);
 		p.setAntiAlias(true);
@@ -115,12 +117,13 @@ public class MainMenuScreen extends Screen {
 
 	@Override
 	public void pause() {
+		
 	}
 
 
 	@Override
 	public void resume() {
-
+		game.getMusicController().resume();
 
 	}
 
@@ -134,6 +137,7 @@ public class MainMenuScreen extends Screen {
 
 	@Override
 	public void backButton() {
+		game.getMusicController().pause();
 		game.moveTaskToBack(true);
 	}
 }

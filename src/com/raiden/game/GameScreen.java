@@ -17,6 +17,8 @@ import com.raiden.framework.Input.TouchEvent;
 
 public class GameScreen extends Screen {
 
+	private static final String START_MISSION_MESSAGE = "Show them what you're made of!";
+
 	enum GameState {
 		Ready, Running, Paused, GameOver
 	}
@@ -33,7 +35,8 @@ public class GameScreen extends Screen {
 	private boolean pauseScreenReady = false;
 
 	// Delay showing the game over screen for a while
-	private int gameOverScreenCounter = 3500;
+	private static final int GAME_OVER_COUNTER = 3500;
+	private int gameOverScreenCounter = GAME_OVER_COUNTER;
 	private String finalScore = "Final Score: ";
 	private boolean highscoreBeaten = false;
 	private String newHighscore = "New highscore: ";
@@ -46,6 +49,7 @@ public class GameScreen extends Screen {
 	private Image heroImage;
 	public Animation heroAnimation, heroTurningLeftAnimation, heroTurningRightAnimation;
 	private Image bulletImage;
+	private Background background;
 
 	public Level level;
 	public int levelNumber;
@@ -59,7 +63,6 @@ public class GameScreen extends Screen {
 	private static SoundController soundController;
 	private static AnimationController animationController;
 	private static EffectsController effectsController;
-	private static MusicController musicController;
 	private static ArmorObserver armorObserver;
 	private static ScoreObserver scoreObserver;
 
@@ -84,10 +87,6 @@ public class GameScreen extends Screen {
 	// debug variables
 	private static boolean HITBOXES_VISIBLE = false;
 	private static Paint hitboxColor;
-
-	// TODO random variables that must be deleted later!
-	private Random random = new Random();
-	private int counter = 0;
 
 	// iterating variables
 	private static int length;
@@ -123,19 +122,20 @@ public class GameScreen extends Screen {
 		heroTurningRightAnimation = Assets.getHeroTurningRightAnimation();
 
 		heroImage = heroAnimation.getImage();
+		
+		background = new Background(this);
 
 		// observers
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
 		animationController = new AnimationController(this);
-		musicController = new MusicController(this);
 		armorObserver = new ArmorObserver(this);
 		scoreObserver = new ScoreObserver(this);
 
 		hero.addObserver(effectsController);
 		hero.addObserver(soundController);
 		hero.addObserver(animationController);
-		hero.addObserver(musicController);
+		hero.addObserver(game.getMusicController());
 		hero.addObserver(armorObserver);
 
 		for (int i = 0; i < MAX_ENEMIES; i++)
@@ -157,6 +157,8 @@ public class GameScreen extends Screen {
 		this.levelNumber = levelNumber;
 		level = game.getLevel(levelNumber);
 		level.initialize(this);
+		
+		game.getMusicController().play(Assets.missionMusic);
 
 		dragPoint = new Point();
 
@@ -257,41 +259,13 @@ public class GameScreen extends Screen {
 		// state now becomes GameState.Running.
 		// Now the updateRunning() method will be called!
 
-		if (touchEvents.size() > 0)
+		if (touchEvents.size() > 0){
 			state = GameState.Running;
+			hero.notifyObservers(Event.GameStart);
+		}
 	}
 
 	private void updateRunning(List<TouchEvent> touchEvents, float deltaTime) {
-
-		counter += deltaTime;
-		if (counter > 960*1){
-			counter = 0;
-
-			/*
-			spawnPowerUp(100, 0, PowerUp.Type.Repair);
-			spawnPowerUp(400, 0, PowerUp.Type.Machinegun);
-			spawnPowerUp(600, 0, PowerUp.Type.ScatterShot);
-			// TODO this is a flight pattern example, must be removed !!
-			ArrayList<Integer> x = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
-			ArrayList<Integer> y = new ArrayList<Integer>(Arrays.asList(100,200,300,400,500,600));
-			for (int i = 0; i < x.size()-1; i++) {
-				FlightPattern pattern = new FlightPattern();
-				pattern.addMovement(  0, 800, Direction.Right);
-				pattern.addMovement(270,  16, Direction.Right);
-				pattern.addMovement(180,  16, Direction.Right);
-				pattern.addMovement( 90,  16, Direction.Right);
-				pattern.addMovement(  0, 300, Direction.Right);
-				pattern.addMovement(270,  16, Direction.Right);
-				pattern.addMovement(180,  16, Direction.Right);
-				pattern.addMovement( 90,  16, Direction.Right);
-				pattern.addMovement(  0, 800, Direction.Right);
-				enemy = spawnEnemy(x.get(i), y.get(i), 0.0f, Enemy.Type.Fast, pattern, null);
-				enemy = spawnEnemy(x.get(i+1), y.get(i+1), 0.0f, Enemy.Type.Normal, pattern, null);
-				if (enemy == null) continue;
-			}
-			 */
-
-		}
 
 		boolean goOnPause = false;
 
@@ -358,7 +332,11 @@ public class GameScreen extends Screen {
 			}
 		}
 		else if(level.levelOver() && !enemiesLeft()) {
+
 			if(gameOverScreenCounter > 0) {
+				if (gameOverScreenCounter == GAME_OVER_COUNTER) {
+					game.getMusicController().play(Assets.missionVictory);
+				}
 				gameOverScreenCounter -= deltaTime;
 			}
 			else {
@@ -369,7 +347,8 @@ public class GameScreen extends Screen {
 					highscoreBeaten = true;
 				}
 				
-				Assets.stopAllMusic();
+				hero.notifyObservers(Event.Victory);
+												
 				game.setScreen(new LevelOverScreen(game, this));
 			}
 		}
@@ -378,6 +357,7 @@ public class GameScreen extends Screen {
 		// This is where all the game updates happen.
 
 		level.update(deltaTime);
+		background.update(deltaTime);
 
 		// update the hero's bullets
 		//length = Ship.shotsFired.size();
@@ -442,7 +422,8 @@ public class GameScreen extends Screen {
 
 		// First draw the game elements.
 
-		g.clearScreen(Color.rgb(58, 86, 104));
+		//g.clearScreen(Color.rgb(58, 86, 104));
+		background.paint(g);
 
 		// hero drawing
 		if (hero.visible){
@@ -608,8 +589,7 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString("Show them what you're made of!",
-				400, 640, paint);
+		g.drawString(START_MISSION_MESSAGE, 400, 640, paint);
 
 	}
 

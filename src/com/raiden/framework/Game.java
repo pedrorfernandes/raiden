@@ -1,6 +1,7 @@
 package com.raiden.framework;
 
 import com.raiden.game.Level;
+import com.raiden.game.MusicController;
 
 import android.content.res.AssetManager;
 import android.graphics.Point;
@@ -36,5 +37,7 @@ public interface Game {
 	public void loadHighscores();
 
 	public Level getLevel(int i);
+	
+	public MusicController getMusicController();
     
 }
