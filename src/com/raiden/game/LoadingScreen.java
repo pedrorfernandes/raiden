@@ -102,7 +102,10 @@ public class LoadingScreen extends Screen {
 		Assets.gameOverMusic.setVolume(1.0f);
 
 		Assets.screenCrack = g.newImage("screenCrack.png", ImageFormat.ARGB8888);
-
+		
+		Assets.background = g.newImage("background.png", ImageFormat.RGB565, 1.25f, 1.25f);
+		Assets.cloud = g.newImage("cloud.png", ImageFormat.ARGB8888);
+		
 		// initialize static arrays
 		FastMath.atan2(0.5f, 0.5f);
 		FastMath.cos((float)Math.PI / 3);

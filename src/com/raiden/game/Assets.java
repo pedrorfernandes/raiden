@@ -36,7 +36,8 @@ public class Assets {
 	explosion4, explosion5, explosion6,
 	heroCollision1, heroCollision2, heroCollision3,
 	powerUp1, powerUp2, powerUp3, powerUp4,
-	screenCrack;
+	screenCrack,
+	background, cloud;
 
 	public static Music machinegun, gameOverMusic;
 	public static List<Music> musics;
