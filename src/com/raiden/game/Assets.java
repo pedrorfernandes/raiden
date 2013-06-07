@@ -38,19 +38,40 @@ public class Assets {
 	powerUp1, powerUp2, powerUp3, powerUp4,
 	screenCrack;
 
+	public static boolean musicMuted;
+	public static boolean soundMuted;
+
 	public static Music machinegun, gameOverMusic;
 	public static List<Music> musics;
 
-	public static void setSoundVolume(float volume){
-		Assets.volume = volume;
+	public static void setSoundVolume(float newVolume){
 
-		machinegun.setVolume(volume);
+		if(newVolume == 0) {
+			soundMuted = true;
+		}
+		else {
+			soundMuted = false;
+		}
+
+		Assets.volume = newVolume;
+
+		machinegun.setVolume(newVolume);
 	}
 
-	public static void setMusicVolume(float volume) {
+	public static void setMusicVolume(float newVolume) {
+
+		if(newVolume == 0) {
+			musicMuted = true;
+		}
+		else {
+			musicMuted = false;
+		}
+
 		getMusics();
 		for (Music music : musics) {
-			music.setVolume(volume);
+			if(music != machinegun) {
+				music.setVolume(newVolume);
+			}
 		}
 	}
 

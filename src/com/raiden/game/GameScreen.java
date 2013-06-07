@@ -112,7 +112,7 @@ public class GameScreen extends Screen {
 		// Initialize game objects here
 
 		pauseButton = new ScreenButton(GameScreen.FIRST_BUTTON_X, GameScreen.PAUSE_BUTTON_Y,
-				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE, true);
+				GameScreen.PAUSE_BUTTON_SIDE, GameScreen.PAUSE_BUTTON_SIDE);
 
 		hero = new Hero();
 		hero.setTargets(enemies);

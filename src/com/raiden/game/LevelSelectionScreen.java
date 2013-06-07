@@ -84,9 +84,9 @@ public class LevelSelectionScreen extends Screen {
 		selectButton = new ScreenButton(SELECT_BUTTON_X, SELECT_BUTTON_Y,
 				SELECT_BUTTON_WIDTH, SELECT_BUTTON_HEIGHT, levelLabel,
 				SELECT_BUTTON_X + LEVEL_LABEL_X_DIST, SELECT_BUTTON_Y + LEVEL_LAVEL_Y_DIST,
-				levelLabelPaint, false);
+				levelLabelPaint);
 
-		nextButton = new ScreenButton(NEXT_BUTTON_X, NEXT_BUTTON_Y, NEXT_BUTTON_WIDTH, NEXT_BUTTON_HEIGHT, false);
+		nextButton = new ScreenButton(NEXT_BUTTON_X, NEXT_BUTTON_Y, NEXT_BUTTON_WIDTH, NEXT_BUTTON_HEIGHT);
 	}
 
 	public LevelSelectionScreen(Game game, Screen previousScreen) {

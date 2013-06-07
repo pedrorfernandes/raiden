@@ -46,10 +46,10 @@ public class LevelOverScreen extends Screen {
 		super(game);
 
 		quitButton = new ScreenButton(FIRST_BUTTON_X, FIRST_BUTTON_Y,
-				BUTTON_SIDE, BUTTON_SIDE, false);
+				BUTTON_SIDE, BUTTON_SIDE);
 
 		nextButton = new ScreenButton(FIRST_BUTTON_X + BUTTON_SIDE + DIST_BETWEEN_BUTTONS, FIRST_BUTTON_Y,
-				BUTTON_SIDE, BUTTON_SIDE, false);
+				BUTTON_SIDE, BUTTON_SIDE);
 
 		levelOverPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		levelOverPaint.setTextAlign(Paint.Align.CENTER);

@@ -6,6 +6,8 @@ import com.raiden.framework.Screen;
 
 public class HelpScreen extends Screen {
 	
+	//TODO strings instead of image!
+	
 	private Screen previousScreen;
 	private boolean bgPainted = false;
 
