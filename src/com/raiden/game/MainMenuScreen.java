@@ -18,18 +18,18 @@ public class MainMenuScreen extends Screen {
 	ScreenButton helpButton;
 	
 	//Button related constants
-	public final static int BUTTON_WIDTH = 800;
-	public final static int BUTTON_HEIGHT = 160;
+	private final static int BUTTON_WIDTH = 800;
+	private final static int BUTTON_HEIGHT = 160;
 	
-	public final static int MENU_BUTTONS_FONT_SIZE = 90;
+	private final static int MENU_BUTTONS_FONT_SIZE = 90;
 	
-	public final static int MAIN_MENU_STR_YDIST = 117;
-	public final static int MAIN_MENU_STR_XDIST = 450;
+	private final static int MAIN_MENU_STR_YDIST = 117;
+	private final static int MAIN_MENU_STR_XDIST = 450;
 	
-	public final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
+	private final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
 	
-	public final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
-	public final static int MAIN_MENU_FIRST_BUTTON_X = 0;
+	private final static int MAIN_MENU_FIRST_BUTTON_X = 0;
+	private final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
 
 	public MainMenuScreen(Game game) {
 		super(game);
@@ -40,31 +40,29 @@ public class MainMenuScreen extends Screen {
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
-		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 		
 		playButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Play",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, false);
+				p);
 		
 		settingsButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Settings",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, false);
+				p);
 		
 		helpButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Help",
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
-				p, false);
+				p);
 	}
 
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();
@@ -75,8 +73,7 @@ public class MainMenuScreen extends Screen {
 				if (playButton.hitbox.contains(event.x, event.y)) {
 					//START GAME
 					bgPainted = false;
-					//TODO Pick level
-					playButton.setNextScreen(new GameScreen(game, 1));
+					playButton.setNextScreen(new LevelSelectionScreen(game, this));
 					game.setScreen(playButton.nextScreen);               
 				}
 				

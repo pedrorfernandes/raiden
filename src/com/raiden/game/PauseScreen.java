@@ -14,31 +14,32 @@ import com.raiden.framework.Input.TouchEvent;
 public class PauseScreen extends Screen {
 
 	//Button related constants
-	public final static int TITLE_X = 80;
-	public final static int TITLE_Y = 120;
+	private final static int TITLE_X = 80;
+	private final static int TITLE_Y = 120;
+	private final static int TITLE_ANGLE = -25;
 	
-	public final static int BUTTON_WIDTH = 800;
-	public final static int BUTTON_HEIGHT = 115;
+	private final static int BUTTON_WIDTH = 800;
+	private final static int BUTTON_HEIGHT = 115;
 
-	public final static int PAUSE_MENU_FONT_SIZE = 75;
+	private final static int PAUSE_MENU_FONT_SIZE = 75;
 
-	public final static int PAUSE_MENU_STR_YDIST = 79;
-	public final static int PAUSE_MENU_LEFT_STR_XDIST = 25;
-	public final static int PAUSE_MENU_RIGHT_STR_XDIST = 632;
+	private final static int PAUSE_MENU_STR_YDIST = 79;
+	private final static int PAUSE_MENU_LEFT_STR_XDIST = 25;
+	private final static int PAUSE_MENU_RIGHT_STR_XDIST = 632;
 
-	public final static int PAUSE_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 120;
+	private final static int PAUSE_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 120;
 
-	public final static int PAUSE_MENU_FIRST_BUTTON_Y = 495;
-	public final static int PAUSE_MENU_FIRST_BUTTON_X = 0;
+	private final static int PAUSE_MENU_FIRST_BUTTON_Y = 495;
+	private final static int PAUSE_MENU_FIRST_BUTTON_X = 0;
 	
-	public final static int SCORE_LABEL_FONT_SIZE = 50;
-	public final static int SCORE_FONT_SIZE = 45;
+	private final static int SCORE_LABEL_FONT_SIZE = 50;
+	private final static int SCORE_FONT_SIZE = 45;
 	
-	public final static int SCORE_LABEL_X = 200;
-	public final static int SCORE_LABEL_Y = 1155;
+	private final static int SCORE_LABEL_X = 200;
+	private final static int SCORE_LABEL_Y = 1155;
 	
-	public final static int SCORE_X = 300;
-	public final static int SCORE_Y = 1205;
+	private final static int SCORE_X = 300;
+	private final static int SCORE_Y = 1205;
 
 	private boolean bgPainted = false;
 	private GameScreen gameScreen;
@@ -79,13 +80,13 @@ public class PauseScreen extends Screen {
 				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Continue",
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_LEFT_STR_XDIST,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_STR_YDIST,
-				p, false);
+				p);
 
 		quitButton = new ScreenButton(PauseScreen.PAUSE_MENU_FIRST_BUTTON_X, PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS,
 				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Quit",
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_RIGHT_STR_XDIST,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS + PauseScreen.PAUSE_MENU_STR_YDIST,
-				p, false);
+				p);
 	}
 
 	public PauseScreen(Game game, GameScreen gameScreen) {
@@ -95,7 +96,6 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();
@@ -125,11 +125,11 @@ public class PauseScreen extends Screen {
 		Graphics g = game.getGraphics();
 		if(!bgPainted) {
 			g.drawImage(Assets.pauseMenu, 0, 0);
-			g.drawRotatedString(pauseLabel, TITLE_X, TITLE_Y, -25, continueButton.paint);
+			g.drawRotatedString(pauseLabel, TITLE_X, TITLE_Y, TITLE_ANGLE, continueButton.paint);
 			g.drawString(continueButton.label, continueButton.labelX, continueButton.labelY, continueButton.paint);
 			g.drawString(quitButton.label, quitButton.labelX, quitButton.labelY, quitButton.paint);
 			g.drawString(scoreLabel, SCORE_LABEL_X, SCORE_LABEL_Y, scoreLabelPaint);
-			g.drawString(Integer.toString(gameScreen.score), SCORE_X, SCORE_Y, scorePaint);
+			g.drawString(Integer.toString(gameScreen.getScore()), SCORE_X, SCORE_Y, scorePaint);
 			bgPainted = true;
 		}
 		

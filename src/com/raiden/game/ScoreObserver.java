@@ -16,7 +16,7 @@ public class ScoreObserver implements Observer {
 	@Override
 	public void update(Collidable c, Event event) {
 		if (event == Event.ScoreUp){
-			gameScreen.score += c.score;
+			gameScreen.setScore(gameScreen.getScore() + c.score);
 		}	
 	}
 

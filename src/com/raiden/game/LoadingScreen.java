@@ -33,6 +33,7 @@ public class LoadingScreen extends Screen {
 		Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
 		Assets.helpMenu = g.newImage("helpMenu.png", ImageFormat.RGB565);
 		Assets.settingsMenu = g.newImage("settingsMenu.png", ImageFormat.RGB565);
+		Assets.levelSelectionMenu = g.newImage("levelSelectionMenu.png", ImageFormat.RGB565);
 		Assets.pauseButtonImg = g.newImage("pauseButton.png", ImageFormat.ARGB8888);
 		Assets.pauseMenu = g.newImage("pauseScreen.png", ImageFormat.ARGB8888);
 		Assets.levelOverMenu = g.newImage("levelOverMenu.png", ImageFormat.RGB565);
