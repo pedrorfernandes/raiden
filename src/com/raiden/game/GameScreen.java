@@ -26,7 +26,7 @@ public class GameScreen extends Screen {
 	// Variable Setup
 	// You would create game objects here.
 
-	public int score = 0;
+	private int score = 0;
 
 	private boolean showPauseButton = true;
 	private ScreenButton pauseButton;
@@ -35,11 +35,11 @@ public class GameScreen extends Screen {
 	// Delay showing the game over screen for a while
 	private int gameOverScreenCounter = 3500;
 	private String finalScore = "Final Score: ";
-	public boolean highscoreBeaten = false;
+	private boolean highscoreBeaten = false;
 	private String newHighscore = "New highscore: ";
 	private String highscore = "Level highscore: ";
 
-	public int livesLeft = 1;
+	private int livesLeft = 1;
 	Paint paint;
 
 	public Hero hero;
@@ -97,11 +97,10 @@ public class GameScreen extends Screen {
 	private static PowerUp powerUp;
 	private static Animation specialEffect;
 
-	public final static int PAUSE_BUTTON_SIDE = 75;
-
-	public final static int PAUSE_BUTTON_Y = 25;
-
-	public final static int FIRST_BUTTON_X = 700;
+	private final static int PAUSE_BUTTON_SIDE = 75;
+	private final static int FIRST_BUTTON_X = 700;
+	private final static int PAUSE_BUTTON_Y = 25;
+	
 
 	public GameScreen(Game game, int levelNumber) {
 		super(game);
@@ -170,6 +169,30 @@ public class GameScreen extends Screen {
 
 		hitboxColor = new Paint();
 		hitboxColor.setColor(Color.MAGENTA);
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public boolean isHighscoreBeaten() {
+		return highscoreBeaten;
+	}
+
+	public void setHighscoreBeaten(boolean highscoreBeaten) {
+		this.highscoreBeaten = highscoreBeaten;
+	}
+
+	public int getLivesLeft() {
+		return livesLeft;
+	}
+
+	public void setLivesLeft(int livesLeft) {
+		this.livesLeft = livesLeft;
 	}
 
 	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop){

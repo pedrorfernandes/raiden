@@ -11,46 +11,50 @@ import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class SettingsScreen extends Screen {
+
+	//Button related constants
+	private final static int BUTTON_WIDTH = 800;
+	private final static int BUTTON_HEIGHT = 160;
 	
-	//button related constants
-	public final static int SETTINGS_MENU_STR_XDIST = 380;
-	public final static int SETTINGS_MENU_STR_YDIST = 96;
-	
-	public final static int SETTINGS_MENU_FIRST_BUTTON_X = 0;
-	public final static int SETTINGS_MENU_FIRST_BUTTON_Y = 750;
-	
-	public final static int SETTINGS_MENU_DIST_BETWEEN_BUTTONS = MainMenuScreen.BUTTON_HEIGHT + 195;
-	
+	private final static int SETTINGS_BUTTONS_FONT_SIZE = 90;
+
+	private final static int SETTINGS_MENU_STR_XDIST = 380;
+	private final static int SETTINGS_MENU_STR_YDIST = 96;
+
+	private final static int SETTINGS_MENU_FIRST_BUTTON_X = 0;
+	private final static int SETTINGS_MENU_FIRST_BUTTON_Y = 750;
+
+	private final static int SETTINGS_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 195;
+
 	private boolean bgPainted = false;
 	private Screen previousScreen;
 
 	private ScreenButton soundButton;
 	private ScreenButton musicButton;
 
-	public SettingsScreen(Game game) {
+	private SettingsScreen(Game game) {
 		super(game);
 
 		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-		p.setTextSize(MainMenuScreen.MENU_BUTTONS_FONT_SIZE);
+		p.setTextSize(SETTINGS_BUTTONS_FONT_SIZE);
 		p.setAntiAlias(true);
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
-		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 
 		soundButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y,
-				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Sound: On",
+				BUTTON_WIDTH, BUTTON_HEIGHT, "Sound: On",
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_STR_YDIST,
 				p, true);
 
 		musicButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
-				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Music: On",
+				BUTTON_WIDTH, BUTTON_HEIGHT, "Music: On",
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + SettingsScreen.SETTINGS_MENU_STR_YDIST,
 				p, true);
 	}
-	
+
 	public SettingsScreen(Game game, Screen previousScreen) {
 		this(game);
 		this.previousScreen = previousScreen;
@@ -58,7 +62,6 @@ public class SettingsScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();

@@ -18,18 +18,18 @@ public class MainMenuScreen extends Screen {
 	ScreenButton helpButton;
 	
 	//Button related constants
-	public final static int BUTTON_WIDTH = 800;
-	public final static int BUTTON_HEIGHT = 160;
+	private final static int BUTTON_WIDTH = 800;
+	private final static int BUTTON_HEIGHT = 160;
 	
-	public final static int MENU_BUTTONS_FONT_SIZE = 90;
+	private final static int MENU_BUTTONS_FONT_SIZE = 90;
 	
-	public final static int MAIN_MENU_STR_YDIST = 117;
-	public final static int MAIN_MENU_STR_XDIST = 450;
+	private final static int MAIN_MENU_STR_YDIST = 117;
+	private final static int MAIN_MENU_STR_XDIST = 450;
 	
-	public final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
+	private final static int MAIN_MENU_DIST_BETWEEN_BUTTONS = BUTTON_HEIGHT + 97;
 	
-	public final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
-	public final static int MAIN_MENU_FIRST_BUTTON_X = 0;
+	private final static int MAIN_MENU_FIRST_BUTTON_X = 0;
+	private final static int MAIN_MENU_FIRST_BUTTON_Y = 580;
 
 	public MainMenuScreen(Game game) {
 		super(game);
@@ -40,7 +40,6 @@ public class MainMenuScreen extends Screen {
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
-		//p.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 		
 		playButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y,
 				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Play",
@@ -64,7 +63,6 @@ public class MainMenuScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		Graphics g = game.getGraphics();
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 
 		int len = touchEvents.size();

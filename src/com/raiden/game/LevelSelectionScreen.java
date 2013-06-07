@@ -13,25 +13,25 @@ import com.raiden.framework.Input.TouchEvent;
 
 public class LevelSelectionScreen extends Screen {
 
-	public final static int TITLE_X = 370;
-	public final static int TITLE_Y = 210;
-	public static final int TITLE_ANGLE = -27;
+	private final static int TITLE_X = 370;
+	private final static int TITLE_Y = 210;
+	private final static int TITLE_ANGLE = -27;
 
-	public final static int SELECT_BUTTON_X = 0;
-	public final static int SELECT_BUTTON_Y = 780;
-	public final static int SELECT_BUTTON_WIDTH = 640;
-	public final static int SELECT_BUTTON_HEIGHT = 140;
+	private final static int SELECT_BUTTON_X = 0;
+	private final static int SELECT_BUTTON_Y = 780;
+	private final static int SELECT_BUTTON_WIDTH = 640;
+	private final static int SELECT_BUTTON_HEIGHT = 140;
 
-	public final static int LEVEL_LABEL_X_DIST = 400;
-	public final static int LEVEL_LAVEL_Y_DIST = 85;
+	private final static int LEVEL_LABEL_X_DIST = 400;
+	private final static int LEVEL_LAVEL_Y_DIST = 85;
 
-	public final static int NEXT_BUTTON_X = 640;
-	public final static int NEXT_BUTTON_Y = 780;
-	public final static int NEXT_BUTTON_WIDTH = 160;
-	public final static int NEXT_BUTTON_HEIGHT = 140;
+	private final static int NEXT_BUTTON_X = 640;
+	private final static int NEXT_BUTTON_Y = 780;
+	private final static int NEXT_BUTTON_WIDTH = 160;
+	private final static int NEXT_BUTTON_HEIGHT = 140;
 
-	public final static int HIGHSCORE_LABEL_X = 20;
-	public final static int HIGHSCORE_LABEL_Y = 1027;
+	private final static int HIGHSCORE_LABEL_X = 20;
+	private final static int HIGHSCORE_LABEL_Y = 1027;
 
 	private Screen previousScreen;
 

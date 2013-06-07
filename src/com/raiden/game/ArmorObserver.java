@@ -36,7 +36,7 @@ public class ArmorObserver implements Observer {
 		} else if (event == Event.PowerUp && event.powerUpType == PowerUp.Type.Repair){
 			screenCracks.clear();
 		} else if (event == Event.GameOver){
-			gameScreen.livesLeft--;
+			gameScreen.setLivesLeft(gameScreen.getLivesLeft() - 1);
 		}	
 	}
 

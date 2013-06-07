@@ -15,11 +15,11 @@ public class LevelOverScreen extends Screen {
 
 	private boolean bgPainted = false;
 
-	public static int BUTTON_SIDE = 110;
-	public static int DIST_BETWEEN_BUTTONS = 120;
+	private static int BUTTON_SIDE = 110;
+	private static int DIST_BETWEEN_BUTTONS = 120;
 
-	public static int FIRST_BUTTON_X = 220;
-	public static int FIRST_BUTTON_Y = 1140;
+	private static int FIRST_BUTTON_X = 220;
+	private static int FIRST_BUTTON_Y = 1140;
 
 	private boolean newHighscore;
 
@@ -79,7 +79,7 @@ public class LevelOverScreen extends Screen {
 	public LevelOverScreen(Game game, GameScreen gameScreen) {
 		this(game);
 		this.gameScreen = gameScreen;
-		newHighscore = gameScreen.highscoreBeaten;
+		newHighscore = gameScreen.isHighscoreBeaten();
 
 		if(newHighscore) {
 			Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
@@ -149,7 +149,7 @@ public class LevelOverScreen extends Screen {
 			g.drawString(levelOverString, 400, 108, levelOverPaint);
 
 			g.drawString(scoreString, 400, 460, scoreStringPaint);
-			g.drawString(Integer.toString(gameScreen.score), 400, 520, scorePaint);
+			g.drawString(Integer.toString(gameScreen.getScore()), 400, 520, scorePaint);
 
 			if(newHighscore) {
 				g.drawString(newHighscoreString, 400, 700, newHighscoreStringPaint);
