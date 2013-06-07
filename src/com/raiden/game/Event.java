@@ -114,6 +114,22 @@ public enum Event {
 		}
 	},
 	
+	GameStart
+	{
+		@Override
+		public Sound getSound(){
+			return Assets.missionStartSound;
+		}
+	},
+	
+	Victory
+	{
+		@Override
+		public Sound getSound(){
+			return Assets.missionVictorySound;
+		}
+	},
+	
 	ScoreUp
 	{
 		

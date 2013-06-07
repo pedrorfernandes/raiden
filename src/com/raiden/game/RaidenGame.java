@@ -23,11 +23,14 @@ public class RaidenGame extends AndroidGame {
 	public ArrayList<Integer> highScores;
 	private static final String HIGHSCORES_TXT = "raidenHighscores.txt";
 	private static final String LEVEL_FILE = "level";
+	private MusicController musicController;
 	
     @Override
     public Screen getInitScreen() {
     	
     	highScores = new ArrayList<Integer>();
+    	
+    	musicController = new MusicController();
     	
     	levels = getLevels();
     	
@@ -39,6 +42,10 @@ public class RaidenGame extends AndroidGame {
     @Override
     public void onBackPressed() {
     	getCurrentScreen().backButton();
+    }
+    
+    public MusicController getMusicController(){
+    	return musicController;
     }
     
     private ArrayList<Level> getLevels(){

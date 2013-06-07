@@ -24,7 +24,8 @@ public class Assets {
 	hit1, hit2, hit3, hit4, hit5,
 	heroHit, heroCollisionSound,
 	powerUpSound1, powerUpSound2, powerUpSound3, powerUpSound4,
-	heroDown;
+	heroDown,
+	missionStartSound, missionVictorySound;
 
 	public static Image hero1, hero2, 
 	heroLeft1, heroLeft2, 
@@ -42,7 +43,9 @@ public class Assets {
 	public static boolean musicMuted;
 	public static boolean soundMuted;
 
-	public static Music machinegun, gameOverMusic;
+	public static Music machinegun, gameOverMusic,
+	menuMusic, missionMusic, missionVictory;
+	
 	public static List<Music> musics;
 
 	public static void setSoundVolume(float newVolume){
@@ -77,7 +80,7 @@ public class Assets {
 	}
 
 	public static List<Music> getMusics(){
-		musics = Arrays.asList(machinegun, gameOverMusic);
+		musics = Arrays.asList(machinegun, gameOverMusic, menuMusic, missionMusic, missionVictory);
 		return musics;
 	}
 
