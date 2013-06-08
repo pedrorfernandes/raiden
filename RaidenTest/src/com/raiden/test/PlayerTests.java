@@ -96,6 +96,7 @@ public class PlayerTests extends AndroidTestCase {
 		Hero hero = new Hero();
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
+		hero.addTurret(90.0f);
 		hero.shoot();
 		
 		int i;
@@ -148,7 +149,8 @@ public class PlayerTests extends AndroidTestCase {
 		Enemy[] enemies = new Enemy[0];
 		hero.setTargets(enemies);
 		
-		hero.addTurret(180.0f, Bullet.Type.Hero);
+		hero.addTurret(90.0f);
+		hero.addTurret(180.0f);
 		hero.shoot();
 		// the first two bullets always start at 90.0f
 		int i;

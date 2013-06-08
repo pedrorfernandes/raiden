@@ -135,9 +135,8 @@ public class EnemyTests extends AndroidTestCase {
 		
 		target.shoot();
 		Bullet shotFired1 = target.getShotsFired()[0];
-		Bullet shotFired2 = target.getShotsFired()[1];
-		assertTrue(shotFired1.isVisible() && shotFired2.isVisible());
-		shotFired1.setCollisionDamage(2); shotFired2.setCollisionDamage(2);
+		assertTrue(shotFired1.isVisible());
+		shotFired1.setCollisionDamage(4);
 		
 		int currentTime = 0;
 		while (shotFired1.isVisible()){
@@ -145,14 +144,12 @@ public class EnemyTests extends AndroidTestCase {
 			enemy.update(TIMESLICE);
 			target.update(TIMESLICE);
 			shotFired1.update(TIMESLICE);
-			shotFired2.update(TIMESLICE);
 		}
 		
-		// enemy takes 2 bullets and had 8 armor
+		// enemy takes 1 bullet and had 8 armor
 		assertEquals(4, enemy.getArmor());
 		assertTrue(enemy.isAlive());
 		assertTrue(!shotFired1.isVisible());
-		assertTrue(!shotFired2.isVisible());
 
 		
 		// wait for enemy reload
@@ -162,21 +159,19 @@ public class EnemyTests extends AndroidTestCase {
 		}
 		
 		target.shoot();
-		shotFired1.setCollisionDamage(2); shotFired2.setCollisionDamage(2);
+		shotFired1.setCollisionDamage(4);
 
 		while (shotFired1.isVisible()){
 			currentTime += TIMESLICE;
 			enemy.update(TIMESLICE);
 			target.update(TIMESLICE);
 			shotFired1.update(TIMESLICE);
-			shotFired2.update(TIMESLICE);
 		}
 		
 		// enemy died
 		assertEquals(0, enemy.getArmor());
 		assertTrue(!enemy.isAlive());
 		assertTrue(!shotFired1.isVisible());
-		assertTrue(!shotFired2.isVisible());
 	}
 	
 }
