@@ -49,4 +49,16 @@ public class SplashLoadingScreen extends Screen {
 
 	}
 
+	@Override
+	public void pauseMusic() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resumeMusic() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

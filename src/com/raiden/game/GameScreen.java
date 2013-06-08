@@ -2,7 +2,6 @@ package com.raiden.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,8 +11,9 @@ import com.raiden.animation.Animation;
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
-import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
+import com.raiden.framework.Music;
+import com.raiden.framework.Screen;
 
 public class GameScreen extends Screen {
 
@@ -27,6 +27,8 @@ public class GameScreen extends Screen {
 
 	// Variable Setup
 	// You would create game objects here.
+	
+	private ArrayList<Music> pausedMusics = new ArrayList<Music>();
 
 	private int score = 0;
 
@@ -348,7 +350,8 @@ public class GameScreen extends Screen {
 				}
 				
 				hero.notifyObservers(Event.Victory);
-												
+										
+				hero.setAutoFire(false);
 				game.setScreen(new LevelOverScreen(game, this));
 			}
 		}
@@ -650,5 +653,23 @@ public class GameScreen extends Screen {
 	@Override
 	public void backButton() {
 		pause();
+	}
+
+	@Override
+	public void pauseMusic() {
+		List<Music> musics = Assets.getMusics();
+		for(Music music : musics) {
+			if(music.isPlaying()) {
+				music.pause();
+				pausedMusics.add(music);
+			}
+		}
+	}
+
+	@Override
+	public void resumeMusic() {
+		for(Music music : pausedMusics) {
+			music.play();
+		}
 	}
 }

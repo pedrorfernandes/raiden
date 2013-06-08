@@ -1,5 +1,6 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
@@ -8,10 +9,13 @@ import android.graphics.Typeface;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
+import com.raiden.framework.Music;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class LevelOverScreen extends Screen {
+	
+	private ArrayList<Music> pausedMusics = new ArrayList<Music>();
 
 	private boolean bgPainted = false;
 
@@ -185,6 +189,24 @@ public class LevelOverScreen extends Screen {
 		bgPainted = false;
 		Assets.stopAllMusic();
 		game.setScreen(new MainMenuScreen(game));
+	}
+	
+	@Override
+	public void pauseMusic() {
+		List<Music> musics = Assets.getMusics();
+		for(Music music : musics) {
+			if(music.isPlaying()) {
+				music.pause();
+				pausedMusics.add(music);
+			}
+		}
+	}
+
+	@Override
+	public void resumeMusic() {
+		for(Music music : pausedMusics) {
+			music.play();
+		}
 	}
 
 }

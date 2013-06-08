@@ -118,7 +118,7 @@ public class LoadingScreen extends Screen {
 		Assets.menuMusic.setVolume(MUSIC_VOLUME);
 		
 		Assets.missionVictory = game.getAudio().createMusic("missionVictory.mp3");
-		Assets.missionVictory.setLooping(true);
+		Assets.missionVictory.setLooping(false);
 		Assets.missionVictory.setVolume(MUSIC_VOLUME);
 		
 		Assets.missionVictorySound = game.getAudio().createSound("missionVictorySound.wav");
@@ -164,5 +164,17 @@ public class LoadingScreen extends Screen {
 	public void backButton() {
 
 
+	}
+
+	@Override
+	public void pauseMusic() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resumeMusic() {
+		// TODO Auto-generated method stub
+		
 	}
 }

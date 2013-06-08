@@ -240,5 +240,15 @@ public class LevelSelectionScreen extends Screen {
 			game.setScreen(previousScreen);
 		}
 	}
+	
+	@Override
+	public void pauseMusic() {
+		Assets.menuMusic.pause();
+	}
+
+	@Override
+	public void resumeMusic() {
+		Assets.menuMusic.play();
+	}
 
 }

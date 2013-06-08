@@ -1,5 +1,6 @@
 package com.raiden.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
@@ -8,16 +9,19 @@ import android.graphics.Typeface;
 
 import com.raiden.framework.Game;
 import com.raiden.framework.Graphics;
+import com.raiden.framework.Music;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
 public class PauseScreen extends Screen {
+	
+	private ArrayList<Music> pausedMusics = new ArrayList<Music>();
 
-	//Button related constants
 	private final static int TITLE_X = 80;
 	private final static int TITLE_Y = 120;
 	private final static int TITLE_ANGLE = -25;
 	
+	//Button related constants
 	private final static int BUTTON_WIDTH = 800;
 	private final static int BUTTON_HEIGHT = 115;
 
@@ -132,10 +136,6 @@ public class PauseScreen extends Screen {
 			g.drawString(Integer.toString(gameScreen.getScore()), SCORE_X, SCORE_Y, scorePaint);
 			bgPainted = true;
 		}
-		
-		//g.drawRect(continueButton.hitbox.left, continueButton.hitbox.top, continueButton.hitbox.right - continueButton.x, continueButton.hitbox.bottom - continueButton.y, Color.BLACK);
-		//g.drawRect(quitButton.hitbox.left, quitButton.hitbox.top, quitButton.hitbox.right - quitButton.x, quitButton.hitbox.bottom - quitButton.y, Color.BLACK);
-		//g.drawRect(settingsButton.hitbox.left, settingsButton.hitbox.top, settingsButton.hitbox.right - settingsButton.x, settingsButton.hitbox.bottom - settingsButton.y, Color.BLACK);
 	}
 
 	@Override
@@ -160,6 +160,24 @@ public class PauseScreen extends Screen {
 		bgPainted = false;
 		game.getInput().getTouchEvents().clear();
 		game.setScreen(gameScreen);
+	}
+	
+	@Override
+	public void pauseMusic() {
+		List<Music> musics = Assets.getMusics();
+		for(Music music : musics) {
+			if(music.isPlaying()) {
+				music.pause();
+				pausedMusics.add(music);
+			}
+		}
+	}
+
+	@Override
+	public void resumeMusic() {
+		for(Music music : pausedMusics) {
+			music.play();
+		}
 	}
 
 }

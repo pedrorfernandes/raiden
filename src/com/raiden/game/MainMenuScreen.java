@@ -140,4 +140,14 @@ public class MainMenuScreen extends Screen {
 		game.getMusicController().pause();
 		game.moveTaskToBack(true);
 	}
+	
+	@Override
+	public void pauseMusic() {
+		Assets.menuMusic.pause();
+	}
+
+	@Override
+	public void resumeMusic() {
+		Assets.menuMusic.play();
+	}
 }

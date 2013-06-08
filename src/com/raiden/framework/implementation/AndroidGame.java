@@ -76,6 +76,7 @@ public abstract class AndroidGame extends Activity implements Game {
     public void onResume() {
         super.onResume();
         wakeLock.acquire();
+        screen.resumeMusic();
         screen.resume();
         renderView.resume();
     }
@@ -85,6 +86,7 @@ public abstract class AndroidGame extends Activity implements Game {
         super.onPause();
         wakeLock.release();
         renderView.pause();
+        screen.pauseMusic();
         screen.pause();
 
         if (isFinishing())

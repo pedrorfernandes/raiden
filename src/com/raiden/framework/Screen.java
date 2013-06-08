@@ -18,5 +18,9 @@ public abstract class Screen {
     public abstract void dispose();
     
     public abstract void backButton();
+    
+    public abstract void pauseMusic();
+    
+    public abstract void resumeMusic();
 }
  

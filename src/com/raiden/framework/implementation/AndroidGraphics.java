@@ -13,6 +13,9 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.text.Layout.Alignment;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
@@ -148,6 +151,16 @@ public class AndroidGraphics implements Graphics {
 
         //restore the old matrix. 
         canvas.restore(); 
+	}
+	
+	public void drawText(String text, int x, int y, int maxWidth, Paint paint) {
+		TextPaint textPaint = new TextPaint(paint);
+		StaticLayout textLayout = new StaticLayout(text, textPaint, maxWidth, Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+
+		canvas.save();
+		canvas.translate(x, y);
+		textLayout.draw(canvas);
+		canvas.restore();
 	}
 
 	public void drawImage(Image image, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight) {

@@ -3,9 +3,6 @@ package com.raiden.game;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-import android.graphics.Color;
-
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
 
