@@ -92,7 +92,7 @@ public class LevelOverScreen extends Screen {
 			newHighscoreStringPaint.setTextSize(80);
 			newHighscoreStringPaint.setAntiAlias(true);
 			newHighscoreStringPaint.setTypeface(face);
-			newHighscoreStringPaint.setColor(Color.BLUE);
+			newHighscoreStringPaint.setColor(Color.GREEN);
 		}
 		else {
 			Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);

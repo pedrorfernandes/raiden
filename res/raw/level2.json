@@ -7,16 +7,7 @@
             "y": 100,
             "angle": 0.0,
             "type": "Fast",
-            "pattern": 1,
-            "drop": "Machinegun"
-        },
-        {
-            "time": 1000,
-            "x": 0,
-            "y": 200,
-            "angle": 0.0,
-            "type": "Fast",
-            "pattern": 1,
+            "pattern": 2,
             "drop": "Machinegun"
         },
         {
@@ -25,7 +16,16 @@
             "y": 300,
             "angle": 0.0,
             "type": "Fast",
-            "pattern": 1,
+            "pattern": 2,
+            "drop": null
+        },
+        {
+            "time": 1000,
+            "x": 0,
+            "y": 500,
+            "angle": 0.0,
+            "type": "Fast",
+            "pattern": 2,
             "drop": "HeavyBullets"
         },
         {
@@ -45,6 +45,187 @@
             "type": "Fast",
             "pattern": 0,
             "drop": null
+        },
+        {
+            "time": 6000,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 6500,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 3,
+            "drop": null
+        },
+        {
+            "time": 6500,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 4,
+            "drop": "ScatterShot"
+        },
+        {
+            "time": 8206,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 3,
+            "drop": null
+        },
+        {
+            "time": 8206,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 4,
+            "drop": null
+        },
+        {
+            "time": 9912,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 3,
+            "drop": null
+        },
+        {
+            "time": 9912,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 4,
+            "drop": "Repair"
+        },
+        {
+            "time": 11619,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Fast",
+            "pattern": 3,
+            "drop": null
+        },
+        {
+            "time": 11619,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Fast",
+            "pattern": 4,
+            "drop": null
+        },
+        {
+            "time": 14619,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 5,
+            "drop": null
+        },
+        {
+            "time": 15173,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 5,
+            "drop": null
+        },
+        {
+            "time": 15727,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 5,
+            "drop": null
+        },
+        {
+            "time": 16281,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 5,
+            "drop": null
+        },
+        {
+            "time": 26000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 6,
+            "drop": null
+        },
+        {
+            "time": 26000,
+            "x": 600,
+            "y": 1280,
+            "angle": 90.0,
+            "type": "Normal",
+            "pattern": 7,
+            "drop": null
+        },
+        {
+            "time": 28000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Fast",
+            "pattern": 6,
+            "drop": null
+        },
+        {
+            "time": 28000,
+            "x": 600,
+            "y": 1280,
+            "angle": 90.0,
+            "type": "Fast",
+            "pattern": 7,
+            "drop": null
+        },
+        {
+            "time": 32000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Fast",
+            "pattern": 6,
+            "drop": null
+        },
+        {
+            "time": 32000,
+            "x": 600,
+            "y": 1280,
+            "angle": 90.0,
+            "type": "Fast",
+            "pattern": 7,
+            "drop": null
+        },
+        {
+            "time": 34000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "TechBoss",
+            "pattern": 8,
+            "drop": null
         }
+        
     ]
 }
