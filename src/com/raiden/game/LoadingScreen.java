@@ -85,6 +85,7 @@ public class LoadingScreen extends Screen {
 
 		Assets.enemy1 = g.newImage("enemy1.png", ImageFormat.ARGB8888);
 		Assets.enemy2 = g.newImage("enemy2.png", ImageFormat.ARGB8888);
+		Assets.tankBoss = g.newImage("tankBoss.png", ImageFormat.ARGB8888);
 
 		Assets.enemyBullet1 = g.newImage("enemyBullet1.png", ImageFormat.ARGB8888);
 		Assets.enemyBullet2 = g.newImage("enemyBullet2.png", ImageFormat.ARGB8888);

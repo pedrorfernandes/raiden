@@ -33,7 +33,7 @@ public class Assets {
 	heroRight1, heroRight2,
 	heroBullet1, heroBullet2,
 	enemyBullet1, enemyBullet2,
-	enemy1, enemy2,
+	enemy1, enemy2, tankBoss,
 	explosion1, explosion2, explosion3,
 	explosion4, explosion5, explosion6,
 	heroCollision1, heroCollision2, heroCollision3,

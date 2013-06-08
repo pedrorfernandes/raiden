@@ -29,7 +29,8 @@ public class Enemy extends Ship {
 	
 	public static enum Type{
 		Normal(6 , 2, 4, 10, 50, 1400, Bullet.Type.Enemy,      Assets.enemy1, "Normal"),
-		Fast  (10, 4, 2, 20, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast");
+		Fast  (10, 4, 2, 20, 50, 2000, Bullet.Type.EnemyHeavy, Assets.enemy2, "Fast"),
+		TankBoss (1, 1, 200, 1000, 50, 1000, Bullet.Type.EnemyHeavy, Assets.tankBoss, "TankBoss");
 		
 		public int speed, turnSpeed, armor, score, radius, reloadDone;
 		public Image image;

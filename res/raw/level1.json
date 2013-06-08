@@ -3,48 +3,210 @@
     [
         {
             "time": 1000,
-            "x": 0,
-            "y": 100,
-            "angle": 0.0,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
             "type": "Normal",
-            "pattern": 1,
+            "pattern": 0,
             "drop": "Machinegun"
         },
         {
-            "time": 1000,
-            "x": 0,
-            "y": 200,
-            "angle": 0.0,
+            "time": 1500,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
             "type": "Normal",
-            "pattern": 1,
-            "drop": "Machinegun"
+            "pattern": 0,
+            "drop": null
         },
         {
-            "time": 1000,
-            "x": 0,
-            "y": 300,
-            "angle": 0.0,
+            "time": 1500,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
             "type": "Normal",
-            "pattern": 1,
-            "drop": "HeavyBullets"
+            "pattern": 0,
+            "drop": null
         },
         {
-            "time": 3000,
+            "time": 5000,
             "x": 0,
             "y": 100,
+            "angle": 0.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": "Heavybullets"
+        },
+        {
+            "time": 5000,
+            "x": 800,
+            "y": 400,
+            "angle": 180.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 7000,
+            "x": 0,
+            "y": 700,
             "angle": 0.0,
             "type": "Fast",
             "pattern": 0,
             "drop": null
         },
         {
-            "time": 3000,
-            "x": 0,
-            "y": 300,
-            "angle": 0.0,
+            "time": 7000,
+            "x": 800,
+            "y": 1000,
+            "angle": 180.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": "Repair"
+        },
+        {
+            "time": 9000,
+            "x": 600,
+            "y": 1280,
+            "angle": 90.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": "ScatterShot"
+        },
+        {
+            "time": 9000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 12000,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 13000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": "Machinegun"
+        },
+        {
+            "time": 14000,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 15000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 16000,
+            "x": 600,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 17000,
+            "x": 200,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": "Repair"
+        },
+        {
+            "time": 18000,
+            "x": 200,
+            "y": 1280,
+            "angle": 90.0,
             "type": "Fast",
             "pattern": 0,
             "drop": null
+        },
+        {
+            "time": 18000,
+            "x": 600,
+            "y": 1280,
+            "angle": 90.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 18000,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "Fast",
+            "pattern": 0,
+            "drop": "Machinegun"
+        },
+        {
+            "time": 20000,
+            "x": 0,
+            "y": 100,
+            "angle": 0.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 21000,
+            "x": 800,
+            "y": 300,
+            "angle": 180.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 22000,
+            "x": 0,
+            "y": 500,
+            "angle": 0.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": "Repair"
+        },
+        {
+            "time": 23000,
+            "x": 800,
+            "y": 700,
+            "angle": 180.0,
+            "type": "Normal",
+            "pattern": 0,
+            "drop": null
+        },
+        {
+            "time": 26000,
+            "x": 400,
+            "y": 0,
+            "angle": 270.0,
+            "type": "TankBoss",
+            "pattern": 0,
+            "drop": "Repair"
         }
     ]
 }
