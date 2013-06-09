@@ -13,6 +13,10 @@ import com.raiden.framework.Music;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
+/**
+ * The level over screen will give informations 
+ * to the player after he successfully ended a mission.
+ */
 public class LevelOverScreen extends Screen {
 	
 	private ArrayList<Music> pausedMusics = new ArrayList<Music>();
@@ -46,6 +50,10 @@ public class LevelOverScreen extends Screen {
 	private String newHighscoreString = "New highscore!";
 	private Paint newHighscoreStringPaint;
 
+	/**
+	 * Creates a new level over screen.
+	 * @param game The current game.
+	 */
 	public LevelOverScreen(Game game) {
 		super(game);
 
@@ -80,6 +88,7 @@ public class LevelOverScreen extends Screen {
 
 	}
 
+	
 	public LevelOverScreen(Game game, GameScreen gameScreen) {
 		this(game);
 		this.gameScreen = gameScreen;

@@ -10,6 +10,9 @@ import com.raiden.framework.Graphics;
 import com.raiden.framework.Input.TouchEvent;
 import com.raiden.framework.Screen;
 
+/**
+ * The main menu screen displays options connecting to the level selection, settings menu and help menu.
+ */
 public class MainMenuScreen extends Screen {
 	
 	boolean bgPainted = false;

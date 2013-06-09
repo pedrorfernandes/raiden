@@ -9,6 +9,9 @@ import com.raiden.framework.Image;
 import com.raiden.framework.Music;
 import com.raiden.framework.Sound;
 
+/**
+ * The assets hold every important resource needed for the game, such as images, sounds and musics.
+ */
 public class Assets {
 
 	private static final int HERO_ANIMATION_DURATION = 10;
@@ -49,6 +52,10 @@ public class Assets {
 	
 	public static List<Music> musics;
 
+	/**
+	 * Sets the volume for all the sounds.
+	 * @param newVolume The volume to set.
+	 */
 	public static void setSoundVolume(float newVolume){
 
 		if(newVolume == 0) {
@@ -63,6 +70,10 @@ public class Assets {
 		machinegun.setVolume(newVolume);
 	}
 
+	/**
+	 * Sets the volume for all the musics.
+	 * @param newVolume The volume to set.
+	 */
 	public static void setMusicVolume(float newVolume) {
 
 		if(newVolume == 0) {
@@ -72,7 +83,6 @@ public class Assets {
 			musicMuted = false;
 		}
 
-		getMusics();
 		for (Music music : musics) {
 			if(music != machinegun) {
 				music.setVolume(newVolume);
@@ -80,18 +90,32 @@ public class Assets {
 		}
 	}
 
+	/**
+	 * @return All the game musics.
+	 */
 	public static List<Music> getMusics(){
-		musics = Arrays.asList(machinegun, gameOverMusic, menuMusic, missionMusic, missionVictory);
 		return musics;
 	}
 
+	/**
+	 * Stops all the game's musics.
+	 */
 	public static void stopAllMusic() {
-		getMusics();
 		for (Music music : musics) {
 			music.stop();
 		}
 	}
+	
+	/**
+	 * Initializes the music list containing all the game's musics.
+	 */
+	public static void initializeMusicList(){
+		musics = Arrays.asList(machinegun, gameOverMusic, menuMusic, missionMusic, missionVictory);
+	}
 
+	/**
+	 * @return The animation for the hero turning left.
+	 */
 	public static Animation getHeroTurningLeftAnimation(){
 		Animation heroTurningLeftAnimation = new Animation();
 		heroTurningLeftAnimation.addFrame(heroLeft1, HERO_ANIMATION_DURATION);
@@ -99,6 +123,9 @@ public class Assets {
 		return heroTurningLeftAnimation;
 	}
 
+	/**
+	 * @return The animation for the hero turning right.
+	 */
 	public static Animation getHeroTurningRightAnimation(){
 		Animation heroTurningRightAnimation = new Animation();
 		heroTurningRightAnimation.addFrame(heroRight1, HERO_ANIMATION_DURATION);
@@ -106,6 +133,9 @@ public class Assets {
 		return heroTurningRightAnimation;
 	}
 
+	/**
+	 * @return The animation for the hero (not turning).
+	 */
 	public static Animation getHeroAnimation(){
 		Animation heroAnimation = new Animation();
 		heroAnimation.addFrame(hero1, HERO_ANIMATION_DURATION);
@@ -113,6 +143,9 @@ public class Assets {
 		return heroAnimation;
 	}
 
+	/**
+	 * @return All the explosion sounds.
+	 */
 	public static ArrayList<Sound> getExplosionSounds(){
 		ArrayList<Sound> explosionSounds = new ArrayList<Sound>();
 		explosionSounds.add(explosionSound1); explosionSounds.add(explosionSound2);
@@ -123,7 +156,10 @@ public class Assets {
 		explosionSounds.add(explosionSound11);
 		return explosionSounds;
 	}
-
+	
+	/**
+	 * @return All the hit sounds.
+	 */
 	public static ArrayList<Sound> getHitSounds(){
 		ArrayList<Sound> hitSounds = new ArrayList<Sound>();
 		hitSounds.add(hit1); hitSounds.add(hit2); 
@@ -132,6 +168,9 @@ public class Assets {
 		return hitSounds;
 	}
 
+	/**
+	 * @return All the explosion images.
+	 */
 	public static ArrayList<Image> getExplosionImages(){
 		ArrayList<Image> explosionImages = new ArrayList<Image>();
 		explosionImages.add(explosion1); explosionImages.add(explosion2); 
@@ -140,6 +179,9 @@ public class Assets {
 		return explosionImages;
 	}
 
+	/**
+	 * @return All the collision images.
+	 */
 	public static ArrayList<Image> getCollisionImages(){
 		ArrayList<Image> collisionImages = new ArrayList<Image>();
 		collisionImages.add(heroCollision1); collisionImages.add(heroCollision2);

@@ -6,6 +6,10 @@ import java.util.Random;
 import com.raiden.framework.Graphics;
 import com.raiden.framework.Image;
 
+/**
+ * The background is parallax scrolling image for the game screen to paint.
+ * This contains simple moving clouds for a nicer effect.
+ */
 public class Background {
 	public static Image backgroundImage = Assets.background;
 	public static Image cloudImage = Assets.cloud;
@@ -19,6 +23,10 @@ public class Background {
 	int x, yTop, yBottom, speed, cloudSpeed;
 	private GameScreen gameScreen;
 	
+	/**
+	 * Creates a new background.
+	 * @param gameScreen The current game screen.
+	 */
 	public Background(GameScreen gameScreen){
 		x = 0;
 		yTop = -backgroundImage.height;
@@ -32,7 +40,11 @@ public class Background {
 			clouds.add(new Cloud(random.nextInt(gameScreen.screenSize.x), random.nextInt(gameScreen.screenSize.y)));
 		}
 	}
-	
+
+	/**
+	 * Updates the background by scrolling the parallax image and moving the clouds.
+	 * @param deltaTime The time passed since the last update.
+	 */
 	public void update(float deltaTime){
 		yTop += speed;
 		yBottom += speed;
@@ -52,6 +64,10 @@ public class Background {
 		
 	}
 	
+	/**
+	 * Paints the background and clouds.
+	 * @param g The game graphics to paint on.
+	 */
 	public void paint(Graphics g) {
 		g.drawImage(backgroundImage, x, yTop);
 		g.drawImage(backgroundImage, x, yBottom);
@@ -61,6 +77,9 @@ public class Background {
 		}
 	}
 	
+	/**
+	 * A cloud is just a simple x and y coordinate.
+	 */
 	class Cloud {
 		int x, y;
 		

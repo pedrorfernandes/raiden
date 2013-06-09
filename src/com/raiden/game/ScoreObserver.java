@@ -1,5 +1,9 @@
 package com.raiden.game;
 
+/**
+ * The score observer updates the game's current score
+ * when a scoring event occurs.
+ */
 public class ScoreObserver implements Observer {
 
 	private GameScreen gameScreen;

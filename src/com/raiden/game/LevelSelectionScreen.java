@@ -11,6 +11,9 @@ import com.raiden.framework.Graphics;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
+/**
+ * The level selection screen allows the player to choose which mission to start the game.
+ */
 public class LevelSelectionScreen extends Screen {
 
 	private final static int TITLE_X = 370;

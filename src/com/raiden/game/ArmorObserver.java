@@ -5,6 +5,10 @@ import java.util.Random;
 
 import com.raiden.framework.Image;
 
+/**
+ * The armor observer watches the hero's armor so that it can show visual clues for damage.
+ *  (in this case, being hit is represented by a random screen crack)
+ */
 public class ArmorObserver implements Observer {
 	
 	private GameScreen gameScreen;
@@ -12,6 +16,9 @@ public class ArmorObserver implements Observer {
 	private int maxX, maxY;
 	private int armor;
 	
+	/**
+	 * The screen cracks array that will be represented by the game screen.
+	 */
 	public ArrayList<ScreenCrack> screenCracks;
 	
 	public ArmorObserver(GameScreen gameScreen){
@@ -47,6 +54,9 @@ public class ArmorObserver implements Observer {
 
 }
 
+/**
+ * Simple screen crack with position and associated image.
+ */
 class ScreenCrack {
 	public int x, y;
 	public static Image image = Assets.screenCrack;

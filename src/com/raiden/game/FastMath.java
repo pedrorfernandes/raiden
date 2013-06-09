@@ -1,11 +1,11 @@
 package com.raiden.game;
 
-// fast math atan2 is from
-// http://www.java-gaming.org/topics/13-8x-faster-atan2-updated/14647/view.html
+/**
+ * This class holds trigonometry functions that hold arrays with results processed at the begining of the game.
+ * Atan2 came from http://www.java-gaming.org/topics/13-8x-faster-atan2-updated/14647/view.html
+ * Cos and Sin came from http://www.java-gaming.org/index.php?topic=24191.0
+ */
 public class FastMath {
-	
-	// cos and sin from
-	// http://www.java-gaming.org/index.php?topic=24191.0
 	
 	public static final float sin(float rad)
 	{

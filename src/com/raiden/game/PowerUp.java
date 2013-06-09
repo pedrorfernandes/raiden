@@ -5,12 +5,19 @@ import java.util.ArrayList;
 import com.raiden.framework.Image;
 import com.raiden.framework.Sound;
 
+/**
+ * A power up alters a ship in a beneficial way, when the ship collides with it.
+ */
 public class PowerUp extends Collidable {
 
 	public Type type;
 	public boolean visible;
 	private int moveX, moveY;
 	
+	/**
+	 * The various types of power ups.
+	 * Each type must define what it does to a ship.
+	 */
 	public enum Type {		
 		HeavyBullets (6, 50, Assets.powerUp1, Assets.powerUpSound1, "HeavyBullets")
 		{
@@ -70,6 +77,14 @@ public class PowerUp extends Collidable {
 		public Sound sound;
 		public String id;
 		
+		/**
+		 * Constructor for a power up type.
+		 * @param speed The speed of the power up.
+		 * @param score The score that the power up gives.
+		 * @param image Representation of the power up.
+		 * @param sound The sound played when the power up is picked up.
+		 * @param id The id string of the power up.
+		 */
 		Type(int speed, int score, Image image, Sound sound, String id){
 			this.speed = speed;
 			this.score = score;
@@ -78,11 +93,19 @@ public class PowerUp extends Collidable {
 			this.id = id;
 		}
 		
+		/**
+		 * Notifies the ship that a power up has been picked up.
+		 * @param ship The ship that picked this power up.
+		 */
 		public void notifyPowerUp(Ship ship){
 			Event.PowerUp.setPowerUpType(this);
 			ship.notifyObservers(Event.PowerUp);
 		}
 		
+		/**
+		 * @param id String id of the power up.
+		 * @return The power up type associated with the string id. Null if the string isn't associated with any type.
+		 */
 		public static Type getType(String id){
 			Type[] types = Type.values();
 			for (Type type : types){
@@ -95,10 +118,20 @@ public class PowerUp extends Collidable {
 		public abstract void powerUp(Ship ship);
 	}
 	
+	/**
+	 * Creates a new power up.
+	 * To make the power up appear in game, check powerUp.spawn()
+	 */
 	public PowerUp(){
 		this.visible = false;
 	}
 	
+	/**
+	 * Spawns a power up.
+	 * @param x The X starting position.
+	 * @param y The Y starting position.
+	 * @param type The type of power up to spawn.
+	 */
 	public void spawn(int x, int y, Type type){
 		this.type = type;
 		this.setSpeed(type.speed);
@@ -109,12 +142,17 @@ public class PowerUp extends Collidable {
 		this.radius = 70;
 	}
 	
+	@Override
 	public void setSpeed(int speed){
 		this.speed = speed;
 		this.moveX = 0;
 		this.moveY = speed;
 	}
 	
+	/**
+	 * Updates a power up position and visibility in the game.
+	 * @param deltaTime The time passed since the last update.
+	 */
 	public void update(float deltaTime){
 
 		if (!visible) return;
@@ -128,6 +166,9 @@ public class PowerUp extends Collidable {
 			visible = true;
 	}
 	
+	/**
+	 * @return If the power up is visible.
+	 */
 	public boolean isVisible(){
 		return visible;
 	}
@@ -141,8 +182,8 @@ public class PowerUp extends Collidable {
 
 	@Override
 	public void visit(Bullet bullet) {
-		// TODO Auto-generated method stub
-		
+		// nothing happens
+		return;
 	}
 
 	@Override
@@ -152,8 +193,7 @@ public class PowerUp extends Collidable {
 
 	@Override
 	public void visit(PowerUp powerUp) {
-		// TODO Auto-generated method stub
+		// nothing happens
+		return;	
 	}
-
-	
 }

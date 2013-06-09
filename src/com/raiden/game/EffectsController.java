@@ -2,9 +2,17 @@ package com.raiden.game;
 
 import com.raiden.animation.Animation;
 
+/**
+ * The effects controller is an observer that listens to events that return animations.
+ * This controller will automatically update the game screen of new special effects.
+ */
 public class EffectsController implements Observer {
 	GameScreen gameScreen;
 	
+	/**
+	 * Creates a new effects controller.
+	 * @param gameScreen The current game screen.
+	 */
 	EffectsController(GameScreen gameScreen){
 		this.gameScreen = gameScreen;
 	}

@@ -5,6 +5,10 @@ import com.raiden.framework.Graphics;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Graphics.ImageFormat;
 
+/**
+ * The loading screen is used at the beginning of the game to load
+ * all the assets necessary to the game (sprites, sounds, musics, animations, etc).
+ */
 public class LoadingScreen extends Screen {
 	private static final float MUSIC_VOLUME = 0.85f;
 	private boolean splashPainted = false;
@@ -22,11 +26,13 @@ public class LoadingScreen extends Screen {
 
 		Graphics g = game.getGraphics();
 
+		/*
 		// this will be used to scale all images
 		// in case of internal resolution change
 		float scaleX, scaleY;
 		scaleX = game.getScaleX();
 		scaleY = game.getScaleY();
+		*/
 
 		Assets.menu = g.newImage("menu.png", ImageFormat.RGB565);
 		Assets.helpMenu = g.newImage("helpMenu.png", ImageFormat.RGB565);
@@ -124,6 +130,8 @@ public class LoadingScreen extends Screen {
 		Assets.missionVictory.setVolume(MUSIC_VOLUME);
 		
 		Assets.missionVictorySound = game.getAudio().createSound("missionVictorySound.wav");
+		
+		Assets.initializeMusicList();
 		
 		// initialize static arrays
 		FastMath.atan2(0.5f, 0.5f);

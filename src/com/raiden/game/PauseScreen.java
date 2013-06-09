@@ -13,6 +13,9 @@ import com.raiden.framework.Music;
 import com.raiden.framework.Screen;
 import com.raiden.framework.Input.TouchEvent;
 
+/**
+ * The pause screen is used when the game is paused during a mission.
+ */
 public class PauseScreen extends Screen {
 	
 	private ArrayList<Music> pausedMusics = new ArrayList<Music>();

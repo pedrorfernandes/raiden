@@ -8,6 +8,11 @@ import com.raiden.animation.Explosion;
 import com.raiden.framework.Music;
 import com.raiden.framework.Sound;
 
+/**
+ * An event can represent various occurrences in game.
+ * It is a means of communication between observable objects and observers.
+ * Each event may be associated with a sound, music, animation, special effect, etc.
+ */
 public enum Event {
 	EnemyHit
 	{
@@ -150,14 +155,24 @@ public enum Event {
 		
 	public PowerUp.Type powerUpType;
 	
+	/**
+	 * Creates a new event.
+	 */
 	private Event(){
 		powerUpType = null;
 	}
 	
+	/**
+	 * Sets the current power up type used when an event occurred.
+	 * @param powerUpType The new power up type used.
+	 */
 	public void setPowerUpType(PowerUp.Type powerUpType){
 		this.powerUpType = powerUpType;
 	}
 	
+	/**
+	 * Initializes the needed sounds for events.
+	 */
 	public static void initializeSounds(){
 		hitSounds = Assets.getHitSounds();
 		explosionSounds = Assets.getExplosionSounds();
@@ -165,28 +180,51 @@ public enum Event {
 		currentExplosionSound = 0;
 	}
 	
+	/**
+	 * Initializes the needed animations for events.
+	 * @param gameScreen The current game screen.
+	 */
 	public static void initializeAnimations(GameScreen gameScreen){
 		heroAnimation = gameScreen.heroAnimation;
 		heroTurningLeftAnimation = gameScreen.heroTurningLeftAnimation;
 		heroTurningRightAnimation = gameScreen.heroTurningRightAnimation;
 	}
 
+	/**
+	 * @param x The X position of the special effect.
+	 * @param y The Y position of the special effect.
+	 * @return A special effect. If none is associated with the event, null.
+	 */
 	public Animation getSpecialEffect(int x, int y){
 		return null;
 	}
-		
+	
+	/**
+	 * @return An animation. If none is associated with the event, null.
+	 */
 	public Animation getAnimation(){
 		return null;
 	}
 	
+	/**
+	 * @return A sound. If none is associated with the event, null.
+	 */
 	public Sound getSound(){
 		return null;
 	}
 	
+	/**
+	 * @return A music. If none is associated with the event, null.
+	 */
 	public Music getMusic(){
 		return null;
 	}
 		
+	/**
+	 * After returning an explosion sound, the next one 
+	 * in the explosion sounds array will be returned.
+	 * @return The current explosion sound.
+	 */
 	private static Sound getExplosionSound(){
 		if (currentExplosionSound >= explosionSounds.size() )
 			currentExplosionSound = 0;
@@ -195,6 +233,11 @@ public enum Event {
 		return explosionSound;
 	}
 	
+	/**
+	 * After returning a hit sound, the next one in the
+	 * hit sounds array will be returned.
+	 * @return The current hit sound.
+	 */
 	private static Sound getHitSound(){
 		if (currentHitSound >= hitSounds.size() )
 			currentHitSound = 0;

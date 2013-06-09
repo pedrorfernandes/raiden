@@ -2,6 +2,10 @@ package com.raiden.game;
 
 import com.raiden.framework.Music;
 
+/**
+ * The music controller is responsible for managing the current song playing during the game.
+ * It is also an observer, so when a certain event occurs, it can pause the current song and play a new one.
+ */
 public class MusicController implements Observer {
 	Music currentMusic;
 	
@@ -25,6 +29,10 @@ public class MusicController implements Observer {
 		this.update(null, event);
 	}
 	
+	/**
+	 * Plays a new song and stops the currently playing song (if there is one).
+	 * @param music The new music to play.
+	 */
 	public void play(Music music){
 		if (currentMusic != null && currentMusic.isPlaying()){
 			currentMusic.seekBegin();
@@ -34,6 +42,9 @@ public class MusicController implements Observer {
 		music.play();
 	}
 
+	/**
+	 * Stops and rewinds the currently playing song.
+	 */
 	public void stop(){
 		if (currentMusic != null && currentMusic.isPlaying()){
 			currentMusic.seekBegin();
@@ -41,10 +52,16 @@ public class MusicController implements Observer {
 		}
 	}
 	
+	/**
+	 * Pauses the current song.
+	 */
 	public void pause(){
 		currentMusic.pause();
 	}
 	
+	/**
+	 * Resumes the current song.
+	 */
 	public void resume(){
 		if (currentMusic != null && !currentMusic.isPlaying()){
 			currentMusic.play();

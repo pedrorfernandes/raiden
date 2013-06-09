@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import com.raiden.framework.Screen;
 import com.raiden.framework.implementation.AndroidGame;
 
+/**
+ * The main game class that initializes the application.
+ */
 public class RaidenGame extends AndroidGame {
 	
 	public String flightPatterns;
@@ -48,6 +51,11 @@ public class RaidenGame extends AndroidGame {
     	return musicController;
     }
     
+    /**
+     * Reads the flight patterns file, and checks for all level files (through reflections)
+     * and loads them.
+     * @return The list of levels.
+     */
     private ArrayList<Level> getLevels(){
     	// load the flight patterns for the levels
     	InputStream is = getResources().openRawResource(R.raw.flightpatterns);
@@ -95,16 +103,27 @@ public class RaidenGame extends AndroidGame {
     	return loadedLevels;
     }
     
+    /**
+     * @param levelIndex The index of a level.
+     * @return The high score of the level.
+     */
     public int getHighscore(int levelIndex){
     	if (levelIndex >= highScores.size() ) return 0;
     	return highScores.get(levelIndex);
     }
     
+    /**
+     * @param levelNumber The number of the level (starting at 1).
+     * @return The specified level.
+     */
     public Level getLevel(int levelNumber){
     	if (levelNumber < 1 || levelNumber > levels.size() ) return null;
     	return levels.get(levelNumber-1); // level 1 is index 0
     }
     
+    /**
+     * Saves the high scores of all the levels to the root of the SD card.
+     */
     public void saveHighscores() {
     	BufferedWriter out = null;
     	try {
@@ -128,6 +147,10 @@ public class RaidenGame extends AndroidGame {
     	}
     }
 
+    /**
+     * Loads all the high scores from a file in the root of the SD card
+     * and updates every level with this information.
+     */
     public void loadHighscores() {
     	BufferedReader in = null;
     	try {
@@ -153,6 +176,11 @@ public class RaidenGame extends AndroidGame {
     	}
     }
     
+    /**
+     * Converts the contents of a stream to a string.
+     * @param is A input stream
+     * @return A string with the contents
+     */
     private static String convertStreamToString(InputStream is) {
     	Writer writer = new StringWriter();
     	char[] buffer = new char[1024];

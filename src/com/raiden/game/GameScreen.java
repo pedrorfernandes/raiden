@@ -15,6 +15,11 @@ import com.raiden.framework.Input.TouchEvent;
 import com.raiden.framework.Music;
 import com.raiden.framework.Screen;
 
+/**
+ * The game screen holds all the variables important to the gameplay such as the
+ * the hero, enemies, special effects, background, etc.
+ * It updates all these elements and draws them into the screen.
+ */
 public class GameScreen extends Screen {
 
 	private static final String START_MISSION_MESSAGE = "Show them what you're made of!";
@@ -24,9 +29,6 @@ public class GameScreen extends Screen {
 	}
 
 	GameState state = GameState.Ready;
-
-	// Variable Setup
-	// You would create game objects here.
 	
 	private ArrayList<Music> pausedMusics = new ArrayList<Music>();
 
@@ -102,7 +104,11 @@ public class GameScreen extends Screen {
 	private final static int FIRST_BUTTON_X = 700;
 	private final static int PAUSE_BUTTON_Y = 25;
 	
-
+	/**
+	 * Creates a new game screen.
+	 * @param game The game.
+	 * @param levelNumber The level to play.
+	 */
 	public GameScreen(Game game, int levelNumber) {
 		super(game);
 
@@ -130,7 +136,7 @@ public class GameScreen extends Screen {
 		// observers
 		effectsController = new EffectsController(this);
 		soundController = new SoundController(this);
-		animationController = new AnimationController(this);
+		animationController = new AnimationController(this, heroAnimation);
 		armorObserver = new ArmorObserver(this);
 		scoreObserver = new ScoreObserver(this);
 
@@ -155,7 +161,6 @@ public class GameScreen extends Screen {
 
 		specialEffects = new ArrayList<Animation>();
 
-		// TODO level select
 		this.levelNumber = levelNumber;
 		level = game.getLevel(levelNumber);
 		level.initialize(this);
@@ -175,30 +180,61 @@ public class GameScreen extends Screen {
 		hitboxColor.setColor(Color.MAGENTA);
 	}
 
+	/**
+	 * @return The current score of the player.
+	 */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * Sets the current score of the player.
+	 * @param score The new score.
+	 */
 	public void setScore(int score) {
 		this.score = score;
 	}
 
+	/**
+	 * @return If the high score of the current level has been beaten.
+	 */
 	public boolean isHighscoreBeaten() {
 		return highscoreBeaten;
 	}
 
+	/**
+	 * Sets high score beaten boolean.
+	 * @param highscoreBeaten The new boolean.
+	 */
 	public void setHighscoreBeaten(boolean highscoreBeaten) {
 		this.highscoreBeaten = highscoreBeaten;
 	}
 
+	/**
+	 * @return The lives left for the hero.
+	 */
 	public int getLivesLeft() {
 		return livesLeft;
 	}
 
+	/**
+	 * Sets the number of lives left for the hero.
+	 * @param livesLeft New number of lives left.
+	 */
 	public void setLivesLeft(int livesLeft) {
 		this.livesLeft = livesLeft;
 	}
 
+	/**
+	 * Spawns an enemy.
+	 * @param x The X coordinate.
+	 * @param y The Y coordinate
+	 * @param angle The starting angle.
+	 * @param type The type of enemy.
+	 * @param flightPattern The flight pattern to execute (null if none).
+	 * @param PowerUpDrop The type of power up to drop on death (null if none).
+	 * @return The spawned enemy (null if none could be spawned).
+	 */
 	public Enemy spawnEnemy(int x, int y, float angle, Enemy.Type type, FlightPattern flightPattern, PowerUp.Type PowerUpDrop){
 		for (int i = 0; i < MAX_ENEMIES; i++)
 		{
@@ -211,14 +247,23 @@ public class GameScreen extends Screen {
 		return null;
 	}
 	
+	/**
+	 * @return If there are enemies still in game.
+	 */
 	public boolean enemiesLeft() {
 		for(Enemy enemy : enemies) {
 			if(enemy.isInGame()) return true;
 		}
-		
 		return false;
 	}
 
+	/**
+	 * Spawns a power up.
+	 * @param x The X coordinate.
+	 * @param y The Y coordinate.
+	 * @param type The type of power up.
+	 * @return The spawned power up (null if none could be spawned).
+	 */
 	public PowerUp spawnPowerUp(int x, int y, PowerUp.Type type){
 		for (int i = 0; i < MAX_POWER_UPS; i++)
 		{
@@ -231,6 +276,10 @@ public class GameScreen extends Screen {
 		return null;
 	}
 
+	/**
+	 * Adds a new special effect to the game.
+	 * @param specialEffect The new special effect.
+	 */
 	public void addSpecialEffect(Animation specialEffect){
 		specialEffects.add(specialEffect);
 	}
@@ -238,11 +287,6 @@ public class GameScreen extends Screen {
 	@Override
 	public void update(float deltaTime) {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
-
-		// We have four separate update methods in this example.
-		// Depending on the state of the game, we call different update methods.
-		// Refer to Unit 3's code. We did a similar thing without separating the
-		// update methods.
 
 		if (state == GameState.Ready)
 			updateReady(touchEvents);
@@ -255,11 +299,6 @@ public class GameScreen extends Screen {
 	}
 
 	private void updateReady(List<TouchEvent> touchEvents) {
-
-		// This example starts with a "Ready" screen.
-		// When the user touches the screen, the game begins. 
-		// state now becomes GameState.Running.
-		// Now the updateRunning() method will be called!
 
 		if (touchEvents.size() > 0){
 			state = GameState.Running;
@@ -315,17 +354,20 @@ public class GameScreen extends Screen {
 
 	}
 
+	/**
+	 * Updates all the game elements.
+	 * @param deltaTime The time passed since the last update.
+	 */
 	private void updateElements(float deltaTime) {
 
-		// 2. Check miscellaneous events like death:
-
+		// Check game conditions
+		
 		if(livesLeft == 0) {
 			if(gameOverScreenCounter > 0) {
 				gameOverScreenCounter -= deltaTime;
 			}
 			else {
 				state = GameState.GameOver;
-				// TODO update highscores in a more convenient place?
 				if(score > level.getHighscore()) {
 					level.updateHighscore(score);
 					game.saveHighscores();
@@ -342,7 +384,6 @@ public class GameScreen extends Screen {
 				gameOverScreenCounter -= deltaTime;
 			}
 			else {
-				// TODO update highscores in a more convenient place?
 				if(score > level.getHighscore()) {
 					level.updateHighscore(score);
 					game.saveHighscores();
@@ -356,7 +397,6 @@ public class GameScreen extends Screen {
 			}
 		}
 
-		// 3. Call individual update() methods here.
 		// This is where all the game updates happen.
 
 		level.update(deltaTime);
@@ -408,7 +448,6 @@ public class GameScreen extends Screen {
 					
 					nullify();
 
-					// TODO put the save load highscores in the right place
 					game.saveHighscores();
 					game.loadHighscores();
 
@@ -565,6 +604,10 @@ public class GameScreen extends Screen {
 
 	}
 
+	/**
+	 * Updates all the animations and special effects on screen.
+	 * @param deltaTime The time passed since the last update.
+	 */
 	private void animate(float deltaTime) {
 		heroAnimation.update(ANIMATION_UPDATE);
 		heroTurningLeftAnimation.update(ANIMATION_UPDATE);
@@ -580,8 +623,7 @@ public class GameScreen extends Screen {
 
 	private void nullify() {
 
-		// Set all variables to null. You will be recreating them in the
-		// constructor.
+		// Set all variables to null.
 		paint = null;
 
 		// Call garbage collector to clean up memory.
