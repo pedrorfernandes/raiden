@@ -5,8 +5,21 @@ import java.util.ArrayList;
 import com.raiden.game.Assets;
 import com.raiden.framework.Image;
 
+/**
+ * A collision is an animation that holds frames for ship on ship collision.
+ * These frames are stored statically for less memory usage, causing less impact 
+ * and easy instantiation of new collision objects.
+ */
 public class Collision extends Animation {
 	
+	/**
+	 * Creates a new collision animation.
+	 * @param x The X coordinate of the animation.
+	 * @param y The Y coordinate of the animation.
+	 * @param scale The scale of the animation (0.0 to 1.0)
+	 * @param speedX The speed of the animation in X.
+	 * @param speedY The speed of the animation in Y.
+	 */
 	public Collision(int x, int y, float scale, int speedX, int speedY) {
 		loop = false;
 		

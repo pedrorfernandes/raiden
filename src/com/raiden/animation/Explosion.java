@@ -5,8 +5,19 @@ import java.util.ArrayList;
 import com.raiden.game.Assets;
 import com.raiden.framework.Image;
 
+/**
+ * An explosion is an animation that holds explosion frames.
+ * These frames are stored statically for less memory usage, causing less impact 
+ * and easy instantiation of new explosion objects.
+ */
 public class Explosion extends Animation {
 	
+	/**
+	 * Creates a new explosion animation.
+	 * @param x The X coordinate.
+	 * @param y The Y coordinate
+	 * @param scale The scale of the explosion (0.0 to 1.0)
+	 */
 	public Explosion(int x, int y, float scale) {
 		loop = false;
 		
