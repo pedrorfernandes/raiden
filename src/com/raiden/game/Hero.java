@@ -154,10 +154,7 @@ public class Hero extends Ship {
 			}
 		}
 		
-		if (powerUps != null)
-			length = powerUps.length;
-		else
-			length = 0;
+		length = powerUps.length;
 		for (int i = 0; i < length; i++) {
 			powerUp = powerUps[i];
 			if (powerUp.visible)

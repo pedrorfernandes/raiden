@@ -8,7 +8,7 @@
             "angle": 0.0,
             "type": "Fast",
             "pattern": 0,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 1000,
@@ -71,7 +71,7 @@
             "angle": 270.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "ScatterShot"
         },
         {
             "time": 4000,
@@ -98,7 +98,7 @@
             "angle": 270.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Heavybullets"
         },
         {
             "time": 5000,
@@ -143,7 +143,7 @@
             "angle": 270.0,
             "type": "Fast",
             "pattern": 5,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 6000,
@@ -179,7 +179,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Heavybullets"
         },
         {
             "time": 9000,
@@ -206,7 +206,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Repair"
         },
         {
             "time": 12000,
@@ -215,7 +215,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 15000,
@@ -242,7 +242,7 @@
             "angle": 180.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Repair"
         },
          {
             "time": 18000,
@@ -269,7 +269,7 @@
             "angle": 180.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 23000,
@@ -314,7 +314,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 30000,
@@ -332,7 +332,7 @@
             "angle": 180.0,
             "type": "Normal",
             "pattern": 2,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 30000,
@@ -341,7 +341,7 @@
             "angle": 180.0,
             "type": "Normal",
             "pattern": 2,
-            "drop": null
+            "drop": "Machinegun"
         },
         {
             "time": 30000,
@@ -354,7 +354,7 @@
         },
         {
             "time": 34000,
-            "x": 100,
+            "x": 200,
             "y": 0,
             "angle": 270.0,
             "type": "TankBoss",
@@ -363,16 +363,7 @@
         },
         {
             "time": 34000,
-            "x": 400,
-            "y": 0,
-            "angle": 270.0,
-            "type": "TankBoss",
-            "pattern": 0,
-            "drop": null
-        },
-        {
-            "time": 34000,
-            "x": 700,
+            "x": 600,
             "y": 0,
             "angle": 270.0,
             "type": "TankBoss",
