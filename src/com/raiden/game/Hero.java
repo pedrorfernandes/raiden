@@ -39,7 +39,7 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
-		armor = 10; maxArmor = armor;
+		armor = 1000; maxArmor = armor;
 		radius = RADIUS;
 		
 		int halfSizeY = (radius * 2);

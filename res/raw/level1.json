@@ -188,7 +188,7 @@
             "angle": 0.0,
             "type": "Normal",
             "pattern": 0,
-            "drop": "Repair"
+            "drop": null
         },
         {
             "time": 23000,
@@ -206,7 +206,7 @@
             "angle": 270.0,
             "type": "TankBoss",
             "pattern": 0,
-            "drop": "Repair"
+            "drop": null
         }
     ]
 }

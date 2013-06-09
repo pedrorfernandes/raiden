@@ -51,6 +51,194 @@
                     "direction": "Right"
                 }
             ]
+        },
+        {   
+            "id" : 2,
+            "movements":
+            [
+                {
+                    "angle": 0,
+                    "duration": 800,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 270,
+                    "duration": 500,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 180,
+                    "duration": 320,
+                    "direction": "Right"
+                },
+                        {
+                    "angle": 90,
+                    "duration": 800,
+                    "direction": "Left"
+                }
+            ]
+        },
+        {   
+            "id" : 3,
+            "movements":
+            [
+                {
+                    "angle": 270,
+                    "duration": 1706,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 180,
+                    "duration": 8000,
+                    "direction": "Right"
+                }
+            ]
+        },
+        {   
+            "id" : 4,
+            "movements":
+            [
+                {
+                    "angle": 270,
+                    "duration": 1706,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 360,
+                    "duration": 8000,
+                    "direction": "Left"
+                }
+            ]
+        },
+        {   
+            "id" : 5,
+            "movements":
+            [
+           		{
+                    "angle": 270,
+                    "duration": 500,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 90,
+                    "duration": 18,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 270,
+                    "duration": 800,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 90,
+                    "duration": 18,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 270,
+                    "duration": 500,
+                    "direction": "Left"
+                }
+            ]
+        },
+        {   
+            "id" : 6,
+            "movements":
+            [
+                {
+                    "angle": 270,
+                    "duration": 1806,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 360,
+                    "duration": 320,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 90,
+                    "duration": 320,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 360,
+                    "duration": 8000,
+                    "direction": "Left"
+                }
+            ]
+        },
+        {   
+            "id" : 7,
+            "movements":
+            [
+                {
+                    "angle": 90,
+                    "duration": 1806,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 180,
+                    "duration": 320,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 270,
+                    "duration": 320,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 180,
+                    "duration": 8000,
+                    "direction": "Left"
+                }
+            ]
+        },
+        {   
+            "id" : 8,
+            "movements":
+            [
+                {
+                    "angle": 270,
+                    "duration": 100,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 360,
+                    "duration": 520,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 270,
+                    "duration": 100,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 180,
+                    "duration": 520,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 270,
+                    "duration": 100,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 360,
+                    "duration": 520,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 90,
+                    "duration": 800,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 180,
+                    "duration": 520,
+                    "direction": "Left"
+                }
+                
+            ]
         }
     ]
 }
