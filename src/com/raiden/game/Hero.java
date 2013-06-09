@@ -39,7 +39,7 @@ public class Hero extends Ship {
 	}
 
 	public Hero() {
-		armor = 1000; maxArmor = armor;
+		armor = 10; maxArmor = armor;
 		radius = RADIUS;
 		
 		int halfSizeY = (radius * 2);
@@ -134,10 +134,7 @@ public class Hero extends Ship {
 			}
 		}
 		
-		if (powerUps != null)
-			length = powerUps.length;
-		else
-			length = 0;
+		length = powerUps.length;
 		for (int i = 0; i < length; i++) {
 			powerUp = powerUps[i];
 			if (powerUp.visible)
