@@ -237,7 +237,32 @@
                     "duration": 520,
                     "direction": "Left"
                 }
-                
+            ]
+        },
+        {   
+            "id" : 9,
+            "movements":
+            [
+                {
+                    "angle": 270,
+                    "duration": 4000,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 68,
+                    "duration": 4672,
+                    "direction": "Left"
+                },
+                {
+                    "angle": 270,
+                    "duration": 4000,
+                    "direction": "Right"
+                },
+                {
+                    "angle": 112,
+                    "duration": 4672,
+                    "direction": "Right"
+                }
             ]
         }
     ]
