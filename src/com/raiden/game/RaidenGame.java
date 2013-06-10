@@ -37,6 +37,8 @@ public class RaidenGame extends AndroidGame {
     	
     	levels = getLevels();
     	
+    	Assets.resources = getResources();
+    	
     	Level.loadFlightPatterns(flightPatterns);
         
     	return new SplashLoadingScreen(this);

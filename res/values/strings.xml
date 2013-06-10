@@ -2,4 +2,58 @@
 
     <string name="app_name">Raiden</string>
 
+    <string name="start_mission_message">Show them what you\'re made of!</string>
+
+    <string name="game_over">GAME OVER</string>
+
+    <string name="final_score">"Final Score: "</string>
+
+    <string name="new_highscore">New highscore!</string>
+
+    <string name="level_highscore">"Level highscore: "</string>
+
+    <string name="help_title">Help</string>
+
+    <string name="help_text">Defeat all the enemies and strive to stay alive until the end!\nTouch and drag anywhere on the screen to control your plane. Your plane shoots automatically as you touch.\nGrab powerups to become even stronger!\nBe careful, you can only handle a small amount of damage!</string>
+
+    <string name="mission_accomplished">Mission Accomplished</string>
+
+    <string name="score">Score</string>
+
+    <string name="mission_highscore">Mission highscore</string>
+
+    <string name="level_selection_title">Levels</string>
+
+    <string name="level_label">"Level "</string>
+
+    <string name="highscore_label">"Highscore: "</string>
+
+    <string name="reset_notification_1">Reset this level\'s</string>
+
+    <string name="reset_notification_2">score?</string>
+
+    <string name="play_button">Play</string>
+
+    <string name="settings_button">Settings</string>
+
+    <string name="help_button">Help</string>
+
+    <string name="pause_title">Pause</string>
+
+    <string name="score_label">"Score: "</string>
+
+    <string name="continue_button">Continue</string>
+
+    <string name="quit_button">Quit</string>
+
+    <string name="music_on">Music: On</string>
+
+    <string name="music_off">Music: Off</string>
+
+    <string name="sound_on">Sound: On</string>
+
+    <string name="sound_off">Sound: Off</string>
+
+    <string name="settings_title">Settings</string>
+
 </resources>

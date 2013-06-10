@@ -36,18 +36,18 @@ public class LevelOverScreen extends Screen {
 	private ScreenButton quitButton;
 	private ScreenButton nextButton;
 
-	private String levelOverString = "Mission Accomplished";
+	private String levelOverString = Assets.resources.getString(R.string.mission_accomplished);
 	private Paint levelOverPaint;
 
-	private String scoreString = "Score";
+	private String scoreString = Assets.resources.getString(R.string.score);
 	private Paint scoreStringPaint;
 	private Paint scorePaint;
 
-	private String highscoreString = "Mission highscore";
+	private String highscoreString = Assets.resources.getString(R.string.mission_highscore);
 	private Paint highscoreStringPaint;
 	private Paint highscorePaint;
 
-	private String newHighscoreString = "New highscore!";
+	private String newHighscoreString = Assets.resources.getString(R.string.new_highscore);
 	private Paint newHighscoreStringPaint;
 
 	/**
@@ -177,19 +177,16 @@ public class LevelOverScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

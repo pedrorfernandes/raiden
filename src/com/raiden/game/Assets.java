@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.content.res.Resources;
+
 import com.raiden.animation.Animation;
 import com.raiden.framework.Image;
 import com.raiden.framework.Music;
@@ -51,6 +53,8 @@ public class Assets {
 	menuMusic, missionMusic, missionVictory;
 	
 	public static List<Music> musics;
+	
+	public static Resources resources;
 
 	/**
 	 * Sets the volume for all the sounds.

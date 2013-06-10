@@ -23,7 +23,7 @@ public class ScreenButton {
 	public String label;
 	public int labelX;
 	public int labelY;
-	Paint paint;
+	public Paint paint;
 	
 	public Screen nextScreen;
 	

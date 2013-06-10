@@ -62,22 +62,22 @@ public class LevelSelectionScreen extends Screen {
 	private ScreenButton nextButton;
 	private ScreenButton resetButton;
 
-	private String levelSelectionTitle = "Levels";
+	private String levelSelectionTitle = Assets.resources.getString(R.string.level_selection_title);
 	private Paint levelSelectionPaint;
 
-	private String levelLabel = "Level ";
+	private String levelLabel = Assets.resources.getString(R.string.level_label);
 	private Paint levelLabelPaint;
 	private int currentLevelDisplayed;
 
-	private String highscoreLabel = "Highscore: ";
+	private String highscoreLabel = Assets.resources.getString(R.string.highscore_label);
 	private Paint highscoreLabelPaint;
 	private Paint highscorePaint;
 
 	//Pop up elements
 	private ScreenButton selectYes;
 	private ScreenButton selectNo;
-	private String notificationText1 = "Reset this level's";
-	private String notificationText2 = "score?";
+	private String notificationText1 = Assets.resources.getString(R.string.reset_notification_1);
+	private String notificationText2 = Assets.resources.getString(R.string.reset_notification_2);
 	private Paint notificationPaint;
 
 	private LevelSelectionScreen(Game game) {
@@ -217,19 +217,16 @@ public class LevelSelectionScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

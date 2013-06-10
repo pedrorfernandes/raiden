@@ -15,10 +15,14 @@ import com.raiden.framework.Screen;
  */
 public class MainMenuScreen extends Screen {
 	
-	boolean bgPainted = false;
-	ScreenButton playButton;
-	ScreenButton settingsButton;
-	ScreenButton helpButton;
+	private boolean bgPainted = false;
+	private ScreenButton playButton;
+	private ScreenButton settingsButton;
+	private ScreenButton helpButton;
+	
+	private String playButtonLabel = Assets.resources.getString(R.string.play_button);
+	private String settingsButtonLabel = Assets.resources.getString(R.string.settings_button);
+	private String helpButtonLabel = Assets.resources.getString(R.string.help_button);
 	
 	//Button related constants
 	private final static int BUTTON_WIDTH = 800;
@@ -45,21 +49,21 @@ public class MainMenuScreen extends Screen {
 		Typeface face=Typeface.createFromAsset(game.getAssets(), ScreenButton.GAME_FONT);
 		p.setTypeface(face);
 		p.setColor(ScreenButton.GAME_FONT_COLOR);
-		
+
 		playButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y,
-				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Play",
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, playButtonLabel,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p);
 		
 		settingsButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
-				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Settings",
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, settingsButtonLabel,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p);
 		
 		helpButton = new ScreenButton(MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X, MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS,
-				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, "Help",
+				MainMenuScreen.BUTTON_WIDTH, MainMenuScreen.BUTTON_HEIGHT, helpButtonLabel,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_X + MainMenuScreen.MAIN_MENU_STR_XDIST,
 				MainMenuScreen.MAIN_MENU_FIRST_BUTTON_Y + 2*MainMenuScreen.MAIN_MENU_DIST_BETWEEN_BUTTONS + MainMenuScreen.MAIN_MENU_STR_YDIST,
 				p);

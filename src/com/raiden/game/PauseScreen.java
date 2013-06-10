@@ -51,11 +51,14 @@ public class PauseScreen extends Screen {
 	private boolean bgPainted = false;
 	private GameScreen gameScreen;
 	
-	private String pauseLabel = "Pause";
-	private String scoreLabel = "Score: ";
+	private String pauseLabel = Assets.resources.getString(R.string.pause_title);
+	private String scoreLabel = Assets.resources.getString(R.string.score_label);
 
 	private ScreenButton continueButton;
 	private ScreenButton quitButton;
+	
+	private String continueButtonLabel = Assets.resources.getString(R.string.continue_button);
+	private String quitButtonLabel = Assets.resources.getString(R.string.quit_button);
 	
 	private Paint scoreLabelPaint;
 	private Paint scorePaint;
@@ -84,13 +87,13 @@ public class PauseScreen extends Screen {
 		scorePaint.setColor(ScreenButton.GAME_FONT_COLOR);
 
 		continueButton = new ScreenButton(PauseScreen.PAUSE_MENU_FIRST_BUTTON_X, PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y,
-				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Continue",
+				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, continueButtonLabel,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_LEFT_STR_XDIST,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_STR_YDIST,
 				p);
 
 		quitButton = new ScreenButton(PauseScreen.PAUSE_MENU_FIRST_BUTTON_X, PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS,
-				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, "Quit",
+				PauseScreen.BUTTON_WIDTH, PauseScreen.BUTTON_HEIGHT, quitButtonLabel,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_X + PauseScreen.PAUSE_MENU_RIGHT_STR_XDIST,
 				PauseScreen.PAUSE_MENU_FIRST_BUTTON_Y + PauseScreen.PAUSE_MENU_DIST_BETWEEN_BUTTONS + PauseScreen.PAUSE_MENU_STR_YDIST,
 				p);
@@ -143,7 +146,6 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -154,7 +156,6 @@ public class PauseScreen extends Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

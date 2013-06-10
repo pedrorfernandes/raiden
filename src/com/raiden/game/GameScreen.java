@@ -22,7 +22,11 @@ import com.raiden.framework.Screen;
  */
 public class GameScreen extends Screen {
 
-	private static final String START_MISSION_MESSAGE = "Show them what you're made of!";
+	private String gameOverString = Assets.resources.getString(R.string.game_over);
+	private String startMissionString = Assets.resources.getString(R.string.start_mission_message);
+	private String finalScoreString = Assets.resources.getString(R.string.final_score);
+	private String newHighscoreString = Assets.resources.getString(R.string.new_highscore);
+	private String highScoreString = Assets.resources.getString(R.string.level_highscore);
 
 	enum GameState {
 		Ready, Running, Paused, GameOver
@@ -41,10 +45,7 @@ public class GameScreen extends Screen {
 	// Delay showing the game over screen for a while
 	private static final int GAME_OVER_COUNTER = 3500;
 	private int gameOverScreenCounter = GAME_OVER_COUNTER;
-	private String finalScore = "Final Score: ";
 	private boolean highscoreBeaten = false;
-	private String newHighscore = "New highscore: ";
-	private String highscore = "Level highscore: ";
 
 	private int livesLeft = 1;
 	Paint paint;
@@ -634,7 +635,7 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 
 		g.drawARGB(155, 0, 0, 0);
-		g.drawString(START_MISSION_MESSAGE, 400, 640, paint);
+		g.drawString(startMissionString, 400, 640, paint);
 
 	}
 
@@ -656,15 +657,15 @@ public class GameScreen extends Screen {
 	private void drawGameOverUI() {
 		Graphics g = game.getGraphics();
 		g.drawRect(0, 0, 801, 1281, Color.BLACK);
-		g.drawString("GAME OVER", 400, 340, paint);
-		g.drawString(finalScore, 400, 600, paint);
+		g.drawString(gameOverString, 400, 340, paint);
+		g.drawString(finalScoreString, 400, 600, paint);
 		g.drawString(Integer.toString(score), 400, 660, paint);
 		
 		if(highscoreBeaten) {
-			g.drawString(newHighscore, 400, 820, paint);
+			g.drawString(newHighscoreString, 400, 820, paint);
 		}
 		else {
-			g.drawString(highscore, 400, 820, paint);
+			g.drawString(highScoreString, 400, 820, paint);
 		}
 		g.drawString(Integer.toString(level.getHighscore()), 400, 880, paint);
 

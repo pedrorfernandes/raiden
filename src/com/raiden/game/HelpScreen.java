@@ -10,20 +10,16 @@ import com.raiden.framework.Screen;
 
 public class HelpScreen extends Screen {
 	
-	//TODO strings instead of image!
 	private final static int TITLE_FONT_SIZE = 90;
 	private final static int TITLE_X = 370;
 	private final static int TITLE_Y = 225;
 	private final static int TITLE_ANGLE = -27;
 	
-	private final static String HELP_TITLE = "Help";
+	private String helpTitleString = Assets.resources.getString(R.string.help_title);
 	private Paint helpTitlePaint;
 	
 	private final static int TEXT_FONT_SIZE = 50;
-	private final static String HELP_TEXT = "Defeat all the enemies and strive to stay alive until the end!\n" +
-			"Touch and drag anywhere on the screen to control your plane. Your plane shoots automatically as you touch.\n" +
-			"Grab powerups to become even stronger!\n" +
-			"Be careful, you can only handle a small amount of damage!";
+	private String helpTextString = Assets.resources.getString(R.string.help_text);
 	private final static int HELP_TEXT_X = 20;
 	private final static int HELP_TEXT_Y = 720;
 	private Paint helpTextPaint;
@@ -58,7 +54,6 @@ public class HelpScreen extends Screen {
 
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -67,27 +62,24 @@ public class HelpScreen extends Screen {
 		Graphics g = game.getGraphics();
 		if(!bgPainted) {
 			g.drawImage(Assets.helpMenu, 0, 0);
-			g.drawRotatedString(HELP_TITLE, TITLE_X, TITLE_Y, TITLE_ANGLE, helpTitlePaint);
-			g.drawText(HELP_TEXT, HELP_TEXT_X, HELP_TEXT_Y, 780, helpTextPaint);
+			g.drawRotatedString(helpTitleString, TITLE_X, TITLE_Y, TITLE_ANGLE, helpTitlePaint);
+			g.drawText(helpTextString, HELP_TEXT_X, HELP_TEXT_Y, 780, helpTextPaint);
 			bgPainted = true;
 		}
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

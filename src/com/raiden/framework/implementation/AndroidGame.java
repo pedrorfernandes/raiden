@@ -34,6 +34,7 @@ public abstract class AndroidGame extends Activity implements Game {
     Point screenSize, gameSize;
     private float scaleX, scaleY;
 
+	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

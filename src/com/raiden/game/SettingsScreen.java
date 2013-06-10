@@ -18,13 +18,13 @@ public class SettingsScreen extends Screen {
 	private final static int TITLE_Y = 160;
 	private final static int TITLE_ANGLE = -27;
 	
-	private final static String SETTINGS_TITLE = "Settings";
+	private String settingsTitleString = Assets.resources.getString(R.string.settings_title);
 	private Paint settingsTitlePaint;
 
-	private static final String MUSIC_ON = "Music: On";
-	private static final String MUSIC_OFF = "Music: Off";
-	private static final String SOUND_ON = "Sound: On";
-	private static final String SOUND_OFF = "Sound: Off";
+	private String musicOnString = Assets.resources.getString(R.string.music_on);
+	private String musicOffString = Assets.resources.getString(R.string.music_off);
+	private String soundOnString = Assets.resources.getString(R.string.sound_on);
+	private String soundOffString = Assets.resources.getString(R.string.sound_off);
 	//Button related constants
 	private final static int BUTTON_WIDTH = 800;
 	private final static int BUTTON_HEIGHT = 160;
@@ -64,13 +64,13 @@ public class SettingsScreen extends Screen {
 		settingsTitlePaint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
 
 		soundButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y,
-				BUTTON_WIDTH, BUTTON_HEIGHT, SOUND_ON,
+				BUTTON_WIDTH, BUTTON_HEIGHT, soundOnString,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_STR_YDIST,
 				p);
 
 		musicButton = new ScreenButton(SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X, SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS,
-				BUTTON_WIDTH, BUTTON_HEIGHT, MUSIC_ON,
+				BUTTON_WIDTH, BUTTON_HEIGHT, musicOnString,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_X + SettingsScreen.SETTINGS_MENU_STR_XDIST,
 				SettingsScreen.SETTINGS_MENU_FIRST_BUTTON_Y + SettingsScreen.SETTINGS_MENU_DIST_BETWEEN_BUTTONS + SettingsScreen.SETTINGS_MENU_STR_YDIST,
 				p);
@@ -86,17 +86,17 @@ public class SettingsScreen extends Screen {
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		
 		if(Assets.soundMuted) {
-			soundButton.label = SOUND_OFF;
+			soundButton.label = soundOffString;
 		}
 		else {
-			soundButton.label = SOUND_ON;
+			soundButton.label = soundOnString;
 		}
 		
 		if(Assets.musicMuted) {
-			musicButton.label = MUSIC_OFF;
+			musicButton.label = musicOffString;
 		}
 		else {
-			musicButton.label = MUSIC_ON;
+			musicButton.label = musicOnString;
 		}
 
 		int len = touchEvents.size();
@@ -104,16 +104,15 @@ public class SettingsScreen extends Screen {
 			TouchEvent event = touchEvents.get(i);
 			if (event.type == TouchEvent.TOUCH_UP) {
 
-				//TODO Fix dis (button toggling not the very best thing)
 				if (soundButton.hitbox.contains(event.x, event.y)) {
 					// TOGGLE SOUND
 					bgPainted = false;
 					if(!Assets.soundMuted) {
-						soundButton.label = SOUND_OFF;
+						soundButton.label = soundOffString;
 						Assets.setSoundVolume(0.0f);
 					}
 					else {
-						soundButton.label = SOUND_ON;
+						soundButton.label = soundOnString;
 						Assets.setSoundVolume(1.0f);
 					}
 				}
@@ -122,11 +121,11 @@ public class SettingsScreen extends Screen {
 					//TOGGLE MUSIC
 					bgPainted = false;
 					if(!Assets.musicMuted) {
-						musicButton.label = MUSIC_OFF;
+						musicButton.label = musicOffString;
 						Assets.setMusicVolume(0.0f);
 					}
 					else {
-						musicButton.label = MUSIC_ON;
+						musicButton.label = musicOnString;
 						Assets.setMusicVolume(1.0f);
 					}
 				}
@@ -141,7 +140,7 @@ public class SettingsScreen extends Screen {
 		Graphics g = game.getGraphics();
 		if(!bgPainted) {
 			g.drawImage(Assets.settingsMenu, 0, 0);
-			g.drawRotatedString(SETTINGS_TITLE, TITLE_X, TITLE_Y, TITLE_ANGLE, settingsTitlePaint);
+			g.drawRotatedString(settingsTitleString, TITLE_X, TITLE_Y, TITLE_ANGLE, settingsTitlePaint);
 			g.drawString(soundButton.label, soundButton.labelX, soundButton.labelY, soundButton.paint);
 			g.drawString(musicButton.label, musicButton.labelX, musicButton.labelY, musicButton.paint);
 			bgPainted = true;
@@ -150,19 +149,16 @@ public class SettingsScreen extends Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 
