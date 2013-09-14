@@ -21,7 +21,7 @@ The bullet's SoundObserver is notified of the sound, plays it, and the bullet's 
 With this simple pattern, we can manage sounds, music, special effects and animation switching (without having to check for these events constantly in the game loop)
 and we used the versatility of the Event enum to add more features. One of our last features was game scores. To do this, we simply added ScoreObservers to our objects and created a ScoreUp Event for them to listen to.
 
-For the levels and the enemy flight patterns, we learned to used JSON. Each level is a simple JSON file containing information of enemy type and spawn.
+For the levels and the enemy flight patterns, we learned to use JSON. Each level is a simple JSON file containing information of enemy type and spawn.
 There is also a JSON flight pattern file that contains information of the direction and timing of a series of enemy movements. Due to the ease of parsing JSON files, we could easily add new attributes to enemies as development progressed.
 We could also later develop a level construtor software that visually aids a user to creates levels for our game.
 
