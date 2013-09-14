@@ -7,9 +7,10 @@ So, our first step was to learn a bit more about programming in the android plat
 with the help of the tutorials at Kilobolt (http://www.kilobolt.com/game-development-tutorial.html) and the simple beginners' framework they recommend, we started this project.
 
 You can download a compiled .apk from http://bit.ly/18fhhFO
+
 The game is a simple vertical shoot em up with ships, it features 3 levels with bosses, different enemy types with many flight patterns, lots of power ups and animations.
 
-The game features some really cool stuff on the programming side because we really emphasized the use of design patterns on our "engine".
+The project features some really cool stuff on the programming side because we really emphasized the use of design patterns on our "engine".
 For example, we used the visitor's pattern to easily implement consequences of collisions between different objects. If we wanted a bullet to damage a ship, we simply defined
 the bullet.visit(ship) function, to make the ship lose health. The rest of the game would detect the collision of these objects and would call the right function for the consequence.
 
