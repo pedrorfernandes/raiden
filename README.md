@@ -5,7 +5,7 @@ Raiden
 
 ![Screenshot 1](https://dl.dropboxusercontent.com/u/488059/raiden1.jpg)
 ![Screenshot 2](https://dl.dropboxusercontent.com/u/488059/raiden2.jpg)
-![Screenshot 3](https://dl.dropboxusercontent.com/u/488059/raiden3.jpg)
+![Screenshot 3](https://dl.dropboxusercontent.com/u/488059/raiden3.jpg)![Screenshot 4](https://dl.dropboxusercontent.com/u/488059/raiden4.png)
 
 This project was our first attempt at making a video game for mobile devices. 
 We start learning java in our 2nd year of college and on our 2nd java project we were given the chance to do an android game.
